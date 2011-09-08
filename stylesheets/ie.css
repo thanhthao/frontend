@@ -1,0 +1,16 @@
+.menu{
+	zoom: 1;
+	display: block;
+	filter: dropshadow(color=#000, offx=0, offy=1);
+}
+#footer h2{
+	zoom: 1;
+	display: block;
+	filter: dropshadow(color=#252525, offx=1, offy=0);
+}
+#footer .col ul{
+	zoom: 1;
+	display: block;
+	filter: dropshadow(color=#252525, offx=1, offy=0);
+	
+}

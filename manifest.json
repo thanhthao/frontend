@@ -1,0 +1,22 @@
+{
+  
+  "stylesheets": [
+    "stylesheets/all.css",
+    "stylesheets/ie.css"
+  ],
+
+  "javascripts": [
+    "javascripts/application.js",
+  ],
+  
+  "images": [
+		"images/arrow-down.png",
+  ],
+  
+  "lib": [ 
+    "facebook", 
+    ["md5", "2.2.0"],
+    ["prototype", "1.6.1"],
+    ["hasher", "0.0.4"]
+  ]
+}
