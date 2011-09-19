@@ -1,0 +1,80 @@
+img { border-style: none; }
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+input, textarea, select { vertical-align: middle; }
+form,fieldset { margin:0; padding:0; border-style:none; }
+
+html { height: 100%; background: #0085aa url(../images/bg-page.jpg) repeat top center; }
+body { min-height: 100%; background: transparent url(../images/bg-page-fade.jpg) repeat-x top center; margin: 0; font-size: 100.01%; }
+body, input, textarea, select, td, th, a { font: 14px/17px "HelveticaNeueLight", Arial, sans-serif; color: #333; }
+
+#wrapper { width: 970px; padding: 0 10px 10px 0; margin: 0 auto; position: relative; }
+
+#header { }
+
+#user-nav { position: absolute; top: 0px; right: 10px; background: rgba(0,0,0,0.3); padding: 4px 13px; border-radius: 0 0 4px 4px; color: #ccc }
+#user-nav span { padding-right: 10px; border-right: 1px solid #555; margin-right: 10px; }
+#user-nav a { color: #ccc }
+
+#logo { padding: 10px 0 10px 45px; margin: 0; background: transparent url(/frontend/images/badger-4.png) no-repeat 0 7px; }
+#logo a { font: 35px 'KnockoutHTF30-JuniorWelterwt', Arial, sans-serif; color: #f0f0f0; }
+#logo a:hover { text-decoration: none; }
+#logo img { vertical-align: bottom; padding-right: 10px; }
+
+#main-minimal { padding: 200px 0 0 250px; }
+#main-minimal img { float: left; margin-left: -250px; }
+#main-minimal-box { float: left; width: 100%; background: white; border-radius: 5px;  }
+#main-minimal-box #content { padding: 20px; }
+
+#main { padding: 0 10px 10px 231px; background: transparent url(/frontend/images/background.png); border-radius: 5px; }
+#main #content { float: left; width: 100%; padding: 10px 0; }
+#main #sidebar { float: left; width: 221px; margin-left: -231px; min-height: 500px; }
+
+
+
+
+#footer { background: rgba(0,0,0,0.2); border-radius: 6px; color: #f0f0f0; padding: 10px 0; margin-top: 10px; }
+#footer .footer-holder { height:1%; display:table-row; }
+#footer .footer-frame{display:table-cell;}
+#footer .box { background:url(../images/bg-footer.png) no-repeat; padding:5px 0 0; margin:0 0 30px; }
+#footer .box .holder { background:url(../images/bg-footer.png) no-repeat -1880px 100%; padding:0 0 5px; }
+#footer .box .frame { background:url(../images/bg-footer.png) repeat-y -940px 0; overflow:hidden; padding:11px 0 24px; }
+#footer .col { float:left; width:210px; margin:0 0 0 20px; }
+#footer h2{ font:18px/21px "KnockoutHTF30-JuniorWelterwt", Arial, sans-serif; margin:0 0 4px; border-bottom:1px solid #fff; padding:0 0 3px; text-shadow: 1px 0px 1px #252525; }
+#footer .col ul{ margin:0; padding:0; list-style:none; text-shadow: 1px 0px 1px #252525; }
+#footer .col ul li{padding:5px 0 0;}
+#footer .col a{color:#fff;}
+#footer .col address{font-style:normal;}
+
+.social-network{ margin:0; padding:0; list-style:none; }
+#footer .col .social-network li{padding-bottom:5px;}
+.social-network a{ background:url(../images/sprite.png) no-repeat; padding:0 0 0 30px; height:20px; display:inline-block; }
+.social-network a.twitter{background-position:0 -174px;}
+.social-network a.facebook{background-position:0 -204px ;}
+
+
+
+/* COLORS:
+    #292f3d - sidebar light
+    #202530 - sidebar dark
+    #181b24 - sidebar border
+
+/*#sidebar { font: 18px/21px "KnockoutHTF30-JuniorWelterwt", Arial, sans-serif !important; font-weight: bold !important; }*/
+#form-search { height: 43px; padding: 10px 0 6px 18px; }
+#form-search input { background: #fff url(../images/submit.gif) no-repeat center right; border-radius: 3px; width:140px; border:0; color:#666; font-size:16px; line-height:17px; float:left; padding:8px 34px 8px 9px; margin:0 0 0 0; }
+
+/* primary menu */
+#menu { border-top:1px solid #14161e; margin:0; padding:0; list-style:none; font:18px/21px "KnockoutHTF30-JuniorWelterwt", Arial, sans-serif; }
+#menu li { border-bottom:1px solid #191c25; background:#212632; }
+#menu li a { color:#919ab2; display:block; padding:9px 10px 9px 17px; text-shadow: 0px 1px 1px #000;  }
+#sidebar .active {background:url(../images/bg-menu-hover.png) no-repeat 100% 50%;}
+
+/* submenu */
+#menu ul { border-top:1px solid #14161e; font-size:16px; margin:-1px 0; padding:0; list-style:none; }
+#menu ul li {background:#292f3e;}
+#menu ul a { color:#fff; background:url(../images/sprite.png) no-repeat; padding:9px 10px 10px 48px; }
+#menu .website {background-position:17px 13px;}
+#menu .email {background-position:17px -28px;}
+#menu .dns {background-position:17px -69px;}
+#menu .analytics {background-position:17px -110px;}
+

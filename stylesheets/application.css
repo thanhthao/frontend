@@ -7,7 +7,7 @@ html {
 }
 body{
 	margin:0;
-	color:#707580;
+	color:#333;
 	font:14px/17px "HelveticaNeueLight", Arial, sans-serif;
 	background: transparent url(../images/bg-page-fade.jpg) repeat-x top center;
 }
@@ -75,6 +75,7 @@ form,fieldset{
 	width:970px;
 	margin:0 auto;
 	padding: 0 15px;
+	position: relative;
 }
 .w1 {
 	width:100%;
@@ -83,14 +84,15 @@ form,fieldset{
 #header{
 	overflow:hidden;
 	width:100%;
-	padding:39px 0 14px;
+	padding:10px 0 5px;
 }
+#header img { float: left; margin-left: 10px }
 .logo{
 	background:url(../images/logo.gif) no-repeat;
 	width:107px;
 	height:27px;
 	float:left;
-	margin:0 0 0 15px;
+	margin:8px 0 0 10px;
 	text-indent:-9999px;
 	overflow:hidden;
 }
@@ -287,3 +289,9 @@ form,fieldset{
 }
 .social-network a.twitter{background-position:0 -174px;}
 .social-network a.facebook{background-position:0 -204px ;}
+
+
+
+.current-user-nav { position: absolute; top: 8px; right: 15px; background: rgba(0,0,0,0.3); padding: 4px 13px; border-radius: 3px; color: #ccc }
+.current-user-nav span { padding-right: 10px; border-right: 1px solid #555; margin-right: 10px; }
+.current-user-nav a { color: #ccc }
