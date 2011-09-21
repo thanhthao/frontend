@@ -205,4 +205,4 @@ with (Hasher.View('Application')) { (function() {
 
 
 })(); }
-alert('hi')
+
