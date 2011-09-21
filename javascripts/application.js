@@ -25,6 +25,8 @@ with (Hasher.Controller('Application')) {
 
       $('#form-search')[request_uri == '#search' ? 'addClass' : 'removeClass']('active');
       $('#nav-my-domains')[request_uri == '#' ? 'addClass' : 'removeClass']('active');
+      $('#nav-my-account')[request_uri == '#my-account' ? 'addClass' : 'removeClass']('active');
+      $('#nav-help-and-support')[request_uri == '#help-and-support' ? 'addClass' : 'removeClass']('active');
     }
   });
 }
@@ -58,10 +60,17 @@ with (Hasher.View('Application')) { (function() {
           form({ id: "form-search", action: "#" },
             input({ type: 'text', value: '', events: { 
               focus: function() { 
-                Hasher.Routes.setHash('#search');
+                if (Hasher.Routes.getHash() != '#search') Hasher.Routes.setHash('#search');
               },
-              keypress: function() {
-                Hasher.Routes.setHash('#search/' + this.value);
+              keyup: function(event) {
+                var _this = this;
+                if (this.timeout) clearTimeout(this.timeout);
+                this.timeout = setTimeout(function() {
+                  Badger.domainSearch(_this.value, function(resp) {
+                    console.log(resp);
+                    $('#search-results').html('' + resp.data.join('<br/>'));
+                  });
+                }, 200);
               }
             }})
           ),
@@ -70,22 +79,32 @@ with (Hasher.View('Application')) { (function() {
             li({ id: 'nav-my-domains' },
               a({ href: "#" }, 'MY DOMAINS')
             ),
-            li(
-              a({ href: "#" }, 'WKONKEL.NET'),
+
+            // li(
+            //   a({ href: "#" }, 'WKONKEL.NET'),
+            //   ul(
+            //     li(a({ 'class': "website", href: "#" }, 'WEBSITE FORWARDING')),
+            //     li(a({ 'class': "email", href: "#" }, 'EMAIL FORWARDING')),
+            //     li(a({ 'class': "dns", href: "#" }, 'DNS SETTINGS')),
+            //     li(a({ 'class': "analytics", href: "#" }, 'ANALYTICS'))
+            //   )
+            // ),
+
+            li({ id: 'nav-my-account' },
+              a({ href: "#my-account" }, 'MY ACCOUNT'),
               ul(
-                li(a({ 'class': "website", href: "#" }, 'WEBSITE FORWARDING')),
-                li(a({ 'class': "email", href: "#" }, 'EMAIL FORWARDING')),
-                li(a({ 'class': "dns", href: "#" }, 'DNS SETTINGS')),
-                li(a({ 'class': "analytics", href: "#" }, 'ANALYTICS'))
+                li(a({ 'class': "email", href: "#" }, 'SETTINGS')),
+                li(a({ 'class': "email", href: "#" }, 'PUBLIC PROFILES')),
+                li(a({ 'class': "website", href: "#" }, 'BILLING'))
               )
             ),
 
-            li(
-              a({ href: "#" }, 'MY ACCOUNT')
-            ),
-
-            li(
-              a({ href: "#" }, 'HELP & SUPPORT')
+            li({ id: 'nav-help-and-support' },
+              a({ href: "#help-and-support" }, 'HELP & SUPPORT'),
+              ul(
+                li(a({ 'class': "website", href: "#" }, 'KNOWLEDGE BASE')),
+                li(a({ 'class': "email", href: "#" }, 'SUPPORT TICKETS'))
+              )
             )
 
           )

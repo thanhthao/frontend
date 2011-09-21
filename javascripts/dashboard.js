@@ -2,20 +2,17 @@ with (Hasher.Controller('Dashboard','Application')) {
   route({
     '#': 'my_domains',
     '#search': 'search',
-    '#search/': 'search',
-    '#search/:term': 'search'
+    '#my-account': 'my_account',
+    '#help-and-support': 'help_and_support'
   });
   
   create_action('my_domains', function() {
-    // hack... need to check sooner
-    if (!Badger.getAccessToken()) {
-      redirect_to('#request_invite');
-    }
+    Badger.getDomains(function(domains) {
+      $('#my-domains').html(domains.join('<br/>'));
+    });
   });
 
-  create_action('search', function(term) {
-    render('search', term);
-    console.log('SEARCH: ' + term);
+  create_action('search', function() {
   });
   
   layout('dashboard');
@@ -24,11 +21,31 @@ with (Hasher.Controller('Dashboard','Application')) {
 with (Hasher.View('Dashboard', 'Application')) { (function() {
 
   create_view('my_domains', function() {
-    return div('Welcome!');
+    return div(
+      h1('My Domains'),
+      div({ id: 'my-domains' })
+    );
   });
 
-  create_view('search', function(term) {
-    return div('GOT SEARCH TERM: ' + term);
+  create_view('my_account', function() {
+    return div(
+      h1('My Account'),
+      'Welcome!'
+    );
+  });
+
+  create_view('help_and_support', function() {
+    return div(
+      h1('Help and Support'),
+      'Welcome!'
+    );
+  });
+
+  create_view('search', function() {
+    return div(
+      h1('Search Results'),
+      div({ id: 'search-results' })
+    );
   });
 
 })(); }
