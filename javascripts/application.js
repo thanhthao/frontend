@@ -12,11 +12,11 @@ with (Hasher.Controller('Application')) {
     if (Badger.getAccessToken()) return;
     
     // hack until skip_before_filters works
-    if (Hasher.Routes.getHash().match(/^#(|request_invite|login|register\/.*)$/)) return;
+    if (Hasher.Routes.getHash().match(/^#(request_invite|login|register\/.*)$/)) return;
 
     // got this far? send 'em away
     console.log("redirect_to_root_unless_logged_in");
-    redirect_to('#');
+    redirect_to('#request_invite');
   });
   
   after_filter('update_sidebar_with_active_class', function() {
@@ -38,7 +38,7 @@ with (Hasher.View('Application')) { (function() {
       div({ id: 'user-nav' }, a({ href: '#login' }, 'Login')),
 
       div({ id: 'main-minimal' },
-        img({ src: '/frontend/images/badger-5.png' }),
+        img({ src: 'images/badger-5.png' }),
         div({ id: 'main-minimal-box' }, 
           div({ id: 'content' }, yield)
         ),
