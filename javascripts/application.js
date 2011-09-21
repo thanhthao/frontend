@@ -1,6 +1,5 @@
 with (Hasher.Controller('Application')) {
   initializer(function() {
-
   });
 
   create_action('logout', function() {
