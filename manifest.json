@@ -13,8 +13,8 @@
   ],
   
   "lib": [ 
-    'https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js',
-    'https://raw.github.com/wkonkel/hasher/master/javascripts/hasher.js',
-    'https://raw.github.com/badger/api-javascript/master/api.js'
+    "https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js",
+    "https://raw.github.com/wkonkel/hasher/master/javascripts/hasher.js",
+    "https://raw.github.com/badger/api-javascript/master/api.js"
   ]
 }
