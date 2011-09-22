@@ -53,7 +53,7 @@ with (Hasher.View('Application')) { (function() {
 
       div({ id: 'header' },
         h1({ id: 'logo' }, a({ href: '#'}, 'badger.com')),
-        div({ id: 'user-nav' }, span('wkonkel@gmail.com'), a({ href: action('logout') }, 'Logout'))
+        div({ id: 'user-nav' }, a({ href: action('logout') }, 'Logout'))
       ),
 
       div({ id: 'main' },
