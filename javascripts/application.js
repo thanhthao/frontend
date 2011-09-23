@@ -1,6 +1,8 @@
 with (Hasher.Controller('Application')) {
   initializer(function() {
-
+    Badger.onLogout(function() {
+      redirect_to('#');
+    });
   });
 
   create_action('logout', function() {
@@ -152,53 +154,6 @@ with (Hasher.View('Application')) { (function() {
         
         div({ style: 'clear: both'})
       )
-
-
-      // div({ 'class': 'w1' },
-      // 
-      //   div({ 'class': 'w2' },
-      //     
-      //     div({ 'id': 'main' },
-      //       div({ 'class': 'holder' },
-      //         div({ 'class': 'frame' },
-      //           div({ 'id': 'content' },
-      //             yield
-      //           ),
-      //           
-      //           div({ id: "sidebar" }, 
-      //             form({ 'class': "form-search", action: "#" },
-      //               input({ type: 'text', value: '', events: { focus: function() { Hasher.Routes.setHash('#search'); }  } })
-      //             ),
-      // 
-      //             ul({ 'class': 'menu' },
-      //               li({ 'class': "active" }, 
-      //                 a({ href: "#" }, 'MY DOMAINS')
-      //               ),
-      //               li(
-      //                 a({ href: "#" }, 'WKONKEL.NET'),
-      //                 ul(
-      //                   li(a({ 'class': "website", href: "#" }, 'WEBSITE FORWARDING')),
-      //                   li(a({ 'class': "email", href: "#" }, 'EMAIL FORWARDING')),
-      //                   li(a({ 'class': "dns", href: "#" }, 'DNS SETTINGS')),
-      //                   li(a({ 'class': "analytics", href: "#" }, 'ANALYTICS'))
-      //                 )
-      //               ),
-      // 
-      //               li(
-      //                 a({ href: "#" }, 'MY ACCOUNT')
-      //               ),
-      // 
-      //               li(
-      //                 a({ href: "#" }, 'HELP & SUPPORT')
-      //               )
-      //               
-      //             )
-      //           )
-      //         )
-      //       )
-      //     )
-      //   )
-      // )
 
     );
   });
