@@ -41,7 +41,7 @@ with (Hasher.View('Application')) { (function() {
       div({ id: 'user-nav' }, a({ href: '#login' }, 'Login')),
 
       div({ id: 'main-minimal' },
-        img({ src: 'images/badger-5.png' }),
+        img({ src: '/images/badger-5.png' }),
         div({ id: 'main-minimal-box' }, 
           div({ id: 'content' }, yield)
         ),
