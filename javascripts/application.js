@@ -5,11 +5,6 @@ with (Hasher.Controller('Application')) {
     });
   });
 
-  create_action('logout', function() {
-    Badger.logout();
-    redirect_to('#');
-  });
-  
   before_filter('redirect_to_root_unless_logged_in', function() {
     // if they have an access token (logged in), skip everything
     if (Badger.getAccessToken()) return;
@@ -72,7 +67,7 @@ with (Hasher.View('Application')) { (function() {
 
       div({ id: 'header' },
         h1({ id: 'logo' }, a({ href: '#'}, 'badger.com')),
-        div({ id: 'user-nav' }, a({ href: action('logout') }, 'Logout'))
+        div({ id: 'user-nav' }, a({ href: Badger.logout }, 'Logout'))
       ),
 
       div({ id: 'main' },

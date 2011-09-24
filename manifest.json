@@ -9,8 +9,9 @@
   "javascripts": [
     "javascripts/application.js",
     "javascripts/signup.js",
-    "javascripts/dashboard.js",
-    "javascripts/domains.js"
+    "javascripts/domains.js",
+    "javascripts/account.js",
+    "javascripts/help.js"
   ],
 
 	"images": [
