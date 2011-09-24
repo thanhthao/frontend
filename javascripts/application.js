@@ -26,10 +26,27 @@ with (Hasher.Controller('Application')) {
     if ($('#sidebar')) {
       var request_uri = Hasher.Routes.getHash();
 
-      $('#form-search')[request_uri == '#search' ? 'addClass' : 'removeClass']('active');
-      $('#nav-my-domains')[request_uri == '#' ? 'addClass' : 'removeClass']('active');
-      $('#nav-my-account')[request_uri == '#my-account' ? 'addClass' : 'removeClass']('active');
-      $('#nav-help-and-support')[request_uri == '#help-and-support' ? 'addClass' : 'removeClass']('active');
+      $('#sidebar ul').removeClass('expanded');
+      $('#sidebar a').removeClass('active');
+
+      if (request_uri == '#search') {
+        $('#form-search').addClass('active');
+      } else {
+        $('#form-search').removeClass('active');
+        var links = $('#sidebar a[href="' + request_uri + '"]').addClass('active');
+        var parent_li = links.parent();
+        if (!parent_li.parent().is('#menu')) parent_li = parent_li.parent().parent();
+        parent_li.find('ul').addClass('expanded');
+      }
+      
+      // $('#form-search')[request_uri == '#search' ? 'addClass' : 'removeClass']('active');
+      // $('#nav-my-domains')[request_uri == '#' ? 'addClass' : 'removeClass']('active');
+      // $('#nav-my-account')[request_uri == '#my-account' ? 'addClass' : 'removeClass']('active');
+      // $('#nav-help-and-support')[request_uri == '#help-and-support' ? 'addClass' : 'removeClass']('active');
+      
+      // if (request_uri.indexOf('#domains/') == 0) {
+      //   $('#menu').append(document.createTextNode('test'))
+      // }
     }
   });
 }
@@ -94,19 +111,19 @@ with (Hasher.View('Application')) { (function() {
             // ),
 
             li({ id: 'nav-my-account' },
-              a({ href: "#my-account" }, 'MY ACCOUNT'),
+              a({ href: "#account" }, 'MY ACCOUNT'),
               ul(
-                li(a({ 'class': "email", href: "#" }, 'SETTINGS')),
-                li(a({ 'class': "email", href: "#" }, 'PUBLIC PROFILES')),
-                li(a({ 'class': "website", href: "#" }, 'BILLING'))
+                li({ 'class': "email"}, a({ href: "#account/settings" }, 'SETTINGS')),
+                li({ 'class': "email"}, a({ href: "#account/profiles" }, 'PUBLIC PROFILES')),
+                li({ 'class': "website"}, a({ href: "#account/billing" }, 'BILLING'))
               )
             ),
 
             li({ id: 'nav-help-and-support' },
               a({ href: "#help-and-support" }, 'HELP & SUPPORT'),
               ul(
-                li(a({ 'class': "website", href: "#" }, 'KNOWLEDGE BASE')),
-                li(a({ 'class': "email", href: "#" }, 'SUPPORT TICKETS'))
+                li({ 'class': "website" }, a({ href: "#knowledge-base" }, 'KNOWLEDGE BASE')),
+                li({ 'class': "email" }, a({ href: "#tickets" }, 'SUPPORT TICKETS'))
               )
             )
 
@@ -139,17 +156,15 @@ with (Hasher.View('Application')) { (function() {
         ),
         div({ 'class': "col" },
           h2('CONTACT US'),
-          ul(
-            li(a({ href: "mailto:support@badger.com#" }, 'support@badger.com')),
-            li(a({ href: "#" }, '1-855-HI-RHINO'))
-          )
-        ),
-        div({ 'class': "col" },
-          h2('CONNECT'),
           ul({ 'class': 'social-network' },
+            li(a({ href: "mailto:support@badger.com#" }, 'support@badger.com')),
             li(a({ href: "#", 'class': 'twitter' }, 'Twitter')),
             li(a({ href: "#", 'class': 'facebook' }, 'Facebook'))
           )
+        ),
+        div({ 'class': "col" },
+          h2('BADGES'),
+          img({ src: '/images/icann.png' })
         ),
         
         div({ style: 'clear: both'})
