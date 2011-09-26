@@ -73,20 +73,9 @@ with (Hasher.View('Application')) { (function() {
       div({ id: 'main' },
         div({ id: "sidebar" }, 
           form({ id: "form-search", action: "#" },
-            input({ type: 'text', value: '', events: { 
-              focus: function() { 
-                if (Hasher.Routes.getHash() != '#search') Hasher.Routes.setHash('#search');
-              },
-              keyup: function(event) {
-                var _this = this;
-                if (this.timeout) clearTimeout(this.timeout);
-                this.timeout = setTimeout(function() {
-                  Badger.domainSearch(_this.value, function(resp) {
-                    console.log(resp);
-                    $('#search-results').html('' + resp.data.join('<br/>'));
-                  });
-                }, 200);
-              }
+            input({ id: 'form-search-input', type: 'text', value: '', events: { 
+              focus: action('Search.search_box_changed'),
+              keyup: action('Search.search_box_changed')
             }})
           ),
 
