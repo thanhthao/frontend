@@ -20,7 +20,7 @@ with (Hasher.Controller('Search','Application')) {
       }
       this.search_timeout = setTimeout(function() {
         Badger.domainSearch(current_value, function(resp) {
-          render('search', resp.data);
+          render('search', resp.data.domains);
         });
       }, 150);
     }

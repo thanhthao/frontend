@@ -21,9 +21,18 @@ with (Hasher.Controller('Application')) {
     if ($('#sidebar')) {
       var request_uri = Hasher.Routes.getHash();
 
+      var parts = request_uri.split('/');
+      if (parts[0] == '#domains') {
+        var domain = parts[1].toLowerCase();
+        if ($('#menu #domain-menu-item-' + domain.replace('.','-')).length == 0) {
+          $('#menu .domain-menu-item').slice(4).remove();
+          $('#nav-help-and-support').after(helper('domain_menu_item', domain));
+        }
+      }
+      
+      // select active link and expand parent
       $('#sidebar ul').removeClass('expanded');
       $('#sidebar a').removeClass('active');
-
       if (request_uri == '#search') {
         $('#form-search').addClass('active');
       } else {
@@ -33,15 +42,7 @@ with (Hasher.Controller('Application')) {
         if (!parent_li.parent().is('#menu')) parent_li = parent_li.parent().parent();
         parent_li.find('ul').addClass('expanded');
       }
-      
-      // $('#form-search')[request_uri == '#search' ? 'addClass' : 'removeClass']('active');
-      // $('#nav-my-domains')[request_uri == '#' ? 'addClass' : 'removeClass']('active');
-      // $('#nav-my-account')[request_uri == '#my-account' ? 'addClass' : 'removeClass']('active');
-      // $('#nav-help-and-support')[request_uri == '#help-and-support' ? 'addClass' : 'removeClass']('active');
-      
-      // if (request_uri.indexOf('#domains/') == 0) {
-      //   $('#menu').append(document.createTextNode('test'))
-      // }
+
     }
   });
 }
@@ -58,6 +59,16 @@ with (Hasher.View('Application')) { (function() {
           div({ id: 'content' }, yield)
         ),
         div({ style: 'clear: both'})
+      )
+    );
+  });
+
+  create_helper('domain_menu_item', function(domain) {
+    return li({ id: 'domain-menu-item-' + domain.replace('.','-'), 'class': 'domain-menu-item' },
+      a({ href: "#domains/" + domain }, domain.toUpperCase()),
+      ul(
+        li({ 'class': "email" }, a({ href: "#domains/" + domain + "/dns" }, 'DNS')),
+        li({ 'class': "email" }, a({ href: "#domains/" + domain + "/whois" }, 'WHOIS'))
       )
     );
   });
@@ -147,7 +158,7 @@ with (Hasher.View('Application')) { (function() {
           )
         ),
         div({ 'class': "col" },
-          h2('BADGES'),
+          h2('ACCREDITATIONS'),
           img({ src: '/images/icann.png' })
         ),
         
