@@ -88,7 +88,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
             ),
             
             tr(
-              td(select({ id: 'dns-add-type' }, option({ value: 'a' }, 'A'), option({ value: 'cname' }, 'CNAME'), option({ value: 'mx' }, 'MX'))),
+              td(select({ id: 'dns-add-type' }, option('A'), option('CNAME'), option('MX'), option('TXT'))),
               td(input({ id: 'dns-add-name' })),
               td(input({ id: 'dns-add-content' })),
               td(
