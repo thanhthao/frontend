@@ -34,10 +34,12 @@ with (Hasher.Controller('Domains','Application')) {
   });
 
   create_action('dns_delete', function(domain, record_id) {
-    Badger.deleteRecord(domain, record_id, function(results) {
-      console.log(results);
-      call_action('dns', domain);
-    })
+    if (confirm('Are you sure you want to delete this record?')) {
+      Badger.deleteRecord(domain, record_id, function(results) {
+        console.log(results);
+        call_action('dns', domain);
+      })
+    }
   });
 
   create_action('index', function() {
@@ -106,10 +108,13 @@ with (Hasher.View('Domains', 'Application')) { (function() {
             records.map(function(record) {
               return tr(
                 td(record.record_type.toUpperCase()),
-                td((record.name ? record.name + '.' : ''), span({ style: 'color: #888' }, domain)),
+                td(record.name.replace(domain,''), span({ style: 'color: #888' }, domain)),
                 td(record.priority, ' ', record.content),
                 td(record.ttl),
-                td(button({ events: { 'click': action('dns_delete', domain, record.id) }}, 'Delete'))
+                td(
+                  button({ events: { 'click': action('dns_edit', domain, record.id) }}, 'Edit'),
+                  button({ events: { 'click': action('dns_delete', domain, record.id) }}, 'Delete')
+                )
               );
             })
           )
