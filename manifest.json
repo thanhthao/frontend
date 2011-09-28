@@ -8,6 +8,7 @@
 
   "javascripts": [
     "javascripts/application.js",
+    "javascripts/search.js",
     "javascripts/signup.js",
     "javascripts/domains.js",
     "javascripts/account.js",
@@ -23,6 +24,7 @@
 		"/images/bg-page.jpg",
 		"/images/sprite.png",
 		"/images/submit.gif",
+		"/images/icann.png",
 		"/fonts/helveticaneue-bold-webfont.eot",
 		"/fonts/helveticaneue-bold-webfont.svg",
 		"/fonts/helveticaneue-bold-webfont.ttf",
