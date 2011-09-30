@@ -20,7 +20,7 @@ with (Hasher.Controller('Search','Application')) {
       }
       this.search_timeout = setTimeout(function() {
         Badger.domainSearch(current_value, function(resp) {
-          render('search', resp.data.domains);
+          $('#search-results').prepend(helper('search_result_row', resp.data.domains));
         });
       }, 150);
     }
@@ -34,13 +34,23 @@ with (Hasher.Controller('Search','Application')) {
 
 with (Hasher.View('Search', 'Application')) { (function() {
 
+  create_helper('search_result_row', function(results) {
+    console.log(results)
+    return tr(
+      td(results[0][0].split('.')[0]),
+      results.map(function(domain) {
+        return td(domain[0].split('.')[1], ' - ', domain[1]);
+      })
+    );
+  });
+
+
   create_view('search', function(domains) {
     return div(
       h1('Search Results'),
-      div(
-        (domains||[]).map(function(domain) {
-          return div(domain[0], ' -- ', domain[1]);
-        })
+      table({ style: 'width: 100%' },
+        tbody({ id: 'search-results' }
+        )
       )
     );
   });
