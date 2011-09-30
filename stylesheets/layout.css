@@ -81,3 +81,7 @@ a { color: #1E31F5; }
 #menu .analytics {background-position:17px -110px;}
 
 
+
+
+#search-results { width: 100%; border-collapse: collapse; }
+#search-results td { border-bottom: 1px solid #ddd; padding: 2px 4px 4px 4px; }
