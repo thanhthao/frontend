@@ -11,8 +11,11 @@ with (Hasher.Controller('Search','Application')) {
     
     var current_value = $('#form-search-input').val();
 
-    if (current_value && (this.last_search_value != current_value)) {
+    if (this.last_search_value && (this.last_search_value.indexOf(current_value) == 0)) {
       this.last_search_value = current_value;
+    } else if (current_value && (this.last_search_value != current_value)) {
+      this.last_search_value = current_value;
+
 
       if (this.search_timeout) {
         console.log('clear timeout')
@@ -22,7 +25,7 @@ with (Hasher.Controller('Search','Application')) {
         Badger.domainSearch(current_value, function(resp) {
           $('#search-results tbody').prepend(helper('search_result_row', resp.data.domains));
         });
-      }, 150);
+      }, 200);
     }
   });
   
@@ -40,8 +43,8 @@ with (Hasher.View('Search', 'Application')) { (function() {
       td(results[0][0].split('.')[0]),
       results.map(function(domain) {
         var tld = domain[0].split('.')[1];
-        return domain[1] ? td(a({href:function(){}}, tld))
-                         : td(span({ style: 'text-decoration: line-through' }, tld));
+        return domain[1] ? td({ 'class': 'tld' }, a({href:function(){}}, tld))
+                         : td({ 'class': 'tld' }, span({ style: 'text-decoration: line-through' }, tld));
       })
     );
   });
