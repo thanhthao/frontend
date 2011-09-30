@@ -85,3 +85,4 @@ a { color: #1E31F5; }
 
 #search-results { width: 100%; border-collapse: collapse; }
 #search-results td { border-bottom: 1px solid #ddd; padding: 2px 4px 4px 4px; }
+#search-results td a { font-weight: bold; }
