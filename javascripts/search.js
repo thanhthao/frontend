@@ -25,7 +25,7 @@ with (Hasher.Controller('Search','Application')) {
         Badger.domainSearch(current_value, function(resp) {
           $('#search-results tbody').prepend(helper('search_result_row', resp.data.domains));
         });
-      }, 200);
+      }, 250);
     }
   });
   
