@@ -23,6 +23,7 @@ with (Hasher.Controller('Search','Application')) {
       }
       this.search_timeout = setTimeout(function() {
         Badger.domainSearch(current_value, function(resp) {
+          $('#search-instructions').remove();
           $('#search-results tbody').prepend(helper('search_result_row', resp.data.domains));
         });
       }, 250);
@@ -65,7 +66,8 @@ with (Hasher.View('Search', 'Application')) { (function() {
   create_view('search', function(domains) {
     return div(
       h1('Search Results'),
-      table({ id: 'search-results', 'class': 'fancy-table' }, tbody())
+      table({ id: 'search-results', 'class': 'fancy-table' }, tbody()),
+      div({ id: 'search-instructions' }, 'Start typing to search.')
     );
   });
 
