@@ -62,7 +62,7 @@ with (Hasher.View('Application')) { (function() {
       )
     );
   });
-
+  
   create_helper('domain_menu_item', function(domain) {
     return li({ id: 'domain-menu-item-' + domain.replace('.','-'), 'class': 'domain-menu-item' },
       a({ href: "#domains/" + domain }, domain.toUpperCase()),
@@ -164,7 +164,6 @@ with (Hasher.View('Application')) { (function() {
         
         div({ style: 'clear: both'})
       )
-
     );
   });
 

@@ -88,3 +88,10 @@ a { color: #1E31F5; }
 #search-results td.tld { width: 10%; text-align: center; }
 #search-results td a { font-weight: bold; }
 #search-results tr:hover { background: #FFFBD8;}
+
+
+
+#modal-dialog { position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); }
+#modal-content { margin: 100px auto 0 auto; width: 600px; padding: 20px; border-radius: 3px; background: white; position: relative; }
+#modal-dialog .close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
+#modal-dialog h1 { font: 38px/40px "KnockoutHTF27-JuniorBantamwt", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
