@@ -81,8 +81,8 @@ with (Hasher.View('Domains', 'Application')) { (function() {
           tbody(
             tr(
               th('Type'),
-              th('Name'),
-              th('Content'),
+              th('Subdomain'),
+              th('IP/Target'),
               th('TTL'),
               th('Actions')
             ),
