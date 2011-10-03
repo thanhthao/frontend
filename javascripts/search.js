@@ -65,7 +65,7 @@ with (Hasher.View('Search', 'Application')) { (function() {
   create_view('search', function(domains) {
     return div(
       h1('Search Results'),
-      table({ id: 'search-results' }, tbody())
+      table({ id: 'search-results', 'class': 'fancy-table' }, tbody())
     );
   });
 

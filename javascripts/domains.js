@@ -56,10 +56,22 @@ with (Hasher.View('Domains', 'Application')) { (function() {
   create_view('index', function(domains) {
     return div(
       h1('My Domains'),
-      div({ id: 'my-domains' },
-        ul(
+      table({ 'class': 'fancy-table' },
+        tbody(
+          tr({ 'class': 'table-header' },
+            th('Name'),
+            th('Expires'),
+            th('Links')
+          ),
+
           (domains || []).map(function(domain) {
-            return li(a({ href: '#domains/' + domain }, domain));
+            return tr(
+              td(a({ href: '#domains/' + domain.name }, domain.name)),
+              td(new Date(domain.expires).toDateString()),
+              td(
+                a({ href: '#domains/' + domain.name + '/dns' }, 'DNS')
+              )
+            );
           })
         )
       )
@@ -77,9 +89,9 @@ with (Hasher.View('Domains', 'Application')) { (function() {
       h1(domain + ' DNS'),
       
       !records ? 'Loading DNS records... please wait' : [
-        table({ style: 'width: 100%' },
+        table({ 'class': 'fancy-table' },
           tbody(
-            tr(
+            tr({ 'class': 'table-header' },
               th('Type'),
               th('Subdomain'),
               th('IP/Target'),
@@ -89,7 +101,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
             
             tr(
               td(select({ id: 'dns-add-type' }, option('A'), option('CNAME'), option('MX'), option('TXT'))),
-              td(input({ id: 'dns-add-name' })),
+              td(input({ style: 'width: 60px', id: 'dns-add-name' }), span({ style: 'color: #888' }, '.' + domain)),
               td(input({ id: 'dns-add-content' })),
               td(
                 select({ id: 'dns-add-ttl' }, 
