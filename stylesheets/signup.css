@@ -3,7 +3,7 @@
 #signup-box h2 { font-size: 20px; color: #333; line-height: 24px; margin-top: 20px; font-weight: normal; margin: 0 0 10px 0;  }
 #signup-box h3 { text-align: center; margin: 50px 0; font-size: 20px; color: #333; font-weight: normal;  }
 #signup-box form { margin: 20px 0 10px 0; } 
-#signup-box form input[type=text] { margin-top: 4px; padding: 5px; font-size: 20px; border: 1px solid #aaa; border-radius: 3px }
+#signup-box form input[type=text], #signup-box form input[type=password] { margin-top: 4px; padding: 5px; font-size: 20px; border: 1px solid #aaa; border-radius: 3px }
 
 .myButton {
 	-moz-box-shadow:inset 0px 1px 0px 0px #c1ed9c;

@@ -66,13 +66,11 @@ with (Hasher.View('Signup', 'Application')) { (function() {
     return div({ id: 'signup-box' }, 
       h1('Login'),
       form({ action: action('process_login') },
-        div('Email: '),
-        input({ name: 'email' }),
+        input({ name: 'email', hint_text: 'Email Address' }),
 
-        div('Password'), 
-        input({ name: 'password', type: 'password' }),
+        input({ name: 'password', type: 'password', hint_text: 'Password' }),
         
-        div(input({ type: 'submit', value: 'Login' }))
+        input({ 'class': 'myButton', type: 'submit', value: 'Login' })
       ),
       div({ style: 'margin-top: 20px' },
         a({ href: '#request_invite' }, "Don't have an account?")
@@ -97,16 +95,18 @@ with (Hasher.View('Signup', 'Application')) { (function() {
       h1('Create Your Badger.com Account'),
       form({ action: action('create_person') },
         input({ type: 'hidden', name: 'invite_code', value: code }),
-        div('First name'), 
-        input({ name: 'first_name' }),
-        div('Last name'), 
-        input({ name: 'last_name' }),
-        div('Email'), 
-        input({ name: 'email' }),
-        div('Password'), 
-        input({ name: 'password', type: 'password' }),
-        
-        div(input({ type: 'submit', value: 'Create' }))
+
+        div(
+          input({ name: 'first_name', hint_text: 'First Name' }),
+          input({ name: 'last_name', hint_text: 'Last Name' })
+        ),
+
+        div(
+          input({ name: 'email', hint_text: 'Email Address' }),
+          input({ name: 'password', hint_text: 'Desired Password', type: 'password' })
+        ),
+
+        div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit', value: 'Create Account' }))
       )
     );
   });
