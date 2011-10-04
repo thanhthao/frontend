@@ -9,7 +9,7 @@ with (Hasher.Controller('Search','Application')) {
       this.last_search_value = null;
     }
     
-    var current_value = $('#form-search-input').val();
+    var current_value = $('#form-search-input').val().toLowerCase().replace(/[^a-zA-Z0-9\-]/g,'');
 
     if (this.last_search_value && (this.last_search_value.indexOf(current_value) == 0)) {
       this.last_search_value = current_value;

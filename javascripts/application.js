@@ -83,10 +83,13 @@ with (Hasher.View('Application')) { (function() {
 
       div({ id: 'main' },
         div({ id: "sidebar" }, 
-          form({ id: "form-search", action: "#" },
-            input({ id: 'form-search-input', type: 'text', value: '', events: { 
+          form({ id: "form-search", action: action('Search.search_box_changed') },
+            input({ id: 'form-search-input', style: 'text-transform: lowercase', type: 'text', value: '', events: { 
               focus: action('Search.search_box_changed'),
-              keyup: action('Search.search_box_changed')
+              keyup: action('Search.search_box_changed'),
+              keypress: function(e) {
+                if (/[^a-zA-Z0-9\-]/.test(String.fromCharCode(e.charCode))) Hasher.Event.stop(e);
+              }
             }})
           ),
 

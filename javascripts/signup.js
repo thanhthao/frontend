@@ -56,7 +56,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
       h2("Thanks for visiting!  We're not quite ready yet but if you'd like an invite when we are, please enter your email address:"),
 
       form({ style: 'text-align: center', action: action('submit_invite_request') }, 
-        input({ type: 'text', id: 'email-address' }),
+        input({ type: 'text', id: 'email-address', hint_text: 'Your Email Address' }),
         input({ type: 'submit', value: 'Request Invite', 'class': "myButton" })
       )
     );
