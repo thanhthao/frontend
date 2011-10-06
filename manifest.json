@@ -8,6 +8,7 @@
 
   "javascripts": [
     "javascripts/application.js",
+    "javascripts/modal.js",
     "javascripts/search.js",
     "javascripts/signup.js",
     "javascripts/domains.js",
