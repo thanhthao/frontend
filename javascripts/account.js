@@ -124,3 +124,4 @@ with (Hasher.View('Account', 'Application')) { (function() {
     );
   });
 })(); }
+
