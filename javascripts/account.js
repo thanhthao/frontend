@@ -125,3 +125,4 @@ with (Hasher.View('Account', 'Application')) { (function() {
   });
 })(); }
 
+console.log("GOTCHA TEST")
