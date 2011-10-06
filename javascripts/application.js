@@ -47,7 +47,7 @@ with (Hasher.Controller('Application')) {
   });
 }
 
-with (Hasher.View('Application')) { (function() {
+with (Hasher.View('Application')) {
 
   create_layout('signup', function(yield) {
     return div({ id: 'wrapper' },
@@ -61,6 +61,15 @@ with (Hasher.View('Application')) { (function() {
         div({ style: 'clear: both'})
       )
     );
+  });
+  
+  create_helper('error_message', function(response) {
+    return div({ 'class': 'error-message' }, 
+      div(
+        response.data.message + ': ',
+        response.data.errors.map(function(error) { return error.field; }).join(', ')
+      )
+    )
   });
   
   create_helper('domain_menu_item', function(domain) {
@@ -84,7 +93,7 @@ with (Hasher.View('Application')) { (function() {
       div({ id: 'main' },
         div({ id: "sidebar" }, 
           form({ id: "form-search", action: action('Search.search_box_changed') },
-            input({ id: 'form-search-input', style: 'text-transform: lowercase', type: 'text', value: '', events: { 
+            input({ id: 'form-search-input', type: 'text', value: '', placeholder: 'Start typing...', events: { 
               focus: action('Search.search_box_changed'),
               keyup: action('Search.search_box_changed'),
               keypress: function(e) {
@@ -95,34 +104,27 @@ with (Hasher.View('Application')) { (function() {
 
           ul({ id: 'menu' },
             li({ id: 'nav-my-domains' },
-              a({ href: "#" }, 'MY DOMAINS')
+              a({ href: "#" }, 'MY DOMAINS'),
+              ul(
+                li({ 'class': "email"}, a({ href: "#domain-transfers" }, 'TRANSFERS'))
+              )
             ),
-
-            // li(
-            //   a({ href: "#" }, 'WKONKEL.NET'),
-            //   ul(
-            //     li(a({ 'class': "website", href: "#" }, 'WEBSITE FORWARDING')),
-            //     li(a({ 'class': "email", href: "#" }, 'EMAIL FORWARDING')),
-            //     li(a({ 'class': "dns", href: "#" }, 'DNS SETTINGS')),
-            //     li(a({ 'class': "analytics", href: "#" }, 'ANALYTICS'))
-            //   )
-            // ),
 
             li({ id: 'nav-my-account' },
               a({ href: "#account" }, 'MY ACCOUNT'),
               ul(
-                li({ 'class': "email"}, a({ href: "#account/settings" }, 'SETTINGS')),
-                li({ 'class': "email"}, a({ href: "#account/profiles" }, 'PUBLIC PROFILES')),
-                li({ 'class': "website"}, a({ href: "#account/billing" }, 'BILLING'))
+                li({ 'class': "email"}, a({ href: "#account/profiles" }, 'WHOIS PROFILES')),
+                li({ 'class': "website"}, a({ href: "#account/billing" }, 'BILLING')),
+                li({ 'class': "email"}, a({ href: "#account/settings" }, 'SETTINGS'))
               )
             ),
 
             li({ id: 'nav-help-and-support' },
-              a({ href: "#help-and-support" }, 'HELP & SUPPORT'),
-              ul(
-                li({ 'class': "website" }, a({ href: "#knowledge-base" }, 'KNOWLEDGE BASE')),
-                li({ 'class': "email" }, a({ href: "#tickets" }, 'SUPPORT TICKETS'))
-              )
+              a({ href: "#help-and-support" }, 'HELP & SUPPORT')
+              // ul(
+              //   li({ 'class': "website" }, a({ href: "#knowledge-base" }, 'KNOWLEDGE BASE')),
+              //   li({ 'class': "email" }, a({ href: "#tickets" }, 'SUPPORT TICKETS'))
+              // )
             )
 
           )
@@ -170,8 +172,6 @@ with (Hasher.View('Application')) { (function() {
     );
   });
 
-
-
-})(); }
+}
 
 

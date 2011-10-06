@@ -56,7 +56,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
       h2("Thanks for visiting!  We're not quite ready yet but if you'd like an invite when we are, please enter your email address:"),
 
       form({ style: 'text-align: center', action: action('submit_invite_request') }, 
-        input({ type: 'text', id: 'email-address', hint_text: 'Your Email Address' }),
+        input({ type: 'text', id: 'email-address', placeholder: 'Your Email Address' }),
         input({ type: 'submit', value: 'Request Invite', 'class': "myButton" })
       )
     );
@@ -66,9 +66,9 @@ with (Hasher.View('Signup', 'Application')) { (function() {
     return div({ id: 'signup-box' }, 
       h1('Login'),
       form({ action: action('process_login') },
-        input({ name: 'email', hint_text: 'Email Address' }),
+        input({ name: 'email', placeholder: 'Email Address' }),
 
-        input({ name: 'password', type: 'password', hint_text: 'Password' }),
+        input({ name: 'password', type: 'password', placeholder: 'Password' }),
         
         input({ 'class': 'myButton', type: 'submit', value: 'Login' })
       ),
@@ -97,13 +97,13 @@ with (Hasher.View('Signup', 'Application')) { (function() {
         input({ type: 'hidden', name: 'invite_code', value: code }),
 
         div(
-          input({ name: 'first_name', hint_text: 'First Name' }),
-          input({ name: 'last_name', hint_text: 'Last Name' })
+          input({ name: 'first_name', placeholder: 'First Name' }),
+          input({ name: 'last_name', placeholder: 'Last Name' })
         ),
 
         div(
-          input({ name: 'email', hint_text: 'Email Address' }),
-          input({ name: 'password', hint_text: 'Desired Password', type: 'password' })
+          input({ name: 'email', placeholder: 'Email Address' }),
+          input({ name: 'password', placeholder: 'Desired Password', type: 'password' })
         ),
 
         div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit', value: 'Create Account' }))

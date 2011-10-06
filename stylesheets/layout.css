@@ -98,3 +98,10 @@ a { color: #1E31F5; }
 #modal-dialog .close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
 #modal-dialog .close-button:hover { text-decoration: none; }
 #modal-dialog h1 { font: 38px/40px "KnockoutHTF27-JuniorBantamwt", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
+
+
+
+.h1-action { float: right; margin-top: -40px; font-size: 50px; color: green; font-weight: bold; }
+
+.error-message { border: 1px solid #dd3c10; background: #ffebe8; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
+.error-message ul { margin: 10px 0 0 0; }

@@ -4,6 +4,7 @@ with (Hasher.Controller('Domains','Application')) {
     '#domains/:domain': 'show',
     '#domains/:domain/dns': 'dns',
     '#domains/:domain/whois': 'whois',
+    '#domain-transfers': 'transfers'
   });
   
   create_action('show', function(domain) {
@@ -56,25 +57,37 @@ with (Hasher.View('Domains', 'Application')) { (function() {
   create_view('index', function(domains) {
     return div(
       h1('My Domains'),
-      table({ 'class': 'fancy-table' },
-        tbody(
-          tr({ 'class': 'table-header' },
-            th('Name'),
-            th('Expires'),
-            th('Links')
-          ),
+      
+      (typeof domains == 'undefined') ? [
+        div('Loading domains...')
+      ]:(domains.length == 0) ? [
+        div("It looks like you don't have any domains registered with us yet. You should probably:"),
+        ul(
+          li(a({ href: function() { $('#form-search-input').focus(); } }, "Search for a new domain")),
+          li(a({ href: '#domain-transfers' }, "Transfer a domain from another registrar"))
+        ),
+        div("Then this page will be a lot more fun.")
+      ]:[
+        table({ 'class': 'fancy-table' },
+          tbody(
+            tr({ 'class': 'table-header' },
+              th('Name'),
+              th('Expires'),
+              th('Links')
+            ),
 
-          (domains || []).map(function(domain) {
-            return tr(
-              td(a({ href: '#domains/' + domain.name }, domain.name)),
-              td(new Date(domain.expires).toDateString()),
-              td(
-                a({ href: '#domains/' + domain.name + '/dns' }, 'DNS')
-              )
-            );
-          })
+            (domains || []).map(function(domain) {
+              return tr(
+                td(a({ href: '#domains/' + domain.name }, domain.name)),
+                td(new Date(domain.expires).toDateString()),
+                td(
+                  a({ href: '#domains/' + domain.name + '/dns' }, 'DNS')
+                )
+              );
+            })
+          )
         )
-      )
+      ]
     );
   });
 
@@ -132,6 +145,13 @@ with (Hasher.View('Domains', 'Application')) { (function() {
           )
         )
       ]
+    );
+  });
+  
+  create_view('transfers', function() {
+    return div(
+      h1('DOMAIN TRANSFERS'),
+      div('Coming soon to a registrar near you.')
     );
   });
 
