@@ -5,7 +5,7 @@ with (Hasher.Controller('Billing','Application')) {
   
   create_action('index', function() {
     BadgerCache.getPaymentMethods(function(results) {
-      render('index', results.data);
+      render('index', results.data.message ? [] : results.data);
     });
   });
   

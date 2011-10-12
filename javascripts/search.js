@@ -72,9 +72,58 @@ with (Hasher.View('Search', 'Application')) { (function() {
     return [
       h1(domain),
       form({ action: action('buy_domain', domain) },
-        div('Billing: ', select({ name: 'billing' }, option('XXXX-XXXX-XXXX-0000'))),
+        div('Billing: ', 
+          select({ name: 'billing' }, 
+            option('XXXX-XXXX-XXXX-0000')
+          )
+        ),
+        div('Registrant: ', 
+          select({ style: 'width: 150px' },
+            BadgerCache.cached_contacts.data.map(function(profile) {
+              return option(profile.first_name + ' ' + profile.last_name + " (" + profile.address + ', ' + (profile.address2 ? profile.address2 + ', ' : '') + profile.city + ', ' + profile.state + ', ' + profile.zip + ")");
+            })
+          ),
+          input({ type: 'checkbox', checked: 'checked' }), 'Whois Privacy'
+        ),
+        h2('Advanced'),
+        
+        div('Registration Length: ', 
+          select(
+            option('1 Year'), 
+            option('2 Years'), 
+            option('3 Years'),
+            option('4 Years'),
+            option('5 Years'),
+            option('10 Years')
+          ),
+          input({ type: 'checkbox', checked: 'checked' }), 'Auto-renew'
+        ),
+        
+        div('Technical Contact: ', 
+          select({ style: 'width: 150px' },
+            option('Same as Registrant'),
+            BadgerCache.cached_contacts.data.map(function(profile) {
+              return option(profile.first_name + ' ' + profile.last_name + " (" + profile.address + ', ' + (profile.address2 ? profile.address2 + ', ' : '') + profile.city + ', ' + profile.state + ', ' + profile.zip + ")");
+            })
+          )
+        ),
+        div('Administrative Contact: ', 
+          select({ style: 'width: 150px' },
+            option('Same as Registrant'),
+            BadgerCache.cached_contacts.data.map(function(profile) {
+              return option(profile.first_name + ' ' + profile.last_name + " (" + profile.address + ', ' + (profile.address2 ? profile.address2 + ', ' : '') + profile.city + ', ' + profile.state + ', ' + profile.zip + ")");
+            })
+          )
+        ),
+        div('Billing Contact: ', 
+          select({ style: 'width: 150px' },
+            option('Same as Registrant'),
+            BadgerCache.cached_contacts.data.map(function(profile) {
+              return option(profile.first_name + ' ' + profile.last_name + " (" + profile.address + ', ' + (profile.address2 ? profile.address2 + ', ' : '') + profile.city + ', ' + profile.state + ', ' + profile.zip + ")");
+            })
+          )
+        ),
         div('DNS: ', select(option('Badger DNS'), option('EveryDNS'), option('DNS Simple'))),
-        div('Whois: ', select(option('Private Registration'))),
         div({ style: "text-align: right; margin-top: 10px" }, button({ 'class': 'myButton' }, 'Purchase ' + domain))
       )
     ];
