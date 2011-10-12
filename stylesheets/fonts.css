@@ -1,51 +1,18 @@
 @font-face {
-  font-family: 'HelveticaNeueLight';
-  src: url('/fonts/helveticaneue_-webfont.eot');
-  src: url('/fonts/helveticaneue_-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/helveticaneue_-webfont.woff') format('woff'),
-    url('/fonts/helveticaneue_-webfont.ttf') format('truetype'),
-    url('/fonts/helveticaneue_-webfont.svg#HelveticaNeueLight') format('svg');
-  font-weight: normal;
+  font-family: 'Droid Sans';
   font-style: normal;
+  font-weight: normal;
+  src: local('Droid Sans'), local('DroidSans'), url('https://themes.googleusercontent.com/static/fonts/droidsans/v1/s-BiyweUPV0v-yRb-cjciL3hpw3pgy2gAi-Ip7WPMi0.woff') format('woff');
 }
 @font-face {
-  font-family: 'KnockoutHTF30-JuniorWelterwt';
-  src: url('/fonts/knockout-htf30-juniorwelterwt-webfont.eot');
-  src: url('/fonts/knockout-htf30-juniorwelterwt-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/knockout-htf30-juniorwelterwt-webfont.woff') format('woff'),
-    url('/fonts/knockout-htf30-juniorwelterwt-webfont.ttf') format('truetype'),
-    url('/fonts/knockout-htf30-juniorwelterwt-webfont.svg#KnockoutHTF30-JuniorWelterwt') format('svg');
-  font-weight: normal;
+  font-family: 'Droid Sans';
   font-style: normal;
+  font-weight: bold;
+  src: local('Droid Sans Bold'), local('DroidSans-Bold'), url('https://themes.googleusercontent.com/static/fonts/droidsans/v1/EFpQQyG9GqCrobXxL-KRMXbFhgvWbfSbdVg11QabG8w.woff') format('woff');
 }
 @font-face {
-  font-family: 'KnockoutHTF27-JuniorBantamwt';
-  src: url('/fonts/knockout-htf27-juniorbantamwt-webfont.eot');
-  src: url('/fonts/knockout-htf27-juniorbantamwt-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/knockout-htf27-juniorbantamwt-webfont.woff') format('woff'),
-    url('/fonts/knockout-htf27-juniorbantamwt-webfont.ttf') format('truetype'),
-    url('/fonts/knockout-htf27-juniorbantamwt-webfont.svg#KnockoutHTF27-JuniorBantamwt') format('svg');
-  font-weight: normal;
+  font-family: 'Oswald';
   font-style: normal;
-}
-@font-face {
-  font-family: 'HelveticaNeue75Bold';
-  src: url('/fonts/helveticaneue-bold-webfont.eot');
-  src: url('/fonts/helveticaneue-bold-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/helveticaneue-bold-webfont.woff') format('woff'),
-    url('/fonts/helveticaneue-bold-webfont.ttf') format('truetype'),
-    url('/fonts/helveticaneue-bold-webfont.svg#HelveticaNeue75Bold') format('svg');
   font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-    font-family: 'MuseoSans500';
-    src: url('/fonts/MuseoSans_500-webfont.eot');
-    src: url('/fonts/MuseoSans_500-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/fonts/MuseoSans_500-webfont.woff') format('woff'),
-         url('/fonts/MuseoSans_500-webfont.ttf') format('truetype'),
-         url('/fonts/MuseoSans_500-webfont.svg#MuseoSans500') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
+  src: local('Oswald '), local('Oswald'), url('https://themes.googleusercontent.com/static/fonts/oswald/v1/qpy-UiLNKP-VfOdbcs6r6-vvDin1pK8aKteLpeZ5c0A.woff') format('woff');
 }

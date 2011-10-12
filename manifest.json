@@ -27,23 +27,7 @@
 		"/images/bg-page.jpg",
 		"/images/sprite.png",
 		"/images/submit.gif",
-		"/images/icann.png",
-		"/fonts/helveticaneue-bold-webfont.eot",
-		"/fonts/helveticaneue-bold-webfont.svg",
-		"/fonts/helveticaneue-bold-webfont.ttf",
-		"/fonts/helveticaneue-bold-webfont.woff",
-		"/fonts/helveticaneue_-webfont.eot",
-		"/fonts/helveticaneue_-webfont.svg",
-		"/fonts/helveticaneue_-webfont.ttf",
-		"/fonts/helveticaneue_-webfont.woff",
-		"/fonts/knockout-htf27-juniorbantamwt-webfont.eot",
-		"/fonts/knockout-htf27-juniorbantamwt-webfont.svg",
-		"/fonts/knockout-htf27-juniorbantamwt-webfont.ttf",
-		"/fonts/knockout-htf27-juniorbantamwt-webfont.woff",
-		"/fonts/knockout-htf30-juniorwelterwt-webfont.eot",
-		"/fonts/knockout-htf30-juniorwelterwt-webfont.svg",
-		"/fonts/knockout-htf30-juniorwelterwt-webfont.ttf",
-		"/fonts/knockout-htf30-juniorwelterwt-webfont.woff"
+		"/images/icann.png"
 	],
   
   "lib": [ 

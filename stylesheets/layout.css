@@ -6,7 +6,7 @@ form,fieldset { margin:0; padding:0; border-style:none; }
 
 html { height: 100%; background: #0085aa url(/images/bg-page.jpg) repeat top center; }
 body { min-height: 100%; background: transparent url(/images/bg-page-fade.jpg) repeat-x top center; margin: 0; font-size: 100.01%; }
-body, input, textarea, select, td, th, a { font: 15px/17px "HelveticaNeueLight", Arial, sans-serif; color: #333; }
+body, input, textarea, select, td, th, a { font: 14px "Droid Sans", Arial, sans-serif; color: #333; }
 a { color: #1E31F5; }
 
 #wrapper { width: 970px; padding: 0 10px 10px 0; margin: 0 auto; position: relative; }
@@ -17,8 +17,8 @@ a { color: #1E31F5; }
 #user-nav span { padding-right: 10px; border-right: 1px solid #555; margin-right: 10px; }
 #user-nav a { color: #ccc }
 
-#logo { padding: 10px 0 10px 45px; margin: 0; background: transparent url(/images/badger-4.png) no-repeat 0 7px; }
-#logo a { font: 35px 'KnockoutHTF30-JuniorWelterwt', Arial, sans-serif; color: #f0f0f0; }
+#logo { padding: 2px 0 10px 45px; margin: 0; background: transparent url(/images/badger-4.png) no-repeat 0 7px; }
+#logo a { font: 34px 'Oswald', Arial, sans-serif; color: #f0f0f0; text-transform: uppercase; }
 #logo a:hover { text-decoration: none; }
 #logo img { vertical-align: bottom; padding-right: 10px; }
 
@@ -31,7 +31,7 @@ a { color: #1E31F5; }
 #main #content { float: left; width: 100%; padding: 10px 0; }
 #main #sidebar { float: left; width: 221px; margin-left: -241px; min-height: 500px; }
 
-#main #content h1 { font: 38px/40px "KnockoutHTF27-JuniorBantamwt", Arial, sans-serif; margin: 5px 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
+#main #content h1 { font: 28px "Oswald", Arial, sans-serif; margin: 5px 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
 
 #footer { background: rgba(0,0,0,0.2); border-radius: 6px; color: #f0f0f0; padding: 10px 0; margin-top: 10px; }
 #footer .footer-holder { height:1%; display:table-row; }
@@ -40,7 +40,7 @@ a { color: #1E31F5; }
 #footer .box .holder { padding:0 0 5px; }
 #footer .box .frame { overflow:hidden; padding:11px 0 24px; }
 #footer .col { float:left; width:210px; margin:0 0 0 20px; }
-#footer h2{ font:18px/21px "KnockoutHTF30-JuniorWelterwt", Arial, sans-serif; margin:0 0 4px; border-bottom:1px solid #fff; padding:0 0 3px; text-shadow: 1px 0px 1px #252525; }
+#footer h2{ font:18px "Oswald", Arial, sans-serif; margin:0 0 4px; border-bottom:1px solid #fff; padding:0 0 3px; text-shadow: 1px 0px 1px #252525; }
 #footer .col ul{ margin:0; padding:0; list-style:none; text-shadow: 1px 0px 1px #252525; }
 #footer .col ul li{padding:5px 0 0;}
 #footer .col a{color:#fff;}
@@ -67,7 +67,7 @@ a { color: #1E31F5; }
 /* primary menu */
 #menu { border-top:1px solid #14161e; margin:0; padding:0; list-style:none; }
 #menu li { border-bottom:1px solid #191c25; background:#292f3e; }
-#menu li a { color:#919ab2; display:block; padding:9px 10px 9px 17px; text-shadow: 0px 1px 1px #000; font: 18px/21px "KnockoutHTF30-JuniorWelterwt", Arial, sans-serif; }
+#menu li a { color:#919ab2; display:block; padding:9px 10px 9px 17px; text-shadow: 0px 1px 1px #000; font: 17px "Oswald", Arial, sans-serif; }
 #sidebar .active { background-image: url(/images/bg-menu-hover.png); background-repeat: no-repeat; background-position: 100% 50%; }
 
 /* submenu */
@@ -97,7 +97,7 @@ a { color: #1E31F5; }
 #modal-content { margin: 100px auto 0 auto; width: 600px; padding: 20px; border-radius: 3px; background: white; position: relative; }
 #modal-dialog .close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
 #modal-dialog .close-button:hover { text-decoration: none; }
-#modal-dialog h1 { font: 38px/40px "KnockoutHTF27-JuniorBantamwt", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
+#modal-dialog h1 { font: 28px "Oswald", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
 
 
 

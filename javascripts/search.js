@@ -69,7 +69,6 @@ with (Hasher.View('Search', 'Application')) { (function() {
 
   
   create_helper('buy_domain_modal', function(domain) {
-    console.log("TITLE: " + domain)
     return [
       h1(domain),
       form({ action: action('buy_domain', domain) },
