@@ -1,5 +1,10 @@
 with (Hasher.Controller('Application')) {
   initializer(function() {
+    // local cache
+    Badger.onLogin(BadgerCache.load);
+    Badger.onLogout(BadgerCache.flush);
+    BadgerCache.load();
+
     Badger.onLogout(function() {
       redirect_to('#');
     });

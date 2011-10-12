@@ -44,7 +44,7 @@ with (Hasher.Controller('Domains','Application')) {
   });
 
   create_action('index', function() {
-    Badger.getDomains(function(domains) {
+    BadgerCache.getDomains(function(domains) {
       render('index', domains);
     });
   });

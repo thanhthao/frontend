@@ -4,7 +4,7 @@ with (Hasher.Controller('Whois','Application')) {
   });
   
   create_action('index', function() {
-    Badger.getContacts(function(results) {
+    BadgerCache.getContacts(function(results) {
       render('index', results.data);
     });
   });
@@ -12,8 +12,9 @@ with (Hasher.Controller('Whois','Application')) {
   create_action('create_or_update_whois', function(contact_id, form_data) {
     var callback = function(response) {
       if (response.meta.status == 'ok') {
+        BadgerCache.flush('contacts');
         call_action('Modal.hide');
-        call_action('profiles');
+        call_action('index');
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));
       }
