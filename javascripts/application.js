@@ -71,8 +71,8 @@ with (Hasher.View('Application')) {
   create_helper('error_message', function(response) {
     return div({ 'class': 'error-message' }, 
       div(
-        response.data.message + ': ',
-        response.data.errors.map(function(error) { return error.field; }).join(', ')
+        response.data.message,
+        !response.data.errors ? '' : ': ' + response.data.errors.map(function(error) { return error.field.replace('_', ' ') + " " + error.code.replace('_', ' '); }).join(', ')
       )
     )
   });

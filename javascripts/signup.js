@@ -13,8 +13,14 @@ with (Hasher.Controller('Signup','Application')) {
   });
   
   create_action('submit_invite_request', function() {
-    Badger.requestInvite($('#email-address').val(), function() {
-      render('request_invite_thanks');
+    Badger.requestInvite($('#email-address').val(), function(response) {
+      console.log(response)
+      if (response.meta.status == 'ok') {
+        render('request_invite_thanks');
+      } else {
+        render('request_invite');
+        $('#errors').empty().append(helper('Application.error_message', response));
+      }
     });
     render('request_invite_processing');
   });
@@ -39,8 +45,7 @@ with (Hasher.Controller('Signup','Application')) {
       if (response.meta.status == 'ok') {
         redirect_to('#');
       } else {
-        alert('errors');
-        console.log(response.data.errors);
+        $('#errors').empty().append(helper('Application.error_message', response));
       }
     });
   });
@@ -54,6 +59,8 @@ with (Hasher.View('Signup', 'Application')) { (function() {
     return div({ id: 'signup-box' }, 
       h1('Badger.com... a domain registrar that doesn\'t suck.'),
       h2("Thanks for visiting!  We're not quite ready yet but if you'd like an invite when we are, please enter your email address:"),
+
+      div({ id: 'errors' }),
 
       form({ style: 'text-align: center', action: action('submit_invite_request') }, 
         input({ type: 'text', id: 'email-address', placeholder: 'Your Email Address' }),
@@ -93,6 +100,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
   create_view('register', function(code) {
     return div({ id: 'signup-box' }, 
       h1('Create Your Badger.com Account'),
+      div({ id: 'errors' }),
       form({ action: action('create_person') },
         input({ type: 'hidden', name: 'invite_code', value: code }),
 
