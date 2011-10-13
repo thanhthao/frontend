@@ -31,10 +31,16 @@ with (Hasher.Controller('Search','Application')) {
   });
   
   create_action('buy_domain', function(domain, form) {
-    Badger.registerDomain({
-      name: domain
-    }, function() {
-      call_action('Modal.hide');
+    $('#errors').empty();
+    form.domain = domain;
+    Badger.registerDomain(form, function(response) {
+      if (response.meta.status == 'ok') {
+        BadgerCache.flush('domains');
+        call_action('Modal.hide');
+        redirect_to('#');
+      } else {
+        $('#errors').empty().append(helper('Application.error_message', response));
+      }
     })
   });
   
@@ -70,12 +76,13 @@ with (Hasher.View('Search', 'Application')) { (function() {
 
   create_helper('whois_contact_option', function(profile) {
     console.log(arguments)
-    return option(profile.first_name + ' ' + profile.last_name + (profile.organization ? ", " + profile.organization : '') + " (" + profile.address + (profile.address2 ? ', ' + profile.address2 : '') + ")");
+    return option({ value: profile.id }, profile.first_name + ' ' + profile.last_name + (profile.organization ? ", " + profile.organization : '') + " (" + profile.address + (profile.address2 ? ', ' + profile.address2 : '') + ")");
   });
   
   create_helper('buy_domain_modal', function(domain) {
     return [
       h1(domain),
+      div({ id: 'errors' }),
       form({ action: action('buy_domain', domain) },
         div('Payment Method: ', 
           select({ name: 'billing' }, 
@@ -83,7 +90,7 @@ with (Hasher.View('Search', 'Application')) { (function() {
           )
         ),
         div('Registrant: ', 
-          select({ style: 'width: 150px' },
+          select({ name: 'registrant_contact_id', style: 'width: 150px' },
             BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
           ),
           ' ',
@@ -92,32 +99,32 @@ with (Hasher.View('Search', 'Application')) { (function() {
         // a({ href: functio}'Advanced'),
         
         div('Registration Length: ', 
-          select(
-            option('1 Year'), 
-            option('2 Years'), 
-            option('3 Years'),
-            option('4 Years'),
-            option('5 Years'),
-            option('10 Years')
+          select({ name: 'years' },
+            option({ value: 1 }, '1 Year'), 
+            option({ value: 2 }, '2 Years'), 
+            option({ value: 3 }, '3 Years'),
+            option({ value: 4 }, '4 Years'),
+            option({ value: 5 }, '5 Years'),
+            option({ value: 10 }, '10 Years')
           ),
           input({ type: 'checkbox', checked: 'checked' }), 'Auto-renew'
         ),
         
         div('Technical Contact: ', 
-          select({ style: 'width: 150px' },
-            option('Same as Registrant'),
+          select({ name: 'technical_contact_id', style: 'width: 150px' },
+            option({ value: '' }, 'Same as Registrant'),
             BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
           )
         ),
-        div('Administrative Contact: ', 
-          select({ style: 'width: 150px' },
-            option('Same as Registrant'),
+        div('Administrator Contact: ', 
+          select({ name: 'administrator_contact_id', style: 'width: 150px' },
+            option({ value: '' }, 'Same as Registrant'),
             BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
           )
         ),
         div('Billing Contact: ', 
-          select({ style: 'width: 150px' },
-            option('Same as Registrant'),
+          select({ name: 'billing_contact_id', style: 'width: 150px' },
+            option({ value: '' }, 'Same as Registrant'),
             BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
           )
         ),

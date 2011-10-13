@@ -10,6 +10,8 @@ with (Hasher.Controller('Whois','Application')) {
   });
   
   create_action('create_or_update_whois', function(contact_id, form_data) {
+    $('#errors').empty();
+
     var callback = function(response) {
       if (response.meta.status == 'ok') {
         BadgerCache.flush('contacts');

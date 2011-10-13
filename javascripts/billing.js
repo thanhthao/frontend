@@ -10,6 +10,7 @@ with (Hasher.Controller('Billing','Application')) {
   });
   
   create_action('create_or_update_billing', function(contact_id, form_data) {
+    $('#errors').empty();
     var callback = function(response) {
 			console.log(response)
 
