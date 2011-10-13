@@ -79,7 +79,7 @@ with (Hasher.View('Search', 'Application')) { (function() {
       form({ action: action('buy_domain', domain) },
         div('Payment Method: ', 
           select({ name: 'billing' }, 
-            option('XXXX-XXXX-XXXX-0000')
+						BadgerCache.cached_payment_methods.data.map(function(payment_method) { return option({value: payment_method.id}, payment_method.name); })
           )
         ),
         div('Registrant: ', 
