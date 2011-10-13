@@ -35,7 +35,8 @@ with (Hasher.Controller('Search','Application')) {
     form.domain = domain;
     Badger.registerDomain(form, function(response) {
       if (response.meta.status == 'ok') {
-        BadgerCache.flush('domains');
+        BadgerCache.reload('domains');
+        BadgerCache.reload('payment_methods'); // to reset credits
         call_action('Modal.hide');
         redirect_to('#');
       } else {
@@ -86,12 +87,12 @@ with (Hasher.View('Search', 'Application')) { (function() {
       form({ action: action('buy_domain', domain) },
         div('Payment Method: ', 
           select({ name: 'billing' }, 
-						BadgerCache.cached_payment_methods.data.map(function(payment_method) { return option({value: payment_method.id}, payment_method.name); })
+						(BadgerCache.cached_payment_methods.data || []).map(function(payment_method) { return option({value: payment_method.id}, payment_method.name); })
           )
         ),
         div('Registrant: ', 
           select({ name: 'registrant_contact_id', style: 'width: 150px' },
-            BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
+            (BadgerCache.cached_contacts.data || []).map(function(profile) { return helper('whois_contact_option', profile); })
           ),
           ' ',
           input({ type: 'checkbox', checked: 'checked' }), 'Whois Privacy'

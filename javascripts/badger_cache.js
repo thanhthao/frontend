@@ -4,6 +4,11 @@ var BadgerCache = {
     if (!key || (key == 'payment_methods')) BadgerCache.cached_payment_methods = null;
     if (!key || (key == 'contacts')) BadgerCache.cached_contacts = null;
   },
+
+  reload: function(key) {
+    BadgerCache.flush(key);
+    BadgerCache.load();
+  },
   
   load: function() {
     if (Badger.getAccessToken()) {
@@ -33,6 +38,8 @@ var BadgerCache = {
     } else {
       Badger.getPaymentMethods(function(results) { 
         BadgerCache.cached_payment_methods = results;
+        console.log("SETTING PAYMENT METHOD");
+        console.log(results)
         callback(BadgerCache.cached_payment_methods);
       });
     }

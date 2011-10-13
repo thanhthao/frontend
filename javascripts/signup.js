@@ -26,12 +26,12 @@ with (Hasher.Controller('Signup','Application')) {
   });
   
   create_action('process_login', function(form) {
+    $('#errors').empty();
     Badger.login(form.email, form.password, function(response) {
       if (response.meta.status == 'ok') {
         redirect_to('#');
       } else {
-        alert('Error logging in, please try again.');
-        console.log(response.data.errors);
+        $('#errors').empty().append(helper('Application.error_message', response));
       }
     });
   });
@@ -72,6 +72,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
   create_view('login', function() {
     return div({ id: 'signup-box' }, 
       h1('Login'),
+      div({ id: 'errors' }),
       form({ action: action('process_login') },
         input({ name: 'email', placeholder: 'Email Address' }),
 
