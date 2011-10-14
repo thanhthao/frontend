@@ -26,7 +26,7 @@ with (Hasher.Controller('Search','Application')) {
           $('#search-instructions').remove();
           $('#search-results tbody').prepend(helper('search_result_row', resp.data.domains));
         });
-      }, 150);
+      }, 250);
     }
   });
   
