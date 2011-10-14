@@ -110,7 +110,7 @@ with (Hasher.View('Search', 'Application')) { (function() {
 
               h3({ style: 'margin-bottom: 6px'}, 'Advanced'),
               div('DNS: ', 
-                select({ name: 'nameservers' },
+                select({ name: 'name_servers' },
                   option({ value: 'ns1.badger.com,ns2.badger.com' }, 'Badger DNS (recommended)')
                   // option({ value: 'todo' }, 'easyDNS'),
                   // option({ value: 'todo' }, 'EveryDNS'),
