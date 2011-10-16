@@ -161,10 +161,10 @@ with (Hasher.View('Application')) {
         ),
         div({ 'class': "col" },
           h2('CONTACT US'),
-          ul({ 'class': 'social-network' },
+          ul(
             li(a({ href: "mailto:support@badger.com#" }, 'support@badger.com')),
-            li(a({ href: "#", 'class': 'twitter' }, 'Twitter')),
-            li(a({ href: "#", 'class': 'facebook' }, 'Facebook'))
+            li('415-787-5050'),
+            li(a({ href: "#" }, 'Twitter'), ' / ', a({ href: "#" }, 'Facebook'))
           )
         ),
         div({ 'class': "col" },
