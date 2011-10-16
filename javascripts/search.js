@@ -86,7 +86,7 @@ with (Hasher.View('Search', 'Application')) { (function() {
       div({ id: 'errors' }),
       form({ action: action('buy_domain', domain) },
         div('Payment Method: ', 
-          select({ name: 'billing' }, 
+          select({ name: 'payment_method_id' }, 
 						(BadgerCache.cached_payment_methods.data || []).map(function(payment_method) { return option({value: payment_method.id}, payment_method.name); })
           )
         ),

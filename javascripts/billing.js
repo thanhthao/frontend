@@ -12,7 +12,7 @@ with (Hasher.Controller('Billing','Application')) {
   create_action('create_or_update_billing', function(contact_id, form_data) {
     $('#errors').empty();
     var callback = function(response) {
-			console.log(response)
+			console.log(response);
 
       if (response.meta.status == 'ok') {
         call_action('Modal.hide');
@@ -89,8 +89,8 @@ with (Hasher.View('Billing', 'Application')) { (function() {
         input({ name: 'cc_number', placeholder: 'XXXX-XXXX-XXXX-XXXX', value: data.cc_number || '', style: "width: 240px" })
       ),
       div(
-        input({ name: 'cc_expiration_date', placeholder: 'MM/YYYY', value: data.cc_expiration || '' }),
-        input({ name: 'cc_ccv', placeholder: 'CCV', value: data.cc_ccv || '' })
+        input({ name: 'cc_expiration_date', placeholder: 'MM/YYYY', value: data.cc_expiration_date || '' }),
+        input({ name: 'cc_cvv', placeholder: 'CVV', value: data.cc_cvv || '' })
       ),
       div({ style: 'text-align: right; margin-top: 10px' }, button({ 'class': 'myButton' }, data.id ? 'Save' : 'Create'))
     );
