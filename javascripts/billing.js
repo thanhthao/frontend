@@ -77,9 +77,9 @@ with (Hasher.View('Billing', 'Application')) { (function() {
 				input({ name: 'extended_address', placeholder: 'Extended Address', value: data.address || '' })
       ),
       div(
-        input({ name: 'locality', placeholder: 'City', value: data.city || '' }),
-        input({ name: 'region', placeholder: 'State', value: data.state || '' }),
-        input({ name: 'postal_code', placeholder: 'Zip', value: data.zip || '' })
+        input({ name: 'city', placeholder: 'City', value: data.city || '' }),
+        input({ name: 'state', placeholder: 'State', value: data.state || '' }),
+        input({ name: 'zip', placeholder: 'Zip', value: data.zip || '' })
       ),
       div(
         input({ name: 'country_name', placeholder: 'Country', value: data.country || '' })
