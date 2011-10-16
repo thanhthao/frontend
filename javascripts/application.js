@@ -72,7 +72,7 @@ with (Hasher.View('Application')) {
     return div({ 'class': 'error-message' }, 
 			div(
 				response.data.message,
-				!response.data.errors ? "" : ": " + response.data.errors.map(function(error) { return error.reason ? error.reason : error.field.replace('_', ' ') + " " + error.code.replace('_', ' ');}).join(', ')
+				!response.data.errors ? "" : ": " + response.data.errors.map(function(error) { return error.reason ? error.reason : error.field.replace(/_/g, ' ').capitalize_first() + " " + error.code.replace(/_/g, ' ');}).join(', ')
 			)
     )
   });
@@ -179,4 +179,14 @@ with (Hasher.View('Application')) {
 
 }
 
+String.prototype.capitalize_all = function() {
+	var words = [];
+	this.split(' ').forEach(function(word) {
+		words.push( word.charAt(0).toUpperCase() + word.slice(1) );
+	});
+	return words.join(" ");
+}
 
+String.prototype.capitalize_first = function() {
+	return this.charAt(0).toUpperCase() + this.slice(1);
+}

@@ -91,7 +91,7 @@ with (Hasher.View('Search', 'Application')) { (function() {
 
               h3({ style: 'margin-bottom: 6px'}, 'Billing'),
               div('Payment Method: ', 
-                select({ name: 'billing' }, 
+                select({ name: 'payment_method_id' }, 
       						((BadgerCache.cached_payment_methods && BadgerCache.cached_payment_methods.data) || []).map(function(payment_method) { return option({value: payment_method.id}, payment_method.name); })
                 )
               ),
