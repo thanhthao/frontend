@@ -16,7 +16,7 @@ with (Hasher.Controller('Billing','Application')) {
 
       if (response.meta.status == 'ok') {
         call_action('Modal.hide');
-        call_action('profiles');
+        call_action('index');
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));
       }
