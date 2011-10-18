@@ -111,7 +111,7 @@ with (Hasher.View('DNS', 'Application')) { (function() {
                   option({ value: '604800' }, '1 week')
                 )
               ),
-              td(button({ events: { 'click': action('dns_add', domain) }}, 'Add'))
+              td(button({ 'class': 'myButton myButton-small', events: { 'click': action('dns_add', domain) }}, 'Add'))
             ),
             
             records.map(function(record) {
@@ -122,7 +122,7 @@ with (Hasher.View('DNS', 'Application')) { (function() {
                 td(record.ttl),
                 td(
                   //button({ events: { 'click': action('dns_edit', domain, record.id) }}, 'Edit'),
-                  button({ events: { 'click': action('dns_delete', domain, record.id) }}, 'Delete')
+                  button({ 'class': 'myButton myButton-small', events: { 'click': action('dns_delete', domain, record.id) }}, 'Delete')
                 )
               );
             })
