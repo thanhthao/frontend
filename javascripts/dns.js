@@ -22,6 +22,8 @@ with (Hasher.Controller('DNS','Application')) {
   });
   
   create_action('dns_add', function(domain) {
+    $('#errors').empty();
+    
     var dns_fields = {
       record_type: $('#dns-add-type').val(),
       name: $('#dns-add-name').val(),
