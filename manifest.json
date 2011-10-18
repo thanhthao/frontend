@@ -15,6 +15,7 @@
     "javascripts/account.js",
     "javascripts/whois.js",
     "javascripts/billing.js",
+    "javascripts/dns.js",
     "javascripts/help.js",
     "javascripts/badger_cache.js"
   ],

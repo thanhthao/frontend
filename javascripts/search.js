@@ -133,13 +133,10 @@ with (Hasher.View('Search', 'Application')) { (function() {
                 // ' ',
                 // input({ type: 'checkbox', checked: 'checked' }), 'Whois Privacy'
               ),
-              // a({ href: functio}'Advanced'),
-
-
               div('Technical: ', 
                 select({ name: 'technical_contact_id', style: 'width: 150px' },
                   option({ value: '' }, 'Same as Registrant'),
-                  BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
+                  ((BadgerCache.cached_contacts && BadgerCache.cached_contacts.data) || []).map(function(profile) { return helper('whois_contact_option', profile); })
                 )
               ),
               div('Administrator: ', 

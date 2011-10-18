@@ -81,8 +81,8 @@ with (Hasher.View('Application')) {
     return li({ id: 'domain-menu-item-' + domain.replace('.','-'), 'class': 'domain-menu-item' },
       a({ href: "#domains/" + domain }, domain.toUpperCase()),
       ul(
-        li({ 'class': "email" }, a({ href: "#domains/" + domain + "/dns" }, 'DNS')),
-        li({ 'class': "email" }, a({ href: "#domains/" + domain + "/whois" }, 'WHOIS'))
+        li({ 'class': "email" }, a({ href: "#domains/" + domain + "/dns" }, 'DNS'))
+        //li({ 'class': "email" }, a({ href: "#domains/" + domain + "/whois" }, 'WHOIS'))
       )
     );
   });

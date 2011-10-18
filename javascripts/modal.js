@@ -1,6 +1,10 @@
 with (Hasher.Controller('Modal')) {
   create_action('show', function() {
-    document.body.appendChild(helper('modal', helper.apply(null, Array.prototype.slice.call(arguments))));
+    if ($('#modal-dialog').length > 0) {
+      console.log('existing dialog');
+    } else {
+      document.body.appendChild(helper('modal', helper.apply(null, Array.prototype.slice.call(arguments))));
+    }
   });
   
   create_action('hide', function() {
