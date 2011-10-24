@@ -95,7 +95,7 @@ with (Hasher.View('Register', 'Application')) {
                 tr(
                   td('Length:'),
                   td(
-                    select({ name: 'years' },
+                    select({ name: 'years', events: { change: function(e) { var years = $(e.target).val(); $('#register-button').html('Register ' + domain + ' for ' + years + (years == 1 ? ' credit' : ' credits')) } } },
                       option({ value: 1 }, '1 Year'), 
                       option({ value: 2 }, '2 Years'), 
                       option({ value: 3 }, '3 Years'),
@@ -128,7 +128,7 @@ with (Hasher.View('Register', 'Application')) {
           )
         )),
     
-        div({ style: "text-align: right; margin-top: 10px" }, button({ 'class': 'myButton' }, 'Purchase ' + domain))
+        div({ style: "text-align: right; margin-top: 10px" }, button({ 'class': 'myButton', id: 'register-button' }, 'Register ' + domain + ' for 1 credit'))
       )
     ];
   });
