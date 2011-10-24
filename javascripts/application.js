@@ -87,6 +87,12 @@ with (Hasher.View('Application')) {
     );
   });
   
+  create_helper('update_credits', function() {
+    BadgerCache.getAccountInfo(function(response) {
+      $('#user_nav_credits').html(response.data.domain_credits == 1 ? '1 Credit' : response.data.domain_credits + ' Credits');
+    });
+  });
+  
   create_helper('user_nav', function() {
     var user_nav = div({ id: 'user-nav' }, 
       a({ href: Badger.logout }, 'Logout')
@@ -94,7 +100,8 @@ with (Hasher.View('Application')) {
 
     BadgerCache.getAccountInfo(function(response) {
       $(user_nav).prepend(span(a({ href: '#account/settings'}, response.data.name)));
-      $(user_nav).prepend(span(a({ href: '#account/billing'}, response.data.domain_credits + ' Credits')));
+      $(user_nav).prepend(span(a({ href: '#account/billing', id: 'user_nav_credits' }, 'Credits')));
+      helper('update_credits');
     });
 
     return user_nav;

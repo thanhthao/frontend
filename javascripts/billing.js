@@ -9,24 +9,37 @@ with (Hasher.Controller('Billing','Application')) {
     });
   });
   
-  create_action('create_or_update_billing', function(contact_id, form_data) {
+  create_action('purchase_credits', function(callback, form_data) {
+    // prevent double submits            
+    if ($('#purchase-button').attr('disabled')) return;
+    else $('#purchase-button').attr('disabled', true);
+    
+    if (form_data.credits == '1' && form_data.credits_variable) form_data.credits = form_data.credits_variable;
+    delete form_data.credits_variable;
+
     $('#errors').empty();
-    var callback = function(response) {
-			console.log(response);
+
+    Badger.purchaseCredits(form_data, function(response) {
+      $('#purchase-button').attr('disabled', false);
+      console.log(response);
 
       if (response.meta.status == 'ok') {
-        call_action('Modal.hide');
-        call_action('index');
+        BadgerCache.flush('account_info');
+        BadgerCache.getAccountInfo(function(response) {
+          helper('Application.update_credits');
+
+          if (callback) {
+            callback();
+          } else {
+            call_action('Modal.hide');
+            call_action('index');
+          }
+          
+        });
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));
       }
-    }
-
-    if (contact_id) {
-      Badger.updatePaymentMethod(contact_id, form_data, callback);
-    } else {
-      Badger.createPaymentMethod(form_data, callback);
-    }
+    });
   });
   
   layout('dashboard');
@@ -38,111 +51,144 @@ with (Hasher.View('Billing', 'Application')) { (function() {
     return div(
       h1('Billing Settings'),
       div({ style: 'float: right; margin-top: -44px' }, 
-        a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Billing.edit_billing_modal') }, 'Purchase Credits')
+        a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Billing.purchase_modal') }, 'Purchase Credits')
       ),
 
       table({ 'class': 'fancy-table' },
         tbody(
-          (contacts || []).map(function(payment_method) {
-            return tr(
-              // td(
-              //   div(contact.first_name, ' ', contact.last_name)
-              // ),
-              // td(
-              //   div(contact.cc_number),
-              //   div(contact.cc_expiration)
-              // ),
-							td(payment_method.name),
-              td({ style: "text-align: right" },
-                a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Billing.edit_billing_modal', payment_method) }, 'Edit')
-              )
-            );
-          })
+              //           (contacts || []).map(function(payment_method) {
+              //             return tr(
+              //               // td(
+              //               //   div(contact.first_name, ' ', contact.last_name)
+              //               // ),
+              //               // td(
+              //               //   div(contact.cc_number),
+              //               //   div(contact.cc_expiration)
+              //               // ),
+              // td(payment_method.name),
+              //               td({ style: "text-align: right" },
+              //                 a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Billing.purchase_modal', payment_method) }, 'Edit')
+              //               )
+              //             );
+              //           })
         )
       )
     );
   });
 
-  create_helper('edit_billing_modal', function(data) {
-    data = data || {};
-    return form({ action: action('create_or_update_billing', data.id) },
+  create_helper('credits_table', function() {
+    var tmp_table = table({ 'class': 'fancy-table purchase-credits' }, tbody(
+      tr({ 'class': 'table-header' },
+        th({ style: 'width: 25%' }, 'Package'), 
+        th({ style: 'width: 25%' }, 'Credits'), 
+        th({ style: 'width: 25%' }, 'Each'), 
+        th({ style: 'width: 25%; text-align: right' }, 'Total')
+      ),
+      tr(
+        td(input({ checked: 'checked', type: 'radio', name: 'credits', value: 1 })), 
+        td(
+          select({ name: 'credits_variable' },
+            option(1), option(2), option(3), option(4), option(5), option(6), option(7), option(8), option(9)
+          )
+        ),
+        td('$15'), 
+        td({ style: "text-align: right" }, '$', span({ id: 'variable-credits' }, '15'))
+      ),
+      tr(
+        td(input({ type: 'radio', name: 'credits', value: 10 })), 
+        td(10), 
+        td('$14'), 
+        td({ style: "text-align: right" }, '$', 10*14)
+      ),
+      tr(
+        td(input({ type: 'radio', name: 'credits', value: 25 })), 
+        td(25), 
+        td('$13'), 
+        td({ style: "text-align: right" }, '$', 25*13)
+      ),
+      tr(
+        td(input({ type: 'radio', name: 'credits', value: 50 })), 
+        td(50), 
+        td('$12'), 
+        td({ style: "text-align: right" }, '$', 50*12)
+      ),
+      tr(
+        td(input({ type: 'radio', name: 'credits', value: 100 })), 
+        td(100), 
+        td('$11'), 
+        td({ style: "text-align: right" }, '$', 100*11)
+      ),
+      tr(
+        td(input({ type: 'radio', name: 'credits', value: 250 })), 
+        td(250), 
+        td('$10'), 
+        td({ style: "text-align: right" }, '$', 250*10)
+      )
+    ));
+    
+    $(tmp_table).find('select').change(function(e) {
+      $('#variable-credits').html($(e.target).val()*15);
+      $(tmp_table).find('input[value=1]').click();
+    });
+
+    $(tmp_table).find('input').each(function(index, inp) {
+      $(inp).click(function(e) {
+        e.stopPropagation();
+        var num_credits = parseInt($(e.target).val());
+        if (num_credits == 1) {
+          num_credits = parseInt($(tmp_table).find('select').val());
+        }
+        var price = 0;
+        if (num_credits < 10) price = num_credits*15;
+        else if (num_credits == 10) price = 10*14;
+        else if (num_credits == 25) price = 25*13;
+        else if (num_credits == 50) price = 50*12;
+        else if (num_credits == 100) price = 100*11;
+        else if (num_credits == 250) price = 250*10;
+        $('#purchase-button').html('Purchase ' + num_credits + (num_credits == 1 ? ' Credit' : ' Credits') + " for $" + price);
+      });
+      
+      $(inp).parent().parent().click(function(e) { if (event.target != inp) $(inp).click() });
+    });
+
+    return tmp_table;
+  });
+
+  create_helper('purchase_modal', function(callback) {
+    return form({ action: action('purchase_credits', callback) },
       h1('Purchase Credits'),
       //div({ style: 'margin-bottom: 15px' }, 'Use credits to buy new domains, transfer in existing domains, or renew expiring domain.'),
       div({ id: 'errors' }),
-      table({ 'class': 'fancy-table' }, tbody(
-        tr({ 'class': 'table-header' },
-          th({ style: 'width: 25%' }, 'Package'), 
-          th({ style: 'width: 25%' }, 'Credits'), 
-          th({ style: 'width: 25%' }, 'Price per Credit'), 
-          th({ style: 'width: 25%' }, 'Total')
-        ),
-        tr({ style: 'cursor: pointer', events: { click: function() { $('#variable-credits-radio').click();  }}},
-          td(input({ id: 'variable-credits-radio', checked: 'checked', type: 'radio', name: 'credits', value: 1 })), 
-          td(
-            select({ id: 'variable-credits-quantity', events: { change: function(){ $('#variable-credits').html($('#variable-credits-quantity').val()*15); $('#variable-credits-radio').click(); }}},
-              option(1), option(2), option(3), option(4), option(5), option(6), option(7), option(8), option(9)
-            )
+      table({ style: 'width: 100%' }, tbody(
+        tr(
+          td({ style: 'vertical-align: top; width: 260px; padding-right: 60px' },
+            helper('credits_table'),
+            div({ style: 'margin-top: 6px; color: #888; font-style: italic; ' }, 'Credits can be used to buy a new domain, renew an expiring domain or transfer in a domain from another registrar.')
           ),
-          td('$15'), 
-          td('$', span({ id: 'variable-credits' }, '15'))
-        ),
-        tr({ style: 'cursor: pointer', events: { click: function() { $('#credits-10').click();  }}},
-          td(input({ id: 'credits-10', type: 'radio', name: 'credits', value: 1 })), 
-          td(10), 
-          td('$14'), 
-          td('$', 10*14)
-        ),
-        tr({ style: 'cursor: pointer', events: { click: function() { $('#credits-25').click();  }}},
-          td(input({ id: 'credits-25', type: 'radio', name: 'credits', value: 1 })), 
-          td(25), 
-          td('$13'), 
-          td('$', 25*13)
-        ),
-        tr({ style: 'cursor: pointer', events: { click: function() { $('#credits-50').click();  }}},
-          td(input({ id: 'credits-50', type: 'radio', name: 'credits', value: 1 })), 
-          td(50), 
-          td('$12'), 
-          td('$', 50*12)
-        ),
-        tr({ style: 'cursor: pointer', events: { click: function() { $('#credits-100').click();  }}},
-          td(input({ id: 'credits-100', type: 'radio', name: 'credits', value: 1 })), 
-          td(100), 
-          td('$11'), 
-          td('$', 100*11)
-        ),
-        tr({ style: 'cursor: pointer', events: { click: function() { $('#credits-250').click();  }}},
-          td(input({ id: 'credits-250', type: 'radio', name: 'credits', value: 1 })), 
-          td(250), 
-          td('$10'), 
-          td('$', 250*10)
-        )
-      )),
-    
-      table({ style: 'margin-top: 15px; width: 100%' }, tbody(
-        tr(
-          th({ style: 'width: 60%; text-align: left; font-weight: bold' }, 'Billing Address'),
-          th({ style: 'width: 40%; text-align: left; font-weight: bold' }, 'Credit Card')
-        ),
-        tr(
+
           td({ style: 'vertical-align: top' },
+            div({ style: 'font-weight: bold' }, 'Billing Address'),
             div(
               input({ name: 'first_name', placeholder: 'First Name', style: "width: 110px; margin: 2px" }),
               input({ name: 'last_name', placeholder: 'Last Name', style: "width: 110px; margin: 2px" })
             ),
             div(
-              input({ name: 'street_address', placeholder: 'Address Line 1', style: "width: 300px; margin: 2px" })
+              input({ name: 'street_address', placeholder: 'Address Line 1', style: "width: 240px; margin: 2px" })
             ),
             div(
-      				input({ name: 'extended_address', placeholder: 'Address Line 2 (Optional)', style: "width: 300px; margin: 2px"  })
+      				input({ name: 'extended_address', placeholder: 'Address Line 2 (Optional)', style: "width: 240px; margin: 2px"  })
             ),
             div(
               input({ name: 'city', placeholder: 'City', style: 'width: 100px; margin: 2px' }),
               input({ name: 'state', placeholder: 'State', style: 'width: 40px; margin: 2px' }),
-              input({ name: 'zip', placeholder: 'Zip', style: 'width: 50px; margin: 2px' }),
+              input({ name: 'zip', placeholder: 'Zip', style: 'width: 50px; margin: 2px' })
+            ),
+            div(
               select({ name: 'country_name', style: "width: 90px; margin: 2px" }, option({ disabled: 'disabled' }, 'Country:'), helper("Application.country_options"))
-            )
-          ),
-          td({ style: 'vertical-align: top' },
+            ),
+          
+
+            div({ style: 'font-weight: bold; margin-top: 12px' }, 'Credit Card'),
             div(
               'Number: ', input({ name: 'cc_number', placeholder: 'XXXX-XXXX-XXXX-XXXX', style: "width: 160px" })
             ),
@@ -184,7 +230,8 @@ with (Hasher.View('Billing', 'Application')) { (function() {
           )
         )
       )),
-      div({ style: 'text-align: right; margin-top: 10px' }, button({ 'class': 'myButton' }, 'Purchase'))
+      
+      div({ style: 'text-align: right; margin-top: 10px' }, button({ 'class': 'myButton', id: 'purchase-button' }, 'Purchase 1 Credit for $15'))
     );
   });
 })(); }

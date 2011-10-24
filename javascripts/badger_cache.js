@@ -3,6 +3,7 @@ var BadgerCache = {
     if (!key || (key == 'domains')) BadgerCache.cached_domains = null;
     if (!key || (key == 'payment_methods')) BadgerCache.cached_payment_methods = null;
     if (!key || (key == 'contacts')) BadgerCache.cached_contacts = null;
+    if (!key || (key == 'account_info')) BadgerCache.cached_account_info = null;
   },
 
   reload: function(key) {

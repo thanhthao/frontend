@@ -2,10 +2,18 @@ with (Hasher.Controller('Register','Application')) {
 
   create_action('show', function(domain) {
     BadgerCache.getContacts(function(results) {
+      // ensure they have at least one whois contact
       if (results.data.length == 0) {
-        call_action('Modal.show', 'Whois.edit_whois_modal', null, action('Modal.show', 'Register.buy_domain_modal', domain));
+        call_action('Modal.show', 'Whois.edit_whois_modal', null, action('Register.show', domain));
       } else {
-        call_action('Modal.show', 'Register.buy_domain_modal', domain);
+        BadgerCache.getAccountInfo(function(results) {
+          // ensure they have at least one domain_credit
+          if (results.data.domain_credits <= 0) {
+            call_action('Modal.show', 'Billing.purchase_modal', action('Register.show', domain))
+          } else {
+            call_action('Modal.show', 'Register.buy_domain_modal', domain);
+          }
+        });
       }
     });
   });
@@ -120,7 +128,7 @@ with (Hasher.View('Register', 'Application')) {
           )
         )),
     
-        div({ style: "text-align: right; margin-top: 10px" }, button({ 'class': 'myButton' }, 'Continue'))
+        div({ style: "text-align: right; margin-top: 10px" }, button({ 'class': 'myButton' }, 'Purchase ' + domain))
       )
     ];
   });
