@@ -1,0 +1,128 @@
+with (Hasher.Controller('Register','Application')) {
+
+  create_action('show', function(domain) {
+    BadgerCache.getContacts(function(results) {
+      if (results.data.length == 0) {
+        call_action('Modal.show', 'Whois.edit_whois_modal', null, action('Modal.show', 'Register.buy_domain_modal', domain));
+      } else {
+        call_action('Modal.show', 'Register.buy_domain_modal', domain);
+      }
+    });
+  });
+
+
+  create_action('buy_domain', function(form) {
+    $('#errors').empty();
+    Badger.registerDomain(form, function(response) {
+      if (response.meta.status == 'ok') {
+        BadgerCache.reload('domains');
+        BadgerCache.reload('payment_methods'); // to reset credits
+        call_action('Modal.hide');
+        redirect_to('#');
+      } else {
+        $('#errors').empty().append(helper('Application.error_message', response));
+      }
+    })
+  });
+  
+}
+
+
+with (Hasher.View('Register', 'Application')) {
+
+  create_helper('whois_contact_option', function(profile) {
+    console.log(arguments)
+    return option({ value: profile.id }, profile.first_name + ' ' + profile.last_name + (profile.organization ? ", " + profile.organization : '') + " (" + profile.address + (profile.address2 ? ', ' + profile.address2 : '') + ")");
+  });
+
+  create_helper('buy_domain_modal', function(domain) {
+    return [
+      h1(domain),
+      div({ id: 'errors' }),
+      form({ action: action('buy_domain') },
+        input({ type: 'hidden', name: 'name', value: domain }),
+      
+        table({ style: 'width:100%' }, tbody(
+          tr(
+            td({ style: "width: 50%; vertical-align: top" },
+
+            h3({ style: 'margin-bottom: 6px'}, 'Contact Information'),
+              table(tbody(
+                tr(
+                  td('Registrant:'),
+                  td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
+                    ((BadgerCache.cached_contacts && BadgerCache.cached_contacts.data) || []).map(function(profile) { return helper('whois_contact_option', profile); })
+                  ))
+                ),
+                tr(
+                  td('Technical:'), 
+                  td(select({ name: 'technical_contact_id', style: 'width: 150px' },
+                    option({ value: '' }, 'Same as Registrant'),
+                    ((BadgerCache.cached_contacts && BadgerCache.cached_contacts.data) || []).map(function(profile) { return helper('whois_contact_option', profile); })
+                  ))
+                ),
+                tr(
+                  td('Administrator:'), 
+                  td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
+                    option({ value: '' }, 'Same as Registrant'),
+                    ((BadgerCache.cached_contacts && BadgerCache.cached_contacts.data) || []).map(function(profile) { return helper('whois_contact_option', profile); })
+                  ))
+                ),
+                tr(
+                  td('Billing:'), 
+                  td(select({ name: 'billing_contact_id', style: 'width: 150px' },
+                    option({ value: '' }, 'Same as Registrant'),
+                    ((BadgerCache.cached_contacts && BadgerCache.cached_contacts.data) || []).map(function(profile) { return helper('whois_contact_option', profile); })
+                  ))
+                )
+              )),
+              div(
+                input({ type: 'checkbox', checked: 'checked' }), 
+                'Keep contact information private'
+              )
+            ),
+            td({ style: "width: 50%; vertical-align: top" },
+              h3({ style: 'margin-bottom: 6px'}, 'Advanced'),
+              table(tbody(
+                tr(
+                  td('Length:'),
+                  td(
+                    select({ name: 'years' },
+                      option({ value: 1 }, '1 Year'), 
+                      option({ value: 2 }, '2 Years'), 
+                      option({ value: 3 }, '3 Years'),
+                      option({ value: 4 }, '4 Years'),
+                      option({ value: 5 }, '5 Years'),
+                      option({ value: 10 }, '10 Years')
+                    ),
+                    input({ type: 'checkbox', checked: 'checked' }), 'Auto-renew'
+                  )
+                ),
+                tr(
+                  td('DNS:'),
+                  td(
+                    select({ name: 'name_servers' },
+                      option({ value: 'ns1.badger.com,ns2.badger.com' }, 'Badger DNS (recommended)')
+                      // option({ value: 'todo' }, 'easyDNS'),
+                      // option({ value: 'todo' }, 'EveryDNS'),
+                      // option({ value: 'todo' }, 'DNSMadeEasy'),
+                      // option({ value: 'todo' }, 'DynDNS'),
+                      // option({ value: 'todo' }, 'NO-IP'),
+                      // option({ value: 'todo' }, 'PowerDNS'),
+                      // option({ value: 'todo' }, 'UltraDNS'),
+                      // option({ value: 'todo' }, 'Zerigo'),
+                      // option({ value: 'todo' }, 'ZoneEdit')
+                    )
+                  )
+                )
+              ))
+            )
+          )
+        )),
+    
+        div({ style: "text-align: right; margin-top: 10px" }, button({ 'class': 'myButton' }, 'Continue'))
+      )
+    ];
+  });
+
+}

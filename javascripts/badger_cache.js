@@ -16,6 +16,19 @@ var BadgerCache = {
       BadgerCache.getDomains();
       BadgerCache.getPaymentMethods();
       BadgerCache.getContacts();
+      BadgerCache.getAccountInfo();
+    }
+  },
+  
+  getAccountInfo: function(callback) {
+    callback = callback || function(){};
+    if (BadgerCache.cached_account_info) {
+      callback(BadgerCache.cached_account_info);
+    } else {
+      Badger.accountInfo(function(results) { 
+        BadgerCache.cached_account_info = results;
+        callback(BadgerCache.cached_account_info);
+      });
     }
   },
 

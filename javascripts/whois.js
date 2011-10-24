@@ -9,23 +9,29 @@ with (Hasher.Controller('Whois','Application')) {
     });
   });
   
-  create_action('create_or_update_whois', function(contact_id, form_data) {
+  create_action('create_or_update_whois', function(contact_id, callback, form_data) {
     $('#errors').empty();
 
-    var callback = function(response) {
+    var tmp_callback = function(response) {
       if (response.meta.status == 'ok') {
         BadgerCache.flush('contacts');
-        call_action('Modal.hide');
-        call_action('index');
+        BadgerCache.getContacts(function() {
+          if (callback) {
+            callback();
+          } else {
+            call_action('Modal.hide');
+            call_action('index');
+          }
+        });
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));
       }
     }
 
     if (contact_id) {
-      Badger.updateContact(contact_id, form_data, callback);
+      Badger.updateContact(contact_id, form_data, tmp_callback);
     } else {
-      Badger.createContact(form_data, callback);
+      Badger.createContact(form_data, tmp_callback);
     }
   });
   
@@ -70,10 +76,10 @@ with (Hasher.View('Whois', 'Application')) { (function() {
     );
   });
 
-  create_helper('edit_whois_modal', function(data) {
+  create_helper('edit_whois_modal', function(data, callback) {
     data = data || {};
-    return form({ action: action('create_or_update_whois', data.id) },
-      h1(data.id ? 'Edit Whois' : 'Create Whois'),
+    return form({ action: action('create_or_update_whois', data.id, callback) },
+      h1(data.id ? 'Edit Whois Profile' : 'Create Whois Profile'),
       div({ id: 'errors' }),
       div(
         input({ name: 'first_name', placeholder: 'First Name', value: data.first_name || '' }),
@@ -97,7 +103,7 @@ with (Hasher.View('Whois', 'Application')) { (function() {
         input({ name: 'zip', placeholder: 'Zip', value: data.zip || '' })
       ),
       div(
-        input({ name: 'country', placeholder: 'Country', value: data.country || '' })
+        select({ name: 'country' }, option({ disabled: 'disabled' }, 'Country:'), helper("Application.country_options", data.country))
       ),
       div({ style: 'text-align: right; margin-top: 10px' }, button({ 'class': 'myButton' }, data.id ? 'Save' : 'Create'))
     );

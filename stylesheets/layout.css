@@ -6,7 +6,7 @@ form,fieldset { margin:0; padding:0; border-style:none; }
 
 html { height: 100%; background: #0085aa url(/images/bg-page.jpg) repeat top center; }
 body { min-height: 100%; background: transparent url(/images/bg-page-fade.jpg) repeat-x top center; margin: 0; font-size: 100.01%; }
-body, input, textarea, select, td, th, a { font: 14px "Droid Sans", Arial, sans-serif; color: #333; }
+body, input, textarea, select, td, th, a { font: 14px "Droid Sans", Arial, sans-serif; color: #333; line-height: 18px; }
 a { color: #1E31F5; }
 
 #wrapper { width: 970px; padding: 0 10px 10px 0; margin: 0 auto; position: relative; }
@@ -94,7 +94,7 @@ a { color: #1E31F5; }
 
 
 #modal-dialog { position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); }
-#modal-content { margin: 100px auto 0 auto; width: 600px; padding: 20px; border-radius: 3px; background: white; position: relative; }
+#modal-content { margin: 100px auto 0 auto; width: 600px; padding: 20px; border-radius: 5px; background: white; position: relative; }
 #modal-dialog .close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
 #modal-dialog .close-button:hover { text-decoration: none; }
 #modal-dialog h1 { font: 28px "Oswald", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }

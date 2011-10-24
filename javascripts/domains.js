@@ -2,8 +2,7 @@ with (Hasher.Controller('Domains','Application')) {
   route({
     '#': 'index',
     '#domains/:domain': 'show',
-    '#domains/:domain/whois': 'whois',
-    '#domain-transfers': 'transfers'
+    '#domains/:domain/whois': 'whois'
   });
   
   create_action('show', function(domain) {
@@ -28,7 +27,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
       
       (typeof domains == 'undefined') ? [
         div('Loading domains...')
-      ]:(domains.length == 0) ? [
+      ]:((domains.length == 0) ? [
         div("It looks like you don't have any domains registered with us yet. You should probably:"),
         ul(
           li(a({ href: function() { $('#form-search-input').focus(); } }, "Search for a new domain")),
@@ -55,20 +54,13 @@ with (Hasher.View('Domains', 'Application')) { (function() {
             })
           )
         )
-      ]
+      ])
     );
   });
 
   create_view('show', function(domain) {
     return div(
       h1(domain)
-    );
-  });
-
-  create_view('transfers', function() {
-    return div(
-      h1('DOMAIN TRANSFERS'),
-      div('Coming soon to a registrar near you.')
     );
   });
 
