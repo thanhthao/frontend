@@ -20,13 +20,21 @@ with (Hasher.Controller('Register','Application')) {
 
 
   create_action('buy_domain', function(form) {
+    // prevent double submits            
+    if ($('#register-button').attr('disabled')) return;
+    else $('#register-button').attr('disabled', true);
+
     $('#errors').empty();
     Badger.registerDomain(form, function(response) {
+      $('#register-button').attr('disabled', false);
+
       if (response.meta.status == 'ok') {
-        BadgerCache.reload('domains');
-        BadgerCache.reload('payment_methods'); // to reset credits
-        call_action('Modal.hide');
-        redirect_to('#');
+        helper('Application.update_credits', true);
+        BadgerCache.flush('domains');
+        BadgerCache.getDomains(function() {
+          call_action('Modal.hide');
+          redirect_to('#');
+        })
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));
       }
@@ -59,28 +67,28 @@ with (Hasher.View('Register', 'Application')) {
                 tr(
                   td('Registrant:'),
                   td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
-                    ((BadgerCache.cached_contacts && BadgerCache.cached_contacts.data) || []).map(function(profile) { return helper('whois_contact_option', profile); })
+                    BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
                   ))
                 ),
                 tr(
                   td('Technical:'), 
                   td(select({ name: 'technical_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
-                    ((BadgerCache.cached_contacts && BadgerCache.cached_contacts.data) || []).map(function(profile) { return helper('whois_contact_option', profile); })
+                    BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
                   ))
                 ),
                 tr(
                   td('Administrator:'), 
                   td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
-                    ((BadgerCache.cached_contacts && BadgerCache.cached_contacts.data) || []).map(function(profile) { return helper('whois_contact_option', profile); })
+                    BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
                   ))
                 ),
                 tr(
                   td('Billing:'), 
                   td(select({ name: 'billing_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
-                    ((BadgerCache.cached_contacts && BadgerCache.cached_contacts.data) || []).map(function(profile) { return helper('whois_contact_option', profile); })
+                    BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
                   ))
                 )
               )),

@@ -87,7 +87,8 @@ with (Hasher.View('Application')) {
     );
   });
   
-  create_helper('update_credits', function() {
+  create_helper('update_credits', function(refresh) {
+    if (refresh) BadgerCache.flush('account_info');
     BadgerCache.getAccountInfo(function(response) {
       $('#user_nav_credits').html(response.data.domain_credits == 1 ? '1 Credit' : response.data.domain_credits + ' Credits');
     });
@@ -147,10 +148,10 @@ with (Hasher.View('Application')) {
 
           ul({ id: 'menu' },
             li({ id: 'nav-my-domains' },
-              a({ href: "#" }, 'MY DOMAINS'),
-              ul(
-                li({ 'class': "email"}, a({ href: "#domain-transfers" }, 'TRANSFERS'))
-              )
+              a({ href: "#" }, 'MY DOMAINS')
+              // ul(
+              //   li({ 'class': "email"}, a({ href: "#domain-transfers" }, 'TRANSFERS'))
+              // )
             ),
 
             li({ id: 'nav-my-account' },

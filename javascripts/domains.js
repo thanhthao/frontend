@@ -24,6 +24,10 @@ with (Hasher.View('Domains', 'Application')) { (function() {
   create_view('index', function(domains) {
     return div(
       h1('My Domains'),
+
+      div({ style: 'float: right; margin-top: -44px' }, 
+        a({ 'class': 'myButton myButton-small', href: action('Transfer.show') }, 'Transfer in a Domain')
+      ),
       
       (typeof domains == 'undefined') ? [
         div('Loading domains...')
@@ -39,6 +43,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
           tbody(
             tr({ 'class': 'table-header' },
               th('Name'),
+              th('Status'),
               th('Expires'),
               th('Links')
             ),
@@ -46,6 +51,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
             (domains || []).map(function(domain) {
               return tr(
                 td(a({ href: '#domains/' + domain.name }, domain.name)),
+                td(domain.status),
                 td(new Date(domain.expires).toDateString()),
                 td(
                   a({ href: '#domains/' + domain.name + '/dns' }, 'DNS')
