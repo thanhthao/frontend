@@ -17,10 +17,10 @@ with (Hasher.Controller('Transfer','Application')) {
       } else {
         BadgerCache.getAccountInfo(function(results) {
           // ensure they have at least one domain_credit
-          if (results.data.domain_credits <= 0) {
-            call_action('Modal.show', 'Billing.purchase_modal', action('Transfer.show', domain))
-          } else {
+          if (results.data.domain_credits > 0) {
             call_action('Modal.show', 'Transfer.initiate_new_transfer', domain);
+          } else {
+            call_action('Modal.show', 'Billing.purchase_modal', action('Transfer.show', domain))
           }
         });
       }

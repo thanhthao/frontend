@@ -8,10 +8,10 @@ with (Hasher.Controller('Register','Application')) {
       } else {
         BadgerCache.getAccountInfo(function(results) {
           // ensure they have at least one domain_credit
-          if (results.data.domain_credits <= 0) {
-            call_action('Modal.show', 'Billing.purchase_modal', action('Register.show', domain))
-          } else {
+          if (results.data.domain_credits > 0) {
             call_action('Modal.show', 'Register.buy_domain_modal', domain);
+          } else {
+            call_action('Modal.show', 'Billing.purchase_modal', action('Register.show', domain))
           }
         });
       }
