@@ -35,7 +35,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
         div("It looks like you don't have any domains registered with us yet. You should probably:"),
         ul(
           li(a({ href: function() { $('#form-search-input').focus(); } }, "Search for a new domain")),
-          li(a({ href: '#domain-transfers' }, "Transfer a domain from another registrar"))
+          li(a({ href: action('Transfer.show') }, "Transfer a domain from another registrar"))
         ),
         div("Then this page will be a lot more fun.")
       ]:[
