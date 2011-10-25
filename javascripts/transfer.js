@@ -1,13 +1,13 @@
 with (Hasher.Controller('Transfer','Application')) {
-  route({
-    '#domain-transfers': 'index'
-  });
-  
-  create_action('index', function() {
-    Badger.getPendingTransfers(function(results) {
-      render('index', results.data);
-    });
-  });
+  // route({
+  //   '#domain-transfers': 'index'
+  // });
+  // 
+  // create_action('index', function() {
+  //   Badger.getPendingTransfers(function(results) {
+  //     render('index', results.data);
+  //   });
+  // });
 
   create_action('show', function(domain) {
     BadgerCache.getContacts(function(results) {
@@ -42,7 +42,7 @@ with (Hasher.Controller('Transfer','Application')) {
         BadgerCache.flush('domains');
         BadgerCache.getDomains(function() {
           call_action('Modal.hide');
-          call_action('index');
+          call_action('Domains.index');
         })
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));
@@ -55,34 +55,33 @@ with (Hasher.Controller('Transfer','Application')) {
 
 with (Hasher.View('Transfer', 'Application')) { (function() {
 
-  create_view('index', function(transfers) {
-    return div(
-      h1('Domain Transfers'),
-      div({ style: 'float: right; margin-top: -44px' }, 
-        a({ 'class': 'myButton myButton-small', href: action('show') }, 'Initiate New Transfer')
-      ),
-      
-      (typeof transfers == 'undefined') ? [
-        div('Loading transfers...')
-      ]:((transfers.length == 0) ? [
-        div("There are no pending domain transfers.  If you'd like to transfer a domain that you already own from another registrar, click the \"Initiate New Transfer\" above.")
-      ]:[
-        table({ 'class': 'fancy-table' },
-          tbody(
-            transfers.map(function(transfer) {
-              return tr(
-  							td(transfer.domain),
-  							td(transfer.status)
-              );
-            })
-          )
-        )
-      ])
-    );
-  });
+  // create_view('index', function(transfers) {
+  //   return div(
+  //     h1('Domain Transfers'),
+  //     div({ style: 'float: right; margin-top: -44px' }, 
+  //       a({ 'class': 'myButton myButton-small', href: action('show') }, 'Initiate New Transfer')
+  //     ),
+  //     
+  //     (typeof transfers == 'undefined') ? [
+  //       div('Loading transfers...')
+  //     ]:((transfers.length == 0) ? [
+  //       div("There are no pending domain transfers.  If you'd like to transfer a domain that you already own from another registrar, click the \"Initiate New Transfer\" above.")
+  //     ]:[
+  //       table({ 'class': 'fancy-table' },
+  //         tbody(
+  //           transfers.map(function(transfer) {
+  //             return tr(
+  //              td(transfer.domain),
+  //              td(transfer.status)
+  //             );
+  //           })
+  //         )
+  //       )
+  //     ])
+  //   );
+  // });
 
   create_helper('whois_contact_option', function(profile) {
-    console.log(arguments)
     return option({ value: profile.id }, profile.first_name + ' ' + profile.last_name + (profile.organization ? ", " + profile.organization : '') + " (" + profile.address + (profile.address2 ? ', ' + profile.address2 : '') + ")");
   });
 

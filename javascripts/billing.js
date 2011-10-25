@@ -161,9 +161,12 @@ with (Hasher.View('Billing', 'Application')) { (function() {
       div({ id: 'errors' }),
       table({ style: 'width: 100%' }, tbody(
         tr(
-          td({ style: 'vertical-align: top; width: 260px; padding-right: 60px' },
-            helper('credits_table'),
-            div({ style: 'margin-top: 6px; color: #888; font-style: italic; ' }, 'Credits can be used to buy a new domain, renew an expiring domain or transfer in a domain from another registrar.')
+          td({ style: 'vertical-align: top; width: 300px; padding-right: 30px' },
+            div({ 'class': 'info-message' },
+              helper('credits_table'),
+              div({ style: 'margin-top: 10px; font-weight: bold; text-align: center' }, '1 credit = 1 domain for 1 year'),
+              div({ style: 'color: #666; font-style: italic; text-align: center' }, 'On new domains, renewals or transfers.')
+            )
           ),
 
           td({ style: 'vertical-align: top' },
