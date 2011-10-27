@@ -76,6 +76,27 @@ with (Hasher.View('Whois', 'Application')) { (function() {
     );
   });
 
+  create_helper('profile_options_for_select', function(selected_id) {
+    return BadgerCache.cached_contacts.data.map(function(profile) { 
+      var opts = { value: profile.id };
+      if (''+profile.id == ''+selected_id) opts['selected'] = 'selected';
+      return option(opts, profile.first_name + ' ' + profile.last_name + (profile.organization ? ", " + profile.organization : '') + " (" + profile.address + (profile.address2 ? ', ' + profile.address2 : '') + ")");
+    });
+  });
+
+  create_helper('whois_contact', function(whois) {
+    return div(
+      div(whois.first_name, ' ', whois.last_name),
+      (whois.organization && div(whois.organization)),
+      (whois.address && div(whois.address)),
+      (whois.address2 && div(whois.address2)),
+      div(whois.city, ', ', whois.state, ', ', whois.zip, ', ', whois.country),
+      div('Email: ', whois.email),
+      div('Phone: ', whois.phone),
+      (whois.phone && div('Fax: ', whois.phone))
+    );
+  });
+  
   create_helper('edit_whois_modal', function(data, callback) {
     data = data || {};
     return form({ action: action('create_or_update_whois', data.id, callback) },

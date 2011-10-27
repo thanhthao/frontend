@@ -46,11 +46,6 @@ with (Hasher.Controller('Register','Application')) {
 
 with (Hasher.View('Register', 'Application')) {
 
-  create_helper('whois_contact_option', function(profile) {
-    console.log(arguments)
-    return option({ value: profile.id }, profile.first_name + ' ' + profile.last_name + (profile.organization ? ", " + profile.organization : '') + " (" + profile.address + (profile.address2 ? ', ' + profile.address2 : '') + ")");
-  });
-
   create_helper('buy_domain_modal', function(domain) {
     return [
       h1(domain),
@@ -67,28 +62,28 @@ with (Hasher.View('Register', 'Application')) {
                 tr(
                   td('Registrant:'),
                   td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
-                    BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
-                  ))
-                ),
-                tr(
-                  td('Technical:'), 
-                  td(select({ name: 'technical_contact_id', style: 'width: 150px' },
-                    option({ value: '' }, 'Same as Registrant'),
-                    BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
+                    helper('Whois.profile_options_for_select')
                   ))
                 ),
                 tr(
                   td('Administrator:'), 
                   td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
-                    BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
+                    helper('Whois.profile_options_for_select')
                   ))
                 ),
                 tr(
                   td('Billing:'), 
                   td(select({ name: 'billing_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
-                    BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
+                    helper('Whois.profile_options_for_select')
+                  ))
+                ),
+                tr(
+                  td('Technical:'), 
+                  td(select({ name: 'technical_contact_id', style: 'width: 150px' },
+                    option({ value: '' }, 'Same as Registrant'),
+                    helper('Whois.profile_options_for_select')
                   ))
                 )
               )),

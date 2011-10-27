@@ -108,27 +108,27 @@ with (Hasher.View('Transfer', 'Application')) { (function() {
             h3({ style: 'margin-bottom: 6px'}, 'Contact Information'),
             div('Registrant: ', 
               select({ name: 'registrant_contact_id', style: 'width: 150px' },
-                BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
+                helper('Whois.profile_options_for_select')
               )
               // ' ',
               // input({ type: 'checkbox', checked: 'checked' }), 'Whois Privacy'
             ),
-            div('Technical: ', 
-              select({ name: 'technical_contact_id', style: 'width: 150px' },
-                option({ value: '' }, 'Same as Registrant'),
-                BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
-              )
-            ),
             div('Administrator: ', 
               select({ name: 'administrator_contact_id', style: 'width: 150px' },
                 option({ value: '' }, 'Same as Registrant'),
-                BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
+                helper('Whois.profile_options_for_select')
               )
             ),
             div('Billing: ', 
               select({ name: 'billing_contact_id', style: 'width: 150px' },
                 option({ value: '' }, 'Same as Registrant'),
-                BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
+                helper('Whois.profile_options_for_select')
+              )
+            ),
+            div('Technical: ', 
+              select({ name: 'technical_contact_id', style: 'width: 150px' },
+                option({ value: '' }, 'Same as Registrant'),
+                helper('Whois.profile_options_for_select')
               )
             ),
             div(

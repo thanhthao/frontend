@@ -20,12 +20,24 @@ with (Hasher.Controller('Domains','Application')) {
     });
   });
 
-  create_action('whois', function(domain) {
-    Badger.getDomain(domain, function(response) {
-      render('whois', domain, response.data);
+  create_action('whois', function(domain_name) {
+    Badger.getContacts(function() {
+      Badger.getDomain(domain_name, function(response) {
+        render('whois', response.data);
+      });
     });
-    render('whois', domain);
+    render('whois_loading', domain_name);
   });
+
+  create_action('update_whois', function(domain, form_data) {
+    // force sends a "privacy=false"... exclusion isn't enough
+    form_data['privacy'] = !!form_data['privacy'];
+    Badger.updateDomain(domain.name, form_data, function(response) {
+      console.log(response);
+      call_action('whois', domain.name);
+    });
+  });
+  
 
   layout('dashboard');
 }
@@ -108,36 +120,69 @@ with (Hasher.View('Domains', 'Application')) { (function() {
     );
   });
   
-  create_helper('whois_contact', function(whois) {
+  create_view('whois_loading', function(domain_name) {
     return div(
-      div(whois.first_name, ' ', whois.last_name),
-      (whois.organization && div(whois.organization)),
-      (whois.address && div(whois.address)),
-      (whois.address2 && div(whois.address2)),
-      div(whois.city, ', ', whois.state, ', ', whois.zip, ', ', whois.country),
-      div('Email: ', whois.email),
-      div('Phone: ', whois.phone),
-      (whois.phone && div('Fax: ', whois.phone))
+      h1(domain_name + ' WHOIS'),
+      'Loading... please wait.'
     );
-  });
+  });  
 
-  create_view('whois', function(domain, data) {
+  create_view('whois', function(domain) {
     return div(
-      h1(domain + ' WHOIS'),
+      h1(domain.name + ' WHOIS'),
       
-      (data ? [
-        h2('Registrant'),
-        helper('whois_contact', data.registrant_contact),
+      table({ style: 'width: 100% '}, tbody(
+        tr(
+          td({ style: 'vertical-align: top; padding-right: 20px'},
+            h2('Public Listing'),
+            div({ style: 'border: 1px solid #ccc; width: 400px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois)
+          ), 
+          td({ style: 'vertical-align: top'},
+            h2('Make Changes'),
 
-        h2('Administrative Contact'),
-        helper('whois_contact', data.administrator_contact),
+            form({ action: action('update_whois', domain) },
+              table(tbody(
+                tr(
+                  td('Registrant:'),
+                  td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
+                    helper('Whois.profile_options_for_select', domain.registrant_contact.id)
+                  ))
+                ),
+                tr(
+                  td('Administrator:'), 
+                  td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
+                    option({ value: '' }, 'Same as Registrant'),
+                    helper('Whois.profile_options_for_select', domain.administrator_contact && domain.administrator_contact.id)
+                  ))
+                ),
+                tr(
+                  td('Billing:'), 
+                  td(select({ name: 'billing_contact_id', style: 'width: 150px' },
+                    option({ value: '' }, 'Same as Registrant'),
+                    helper('Whois.profile_options_for_select', domain.billing_contact && domain.billing_contact.id)
+                  ))
+                ),
+                tr(
+                  td('Technical:'), 
+                  td(select({ name: 'technical_contact_id', style: 'width: 150px' },
+                    option({ value: '' }, 'Same as Registrant'),
+                    helper('Whois.profile_options_for_select', domain.technical_contact && domain.technical_contact.id)
+                  ))
+                )
+              )),
+              div(
+                (domain.privacy ? input({ name: 'privacy', type: 'checkbox', checked: 'checked' }) : input({ name: 'privacy', type: 'checkbox' })),
+                'Keep contact information private'
+              ),
 
-        h2('Technical Contact'),
-        helper('whois_contact', data.technical_contact),
+              div({ style: "text-align: right" },
+                input({ type: 'submit', 'class': 'myButton myButton-small', value: 'Save' })
+              )
+            )
 
-        h2('Billing Contact'),
-        helper('whois_contact', data.billing_contact)
-      ] : ['Loading...'])
+          )
+        )
+      ))
     );
   });
 
