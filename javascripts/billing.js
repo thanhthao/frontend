@@ -61,7 +61,7 @@ with (Hasher.View('Billing', 'Application')) { (function() {
             return tr(
               td(new Date(credit_history.created_at).toDateString()),
               td(credit_history.details),
-              credit_history.domain && td(credit_history.domain.name),
+              td(credit_history.domain ? a({ href: '#domains/' + credit_history.domain.name }, credit_history.domain.name) : ''),
               td(credit_history.num_credits)
                   
               // td({ style: "text-align: right" },

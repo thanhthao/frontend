@@ -18,7 +18,6 @@ with (Hasher.Controller('Application')) {
     if (Hasher.Routes.getHash().match(/^#(request_invite|login|register\/.*)$/)) return;
 
     // got this far? send 'em away
-    console.log("redirect_to_root_unless_logged_in");
     redirect_to('#request_invite');
   });
   
