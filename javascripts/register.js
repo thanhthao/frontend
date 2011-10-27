@@ -117,18 +117,7 @@ with (Hasher.View('Register', 'Application')) {
                 tr(
                   td('DNS:'),
                   td(
-                    select({ name: 'name_servers' },
-                      option({ value: 'ns1.badger.com,ns2.badger.com' }, 'Badger DNS (recommended)')
-                      // option({ value: 'todo' }, 'easyDNS'),
-                      // option({ value: 'todo' }, 'EveryDNS'),
-                      // option({ value: 'todo' }, 'DNSMadeEasy'),
-                      // option({ value: 'todo' }, 'DynDNS'),
-                      // option({ value: 'todo' }, 'NO-IP'),
-                      // option({ value: 'todo' }, 'PowerDNS'),
-                      // option({ value: 'todo' }, 'UltraDNS'),
-                      // option({ value: 'todo' }, 'Zerigo'),
-                      // option({ value: 'todo' }, 'ZoneEdit')
-                    )
+                    select({ name: 'name_servers' }, helper('DNS.dns_provider_options'))
                   )
                 )
               ))

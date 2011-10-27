@@ -54,6 +54,10 @@ with (Hasher.View('Search', 'Application')) {
   create_view('search', function(domains) {
     return div(
       h1('Search Results'),
+      div({ style: 'float: right; margin-top: -44px' }, 
+        a({ 'class': 'myButton myButton-small', href: action('Transfer.show') }, 'Transfer in a Domain')
+      ),
+      
       table({ id: 'search-results', 'class': 'fancy-table' }, tbody()),
       div({ id: 'search-instructions' }, 'Start typing to search for available domains.')
     );

@@ -20,6 +20,13 @@ with (Hasher.Controller('Domains','Application')) {
     });
   });
 
+  create_action('whois', function(domain) {
+    Badger.getDomain(domain, function(response) {
+      render('whois', domain, response.data);
+    });
+    render('whois', domain);
+  });
+
   layout('dashboard');
 }
 
@@ -29,10 +36,6 @@ with (Hasher.View('Domains', 'Application')) { (function() {
     return div(
       h1('My Domains'),
 
-      div({ style: 'float: right; margin-top: -44px' }, 
-        a({ 'class': 'myButton myButton-small', href: action('Transfer.show') }, 'Transfer in a Domain')
-      ),
-      
       (typeof domains == 'undefined') ? [
         div('Loading domains...')
       ]:((domains.length == 0) ? [
@@ -58,7 +61,9 @@ with (Hasher.View('Domains', 'Application')) { (function() {
                 td(domain.status),
                 td(new Date(domain.expires).toDateString()),
                 td(
-                  a({ href: '#domains/' + domain.name + '/dns' }, 'DNS')
+                  a({ href: '#domains/' + domain.name + '/dns' }, 'dns'),
+                  ' ', 
+                  a({ href: '#domains/' + domain.name + '/whois' }, 'whois')
                 )
               );
             })
@@ -80,32 +85,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
       h1(domain),
       table({ style: 'width: 100%' }, tbody(
         tr(
-            td({ style: 'width: 50%; vertical-align: top; padding-right: 20px; border-right: 1px solid #ddd' },
-
-            h2('Common Actions'),
-            ul(
-              li(a({ href: '#domains/' + data.name + '/dns' }, 'View Public Whois Record')),
-              li(a({ href: '#domains/' + data.name + '/dns' }, 'Lock/Unlock Domain')),
-              ((data.name_servers).join(',') == 'ns1.badger.com,ns2.badger.com') && li(a({ href: '#domains/' + data.name + '/dns' }, 'Manage Badger DNS'))
-            ),
-
-            h2('Dates'),
-            dl(
-              dt('Created At: '), dd(data.created_at),
-              dt('Updated At: '), dd(data.updated_at),
-              dt('Expires On: '), dd(data.expires_on),
-              dt('Registered On: '), dd(data.registered_on),
-              dt('Updated On: '), dd(data.updated_on)
-            ),
-
-            h2('Name Servers'),
-            ul(
-              data.name_servers.map(function(server) {
-                return li(server);
-              })
-            ),
-
-            h2('Misc'),
+          td({ style: 'width: 50%; vertical-align: top; padding-right: 20px; border-right: 1px solid #ddd' },
             dl(
               dt('ID: '), dd(data.id),
               dt('Status: '), dd(data.status),
@@ -115,17 +95,13 @@ with (Hasher.View('Domains', 'Application')) { (function() {
           ),
 
           td({ style: 'width: 50%; vertical-align: top; padding-left: 20px;' },
-            h2('Registrant'),
-            helper('whois_contact', data.registrant_contact),
-
-            h2('Administrative Contact'),
-            helper('whois_contact', data.administrator_contact),
-
-            h2('Technical Contact'),
-            helper('whois_contact', data.technical_contact),
-
-            h2('Billing Contact'),
-            helper('whois_contact', data.billing_contact)
+            dl(
+              dt('Created At: '), dd(data.created_at),
+              dt('Updated At: '), dd(data.updated_at),
+              dt('Expires On: '), dd(data.expires_on),
+              dt('Registered On: '), dd(data.registered_on),
+              dt('Updated On: '), dd(data.updated_on)
+            )
           )
         )
       ))
@@ -145,9 +121,23 @@ with (Hasher.View('Domains', 'Application')) { (function() {
     );
   });
 
-  create_view('whois', function(domain) {
+  create_view('whois', function(domain, data) {
     return div(
-      h1(domain + ' WHOIS')
+      h1(domain + ' WHOIS'),
+      
+      (data ? [
+        h2('Registrant'),
+        helper('whois_contact', data.registrant_contact),
+
+        h2('Administrative Contact'),
+        helper('whois_contact', data.administrator_contact),
+
+        h2('Technical Contact'),
+        helper('whois_contact', data.technical_contact),
+
+        h2('Billing Contact'),
+        helper('whois_contact', data.billing_contact)
+      ] : ['Loading...'])
     );
   });
 

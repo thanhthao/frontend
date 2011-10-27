@@ -100,19 +100,7 @@ with (Hasher.View('Transfer', 'Application')) { (function() {
 
             h3({ style: 'margin-bottom: 6px'}, 'Advanced'),
             div('DNS: ', 
-              select({ name: 'name_servers' },
-                option({ value: 'ns1.badger.com,ns2.badger.com' }, 'Badger DNS (recommended)'),
-                option({ value: '' }, "Leave as is")
-                // option({ value: 'todo' }, 'easyDNS'),
-                // option({ value: 'todo' }, 'EveryDNS'),
-                // option({ value: 'todo' }, 'DNSMadeEasy'),
-                // option({ value: 'todo' }, 'DynDNS'),
-                // option({ value: 'todo' }, 'NO-IP'),
-                // option({ value: 'todo' }, 'PowerDNS'),
-                // option({ value: 'todo' }, 'UltraDNS'),
-                // option({ value: 'todo' }, 'Zerigo'),
-                // option({ value: 'todo' }, 'ZoneEdit')
-              )
+              select({ name: 'name_servers' }, helper('DNS.dns_provider_options'))
             )
           ),
           td({ style: "width: 50%; vertical-align: top" },
