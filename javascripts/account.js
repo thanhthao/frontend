@@ -19,7 +19,11 @@ with (Hasher.View('Account', 'Application')) { (function() {
   create_view('settings', function() {
     return div(
       h1('Settings'),
-      'Welcome!'
+      'Coming soon:',
+      ul(
+        li('change password'),
+        li('email preferences')
+      )
     );
   });
 

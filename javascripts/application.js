@@ -81,7 +81,7 @@ with (Hasher.View('Application')) {
       a({ href: "#domains/" + domain }, domain.toUpperCase()),
       ul(
         li({ 'class': "email" }, a({ href: "#domains/" + domain + "/dns" }, 'DNS')),
-        li({ 'class': "email" }, a({ href: "#domains/" + domain + "/whois" }, 'WHOIS'))
+        li({ 'class': "email" }, a({ href: "#domains/" + domain + "/whois" }, 'WHOIS & PRIVACY'))
         //li({ 'class': "email" }, a({ href: "#domains/" + domain + "/whois" }, 'TRANSFER'))
       )
     );
@@ -100,7 +100,8 @@ with (Hasher.View('Application')) {
     );
 
     BadgerCache.getAccountInfo(function(response) {
-      $(user_nav).prepend(span(a({ href: '#account/settings'}, response.data.name)));
+      //$(user_nav).prepend(span(a({ href: '#account/settings'}, response.data.name)));
+      $(user_nav).prepend(span(response.data.name));
       $(user_nav).prepend(span(a({ href: '#account/billing', id: 'user_nav_credits' }, 'Credits')));
       helper('update_credits');
     });
@@ -158,8 +159,8 @@ with (Hasher.View('Application')) {
               a({ href: "#account" }, 'MY ACCOUNT'),
               ul(
                 li({ 'class': "email"}, a({ href: "#account/profiles" }, 'WHOIS PROFILES')),
-                li({ 'class': "website"}, a({ href: "#account/billing" }, 'CREDITS & BILLING')),
-                li({ 'class': "email"}, a({ href: "#account/settings" }, 'SETTINGS'))
+                li({ 'class': "website"}, a({ href: "#account/billing" }, 'CREDITS & BILLING'))
+                //li({ 'class': "email"}, a({ href: "#account/settings" }, 'SETTINGS'))
               )
             ),
 
