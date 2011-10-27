@@ -4,7 +4,8 @@ with (Hasher.Controller('Billing','Application')) {
   });
   
   create_action('index', function() {
-    BadgerCache.getPaymentMethods(function(results) {
+    Badger.getCreditHistory(function(results) {
+      console.log(results)
       render('index', results.data.message ? [] : results.data);
     });
   });
@@ -47,7 +48,7 @@ with (Hasher.Controller('Billing','Application')) {
 
 with (Hasher.View('Billing', 'Application')) { (function() {
 
-  create_view('index', function(contacts) {
+  create_view('index', function(credit_historys) {
     return div(
       h1('Billing Settings'),
       div({ style: 'float: right; margin-top: -44px' }, 
@@ -56,21 +57,25 @@ with (Hasher.View('Billing', 'Application')) { (function() {
 
       table({ 'class': 'fancy-table' },
         tbody(
-              //           (contacts || []).map(function(payment_method) {
-              //             return tr(
-              //               // td(
-              //               //   div(contact.first_name, ' ', contact.last_name)
-              //               // ),
-              //               // td(
-              //               //   div(contact.cc_number),
-              //               //   div(contact.cc_expiration)
-              //               // ),
-              // td(payment_method.name),
-              //               td({ style: "text-align: right" },
-              //                 a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Billing.purchase_modal', payment_method) }, 'Edit')
-              //               )
-              //             );
-              //           })
+          (credit_historys || []).map(function(credit_history) {
+            return tr(
+              td(new Date(credit_history.created_at).toDateString()),
+              td(credit_history.details),
+              credit_history.domain && td(credit_history.domain.name),
+              td(credit_history.num_credits)
+                  
+              // td({ style: "text-align: right" },
+              //   a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Billing.purchase_modal', payment_method) }, 'Edit')
+              // )
+              // td(
+              //   div(contact.first_name, ' ', contact.last_name)
+              // ),
+              // td(
+              //   div(contact.cc_number),
+              //   div(contact.cc_expiration)
+              // ),
+              );
+            })
         )
       )
     );
@@ -82,7 +87,7 @@ with (Hasher.View('Billing', 'Application')) { (function() {
         th({ style: 'width: 25%' }, 'Package'), 
         th({ style: 'width: 25%' }, 'Credits'), 
         th({ style: 'width: 25%' }, 'Each'), 
-        th({ style: 'width: 25%; text-align: right' }, 'Total')
+        th({ style: 'width: 25%' }, 'Total')
       ),
       tr(
         td(input({ checked: 'checked', type: 'radio', name: 'credits', value: 1 })), 
@@ -92,37 +97,37 @@ with (Hasher.View('Billing', 'Application')) { (function() {
           )
         ),
         td('$15'), 
-        td({ style: "text-align: right" }, '$', span({ id: 'variable-credits' }, '15'))
+        td('$', span({ id: 'variable-credits' }, '15'))
       ),
       tr(
         td(input({ type: 'radio', name: 'credits', value: 10 })), 
         td(10), 
         td('$14'), 
-        td({ style: "text-align: right" }, '$', 10*14)
+        td('$', 10*14)
       ),
       tr(
         td(input({ type: 'radio', name: 'credits', value: 25 })), 
         td(25), 
         td('$13'), 
-        td({ style: "text-align: right" }, '$', 25*13)
+        td('$', 25*13)
       ),
       tr(
         td(input({ type: 'radio', name: 'credits', value: 50 })), 
         td(50), 
         td('$12'), 
-        td({ style: "text-align: right" }, '$', 50*12)
+        td('$', 50*12)
       ),
       tr(
         td(input({ type: 'radio', name: 'credits', value: 100 })), 
         td(100), 
         td('$11'), 
-        td({ style: "text-align: right" }, '$', 100*11)
+        td('$', 100*11)
       ),
       tr(
         td(input({ type: 'radio', name: 'credits', value: 250 })), 
         td(250), 
         td('$10'), 
-        td({ style: "text-align: right" }, '$', 250*10)
+        td('$', 250*10)
       )
     ));
     
@@ -164,8 +169,8 @@ with (Hasher.View('Billing', 'Application')) { (function() {
           td({ style: 'vertical-align: top; width: 300px; padding-right: 30px' },
             div({ 'class': 'info-message' },
               helper('credits_table'),
-              div({ style: 'margin-top: 10px; font-weight: bold; text-align: center' }, '1 credit = 1 domain for 1 year'),
-              div({ style: 'color: #666; font-style: italic; text-align: center' }, 'On new domains, renewals or transfers.')
+              div({ style: 'margin-top: 10px; font-weight: bold; text-align: center; font-size: 16px' }, '1 credit = 1 domain for 1 year'),
+              div({ style: 'margin-top: 5px; font-style: italic; text-align: center' }, 'Transfers are 1 credit and extend the current registration by a year.')
             )
           ),
 
