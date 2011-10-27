@@ -31,7 +31,7 @@ with (Hasher.Controller('Domains','Application')) {
 
   create_action('update_whois', function(domain, form_data) {
     // force sends a "privacy=false"... exclusion isn't enough
-    form_data['privacy'] = !!form_data['privacy'];
+    form_data['privacy'] = form_data['privacy'] ? 'true' : 'false';
     Badger.updateDomain(domain.name, form_data, function(response) {
       console.log(response);
       call_action('whois', domain.name);
