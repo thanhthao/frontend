@@ -105,6 +105,8 @@ a { color: #1E31F5; }
 
 .info-message { border: 1px solid #e2c822; background: #fff9d7; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
 .info-message ul { margin: 10px 0 0 0; }
+.info-message .fancy-table tr:hover { background: #FFFEF8; }
+.info-message .fancy-table tr.table-header:hover { background: none; }
 .error-message { border: 1px solid #dd3c10; background: #ffebe8; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
 .error-message ul { margin: 10px 0 0 0; }
 
