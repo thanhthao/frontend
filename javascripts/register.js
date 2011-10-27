@@ -93,7 +93,7 @@ with (Hasher.View('Register', 'Application')) {
                 )
               )),
               div(
-                input({ type: 'checkbox', checked: 'checked' }), 
+                input({ name: 'privacy', type: 'checkbox', checked: 'checked' }), 
                 'Keep contact information private'
               )
             ),
@@ -111,7 +111,7 @@ with (Hasher.View('Register', 'Application')) {
                       option({ value: 5 }, '5 Years'),
                       option({ value: 10 }, '10 Years')
                     ),
-                    input({ type: 'checkbox', checked: 'checked' }), 'Auto-renew'
+                    input({ name: 'auto_renew', type: 'checkbox', checked: 'checked' }), 'Auto-renew'
                   )
                 ),
                 tr(

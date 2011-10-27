@@ -101,7 +101,8 @@ with (Hasher.View('Transfer', 'Application')) { (function() {
             h3({ style: 'margin-bottom: 6px'}, 'Advanced'),
             div('DNS: ', 
               select({ name: 'name_servers' }, helper('DNS.dns_provider_options'))
-            )
+            ),
+            input({ name: 'auto_renew', type: 'checkbox', checked: 'checked' }), 'Auto-renew'
           ),
           td({ style: "width: 50%; vertical-align: top" },
             h3({ style: 'margin-bottom: 6px'}, 'Contact Information'),
@@ -129,6 +130,10 @@ with (Hasher.View('Transfer', 'Application')) { (function() {
                 option({ value: '' }, 'Same as Registrant'),
                 BadgerCache.cached_contacts.data.map(function(profile) { return helper('whois_contact_option', profile); })
               )
+            ),
+            div(
+              input({ name: 'privacy', type: 'checkbox', checked: 'checked' }), 
+              'Keep contact information private'
             )
           )
         )
