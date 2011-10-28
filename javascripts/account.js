@@ -12,7 +12,11 @@ with (Hasher.View('Account', 'Application')) { (function() {
   create_view('account', function() {
     return div(
       h1('My Account'),
-      'Welcome!'
+      "There's not much to do here yet... maybe give these links a try:",
+      ul(
+        li(a({ href: '#account/profiles'}, 'Whois Profiles')),
+        li(a({ href: '#account/billing'}, 'Credits & Billing'))
+      )
     );
   });
 
