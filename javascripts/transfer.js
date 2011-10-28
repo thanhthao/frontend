@@ -42,7 +42,7 @@ with (Hasher.Controller('Transfer','Application')) {
         BadgerCache.flush('domains');
         BadgerCache.getDomains(function() {
           call_action('Modal.hide');
-          call_action('Domains.index');
+          redirect_to('#');
         })
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));
