@@ -95,28 +95,15 @@ with (Hasher.View('Domains', 'Application')) { (function() {
   create_view('show_with_data', function(domain, data) {
     return div(
       h1(domain),
-      table({ style: 'width: 100%' }, tbody(
-        tr(
-          td({ style: 'width: 50%; vertical-align: top; padding-right: 20px; border-right: 1px solid #ddd' },
-            dl(
-              dt('ID: '), dd(data.id),
-              dt('Status: '), dd(data.status),
-              dt('Created registrar: '), dd(data.created_registrar),
-              dt('Losing registrar: '), dd(data.losing_registrar)
-            )
-          ),
-
-          td({ style: 'width: 50%; vertical-align: top; padding-left: 20px;' },
-            dl(
-              dt('Created At: '), dd(data.created_at),
-              dt('Updated At: '), dd(data.updated_at),
-              dt('Expires On: '), dd(data.expires_on),
-              dt('Registered On: '), dd(data.registered_on),
-              dt('Updated On: '), dd(data.updated_on)
-            )
-          )
-        )
-      ))
+      dl({ 'class': 'fancy-dl' },
+        dt('Expires:'), dd(new Date(data.expires_on).toDateString()),
+        dt('Status: '), dd(data.status),
+        dt('Registered:'), dd(new Date(data.registered_on).toDateString(), (data.created_registrar ? ' via '+data.created_registrar : '')),
+        dt('Previous Registrar: '), dd(data.losing_registrar),
+        dt('Created At: '), dd(new Date(data.created_at).toDateString()),
+        dt('Updated At: '), dd(new Date(data.updated_at).toDateString()),
+        dt('Updated On: '), dd(new Date(data.updated_on).toDateString())
+      )
     );
   });
   
@@ -135,7 +122,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
         tr(
           td({ style: 'vertical-align: top; padding-right: 20px'},
             h2('Public Listing'),
-            div({ style: 'border: 1px solid #ccc; width: 400px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois)
+            div({ style: 'border: 1px solid #ccc; width: 409px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois)
           ), 
           td({ style: 'vertical-align: top'},
             h2('Make Changes'),

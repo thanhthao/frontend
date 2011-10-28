@@ -89,6 +89,10 @@ a { color: #1E31F5; }
 .fancy-table tr:hover { background: #FFFBD8; }
 .fancy-table tr.table-header:hover { background: none; }
 
+.fancy-dl dt { font-weight: bold; float: left; clear: left; width: 140px; text-align: right; }
+.fancy-dl dd { float: left; margin-left: 8px; }
+
+
 #search-results td.tld { width: 10%; text-align: center; }
 #search-results td a { font-weight: bold; }
 
