@@ -17,7 +17,7 @@ a { color: #1E31F5; }
 #user-nav span { padding-right: 10px; border-right: 1px solid #555; margin-right: 10px; }
 #user-nav a { color: #ccc }
 
-#logo { padding: 2px 0 10px 45px; margin: 0; background: transparent url(/images/badger-4.png) no-repeat 0 7px; }
+#logo { padding: 10px 0 10px 45px; margin: 0; background: transparent url(/images/badger-4.png) no-repeat 0 13px; }
 #logo a { font: 34px 'Oswald', Arial, sans-serif; color: #f0f0f0; text-transform: uppercase; }
 #logo a:hover { text-decoration: none; }
 #logo img { vertical-align: bottom; padding-right: 10px; }
