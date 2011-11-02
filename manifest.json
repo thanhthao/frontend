@@ -21,8 +21,7 @@
     "/javascripts/dns.js",
     "/javascripts/transfer.js",
     "/javascripts/register.js",
-    "/javascripts/help.js",
-    "/javascripts/not_found.js"
+    "/javascripts/help.js"
   ],
 
   "images": [
