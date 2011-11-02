@@ -1,3 +1,5 @@
+console.log("test");
+
 with (Hasher.Controller('Application')) {
   initializer(function() {
     // local cache
