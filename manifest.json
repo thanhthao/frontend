@@ -1,24 +1,24 @@
 {
   
   "stylesheets": [
-    "stylesheets/layout.css",
-    "stylesheets/fonts.css",
-    "stylesheets/signup.css"
+    "/stylesheets/layout.css",
+    "/stylesheets/fonts.css",
+    "/stylesheets/signup.css"
   ],
 
   "javascripts": [
-    "javascripts/application.js",
-    "javascripts/modal.js",
-    "javascripts/search.js",
-    "javascripts/signup.js",
-    "javascripts/domains.js",
-    "javascripts/account.js",
-    "javascripts/whois.js",
-    "javascripts/billing.js",
-    "javascripts/dns.js",
-    "javascripts/transfer.js",
-    "javascripts/register.js",
-    "javascripts/help.js"
+    "/javascripts/application.js",
+    "/javascripts/modal.js",
+    "/javascripts/search.js",
+    "/javascripts/signup.js",
+    "/javascripts/domains.js",
+    "/javascripts/account.js",
+    "/javascripts/whois.js",
+    "/javascripts/billing.js",
+    "/javascripts/dns.js",
+    "/javascripts/transfer.js",
+    "/javascripts/register.js",
+    "/javascripts/help.js"
   ],
 
 	"images": [
