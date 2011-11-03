@@ -172,8 +172,8 @@ with (Hasher.View('Billing', 'Application')) { (function() {
         tr(
           td({ style: 'vertical-align: top; width: 300px; padding-right: 30px' },
             div({ 'class': 'info-message' },
+              div({ style: 'margin-bottom: 27px; font-weight: bold; text-align: center; font-size: 18px' }, '1 credit = 1 domain for 1 year'),
               helper('credits_table'),
-              div({ style: 'margin-top: 10px; font-weight: bold; text-align: center; font-size: 16px' }, '1 credit = 1 domain for 1 year'),
               div({ style: 'margin-top: 5px; font-style: italic; text-align: center' }, 'Transfers are 1 credit and extend the current registration by a year.')
             )
           ),
