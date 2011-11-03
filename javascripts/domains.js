@@ -47,6 +47,9 @@ with (Hasher.View('Domains', 'Application')) { (function() {
   create_view('index', function(domains) {
     return div(
       h1('My Domains'),
+      div({ style: 'float: right; margin-top: -44px' }, 
+        a({ 'class': 'myButton myButton-small', href: action('Transfer.show') }, 'Transfer in a Domain')
+      ),
 
       (typeof domains == 'undefined') ? [
         div('Loading domains...')
