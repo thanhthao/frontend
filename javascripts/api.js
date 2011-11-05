@@ -215,6 +215,26 @@ var Badger = {
 		Badger.api("/account/is_admin", callback);
 	},
 	
+	getContactsAdmin: function(callback) {
+		Badger.api("/admin/contacts", callback);
+	},
+	
+	getContactAdmin: function(id, callback) {
+		Badger.api("/admin/contacts/" + id, callback);
+	},
+	
+	getContactsForPersonAdmin: function(id, callback) {
+		Badger.api("/admin/contacts/person/" + id, callback);
+	},
+	
+	getInviteCodesAdmin: function(callback) {
+		Badger.api("/admin/invite_codes", callback);
+	},
+
+	getInviteCodeAdmin: function(id, callback) {
+		Badger.api("/admin/invite_codes/" + id, callback);
+	},
+	
 	getPeopleAdmin: function(callback) {
 		Badger.api("/admin/people", callback);
 	},
@@ -226,9 +246,13 @@ var Badger = {
 	getDomainsAdmin: function(callback) {
 		Badger.api("/admin/domains", callback);
 	},
-	
+		
 	getDomainAdmin: function(id, callback) {
 		Badger.api("/admin/domains/" + id, callback);
+	},
+
+	getDomainsForPersonAdmin: function(id, callback) {
+		Badger.api("/admin/domains/person/" + id, callback);
 	},
   
 	getTransactionsAdmin: function(callback) {
@@ -239,6 +263,10 @@ var Badger = {
 		Badger.api("/admin/transactions/" + id, callback);
 	},
 	
+	getTransactionsForPersonAdmin: function(id, callback) {
+		Badger.api("/admin/transactions/person/" + id, callback);
+	},
+	
 	getPurchaseRecordsAdmin: function(callback) {
 		Badger.api("/admin/purchase_records", callback);
 	},
@@ -246,6 +274,11 @@ var Badger = {
 	getPurchaseRecordAdmin: function(id, callback) {
 		Badger.api("/admin/purchase_records/" + id, callback);
 	},
+	
+	getPurchaseRecordsForPersonAdmin: function(id, callback) {
+		Badger.api("/admin/purchase_records/person/" + id, callback);
+	},
+	
   
   
   
