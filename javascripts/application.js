@@ -6,7 +6,7 @@ with (Hasher.Controller('Application')) {
     BadgerCache.load();
 
     Badger.onLogout(function() {
-      redirect_to('#');
+      document.location.href = '/';
     });
   });
 
