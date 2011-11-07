@@ -279,8 +279,26 @@ var Badger = {
 		Badger.api("/admin/purchase_records/person/" + id, callback);
 	},
 	
-  
-  
+  getPaymentMethodsAdmin: function(callback) {
+		Badger.api("/admin/payment_methods", callback);
+	},
+	
+  getPaymentMethodAdmin: function(id, callback) {
+		Badger.api("/admin/payment_methods/" + id, callback);
+	},
+	
+	getPaymentMethodsForPersonAdmin: function(id, callback) {
+		Badger.api("/admin/payment_methods/person/" + id, callback);
+	},
+	
+	getRecordsAdmin: function(domain_id, callback) {
+		Badger.api("/admin/domains/" + domain_id + "/records", callback);
+	},
+	
+	getRecordAdmin: function(domain_id, record_id, callback) {
+		Badger.api("/admin/domains/" + domain_id + "/records/" + record_id, callback);
+	},
+	
   
   
   
