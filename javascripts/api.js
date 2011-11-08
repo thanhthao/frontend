@@ -20,11 +20,17 @@ var Badger = {
     if (method != 'GET') params._method = method;
     params.access_token = Badger.getAccessToken();
 
+
+		console.log(params);
+
     // params to url string
     for (var key in params) {
       url += (url.indexOf('?') == -1 ? '?' : '&');
-      url += key + '=' + escape(params[key]||'');
+
+      url += key + '=' + encodeURIComponent(params[key]||'');
     }
+
+		console.log(url);
     
     // TODO: alert if url is too long
 
