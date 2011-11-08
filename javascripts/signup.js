@@ -59,11 +59,13 @@ with (Hasher.Controller('Signup','Application')) {
 			if (response.meta.status == 'ok')
 			{
 				$('#forgot-password-messages').empty().append(helper('Application.success_message', response));
-				
 				$('#reset-password-placeholder').append(helper('reset_password_helper', form_data));
+				$('#forgot-password-form').empty();
 			}
 			else
+			{
 				$('#forgot-password-messages').empty().append(helper('Application.error_message', response));
+			}
 		});
 	});
 	
@@ -75,9 +77,14 @@ with (Hasher.Controller('Signup','Application')) {
 		
 		Badger.resetPasswordWithCode(form_data, function(response) {
 			if (response.meta.status == 'ok')
+			{
 				$('#reset-password-messages').empty().append(helper('Application.success_message', response));
+				$('#reset-password-form').empty();
+			}
 			else
+			{
 				$('#reset-password-messages').empty().append(helper('Application.error_message', response));
+			}
 		});
 	});
   
@@ -163,16 +170,18 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 			form({ action: action('reset_password', data) },
 				h2("Reset Password"),
 				div({ id: 'reset-password-messages' }),
-				div(
-					input({ name: "email", size: 30, type: 'text', readonly: "readonly", style: "color: #8F8E8E", value: data.email || '' })
-				),
-				div(
-					input({ name: "new_password", type: 'password', placeholder: "New Password", value: data.new_password || '' }),
-					input({ name: "confirm_password", type: 'password', placeholder: "Confirm New Password", value: data.confirm_password || '' })
-				),
-				div(
-					input({ name: "code", placeholder: "Reset Code", value: data.code || '' }),
-					button({ 'class': 'myButton myButton-small', type: 'submit' }, "Submit")
+				div({ id: 'reset-password-form' },
+					div(
+						input({ name: "email", size: 30, type: 'text', readonly: "readonly", style: "color: #8F8E8E", value: data.email || '' })
+					),
+					div(
+						input({ name: "new_password", type: 'password', placeholder: "New Password", value: data.new_password || '' }),
+						input({ name: "confirm_password", type: 'password', placeholder: "Confirm New Password", value: data.confirm_password || '' })
+					),
+					div(
+						input({ name: "code", placeholder: "Reset Code", value: data.code || '' }),
+						button({ 'class': 'myButton myButton-small', type: 'submit' }, "Submit")
+					)
 				)
 			)
 		);
@@ -180,11 +189,12 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 
 	create_helper('forgot_password_modal', function(data) {
 		data = data || {};
+		
 		return div(
 			form({ action: action('send_password_reset_email', data) }, 
 				h2("Forgot Password"),
 				div({ id: 'forgot-password-messages' }),
-				div(
+				div({ id: 'forgot-password-form' },
 					input({ name: "email", type: "text", size: 30, placeholder: "Email", value: data.email || '' }),
 					button({ 'class': 'myButton myButton-small', type: 'submit' }, "Send Email")
 				)

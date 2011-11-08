@@ -218,6 +218,10 @@ var Badger = {
 		Badger.api("/account/reset_password", 'POST', data, callback);
   },
 
+	changePassword: function(data, callback) {
+		Badger.api("/account/change_password", 'POST', data, callback);
+	},
+
   
 
 

@@ -165,8 +165,8 @@ with (Hasher.View('Application')) {
               a({ href: "#account" }, 'MY ACCOUNT'),
               ul(
                 li({ 'class': "email"}, a({ href: "#account/profiles" }, 'WHOIS PROFILES')),
-                li({ 'class': "website"}, a({ href: "#account/billing" }, 'CREDITS & BILLING'))
-                //li({ 'class': "email"}, a({ href: "#account/settings" }, 'SETTINGS'))
+                li({ 'class': "website"}, a({ href: "#account/billing" }, 'CREDITS & BILLING')),
+                li({ 'class': "website"}, a({ href: "#account/settings" }, 'SETTINGS'))
               )
             ),
 
