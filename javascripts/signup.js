@@ -55,7 +55,11 @@ with (Hasher.Controller('Signup','Application')) {
 		
 		Badger.sendPasswordResetEmail(form_data, function(response) {
 			if (response.meta.status == 'ok')
+			{
 				$('#forgot-password-messages').empty().append(helper('Application.success_message', response));
+				
+				$('#reset-password-placeholder').append(helper('reset_password_helper', form_data));
+			}
 			else
 				$('#forgot-password-messages').empty().append(helper('Application.error_message', response));
 		});
@@ -146,6 +150,28 @@ with (Hasher.View('Signup', 'Application')) { (function() {
     );
   });
 
+	create_helper('reset_password_helper', function(data) {
+		return div(
+			br(), hr(),
+
+			form({ action: action('reset_password', data) },
+				h2("Reset Password"),
+				div({ id: 'reset-password-messages' }),
+				div(
+					input({ name: "email", size: 30, type: 'text', readonly: "readonly", style: "color: #8F8E8E", value: data.email || '' })
+				),
+				div(
+					input({ name: "new_password", type: 'password', placeholder: "New Password", value: data.new_password || '' }),
+					input({ name: "confirm_password", type: 'password', placeholder: "Confirm New Password", value: data.confirm_password || '' })
+				),
+				div(
+					input({ name: "code", placeholder: "Reset Code", value: data.code || '' }),
+					button({ 'class': 'myButton myButton-small', type: 'submit' }, "Submit")
+				)
+			)
+		);
+	});
+
 	create_helper('forgot_password_modal', function(data) {
 		data = data || {};
 		return div(
@@ -157,24 +183,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 					button({ 'class': 'myButton myButton-small', type: 'submit' }, "Send Email")
 				)
 			),
-			
-			br(), hr(),
-			
-			form({ action: action('reset_password', data) },
-				h2("Reset Password"),
-				div({ id: 'reset-password-messages' }),
-				div(
-					input({ name: "email", size: 30, type: 'text', placeholder: "Email", value: data.email || '' })
-				),
-				div(
-					input({ name: "new_password", type: 'password', placeholder: "New Password", value: data.new_password || '' }),
-					input({ name: "confirm_password", type: 'password', placeholder: "Confirm New Password", value: data.confirm_password || '' })
-				),
-				div(
-					input({ name: "code", placeholder: "Reset Code", value: data.code || '' }),
-					button({ 'class': 'myButton myButton-small', type: 'submit' }, "Submit")
-				)
-			)
+			div({ id: "reset-password-placeholder" })			
 		);
 	});
   
