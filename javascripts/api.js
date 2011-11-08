@@ -209,6 +209,17 @@ var Badger = {
     Badger.api("/account/credit_history", callback);
   },
 
+	sendPasswordResetEmail: function(data, callback) {
+		Badger.api("/account/forgot_password", 'POST', data, callback);
+  },
+
+	resetPasswordWithCode: function(data, callback) {
+		Badger.api("/account/reset_password", 'POST', data, callback);
+  },
+
+  
+
+
   //ADMIN COMMANDS, requires person to have admin flag set to true
 	
 	isAdmin: function(callback) {
@@ -340,12 +351,6 @@ var Badger = {
   // 
   // updateAccount: function(accessToken, data, callback) {
   //   Badger.api("/account", "POST", data, callback);
-  // },
-  // 
-  // forgotPassword: function(email, callback) {
-  //   Badger.api("/account/forgot_password", { type: "POST", data: { email: email } }, function(resp) {
-  //     callback(resp);
-  //   });
   // },
   // 
   // resetPassword: function(email, newPassword, code, callback) {

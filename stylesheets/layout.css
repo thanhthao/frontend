@@ -113,6 +113,9 @@ a { color: #1E31F5; }
 .info-message .fancy-table tr.table-header:hover { background: none; }
 .error-message { border: 1px solid #dd3c10; background: #ffebe8; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
 .error-message ul { margin: 10px 0 0 0; }
+.success-message { border: 1px solid #619934; background: #E6F8D8; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
+.success-message ul { margin: 10px 0 0 0; }
+
 
 
 

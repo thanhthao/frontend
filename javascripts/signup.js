@@ -49,6 +49,31 @@ with (Hasher.Controller('Signup','Application')) {
       }
     });
   });
+
+	create_action('send_password_reset_email', function(callback, form_data) {
+		$('#forgot-password-messages').empty();
+		
+		Badger.sendPasswordResetEmail(form_data, function(response) {
+			if (response.meta.status == 'ok')
+				$('#forgot-password-messages').empty().append(helper('Application.success_message', response));
+			else
+				$('#forgot-password-messages').empty().append(helper('Application.error_message', response));
+		});
+	});
+	
+	create_action('reset_password', function(callback, form_data) {
+		$('#reset-password-messages').empty();
+		
+		if(form_data.new_password != form_data.confirm_password)
+			return $('#reset-password-messages').append( helper('Application.error_message', { data: { message: "Passwords do not match" } }) );
+		
+		Badger.resetPasswordWithCode(form_data, function(response) {
+			if (response.meta.status == 'ok')
+				$('#reset-password-messages').empty().append(helper('Application.success_message', response));
+			else
+				$('#reset-password-messages').empty().append(helper('Application.error_message', response));
+		});
+	});
   
   layout('signup');
 }
@@ -70,7 +95,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
   });
 
   create_view('login', function() {
-    return div({ id: 'signup-box' }, 
+    return div({ id: 'signup-box' },
       h1('Login'),
       div({ id: 'signup-errors' }),
       form({ action: action('process_login') },
@@ -81,6 +106,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
         input({ 'class': 'myButton', type: 'submit', value: 'Login' })
       ),
       div({ style: 'margin-top: 20px' },
+				a({ href: action('Modal.show', 'Signup.forgot_password_modal') }, "Forgot your password?"), br(),
         a({ href: '#request_invite' }, "Don't have an account?")
       )
     );
@@ -115,9 +141,41 @@ with (Hasher.View('Signup', 'Application')) { (function() {
           input({ name: 'password', placeholder: 'Desired Password', type: 'password' })
         ),
 
-        div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit', value: 'Create Account' }))
+        div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit' }, "Submit"))
       )
     );
   });
+
+	create_helper('forgot_password_modal', function(data) {
+		data = data || {};
+		return div(
+			form({ action: action('send_password_reset_email', data) }, 
+				h2("Forgot Password"),
+				div({ id: 'forgot-password-messages' }),
+				div(
+					input({ name: "email", type: "text", size: 30, placeholder: "Email", value: data.email || '' }),
+					button({ 'class': 'myButton myButton-small', type: 'submit' }, "Send Email")
+				)
+			),
+			
+			br(), hr(),
+			
+			form({ action: action('reset_password', data) },
+				h2("Reset Password"),
+				div({ id: 'reset-password-messages' }),
+				div(
+					input({ name: "email", size: 30, type: 'text', placeholder: "Email", value: data.email || '' })
+				),
+				div(
+					input({ name: "new_password", type: 'password', placeholder: "New Password", value: data.new_password || '' }),
+					input({ name: "confirm_password", type: 'password', placeholder: "Confirm New Password", value: data.confirm_password || '' })
+				),
+				div(
+					input({ name: "code", placeholder: "Reset Code", value: data.code || '' }),
+					button({ 'class': 'myButton myButton-small', type: 'submit' }, "Submit")
+				)
+			)
+		);
+	});
   
 })(); }

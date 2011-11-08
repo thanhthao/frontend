@@ -75,6 +75,12 @@ with (Hasher.View('Application')) {
 			)
     )
   });
+
+  create_helper('success_message', function(response) {
+    return div({ 'class': 'success-message' }, 
+			div( response.data.message || "Success!" )
+    )
+  });
   
   create_helper('domain_menu_item', function(domain) {
     return li({ id: 'domain-menu-item-' + domain.replace('.','-'), 'class': 'domain-menu-item' },
