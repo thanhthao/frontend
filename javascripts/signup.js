@@ -42,7 +42,9 @@ with (Hasher.Controller('Signup','Application')) {
   
   create_action('create_person', function(data) {
     Badger.createAccount(data, function(response) {
-      if (response.meta.status == 'ok') {
+			if(data.password != data.confirm_password) {
+				$('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "Passwords do not match" } }));
+			} else if (response.meta.status == 'ok') {
         redirect_to('#');
       } else {
         $('#signup-errors').empty().append(helper('Application.error_message', response));
@@ -141,9 +143,13 @@ with (Hasher.View('Signup', 'Application')) { (function() {
         ),
 
         div(
-          input({ name: 'email', placeholder: 'Email Address' }),
-          input({ name: 'password', placeholder: 'Desired Password', type: 'password' })
+          input({ name: 'email', size: 35, placeholder: 'Email Address' })
         ),
+
+				div(
+					input({ name: 'password', placeholder: 'Desired Password', type: 'password' }),
+					input({ name: 'confirm_password', placeholder: 'Confirm Password', type: 'password' })
+				),
 
         div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit' }, "Submit"))
       )
