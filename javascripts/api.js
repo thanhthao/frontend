@@ -221,6 +221,10 @@ var Badger = {
 	changePassword: function(data, callback) {
 		Badger.api("/account/change_password", 'POST', data, callback);
 	},
+	
+	isDomainLocked: function(domain, callback) {
+		Badger.api("/domains/" + domain + "/is_locked", callback);
+	},
 
   
 
