@@ -95,7 +95,7 @@ with (Hasher.View('Transfer','Application')) {
 				),
 				tr(
 					td( strong("Locked:") ),
-					td(info.locked.toString())
+					td('No')
 				)
 			),
 			a({ 'class': 'myButton myButton-small', style: 'float: right', href: action('Modal.show', 'Transfer.get_auth_code', name, info) }, "Next"),
@@ -121,11 +121,11 @@ with (Hasher.View('Transfer','Application')) {
 				),
 				tr(
 					td( strong("Locked:") ),
-					td(info.locked.toString())
+					td('Yes')
 				)
 			),
-			hr(),
-			helper('unlock_instructions_for_registrar', info.registrar.name),
+			div({ 'class': 'error-message' }, div("You need to unlock this domain through " + (info.registrar.name.indexOf('Unknown') == 0 ? 'the current registrar' : info.registrar.name) + '.') ),
+			//helper('unlock_instructions_for_registrar', , info.registrar.name),
 			a({ 'class': 'myButton myButton-small', style: 'float: right', href: action('get_domain_info', { name: name }) }, "Retry"),
 			br()
 		);
@@ -134,8 +134,8 @@ with (Hasher.View('Transfer','Application')) {
 	create_helper('get_auth_code', function(name, info, error) {
 		return form({ action: action('check_auth_code', name, info) },
 			h1('ENTER AUTH CODE FOR ' + info.registrar.name),
-			div("You need to get the auth code from " + info.registrar.name + "."),
-			helper('get_auth_code_instructions_for_registrar', info.registrar.name),
+			div("Please obtain the current auth code from " + info.registrar.name + " and enter it below."),
+			//helper('get_auth_code_instructions_for_registrar', info.registrar.name),
 			br(),
 			div({ id: "get-auth-code-errors" }, error),
 			div(
@@ -217,26 +217,27 @@ with (Hasher.View('Transfer','Application')) {
 	
 	create_helper('get_domain_form', function(data, error) {
 		return div(
-			h1("TRANSFER DOMAIN"),
+			h1("TRANSFER IN A DOMAIN"),
 			form({ id: "get-domain-info-form", action: action('get_domain_info') },
-				div("It costs 1 domain credit to transfer in a domain, and your current registration will be extended by one year."),
-				hr(),
+				div("Use this form if you've registered a domain at another registrar and would like to transfer the domain to Badger."),
 				div({ id: "get-domain-form-errors" }, error ? error : null),
-				input({ name: "name", placeholder: "example.com", value: data && data.name || '' }),
-				button({ 'class': 'myButton myButton-small', value: "submit" }, "Next")
+				div({ style: 'text-align: center; margin: 30px 0'}, 
+  				input({ name: "name", placeholder: "example.com", value: data && data.name || '' }),
+  				button({ 'class': 'myButton myButton-small', value: "submit" }, "Next")
+				)
 			)
 		);
 	});
 	
 	// implement different instructions for certain registrars at some point
-	create_helper('unlock_instructions_for_registrar', function(registrar) {
-		return div("You need to unlock this domain before it can be transferred.");
-	});
+  // create_helper('unlock_instructions_for_registrar', function(registrar) {
+  //  return div("You need to unlock this domain through " + (registrar.indexOf('Unknown') == 0 ? 'the current registrar' : registrar) + '.');
+  // });
 	
 	//todo add more help
-	create_helper('get_auth_code_instructions_for_registrar', function(registrar) {
-		return div("Please refer to the currently owning registrar for instructions on how to find the authorization code.");
-	});
+  // create_helper('get_auth_code_instructions_for_registrar', function(registrar) {
+  //  return div("Please refer to the currently owning registrar for instructions on how to find the authorization code.");
+  // });
 	
 	create_helper('processing_request', function() {
 		return div({ align: 'center' },

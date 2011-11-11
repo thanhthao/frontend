@@ -6,7 +6,9 @@ with (Hasher.Controller('Application')) {
     BadgerCache.load();
 
     Badger.onLogout(function() {
-      document.location.href = '/';
+      var path = document.location.href.split('#')[0];
+      if (document.location.href == path) document.location.reload();
+      else document.location.href = path;
     });
   });
 
@@ -58,7 +60,7 @@ with (Hasher.View('Application')) {
       div({ id: 'user-nav' }, a({ href: '#login' }, 'Login')),
 
       div({ id: 'main-minimal' },
-        img({ src: '/images/badger-5.png' }),
+        img({ src: 'images/badger-5.png' }),
         div({ id: 'main-minimal-box' }, 
           div({ id: 'content' }, yield)
         ),
@@ -215,7 +217,7 @@ with (Hasher.View('Application')) {
         ),
         div({ 'class': "col" },
           h2('ACCREDITATIONS'),
-          img({ src: '/images/icann.png' })
+          img({ src: 'images/icann.png' })
         ),
         
         div({ style: 'clear: both'})

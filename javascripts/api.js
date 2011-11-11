@@ -1,11 +1,12 @@
 var Badger = {
+  api_host: 'https://api.badger.com/',
+
   api: function() {
     // parse arguments: url, [http_method], [params], [callback]
     var args = Array.prototype.slice.call(arguments, 0);
 
     // TODO: hard-code this and braintreeEncrypt() and make dev/qa work differently
-    var host = document.location.protocol + '//' + document.location.host.replace('www', 'api');
-    var url = host + args.shift();
+    var url = Badger.api_host + args.shift().replace(/^\//,'');
     var method = typeof(args[0]) == 'string' ? args.shift() : 'GET';
     var params = typeof(args[0]) == 'object' ? args.shift() : {};
     var callback = typeof(args[0]) == 'function' ? args.shift() : function(){};
@@ -58,22 +59,26 @@ var Badger = {
   
   // reads from "badger_access_token" cookie
   getAccessToken: function() {
-    var ca = document.cookie.split(';');
-    for (var i=0; i < ca.length; i++) {
-      while (ca[i].charAt(0)==' ') ca[i] = ca[i].substring(1,ca[i].length);
-      if (ca[i].length > 0) {
-        var kv = ca[i].split('=');
-        if (kv[0] == 'badger_access_token') return kv[1];
+    if (document.location.protocol == 'file:') {
+      return localStorage.getItem('badger_access_token');
+    } else {
+      var ca = document.cookie.split(';');
+      for (var i=0; i < ca.length; i++) {
+        while (ca[i].charAt(0)==' ') ca[i] = ca[i].substring(1,ca[i].length);
+        if (ca[i].length > 0) {
+          var kv = ca[i].split('=');
+          if (kv[0] == 'badger_access_token') return kv[1];
+        }
       }
     }
   },
   
   // writes to "badger_access_token" cookie
   setAccessToken: function(token) {
-    if (!token) {
-      document.cookie = "badger_access_token=; path=/; expires=Thu, 01-Jan-1970 00:00:01 GMT";
+    if (document.location.protocol == 'file:') {
+      token ? localStorage.setItem('badger_access_token', token) : localStorage.removeItem('badger_access_token')
     } else {
-      document.cookie = "badger_access_token="+token+"; path=/";
+      document.cookie = token ? "badger_access_token="+token+"; path=/" : "badger_access_token=; path=/; expires=Thu, 01-Jan-1970 00:00:01 GMT";
     }
   },
 
@@ -184,7 +189,11 @@ var Badger = {
 
   braintreeEncrypt: function(data) {
     if (!Badger.braintree) {
-      Badger.braintree = Braintree.create((document.location.host=='www.badger.com')?"MIIBCgKCAQEA7q46U13zKcfozxhNgL8RxF1LEXm2M1NMyromzybYIuwMnXRKg9/DsbQDls2V1uGv8zhqrS3lMmBIvNR6gv2vAMTSwYDKE2VJcUlJveNAP1q5EMMqwTFTlPoBr8uwhT6Q7919O2UDTVi6t/8dm8k6RZsdL+TDcjc7gpNNK4JHOJbqnKpAKPc9uTpo6IlUan2FJVBRk0GVhrRwR+S1YU9aJW8rHPrMovkUpOUUFhzfgGcrFdbbLUTNkxB4OwKxkwYME82i6UlHNxUoRPYama/Tpn+68gu+oV27nJmAF/iuMsV5iLrCyXzbSvt3YBwOctb+WFIqsc/kSd1SsYKZgh9RWQIDAQAB":"MIIBCgKCAQEAvypnA1PqZrAN2nPiWEcPitpEqF/4spcVFvZjCp9T/34nM8sakWQMm9RfKLj24wLYJlgpTdSfQCsU7jms7XOwFyLAajEWk+bRy5E4GheaLOsQsUvZuzgMr4BncDlL4jwxpgiQ67ngSxp2mOB6qySWHlD7E5kNtkl97Q1WyH3IJlSi3Crd/QCsnafMeJhvziuRGIKIX/QBmblcqRXqfjbkmG9VcLUiwsMYuIwuksm3fWHJBYncHoPeZ29lu4eUXuAwLL78VZqtEbxoP9KqW+8yUfX7JBRUq/e6beTtEYc6bhQ9UWxAXANH8jmFOhTu9cPTyGOmI6BgJdfBEPjWncM7GQIDAQAB");
+      if (Badger.api_host == 'https://api.badger.com/') {
+        Badger.braintree = Braintree.create("MIIBCgKCAQEA7q46U13zKcfozxhNgL8RxF1LEXm2M1NMyromzybYIuwMnXRKg9/DsbQDls2V1uGv8zhqrS3lMmBIvNR6gv2vAMTSwYDKE2VJcUlJveNAP1q5EMMqwTFTlPoBr8uwhT6Q7919O2UDTVi6t/8dm8k6RZsdL+TDcjc7gpNNK4JHOJbqnKpAKPc9uTpo6IlUan2FJVBRk0GVhrRwR+S1YU9aJW8rHPrMovkUpOUUFhzfgGcrFdbbLUTNkxB4OwKxkwYME82i6UlHNxUoRPYama/Tpn+68gu+oV27nJmAF/iuMsV5iLrCyXzbSvt3YBwOctb+WFIqsc/kSd1SsYKZgh9RWQIDAQAB");
+      } else {
+        Badger.braintree = Braintree.create("MIIBCgKCAQEAvypnA1PqZrAN2nPiWEcPitpEqF/4spcVFvZjCp9T/34nM8sakWQMm9RfKLj24wLYJlgpTdSfQCsU7jms7XOwFyLAajEWk+bRy5E4GheaLOsQsUvZuzgMr4BncDlL4jwxpgiQ67ngSxp2mOB6qySWHlD7E5kNtkl97Q1WyH3IJlSi3Crd/QCsnafMeJhvziuRGIKIX/QBmblcqRXqfjbkmG9VcLUiwsMYuIwuksm3fWHJBYncHoPeZ29lu4eUXuAwLL78VZqtEbxoP9KqW+8yUfX7JBRUq/e6beTtEYc6bhQ9UWxAXANH8jmFOhTu9cPTyGOmI6BgJdfBEPjWncM7GQIDAQAB");
+      }
     }
     if( data.cc_number && data.cc_number.length > 0) data.cc_number = Badger.braintree.encrypt(data.cc_number);
     if( data.cc_cvv && data.cc_cvv.length > 0 ) data.cc_cvv = Badger.braintree.encrypt(data.cc_cvv);

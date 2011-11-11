@@ -4,8 +4,8 @@ a:hover { text-decoration: underline; }
 input, textarea, select { vertical-align: middle; }
 form,fieldset { margin:0; padding:0; border-style:none; }
 
-html { height: 100%; background: #0085aa url(/images/bg-page.jpg) repeat top center; }
-body { min-height: 100%; background: transparent url(/images/bg-page-fade.jpg) repeat-x top center; margin: 0; font-size: 100.01%; }
+html { height: 100%; background: #0085aa url(../images/bg-page.jpg) repeat top center; }
+body { min-height: 100%; background: transparent url(../images/bg-page-fade.jpg) repeat-x top center; margin: 0; font-size: 100.01%; }
 body, input, textarea, select, td, th, a { font: 14px "Droid Sans", Arial, sans-serif; color: #333; line-height: 18px; }
 a { color: #1E31F5; }
 
@@ -17,7 +17,7 @@ a { color: #1E31F5; }
 #user-nav span { padding-right: 10px; border-right: 1px solid #555; margin-right: 10px; }
 #user-nav a { color: #ccc }
 
-#logo { padding: 10px 0 10px 45px; margin: 0; background: transparent url(/images/badger-4.png) no-repeat 0 13px; }
+#logo { padding: 10px 0 10px 45px; margin: 0; background: transparent url(../images/badger-4.png) no-repeat 0 13px; }
 #logo a { font: 34px 'Oswald', Arial, sans-serif; color: #f0f0f0; text-transform: uppercase; }
 #logo a:hover { text-decoration: none; }
 #logo img { vertical-align: bottom; padding-right: 10px; }
@@ -27,7 +27,7 @@ a { color: #1E31F5; }
 #main-minimal-box { float: left; width: 100%; background: white; border-radius: 5px;  }
 #main-minimal-box #content { padding: 20px; }
 
-#main { padding: 0 20px 10px 241px; background: transparent url(/images/background.png); border-radius: 5px; }
+#main { padding: 0 20px 10px 241px; background: transparent url(../images/background.png); border-radius: 5px; }
 #main #content { float: left; width: 100%; padding: 10px 0; }
 #main #sidebar { float: left; width: 221px; margin-left: -241px; min-height: 500px; }
 
@@ -48,7 +48,7 @@ a { color: #1E31F5; }
 
 .social-network{ margin:0; padding:0; list-style:none; }
 #footer .col .social-network li{padding-bottom:5px;}
-.social-network a{ background:url(/images/sprite.png) no-repeat; padding:0 0 0 30px; height:20px; display:inline-block; }
+.social-network a{ background:url(../images/sprite.png) no-repeat; padding:0 0 0 30px; height:20px; display:inline-block; }
 .social-network a.twitter{background-position:0 -174px;}
 .social-network a.facebook{background-position:0 -204px ;}
 
@@ -62,18 +62,18 @@ a { color: #1E31F5; }
 
 /*#sidebar { font: 18px/21px "KnockoutHTF30-JuniorWelterwt", Arial, sans-serif !important; font-weight: bold !important; }*/
 #form-search { height: 43px; padding: 10px 0 6px 18px; }
-#form-search input { background: #fff url(/images/submit.gif) no-repeat center right; border-radius: 3px; width:140px; border:0; color:#666; font-size:16px; line-height:17px; float:left; padding:8px 34px 8px 9px; margin:0 0 0 0; }
+#form-search input { background: #fff url(../images/submit.gif) no-repeat center right; border-radius: 3px; width:140px; border:0; color:#666; font-size:16px; line-height:17px; float:left; padding:8px 34px 8px 9px; margin:0 0 0 0; }
 
 /* primary menu */
 #menu { border-top:1px solid #14161e; margin:0; padding:0; list-style:none; }
 #menu li { border-bottom:1px solid #191c25; background:#292f3e; }
 #menu li a { color:#919ab2; display:block; padding:9px 10px 9px 17px; text-shadow: 0px 1px 1px #000; font: 17px "Oswald", Arial, sans-serif; }
-#sidebar .active { background-image: url(/images/bg-menu-hover.png); background-repeat: no-repeat; background-position: 100% 50%; }
+#sidebar .active { background-image: url(../images/bg-menu-hover.png); background-repeat: no-repeat; background-position: 100% 50%; }
 
 /* submenu */
 #menu ul { border-top:1px solid #14161e; font-size:16px; margin:-1px 0; padding:0; list-style:none; display: none; }
 #menu ul.expanded { display: block; }
-#menu ul li { background: #212632 url(/images/sprite.png) no-repeat; }
+#menu ul li { background: #212632 url(../images/sprite.png) no-repeat; }
 #menu ul li a { color:#fff; padding:9px 10px 10px 48px; font-size: 16px; }
 #menu .website {background-position:17px 13px;}
 #menu .email {background-position:17px -28px;}
