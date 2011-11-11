@@ -5,25 +5,30 @@ with (Hasher.Controller('Transfer','Application')) {
   });
 
 	create_action('check_auth_code', function(name, info, form_data) {
-		$('#get-auth-code-errors').empty();
 		call_action('Modal.show', 'Transfer.processing_request');
-		
-		BadgerCache.getAccountInfo(function(account_info) {			
-      // ensure they have at least one domain_credit
-      if (account_info.data.domain_credits <= 0) {
-				call_action('Modal.show', 'Billing.purchase_modal', action('Transfer.check_auth_code', name, info, form_data));
-      } else {
-				call_action('Modal.show', 'Transfer.processing_request');
-        
-				BadgerCache.getContacts(function(contacts) {
-					if (contacts.data.length == 0) {
-						call_action('Modal.show', 'Whois.edit_whois_modal', null, action('Transfer.check_auth_code', name, info, form_data));
-					} else {
-						call_action('Modal.show', 'Transfer.select_whois_and_dns_settings', name, form_data);
-					}
-				});			
-      }
-    });
+
+		Badger.getDomainInfo(form_data, function(response) {
+			if (response.data.code == 2202 || response.meta.status != 'ok') {
+				call_action('Modal.show', 'Transfer.get_auth_code', name, info, helper('Application.error_message', response));
+			} else {			
+				BadgerCache.getAccountInfo(function(account_info) {
+		      // ensure they have at least one domain_credit
+		      if (account_info.data.domain_credits <= 0) {
+						call_action('Modal.show', 'Billing.purchase_modal', action('Transfer.check_auth_code', name, info, form_data));
+		      } else {
+						call_action('Modal.show', 'Transfer.processing_request');
+		        
+						BadgerCache.getContacts(function(contacts) {
+							if (contacts.data.length == 0) {
+								call_action('Modal.show', 'Whois.edit_whois_modal', null, action('Transfer.check_auth_code', name, info, form_data));
+							} else {
+								call_action('Modal.show', 'Transfer.select_whois_and_dns_settings', name, form_data);
+							}
+						});			
+		      }
+		    });
+			}
+		});		
 	});
 
 	create_action('get_domain_info', function(form_data) {
