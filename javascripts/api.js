@@ -183,7 +183,7 @@ var Badger = {
   },
 
 	updateContact: function(contact_id, data, callback) {
-		Badger.api("/account/contacts/" + contact_id, 'POST', data, callback);
+		Badger.api("/account/contacts/" + contact_id, 'PUT', data, callback);
 	},
 
 
@@ -211,9 +211,10 @@ var Badger = {
     Badger.api("/account/purchase_credits", 'POST', Badger.braintreeEncrypt(data), callback);
   },
 
-  getPendingTransfers: function(callback) {
-    Badger.api("/domains/pending_transfers", callback);
-  },
+	// not implemented
+  // getPendingTransfers: function(callback) {
+  //   Badger.api("/domains/pending_transfers", callback);
+  // },
 
   getCreditHistory: function(callback) {
     Badger.api("/account/credit_history", callback);
@@ -232,7 +233,7 @@ var Badger = {
 	},
 	
 	getDomainInfo: function(data, callback) {
-		Badger.api("/domains/" + data.name + "/get_info", 'POST', data, callback);
+		Badger.api("/domains/" + data.name + "/info", data, callback);
 	},
 
   
@@ -253,7 +254,7 @@ var Badger = {
 	},
 	
 	getContactsForPersonAdmin: function(id, callback) {
-		Badger.api("/admin/contacts/person/" + id, callback);
+		Badger.api("/admin/people/" + id + "/contacts", callback);
 	},
 	
 	getInviteCodesAdmin: function(callback) {
@@ -281,7 +282,7 @@ var Badger = {
 	},
 
 	getDomainsForPersonAdmin: function(id, callback) {
-		Badger.api("/admin/domains/person/" + id, callback);
+		Badger.api("/admin/people/" + id + "/domains", callback);
 	},
   
 	getTransactionsAdmin: function(callback) {
@@ -293,7 +294,7 @@ var Badger = {
 	},
 	
 	getTransactionsForPersonAdmin: function(id, callback) {
-		Badger.api("/admin/transactions/person/" + id, callback);
+		Badger.api("/admin/people/" + id + "/transactions", callback);
 	},
 	
 	getPurchaseRecordsAdmin: function(callback) {
@@ -305,7 +306,7 @@ var Badger = {
 	},
 	
 	getPurchaseRecordsForPersonAdmin: function(id, callback) {
-		Badger.api("/admin/purchase_records/person/" + id, callback);
+		Badger.api("/admin/people/" + id + "/purchase_records", callback);
 	},
 	
   getPaymentMethodsAdmin: function(callback) {
@@ -317,7 +318,7 @@ var Badger = {
 	},
 	
 	getPaymentMethodsForPersonAdmin: function(id, callback) {
-		Badger.api("/admin/payment_methods/person/" + id, callback);
+		Badger.api("/admin/people/" + id + "/payment_methods", callback);
 	},
 	
 	getRecordsAdmin: function(domain_id, callback) {
