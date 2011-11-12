@@ -5,21 +5,16 @@ with (Hasher.Controller('Account','Application')) {
   });
 
 	create_action('change_password', function(data) {
-		$('#change-password-messages').empty();
-
 		if(data.new_password != data.confirm_password)
-			return $('#change-password-messages').append( helper('Application.error_message', { data: { message: "Passwords do not match" } }) );
+			return $('#change-password-messages').empty().append( helper('Application.error_message', { data: { message: "Passwords do not match" } }) );
 		
 		Badger.changePassword(data, function(response) {
-			if(response.meta.status == 'ok')
-			{
-				redirect_to('#login');
-				$('#change-password-messages').append( helper('Application.success_message', response) );
+			if (response.meta.status == 'ok') {
+				Badger.logout();
+				$('#change-password-messages').empty().append( helper('Application.success_message', response) );
 				$('#change-password-form').empty();
-			}
-			else
-			{
-				$('#change-password-messages').append( helper('Application.error_message', response) );	
+			} else {
+				$('#change-password-messages').empty().append( helper('Application.error_message', response) );	
 			}
 		});
 	});
@@ -61,10 +56,10 @@ with (Hasher.View('Account', 'Application')) { (function() {
 		return form({ action: action('change_password') },
 			h1("CHANGE PASSWORD"),
 			div({ id: 'change-password-messages' }),
-			div({ id: 'change-password-form' },
-				input({ name: 'new_password', type: 'password', placeholder: 'New Password', value: data.new_password || '' }),
-				input({ name: 'confirm_password', type: 'password', placeholder: 'Confirm Password', value: data.confirm_password || '' }),
-				button({ 'class': 'myButton myButton-small', type: 'submit' }, "Change Password")
+			div({ id: 'change-password-form', style: 'text-align: center; margin: 20px 0' },
+				input({ name: 'new_password', type: 'password', 'class': 'fancy', placeholder: 'New Password', value: data.new_password || '' }),
+				input({ name: 'confirm_password', type: 'password', 'class': 'fancy', placeholder: 'Confirm Password', value: data.confirm_password || '' }),
+				button({ 'class': 'myButton', type: 'submit' }, "Update")
 			)
 		);
 	});

@@ -70,6 +70,8 @@ with (Hasher.View('Application')) {
   });
   
   create_helper('error_message', function(response) {
+    console.log("ERRRRRROR")
+    console.log(response)
     return div({ 'class': 'error-message' }, 
 			div(
 				response.data.message,
