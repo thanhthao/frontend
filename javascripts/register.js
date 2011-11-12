@@ -28,7 +28,7 @@ with (Hasher.Controller('Register','Application')) {
     Badger.registerDomain(form, function(response) {
       $('#register-button').attr('disabled', false);
 
-      if (response.meta.status == 'ok') {
+      if (response.meta.status == 'created') {
         helper('Application.update_credits', true);
         BadgerCache.flush('domains');
         BadgerCache.getDomains(function() {

@@ -48,7 +48,7 @@ with (Hasher.Controller('Transfer','Application')) {
 					if(response.data.locked) {
 						call_action('Modal.show', 'Transfer.domain_locked_help', form_data.name, response.data);
 					} else {
-						call_action('Modal.show', 'Transfer.transfer_domain_prompt', form_data.name, response.data);
+						call_action('Modal.show', 'Transfer.get_auth_code', form_data.name, response.data);
 					}
 				}
 			});
@@ -61,7 +61,7 @@ with (Hasher.Controller('Transfer','Application')) {
 		call_action('Modal.show', 'Transfer.processing_request');
 
 		Badger.registerDomain(form_data, function(response) {
-			if (response.meta.status == 'ok') {
+			if (response.meta.status == 'created') {
 				helper('Application.update_credits', true);
 				
 				BadgerCache.flush('domains');
@@ -70,7 +70,7 @@ with (Hasher.Controller('Transfer','Application')) {
           redirect_to('#');
         })
 			} else {
-				call_action('Modal.show', 'Transfer.transfer_domain_prompt', name, info, helper('Application.error_message', response));
+				call_action('Modal.show', 'Transfer.get_auth_code', name, info, helper('Application.error_message', response));
 			}
 		});
 		
@@ -81,36 +81,10 @@ with (Hasher.Controller('Transfer','Application')) {
 
 with (Hasher.View('Transfer','Application')) {
 		
-	create_helper('transfer_domain_prompt', function(name, info, error) {
-		return div(
-			h1('TRANSFER IN ' + name),
-			div({ id: 'transfer-domain-prompt-errors' }, error),
-			table(
-				tr(
-					td( strong("Current Registrar:") ),
-					td(info.registrar.name)
-				),
-				tr(
-					td( strong("Created:") ),
-					td(new Date(info.created_at).toDateString())
-				),
-				tr(
-					td( strong("Expiration:") ),
-					td(new Date(info.expires_on).toDateString())
-				),
-				tr(
-					td( strong("Locked:") ),
-					td('No')
-				)
-			),
-			a({ 'class': 'myButton myButton-small', style: 'float: right', href: action('Modal.show', 'Transfer.get_auth_code', name, info) }, "Next"),
-			br()
-		);
-	});
-	
 	create_helper('domain_locked_help', function(name, info) {
 		return div(
 			h1('TRANSFER IN ' + name),
+			div({ 'class': 'error-message' }, div("You need to unlock this domain through " + (info.registrar.name.indexOf('Unknown') == 0 ? 'the current registrar' : info.registrar.name) + '.') ),
 			table(
 				tr(
 					td( strong("Current Registrar:") ),
@@ -129,7 +103,6 @@ with (Hasher.View('Transfer','Application')) {
 					td('Yes')
 				)
 			),
-			div({ 'class': 'error-message' }, div("You need to unlock this domain through " + (info.registrar.name.indexOf('Unknown') == 0 ? 'the current registrar' : info.registrar.name) + '.') ),
 			//helper('unlock_instructions_for_registrar', , info.registrar.name),
 			a({ 'class': 'myButton myButton-small', style: 'float: right', href: action('get_domain_info', { name: name }) }, "Retry"),
 			br()
@@ -138,16 +111,18 @@ with (Hasher.View('Transfer','Application')) {
 	
 	create_helper('get_auth_code', function(name, info, error) {
 		return form({ action: action('check_auth_code', name, info) },
-			h1('ENTER AUTH CODE FOR ' + info.registrar.name),
-			div("Please obtain the current auth code from " + info.registrar.name + " and enter it below."),
-			//helper('get_auth_code_instructions_for_registrar', info.registrar.name),
-			br(),
+			h1('Auth Code'),
+
 			div({ id: "get-auth-code-errors" }, error),
-			div(
-				input({ name: 'auth_code', placeholder: 'Auth Code' }),
+			div("Please obtain the auth code from ", strong(info.registrar.name), " and enter it below."),
+			div({ style: 'text-align: center; margin: 30px 0'}, 
+				input({ name: 'auth_code', 'class': 'fancy', placeholder: 'Auth Code' }),
 				input({ name: 'name', type: 'hidden', value: name }),
-				button({ 'class': 'myButton myButton-small', value: 'submit' }, "Next")
+				button({ 'class': 'myButton', value: 'submit' }, "Next")
 			)
+
+			//helper('get_auth_code_instructions_for_registrar', info.registrar.name),
+			
 		);
 	});
 	
@@ -224,11 +199,11 @@ with (Hasher.View('Transfer','Application')) {
 		return div(
 			h1("TRANSFER IN A DOMAIN"),
 			form({ id: "get-domain-info-form", action: action('get_domain_info') },
+			  div({ id: "get-domain-form-errors" }, error ? error : null),
 				div("Use this form if you've registered a domain at another registrar and would like to transfer the domain to Badger."),
-				div({ id: "get-domain-form-errors" }, error ? error : null),
 				div({ style: 'text-align: center; margin: 30px 0'}, 
-  				input({ name: "name", placeholder: "example.com", value: data && data.name || '' }),
-  				button({ 'class': 'myButton myButton-small', value: "submit" }, "Next")
+  				input({ name: "name", 'class': 'fancy', placeholder: "example.com", value: data && data.name || '' }),
+  				button({ 'class': 'myButton', value: "submit" }, "Next")
 				)
 			)
 		);
