@@ -198,7 +198,7 @@ with (Hasher.View('Application')) {
           ul(
             li(a({ href: "#" }, 'Blog')),
             li(a({ href: "#" }, 'Jobs')),
-            li(a({ href: "#" }, 'Terms of Service'))
+            li(a({ href: "#terms_of_service" }, 'Terms of Service'))
           )
         ),
         div({ 'class': "col" },
