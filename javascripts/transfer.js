@@ -36,6 +36,7 @@ with (Hasher.Controller('Transfer','Application')) {
 		call_action('Modal.show', 'Transfer.processing_request');
 		
 		// make sure it's a valid domain name before making api call
+		form_data.name = form_data.name.toLowerCase();
 		if ( /^([a-z0-9\-]+\.)+(com|net)$/.test(form_data.name) ) {
 			Badger.getDomainInfo(form_data, function(response) {
 				if (response.data.code == 2303)//the domain object does not exist, render the proper error message
@@ -84,7 +85,7 @@ with (Hasher.View('Transfer','Application')) {
 	create_helper('domain_locked_help', function(name, info) {
 		return div(
 			h1('TRANSFER IN ' + name),
-			div({ 'class': 'error-message' }, div("You need to unlock this domain through " + (info.registrar.name.indexOf('Unknown') == 0 ? 'the current registrar' : info.registrar.name) + '.') ),
+			div({ 'class': 'error-message' }, div("You need to unlock this domain through " + (info.registrar.name.indexOf('Unknown') == 0 ? 'the current registrar' : info.registrar.name)) ),
 			table(
 				tr(
 					td( strong("Current Registrar:") ),
