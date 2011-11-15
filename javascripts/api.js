@@ -402,5 +402,9 @@ var Badger = {
   //   });
   // },
 
+  //Temporary function to test the view Contact Us
+  sendEmail: function(subject, body) {
+
+  }
   
 };
