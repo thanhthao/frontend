@@ -1,6 +1,10 @@
 require 'capybara'
 require 'capybara/dsl'
 require 'capybara/cucumber'
+
 Capybara.default_driver = :selenium
-Capybara.app_host = 'file://' + File.expand_path(File.dirname(__FILE__) + '/../..') #'file:///Users/eastagile/code/frontend'
+Capybara.register_driver :selenium do |app|
+  Capybara::Driver::Selenium.new(app, :browser => :chrome)
+end
+Capybara.app_host = 'localhost:8080'
 World(Capybara)
