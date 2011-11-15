@@ -21,18 +21,18 @@ with (Hasher.View('TermsOfService', 'Application')) {
               associated services as described on the website located at www.Rhinonames.com ("Website") and as otherwise described in \n\
               this Registration Agreement ("Services").'),
       p('1.2. By using the Services, you acknowledge that you have read, understood, and agree to be bound by the terms and \n\
-              conditions of this Registration Agreement, as well as our Privacy Policy and Anti-Spam Policy.'),
+              conditions of this Registration Agreement, as well as our Privacy Policy and Anti-Spam Policy.'),
       p('1.3. You acknowledge and agree that if you are in breach of this Registration Agreement, Rhinonames.com may suspend, \n\
               cancel or modify your use of the Services by providing you with notice to your primary email address listed on your Rhinonames.com account.'),
       p('1.4. Rhinonames.com reserves the right to amend the terms and conditions set out in this Registration Agreement or \n\
               the operation of the Services by notice to your Rhinonames.com account. Where we vary the charges applying to the Services, \n\
-              we will give you 14 days’ prior notice of the change. If you do not agree to the amendment of the terms or conditions of \n\
+              we will give you 14 days\' prior notice of the change. If you do not agree to the amendment of the terms or conditions of \n\
               the Registration Agreement or the operation of the Services or the variation in the charges, you may terminate \n\
-              the Registration Agreement by emailing support@rhinonames.com and we will assist you to transfer your domain name to \n\
+              the Registration Agreement by emailing support@rhinonames.com and we will assist you to transfer your domain name to \n\
               the ICANN accredited domain name registrar of your choice.'),
       h3('2. Domain Name Registration, Administration, and Renewal Services'),
       p('2.1. Rhinonames.com is an accredited Registrar of the Internet Corporation For Assigned Names and Numbers ("ICANN") for the .com, \n\
-              .net, .org, .biz and .info top level domains ("gTLDs”).'),
+              .net, .org, .biz and .info top level domains ("gTLDs").'),
       p('2.2. All gTLDs that Rhinonames.com registers or renews for you ("Registered Names") shall not be effective unless and until \n\
               the administrator for the .particular gTLD ("Registry") updates the central domain name registry database in accordance with \n\
               the information you have provided to Rhinonames.com, pursuant to the terms of the relevant Registry-Registrar Agreement \n\
@@ -41,9 +41,9 @@ with (Hasher.View('TermsOfService', 'Application')) {
       p('3.1. Rhinonames.com registers domain names on a first come, first served basis and does not guarantee that any domain name applied for \n\
               by you will be able to be registered.'),
       p('3.2. You agree that you will not take any action in relation to a particular domain name until the successful registration of \n\
-              that domain name (“Registered Name”) has been confirmed by Rhinonames.com.'),
+              that domain name ("Registered Name") has been confirmed by Rhinonames.com.'),
       p('3.3. You shall not have any proprietary rights in a Registered Name. Registration and/or renewal of a Registered Name only gives you \n\
-              a personal license (“Domain Name Licence”) to use the Registered Name for the period during which the registration of the domain name \n\
+              a personal license ("Domain Name Licence") to use the Registered Name for the period during which the registration of the domain name \n\
               remains current ("Registration Period").'),
       p('3.4. The continued registration and use of a Registered Name is subject to the payment of the applicable renewal fees prior to \n\
               the expiry of the Registration Period and subject to your continued compliance with the terms of this Registration Agreement \n\
@@ -51,7 +51,7 @@ with (Hasher.View('TermsOfService', 'Application')) {
               received by Rhinonames.com (as cleared funds) on or before the expiry date, Rhinonames.com reserves the right to immediately cancel \n\
               the registration of the Registered Name and remove it from the Registry\'s root zone file, at which time, the Registered Name \n\
               will cease to resolve to the nominated nameservers.'),
-      p('3.5. If you agree to have the Registration Period for the Registered Name automatically renewed by selecting the ‘Auto-Renewal’ \n\
+      p('3.5. If you agree to have the Registration Period for the Registered Name automatically renewed by selecting the \'Auto-Renewal\' \n\
               feature (accessible via the online interface to your Rhinonames.com account), then:'),
       p('3.5.1 Rhinonames.com will automatically renew the Registration Period for the Registered Name for a period of one (1) year from \n\
               the expiry date of the current Registration Period for the Registered Name, subject to your continued compliance with \n\
@@ -65,16 +65,16 @@ with (Hasher.View('TermsOfService', 'Application')) {
               upon the expiry of the current Registration Period without further notice to you.'),
       p('3.6. You acknowledge that it is your responsibility to ensure that the Domain Name Licence is renewed and release and hold Rhinonames.com harmless against any claim for damage or loss arising from your failure to renew registration of a Registered Name.'),
       p('3.7. It is your responsibility to ensure payment details remain current and that you maintain sufficient funds in your account for the applicable registration renewal fees where the Auto-Renewal feature has been enabled.'),
-      p('3.8. In the event that a Registered Name is not renewed by you prior to the expiry of the current Registration Period, the Registered Name is immediately removed from the Registry’s root zone file and is then held by Rhinonames.com for a period of thirty-three (33) days (“Registrar Hold Period”). You may renew the Registered Name at any time during the Registrar Hold Period, by paying the applicable registration fees and any past due renewal fees for the Registered Name to Rhinonames.com. Upon payment of these fees, the Registrar Hold will be removed from the Registered Name and the relevant domain name data reinstated to the Registry’s root zone file.'),
-      p('3.9. Five (5) days after the end of the Registrar Hold Period (“Five Day Period”), Rhinonames.com shall request the Registry to delete the Registered Name from its central database of registered domain names. You may renew the Registered Name during this Five Day Period (ie. before Rhinonames.com has requested the Registry to delete the Registered Name) by paying the applicable registration fees and any past due renewal fees together with a fee of USD$30.00 (“Extension Fee”). Rhinonames.com charges the Extension Fee because it must manually renew the Registered Name.'),
+      p('3.8. In the event that a Registered Name is not renewed by you prior to the expiry of the current Registration Period, the Registered Name is immediately removed from the Registry\'s root zone file and is then held by Rhinonames.com for a period of thirty-three (33) days ("Registrar Hold Period"). You may renew the Registered Name at any time during the Registrar Hold Period, by paying the applicable registration fees and any past due renewal fees for the Registered Name to Rhinonames.com. Upon payment of these fees, the Registrar Hold will be removed from the Registered Name and the relevant domain name data reinstated to the Registry\'s root zone file.'),
+      p('3.9. Five (5) days after the end of the Registrar Hold Period ("Five Day Period"), Rhinonames.com shall request the Registry to delete the Registered Name from its central database of registered domain names. You may renew the Registered Name during this Five Day Period (ie. before Rhinonames.com has requested the Registry to delete the Registered Name) by paying the applicable registration fees and any past due renewal fees together with a fee of USD$30.00 ("Extension Fee"). Rhinonames.com charges the Extension Fee because it must manually renew the Registered Name.'),
       p('3.10. After the Registry processes the request to delete the Registered Name, it will then be subject to an additional thirty (30) day "Redemption Grace Period" during which the Registered Name can still be recovered by Rhinonames.com and re-registered to you.'),
-      p('3.11. Rhinonames.com is charged a fee by the Registry and incurs additional administrative costs to recover a Registered Name during the Redemption Grace Period. Accordingly, Rhinonames.com will charge you a US$100 fee to recover a Registered Name during the Redemption Grace Period (“Redemption Fee”) in addition to charging you the applicable registration fee and any past due renewal fees for the Registered Name. Rhinonames.com will only recover a Registered Name during the Redemption Grace Period upon receiving a written notice (either by email or facsimile) from you, requesting Rhinonames.com to recover the Registered Name and agreeing to pay the Redemption Fee.'),
+      p('3.11. Rhinonames.com is charged a fee by the Registry and incurs additional administrative costs to recover a Registered Name during the Redemption Grace Period. Accordingly, Rhinonames.com will charge you a US$100 fee to recover a Registered Name during the Redemption Grace Period ("Redemption Fee") in addition to charging you the applicable registration fee and any past due renewal fees for the Registered Name. Rhinonames.com will only recover a Registered Name during the Redemption Grace Period upon receiving a written notice (either by email or facsimile) from you, requesting Rhinonames.com to recover the Registered Name and agreeing to pay the Redemption Fee.'),
       p('3.12. After the expiry of the Redemption Grace Period, there is a 5 day window where the Registered Name goes in "pending delete" status, during which the Registered Name cannot be recovered by Rhinonames.com. After the 5 day pending delete window, the Registered Name is made available for registration by the general public on a first come, first served basis.'),
-      p('3.13. The Domain Name License for a Registered Name may be transferred from you to a third party transferee (“Transferee”) while Rhinonames.com remains as the sponsoring registrar of the Registered Name by having the Transferee set up an account with Rhinonames.com, agreeing to be bound by the terms of this Registration Agreement as the new registrant and then transferring or “pushing” the Registered Name into the Transferee’s account. Transfers of a Registered Name in conjunction with a change of sponsoring registrar must be undertaken in accordance with clause 13 below.'),
+      p('3.13. The Domain Name License for a Registered Name may be transferred from you to a third party transferee ("Transferee") while Rhinonames.com remains as the sponsoring registrar of the Registered Name by having the Transferee set up an account with Rhinonames.com, agreeing to be bound by the terms of this Registration Agreement as the new registrant and then transferring or "pushing" the Registered Name into the Transferee\'s account. Transfers of a Registered Name in conjunction with a change of sponsoring registrar must be undertaken in accordance with clause 13 below.'),
       p('3.14. New customers through a Backorder service:'),
       p('If you have purchased a domain name through a Backorder service and that domain name was registered with, and not yet deleted by, Rhinonames.com at the time of your purchase, you acknowledge and agree that your backorder purchase may be subject to cancellation for a period of up to thirty-five (35) days after the Registrar Hold Period for that domain name. If your backorder purchase is cancelled you will be entitled to a refund. A domain name purchased via the backorder service selected by Rhinonames.com will be treated as a new registration and therefore a request to transfer the domain name to another registrar cannot be made within 60 days of the purchase of the domain name.'),
       h3('4. Domain Name Dispute Resolution Policy'),
-      p('4.1. You acknowledge that you have read, understood and agree to be bound by all terms and conditions of ICANN’s Uniform Domain Name Dispute Resolution Policy (\'UDRP\'), as amended from time to time, which is hereby incorporated into this Registration Agreement by reference.'),
+      p('4.1. You acknowledge that you have read, understood and agree to be bound by all terms and conditions of ICANN\'s Uniform Domain Name Dispute Resolution Policy (\'UDRP\'), as amended from time to time, which is hereby incorporated into this Registration Agreement by reference.'),
       p('4.2. For the adjudication of disputes concerning or arising from use of the Registered Name, you shall submit, without prejudice to other potentially applicable jurisdictions, to the jurisdiction of the courts of both your domicile and where Rhinonames.com is located.'),
       h3('5. Warranties and Obligations'),
       p('5.1. You shall at all times comply with:'),
@@ -86,7 +86,7 @@ with (Hasher.View('TermsOfService', 'Application')) {
       p('(c) the name, postal address, e-mail address, voice telephone number, and (where available) fax number of the technical contact for the Registered Name; and'),
       p('(d) the name, postal address, e-mail address, voice telephone number, and (where available) fax number of the administrative contact for the Registered Name.'),
       p('5.3. Your willful provision of inaccurate or unreliable information, your willful failure to promptly update information provided to Rhinonames.com, or your failure to respond for over fifteen calendar days to inquiries by Rhinonames.com concerning the accuracy of contact details associated with your registration shall constitute a material breach of this Registration Agreement and be a basis for cancellation of the registration of your Registered Name.'),
-      p('5.4. If you license the use of a domain name to a third party (“Licensee”):'),
+      p('5.4. If you license the use of a domain name to a third party ("Licensee"):'),
       p('(a) you are nonetheless the Registered Name Holder of record and responsible for providing your own full contact information and for providing and updating accurate technical and administrative contact information adequate to facilitate the timely resolution of any problems that arise in connection with the Registered Name; and'),
       p('(b) you accept liability for harm caused by the wrongful use of the Registered Name unless you promptly disclose the current contact information provided by the Licensee and the identity of the Licensee to a party providing you reasonable evidence of actionable harm.'),
       h3('6. Payment of Funds'),
@@ -99,9 +99,9 @@ with (Hasher.View('TermsOfService', 'Application')) {
       p('6.3. You acknowledge and agree that upon Rhinonames.com exercising its rights under clause 6.3, Rhinonames.com shall have all rights as the official registrant of the relevant domain name, including the right to sell the domain name to a third party. Rhinonames.com may in its sole and absolute discretion, re-transfer the relevant domain name to you, subject to the payment of any outstanding registration or renewal fees, as well as the payment to Rhinonames.com of an administration fee.'),
       h3('7. Collection of Personal Information'),
       p('7.1. You must provide to Rhinonames.com, the information set out in all of the fields of the applicable registration form or renewal form (\'Personal Information\'). You warrant that all Personal Information provided is complete, accurate, reliable and not otherwise misleading. You undertake to ensure that the Personal Information remains correct and current at all times during the Registration Period and to notify us immediately if there has been a change in the Personal Information. Failure to comply with this clause shall constitute a material breach of this Registration Agreement.'),
-      p('7.2. You may access the Personal Information provided to Rhinonames.com for the purposes of amending any information that is incorrect or incomplete by using a unique registry key (“Registry Key”) that is provided to you by Rhinonames.com after registration of your Registered Name.'),
+      p('7.2. You may access the Personal Information provided to Rhinonames.com for the purposes of amending any information that is incorrect or incomplete by using a unique registry key ("Registry Key") that is provided to you by Rhinonames.com after registration of your Registered Name.'),
       p('7.3. You may provide a written authorization to an agent to hold and use the Registry Key. If you do, Rhinonames.com must immediately be notified of such authorization.'),
-      p('7.4. Personal Information we collect from you will be dealt with in accordance with the Rhinonames.com Privacy Policy.'),
+      p('7.4. Personal Information we collect from you will be dealt with in accordance with the Rhinonames.com Privacy Policy.'),
       p('7.5. You consent to your Personal Information being:'),
       p('(a) transmitted to, and used, copied, distributed, published, modified and otherwise processed by, the Registry or its designees and agents, including in relation to the relevant central domain name registry database; and'),
       p('(b) used by Rhinonames.com for inclusion in registers and databases maintained by Rhinonames.com or its licensees, including the WHOIS database.'),
@@ -110,7 +110,7 @@ with (Hasher.View('TermsOfService', 'Application')) {
       p('7.8. Rhinonames.com will not process the Personal Information collected from you in a way that is incompatible with the purposes and other limitations as set out in this clause 7 or the Rhinonames.com Privacy Policy.'),
       p('7.9. Rhinonames.com undertakes to use all reasonable precautions to protect Personal Information from loss, misuse, unauthorized access or disclosure, alteration, or destruction.'),
       h3('8. Agents and Licensees'),
-      p('8.1. If the Services are used or accessed by your agent, you shall nonetheless be bound as a principal by all terms and conditions of this Registration Agreement, including the UDRP.'),
+      p('8.1. If the Services are used or accessed by your agent, you shall nonetheless be bound as a principal by all terms and conditions of this Registration Agreement, including the UDRP.'),
       p('8.2. You acknowledge that you remain the responsible contracting party under this Registration Agreement even if you license a third party to use the Registered Name.'),
       h3('9. No Warranty or Guarantee'),
       p('9.1. The Registry or ICANN may provide that registration of certain domain names is prohibited ("Prohibited Domain"). Rhinonames.com does not guarantee that any particular domain name you wish to register or renew is not a Prohibited Domain.'),
@@ -124,10 +124,10 @@ with (Hasher.View('TermsOfService', 'Application')) {
       h3('10. Third Party Rights'),
       p('10.1. You warrant that the registration or renewal of the Registered Name is made in good faith and that, to the best of your knowledge and belief, neither the registration nor renewal of the Registered Name nor the manner in which it is or shall be used, either directly or indirectly, infringes the intellectual property rights or other legal rights of any third party. A breach of this warranty shall constitute a material breach of this Registration Agreement.'),
       h3('11. Limitation of Liability'),
-      p('11.1. To the maximum extent permitted by law, neither Rhinonames.com nor the Registry shall have any responsibility and shall not be liable to you or your agent or nominee for any and all  indirect, incidental, punitive, special, exemplary, or consequential loss or damage or any damages resulting from loss of profits, arising out of or in connection with the Services or this Registration Agreement.'),
+      p('11.1. To the maximum extent permitted by law, neither Rhinonames.com nor the Registry shall have any responsibility and shall not be liable to you or your agent or nominee for any and all  indirect, incidental, punitive, special, exemplary, or consequential loss or damage or any damages resulting from loss of profits, arising out of or in connection with the Services or this Registration Agreement.'),
       p('11.2 To the maximum extent permitted by, you agree that in no event will the liability of Rhinonames.com under this Registration Agreement for any matter exceed the fees paid by you to Rhinonames.com for the provision of the Services.'),
       h3('12. Indemnity'),
-      p('12.1. To the maximum extent permitted by law, you agree to indemnify, keep indemnified, defend and forever hold harmless, Rhinonames.com, the Registry and the Registry’s sub-contractors, and the directors, officers, employees, agents and affiliates of each of them, from and against any and all claims, damages, liabilities, costs and expenses (including reasonable legal fees and expenses) arising out of or in connection with:'),
+      p('12.1. To the maximum extent permitted by law, you agree to indemnify, keep indemnified, defend and forever hold harmless, Rhinonames.com, the Registry and the Registry\'s sub-contractors, and the directors, officers, employees, agents and affiliates of each of them, from and against any and all claims, damages, liabilities, costs and expenses (including reasonable legal fees and expenses) arising out of or in connection with:'),
       p('(a) your application to register or renew a particular domain name, or a failure to register or renew that domain name; or'),
       p('(b) your registration or use of any Registered Name, whether registered in your name or the name of your agent or nominee; or'),
       p('(c) your violation of any third party right, including without limitation any intellectual property or other proprietary rights;'),
@@ -152,14 +152,14 @@ with (Hasher.View('TermsOfService', 'Application')) {
       p('(collectively referred to as "Illegal Activities").'),
       p('14.2. Rhinonames.com does not condone the use of a Registered Name for or in connection with any Misleading Activity or any Illegal Activity and reserves the right to report such activities to the relevant legal enforcement agencies if it determines in its sole and absolute discretion that a Registered Name is being used in such manner.'),
       h3('15. Material Breach'),
-      p('15.1. You are in material breach of this Registration Agreement (“Material Breach”) entitling Rhinonames.com to exercise its rights under clause 16 if, after having received notice from Rhinonames.com of the particulars of the breach (“Breach Notice”), you:'),
+      p('15.1. You are in material breach of this Registration Agreement ("Material Breach") entitling Rhinonames.com to exercise its rights under clause 16 if, after having received notice from Rhinonames.com of the particulars of the breach ("Breach Notice"), you:'),
       p('(a) fail to rectify the breach within five (5) business days of receipt of the Breach Notice; or'),
       p('(b) fail to provide Rhinonames.com with a reasonable explanation in defense of the breach within five (5) business days of receipt of the Breach Notice.'),
       h3('16. Suspension, Cancellation, Transfer or Modification of Domain Name Registration'),
       p('16.1. Rhinonames.com may immediately suspend, cancel, transfer or modify your registration of Registered Names by providing you with notice to your primary email address listed on your Rhinonames.com account if:'),
       p('(a) you are in Material Breach of this Registration Agreement;'),
       p('(b) Rhinonames.com has reasonable grounds to believe that a Registered Name is being used for or in connection with a Misleading Activity or an Illegal Activity; or'),
-      p('(c) Rhinonames.com has reasonable grounds to believe that a Registered Name(s) is being used contrary to Rhinonames.com\'s Anti-Spam Policy.'),
+      p('(c) Rhinonames.com has reasonable grounds to believe that a Registered Name(s) is being used contrary to Rhinonames.com\'s Anti-Spam Policy.'),
       p('16.2. Your Registered Names are subject to suspension, cancellation, transfer or modification by Rhinonames.com, pursuant to the terms of any applicable rules, policies or procedures adopted by:'),
       p('(a) ICANN, or'),
       p('(b) Any domain name registrar (including Rhinonames.com) or any central domain name registry operator (including the Registry) to the extent that they are not inconsistent with those of or adopted by ICANN, for the purpose(s) of:'),
@@ -171,13 +171,13 @@ with (Hasher.View('TermsOfService', 'Application')) {
       p('(c) to avoid any liability, civil or criminal, on the part of the Registry, as well as its affiliates, subsidiaries, officers, directors and employees; or'),
       p('(d) to correct mistakes by Rhinonames.com or the Registry in registering, renewing and/or transferring the Registered Names.'),
       p('The Registry also reserves the right to place upon registry lock, hold or similar status a Registered Name during resolution of a dispute.'),
-      p('16.4. You acknowledge and agree that the .ORG Registry, Public Interest Registry (“PIR”), has in place a Domain Anti-Abuse Policy and that an abusive use of a domain name may give rise to PIR exercising its right pursuant to clause 16.3. Please read the Policy for an understanding of what PIR regards as an abusive use of a domain name.'),
+      p('16.4. You acknowledge and agree that the .ORG Registry, Public Interest Registry ("PIR"), has in place a Domain Anti-Abuse Policy and that an abusive use of a domain name may give rise to PIR exercising its right pursuant to clause 16.3. Please read the Policy for an understanding of what PIR regards as an abusive use of a domain name.'),
       h3('17. Survival'),
       p('17.1. Clauses 7, 9, 10, 11, 12, 14 and 18 shall survive the termination or expiration of this Registration Agreement.'),
       h3('18. Severability'),
       p('18.1. The terms of this Registration Agreement are severable. If any term or provision is declared invalid or unenforceable, it shall be severed from this Registration Agreement and shall not affect the interpretation or operation of the remaining terms or provisions, which shall remain in full force and effect.'),
       h3('19. Entire Agreement'),
-      p('19.1. To the maximum extent permitted by law (including the Australian Consumer Law), this Registration Agreement and the UDRP incorporated herein, constitutes the entire agreement between you and Rhinonames.com regarding the provision of the Services and supersede all prior agreements and understandings, whether established by custom, practice, policy, or precedent.'),
+      p('19.1. To the maximum extent permitted by law (including the Australian Consumer Law), this Registration Agreement and the UDRP incorporated herein, constitutes the entire agreement between you and Rhinonames.com regarding the provision of the Services and supersede all prior agreements and understandings, whether established by custom, practice, policy, or precedent.'),
       h3('20. Governing Law'),
       p('20.1. This Registration Agreement is governed in all respects by and construed in accordance with the laws of the State of California, United States, and you submit to the non-exclusive jurisdiction (without prejudice to other potentially applicable jurisdictions) of California, United States.'),
       h3('21. Relationship'),
@@ -188,7 +188,7 @@ with (Hasher.View('TermsOfService', 'Application')) {
       p('23.1. Failure by either party to exercise or enforce any right or provision of this Registration Agreement shall not be deemed to be a waiver of such right or provision and does not affect the right to require any provision to be performed at any time thereafter.'),
       h3('24. Notices'),
       p('24.1. All notices required to be sent under this Registration Agreement shall be sent via e-mail:'),
-      p('(a) If to Rhinonames.com, to support@rhinonames.com'),
+      p('(a) If to Rhinonames.com, to support@rhinonames.com'),
       p('(b) If to you, to the primary email address listed on your Rhinonames.com account.'),
       p('24.2. Any notice sent shall be deemed to have been received at the time and date logged by the sender\'s email server of confirmation of delivery of the email message to the recipient\'s email server.')
     )
