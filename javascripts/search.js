@@ -24,9 +24,13 @@ with (Hasher.Controller('Search','Application')) {
       this.search_timeout = setTimeout(function() {
         Badger.domainSearch(current_value, function(resp) {
           $('#search-instructions').remove();
+          var most_recent_result = $('#search-results tbody tr:first td:first').text();
+          if (resp.data.domains[0][0].indexOf(most_recent_result) == 0) {
+            $('#search-results tbody tr:first').remove();
+          }
           $('#search-results tbody').prepend(helper('search_result_row', resp.data.domains));
         });
-      }, 250);
+      }, 100);
     }
   });
   
