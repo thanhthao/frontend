@@ -214,7 +214,7 @@ with (Hasher.View('Application')) {
           ul(
             li(a({ href: "mailto:support@badger.com#" }, 'support@badger.com')),
             li('415-787-5050'),
-            li(a({ href: "#" }, 'Twitter'), ' / ', a({ href: "#" }, 'Facebook'))
+            li(a({ href: "https://twitter.com/BadgerDotCom" }, 'Twitter'), ' / ', a({ href: "https://www.facebook.com/BadgerDotCom" }, 'Facebook'))
           )
         ),
         div({ 'class': "col" },
