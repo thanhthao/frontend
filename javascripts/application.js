@@ -204,7 +204,7 @@ with (Hasher.View('Application')) {
         div({ 'class': "col" },
           h2('HELP AND SUPPORT'),
           ul(
-            li(a({ href: "#" }, 'Contact Us')),
+            li(a({ href: "#contact_us" }, 'Contact Us')),
             li(a({ href: "#" }, 'Frequently Asked Questions')),
             li(a({ href: "#" }, 'Knowledge Center'))
           )
