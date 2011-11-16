@@ -10,7 +10,7 @@ with (Hasher.Controller('Transfer','Application')) {
 		Badger.getDomainInfo(form_data, function(response) {
 			if (response.data.code == 2202 || response.meta.status != 'ok') {
 				call_action('Modal.show', 'Transfer.get_auth_code', name, info, helper('Application.error_message', response));
-			} else {			
+			} else {
 				BadgerCache.getAccountInfo(function(account_info) {
 		      // ensure they have at least one domain_credit
 		      if (account_info.data.domain_credits <= 0) {
@@ -22,7 +22,7 @@ with (Hasher.Controller('Transfer','Application')) {
 							if (contacts.data.length == 0) {
 								call_action('Modal.show', 'Whois.edit_whois_modal', null, action('Transfer.check_auth_code', name, info, form_data));
 							} else {
-								call_action('Modal.show', 'Transfer.select_whois_and_dns_settings', name, form_data);
+								call_action('Modal.show', 'Transfer.select_whois_and_dns_settings', name, form_data, info.registrar.name);
 							}
 						});			
 		      }
@@ -58,7 +58,7 @@ with (Hasher.Controller('Transfer','Application')) {
 		}
 	});
 	
-	create_action('transfer_domain', function(name, info, form_data) {
+	create_action('transfer_domain', function(name, info, registrar_name, form_data) {
 		call_action('Modal.show', 'Transfer.processing_request');
 
 		Badger.registerDomain(form_data, function(response) {
@@ -67,8 +67,11 @@ with (Hasher.Controller('Transfer','Application')) {
 				
 				BadgerCache.flush('domains');
         BadgerCache.getDomains(function() {
-          call_action('Modal.hide');
-          redirect_to('#');
+          if (registrar_name.toLowerCase().indexOf('godaddy') != -1) {
+            call_action('Modal.show', 'Transfer.godaddy_transfer_confirm');
+          } else {
+            call_action('Modal.show', 'Transfer.transfer_confirm');
+          }
         })
 			} else {
 				call_action('Modal.show', 'Transfer.get_auth_code', name, info, helper('Application.error_message', response));
@@ -127,8 +130,8 @@ with (Hasher.View('Transfer','Application')) {
 		);
 	});
 	
-	create_helper('select_whois_and_dns_settings', function(name, info) {
-		return form({ action: action('transfer_domain', name, info) },
+	create_helper('select_whois_and_dns_settings', function(name, info, registrar_name) {
+		return form({ action: action('transfer_domain', name, info, registrar_name) },
 			h1("WHOIS/DNS SETTINGS FOR " + name),
 			
 			input({ type: 'hidden', name: 'name', value: name }),
@@ -223,7 +226,19 @@ with (Hasher.View('Transfer','Application')) {
 	create_helper('processing_request', function() {
 		return div({ align: 'center' },
 			strong('Processing request...')
-		);
+      );
 	});
-	
+
+  create_helper('transfer_confirm', function() {
+    return[
+      p("This transfer will be completed automatically in 5 days. We'll email you when it is done.")
+    ];
+  });
+
+  create_helper('godaddy_transfer_confirm', function() {
+    return[
+      p(span("To complete this transfer immediately, go to godaddy and follow the instructions "),
+      a({href: "https://dcc.godaddy.com/default.aspx?activeview=transfer&filtertype=3&sa=#", target: "_blank"}, "there"), span("."))
+    ];
+  });
 };

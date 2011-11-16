@@ -2,7 +2,7 @@ Feature: Register Domain
 
   Background:
     Given I logged in
-    Given I have search result for "mydomain"
+    Given I mock domain search result for key "mydomain"
     Then I fill in "form-search-input" with "mydomain"
     When I wait until xpath "//table[@id='search-results']/td" is visible
     Then I should see "mydomain" within "#search-results"
@@ -11,7 +11,7 @@ Feature: Register Domain
     Then I should see "Advanced"
     Then I should see "Registrant:"
     Then I should see "Keep contact information private"
-    Given I successfully register a domain
+    Given I mock registerDomain api
     Then I press "register-button"
 
   Scenario: I successfully register a domain

@@ -1,3 +1,7 @@
+Given /^I am not logged in$/ do
+  page.execute_script("Badger.logout();")
+end
+
 Given /^I am on the home page$/ do
   visit('/index.html')
   Given 'The api host is api-qa.badger.com'
@@ -14,6 +18,7 @@ end
 
 Given /^I logged in/ do
   Given 'I am on the home page'
+  And 'I am not logged in'
   Then 'I follow "Login"'
   And 'I fill in "email" with "thao.tran@eastagile.com"'
   And 'I fill in "password" with "12345678"'
