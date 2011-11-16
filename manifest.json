@@ -21,7 +21,9 @@
     "/javascripts/dns.js",
     "/javascripts/transfer.js",
     "/javascripts/register.js",
-    "/javascripts/help.js"
+    "/javascripts/help.js",
+    "/javascripts/terms_of_service.js",
+    "/javascripts/contact_us.js"
   ],
 
   "images": [

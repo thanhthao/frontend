@@ -86,7 +86,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 
   create_view('request_invite', function() {
     return div({ id: 'signup-box' }, 
-      h1('Badger.com... a domain registrar that doesn\'t suck.'),
+      h1('Badger.com... a different kind of domain registrar.'),
       h2("Thanks for visiting!  We're not quite ready yet but if you'd like an invite when we are, please enter your email address:"),
 
       div({ id: 'signup-errors' }),
