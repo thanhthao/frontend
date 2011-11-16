@@ -1,5 +1,13 @@
-Then /^I should see "([^"]*)"$/ do |text|
-  page.should have_content(text)
+Then /^(?:|I )should see "([^"]*)"$/ do |text|
+  if page.respond_to? :should
+    page.should have_content(text)
+  else
+    assert page.has_content?(text)
+  end
+end
+
+Then /^(?:|I )should see a link with href "([^"]*)"( with new window|)$/ do |href, new_window|
+  page.should have_xpath("//a[@href='#{href}'#{" and @target='_blank'" unless new_window.empty?}]")
 end
 
 Then /^show me the page$/ do
@@ -29,4 +37,3 @@ end
 When /^I wait ([^"]*) seconds$/ do |second|
   sleep(second.to_i)
 end
-
