@@ -57,7 +57,7 @@ end
 Given /^I mock getContacts$/ do
   page.execute_script("Badger.getContacts = function(callback) {
     callback({data : [{ address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
-                      email: 'thao.tran@eastagile.com', fax: '', first_name: 'T', id: 4, last_name: 'T', organization: '',
+                      email: 'tester@eastagile.com', fax: '', first_name: 'E', id: 4, last_name: 'A', organization: '',
                       phone: '123456789', state: '1', zip: '084'}]})
   };")
 end
