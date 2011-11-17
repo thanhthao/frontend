@@ -19,8 +19,8 @@ with (Hasher.Controller('Register','Application')) {
   });
 
 
-  create_action('buy_domain', function(form) {
-    // prevent double submits            
+  create_action('buy_domain', function(domain, form) {
+    // prevent double submits
     if ($('#register-button').attr('disabled')) return;
     else $('#register-button').attr('disabled', true);
 
@@ -32,15 +32,18 @@ with (Hasher.Controller('Register','Application')) {
         helper('Application.update_credits', true);
         BadgerCache.flush('domains');
         BadgerCache.getDomains(function() {
-          call_action('Modal.hide');
-          redirect_to('#');
+          call_action('Modal.show', 'Register.successful_register_confirmation', domain);
         })
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));
       }
     })
   });
-  
+
+  create_action('open_link', function(url) {
+    call_action('Modal.hide');
+    redirect_to(url);
+  });
 }
 
 
@@ -50,9 +53,9 @@ with (Hasher.View('Register', 'Application')) {
     return [
       h1(domain),
       div({ id: 'errors' }),
-      form({ action: action('buy_domain') },
+      form({ action: action('buy_domain', domain) },
         input({ type: 'hidden', name: 'name', value: domain }),
-      
+
         table({ style: 'width:100%' }, tbody(
           tr(
             td({ style: "width: 50%; vertical-align: top" },
@@ -66,21 +69,21 @@ with (Hasher.View('Register', 'Application')) {
                   ))
                 ),
                 tr(
-                  td('Administrator:'), 
+                  td('Administrator:'),
                   td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
                     helper('Whois.profile_options_for_select')
                   ))
                 ),
                 tr(
-                  td('Billing:'), 
+                  td('Billing:'),
                   td(select({ name: 'billing_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
                     helper('Whois.profile_options_for_select')
                   ))
                 ),
                 tr(
-                  td('Technical:'), 
+                  td('Technical:'),
                   td(select({ name: 'technical_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
                     helper('Whois.profile_options_for_select')
@@ -88,7 +91,7 @@ with (Hasher.View('Register', 'Application')) {
                 )
               )),
               div(
-                input({ name: 'privacy', type: 'checkbox', checked: 'checked' }), 
+                input({ name: 'privacy', type: 'checkbox', checked: 'checked' }),
                 'Keep contact information private'
               )
             ),
@@ -99,8 +102,8 @@ with (Hasher.View('Register', 'Application')) {
                   td('Length:'),
                   td(
                     select({ name: 'years', events: { change: function(e) { var years = $(e.target).val(); $('#register-button').html('Register ' + domain + ' for ' + years + (years == 1 ? ' credit' : ' credits')) } } },
-                      option({ value: 1 }, '1 Year'), 
-                      option({ value: 2 }, '2 Years'), 
+                      option({ value: 1 }, '1 Year'),
+                      option({ value: 2 }, '2 Years'),
                       option({ value: 3 }, '3 Years'),
                       option({ value: 4 }, '4 Years'),
                       option({ value: 5 }, '5 Years'),
@@ -119,10 +122,22 @@ with (Hasher.View('Register', 'Application')) {
             )
           )
         )),
-    
+
         div({ style: "text-align: right; margin-top: 10px" }, button({ 'class': 'myButton', id: 'register-button' }, 'Register ' + domain + ' for 1 credit'))
       )
     ];
   });
 
+  create_helper('successful_register_confirmation', function(domain) {
+    return [
+      h1("Congratulations!"),
+      p("You've just registered" + domain + ". This domain will be ready to use in 15-30 seconds.  Here are some things you can do:"),
+      ul(
+        li(a({ href: action('Register.open_link', "#domains/" + domain) }, "View domain details")),
+        li(a({ href: action('Register.open_link', "#domains/" + domain + "/dns") }, "Modify DNS Settings")),
+        li(a({ href: action('Register.open_link', "#domains/" + domain + "/whois") }, "Modify WHOIS Settings")),
+        li(a({ href: action('Register.open_link', "#") }, "View all Domains"))
+      )
+    ];
+  });
 }

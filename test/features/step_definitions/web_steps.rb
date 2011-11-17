@@ -6,6 +6,16 @@ Then /^(?:|I )should see "([^"]*)"$/ do |text|
   end
 end
 
+Then /^(?:|I )should see "([^"]*)" within "([^"]*)"$/ do |text, context|
+  within(context) do
+    if page.respond_to? :should
+      page.should have_content(text)
+    else
+      assert page.has_content?(text)
+    end
+  end
+end
+
 Then /^(?:|I )should see a link with href "([^"]*)"( with new window|)$/ do |href, new_window|
   page.should have_xpath("//a[@href='#{href}'#{" and @target='_blank'" unless new_window.empty?}]")
 end
