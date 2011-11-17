@@ -1,7 +1,7 @@
 Feature: Contact Us
 
   Background:
-    Given I logged in
+    Given I logged in with mock data for domains and user info
     Then I follow "Contact Us"
 
   @javascript
