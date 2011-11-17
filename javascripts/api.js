@@ -94,7 +94,7 @@ var Badger = {
   
   // given email+password, returns an access token
   login: function(email, password, callback) {
-    Badger.api("/account/get_access_token", 'POST', { email: email, password: password }, function(response) {
+    Badger.api("/account/access_token", { email: email, password: password }, function(response) {
       if (response.meta.status == 'ok') Badger.setAccessToken(response.data.access_token);
       if (callback) callback(response);
       for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
@@ -127,7 +127,7 @@ var Badger = {
     Badger.__search_serial_next = (Badger.__search_serial_next || 1) + 1;
     Badger.__search_serial_last = (Badger.__search_serial_last || 0);
     
-    Badger.api("/domains/search", { query: query, serial: Badger.__search_serial_next }, function(results) {
+    Badger.api("/domains/search", 'POST', { query: query, serial: Badger.__search_serial_next }, function(results) {
       if (parseInt(results.data.serial) > Badger.__search_serial_last) {
         Badger.__search_serial_last = parseInt(results.data.serial);
         callback(results);
@@ -169,7 +169,7 @@ var Badger = {
   },
 
   updateDomain: function(domain, options, callback) {
-    Badger.api("/domains/" + domain, 'POST', options, function(resp) {
+    Badger.api("/domains/" + domain, 'PUT', options, function(resp) {
       callback(resp);
     }); 
   },
