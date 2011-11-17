@@ -15,14 +15,14 @@ with (Hasher.Controller('Application')) {
   before_filter('redirect_to_root_unless_logged_in', function() {
     // if they have an access token (logged in), skip everything
     if (Badger.getAccessToken()) return;
-    
+
     // hack until skip_before_filters works
     if (Hasher.Routes.getHash().match(/^#(request_invite|login|register\/.*)$/)) return;
 
     // got this far? send 'em away
     redirect_to('#request_invite');
   });
-  
+
   after_filter('update_sidebar_with_active_class', function() {
     if ($('#sidebar')) {
       var request_uri = Hasher.Routes.getHash();
@@ -35,7 +35,7 @@ with (Hasher.Controller('Application')) {
           $('#nav-help-and-support').after(helper('domain_menu_item', domain));
         }
       }
-      
+
       // select active link and expand parent
       $('#sidebar ul').removeClass('expanded');
       $('#sidebar a').removeClass('active');
@@ -61,18 +61,18 @@ with (Hasher.View('Application')) {
 
       div({ id: 'main-minimal' },
         img({ src: 'images/badger-5.png' }),
-        div({ id: 'main-minimal-box' }, 
+        div({ id: 'main-minimal-box' },
           div({ id: 'content' }, yield)
         ),
         div({ style: 'clear: both'})
       )
     );
   });
-  
+
   create_helper('error_message', function(response) {
     console.log("ERRRRRROR")
     console.log(response)
-    return div({ 'class': 'error-message' }, 
+    return div({ 'class': 'error-message' },
 			div(
 				response.data.message,
 				!response.data.errors ? "" : ": " + response.data.errors.map(function(error) { return error.reason ? error.reason : error.field.replace(/_/g, ' ').capitalize_first() + " " + error.code.replace(/_/g, ' ');}).join(', ')
@@ -81,11 +81,11 @@ with (Hasher.View('Application')) {
   });
 
   create_helper('success_message', function(response) {
-    return div({ 'class': 'success-message' }, 
+    return div({ 'class': 'success-message' },
 			div( response.data.message || "Success!" )
     )
   });
-  
+
   create_helper('domain_menu_item', function(domain) {
     return li({ id: 'domain-menu-item-' + domain.replace('.','-'), 'class': 'domain-menu-item' },
       a({ href: "#domains/" + domain }, domain.toUpperCase()),
@@ -96,16 +96,16 @@ with (Hasher.View('Application')) {
       )
     );
   });
-  
+
   create_helper('update_credits', function(refresh) {
     if (refresh) BadgerCache.flush('account_info');
     BadgerCache.getAccountInfo(function(response) {
       $('#user_nav_credits').html(response.data.domain_credits == 1 ? '1 Credit' : response.data.domain_credits + ' Credits');
     });
   });
-  
+
   create_helper('user_nav', function() {
-    var user_nav = div({ id: 'user-nav' }, 
+    var user_nav = div({ id: 'user-nav' },
       a({ href: Badger.logout }, 'Logout')
     );
 
@@ -118,7 +118,7 @@ with (Hasher.View('Application')) {
 
     return user_nav;
   });
-  
+
   create_helper('country_options', function(selected_country) {
     countries = [["AF", "Afghanistan"],["AX", "Åland"],["AL", "Albania"],["DZ", "Algeria"],["AS", "American Samoa"],["AD", "Andorra"],["AO", "Angola"],["AI", "Anguilla"],["AQ", "Antarctica"],["AG", "Antigua and Barbuda"],["AR", "Argentina"],["AM", "Armenia"],["AW", "Aruba"],["AU", "Australia"],["AT", "Austria"],["AZ", "Azerbaijan"],["BS", "Bahamas"],["BH", "Bahrain"],["BD", "Bangladesh"],["BB", "Barbados"],["BY", "Belarus"],["BE", "Belgium"],["BZ", "Belize"],["BJ", "Benin"],["BM", "Bermuda"],["BT", "Bhutan"],["BO", "Bolivia"],["BA", "Bosnia and Herzegovina"],["BW", "Botswana"],["BV", "Bouvet Island"],["BR", "Brazil"],["IO", "British Indian Ocean Territory"],["BN", "Brunei Darussalam"],["BG", "Bulgaria"],["BF", "Burkina Faso"],["BI", "Burundi"],["KH", "Cambodia"],["CM", "Cameroon"],["CA", "Canada"],["CV", "Cape Verde"],["KY", "Cayman Islands"],["CF", "Central African Republic"],["TD", "Chad"],["CL", "Chile"],["CN", "China"],["CX", "Christmas Island"],["CC", "Cocos (Keeling) Islands"],["CO", "Colombia"],["KM", "Comoros"],["CG", "Congo (Brazzaville)"],["CD", "Congo (Kinshasa)"],["CK", "Cook Islands"],["CR", "Costa Rica"],["CI", "Côte d'Ivoire"],["HR", "Croatia"],["CU", "Cuba"],["CY", "Cyprus"],["CZ", "Czech Republic"],["DK", "Denmark"],["DJ", "Djibouti"],["DM", "Dominica"],["DO", "Dominican Republic"],["EC", "Ecuador"],["EG", "Egypt"],["SV", "El Salvador"],["GQ", "Equatorial Guinea"],["ER", "Eritrea"],["EE", "Estonia"],["ET", "Ethiopia"],["FK", "Falkland Islands"],["FO", "Faroe Islands"],["FJ", "Fiji"],["FI", "Finland"],["FR", "France"],["GF", "French Guiana"],["PF", "French Polynesia"],["TF", "French Southern Lands"],["GA", "Gabon"],["GM", "Gambia"],["GE", "Georgia"],["DE", "Germany"],["GH", "Ghana"],["GI", "Gibraltar"],["GR", "Greece"],["GL", "Greenland"],["GD", "Grenada"],["GP", "Guadeloupe"],["GU", "Guam"],["GT", "Guatemala"],["GG", "Guernsey"],["GN", "Guinea"],["GW", "Guinea-Bissau"],["GY", "Guyana"],["HT", "Haiti"],["HM", "Heard and McDonald Islands"],["HN", "Honduras"],["HK", "Hong Kong"],["HU", "Hungary"],["IS", "Iceland"],["IN", "India"],["ID", "Indonesia"],["IR", "Iran"],["IQ", "Iraq"],["IE", "Ireland"],["IM", "Isle of Man"],["IL", "Israel"],["IT", "Italy"],["JM", "Jamaica"],["JP", "Japan"],["JE", "Jersey"],["JO", "Jordan"],["KZ", "Kazakhstan"],["KE", "Kenya"],["KI", "Kiribati"],["KP", "Korea, North"],["KR", "Korea, South"],["KW", "Kuwait"],["KG", "Kyrgyzstan"],["LA", "Laos"],["LV", "Latvia"],["LB", "Lebanon"],["LS", "Lesotho"],["LR", "Liberia"],["LY", "Libya"],["LI", "Liechtenstein"],["LT", "Lithuania"],["LU", "Luxembourg"],["MO", "Macau"],["MK", "Macedonia"],["MG", "Madagascar"],["MW", "Malawi"],["MY", "Malaysia"],["MV", "Maldives"],["ML", "Mali"],["MT", "Malta"],["MH", "Marshall Islands"],["MQ", "Martinique"],["MR", "Mauritania"],["MU", "Mauritius"],["YT", "Mayotte"],["MX", "Mexico"],["FM", "Micronesia"],["MD", "Moldova"],["MC", "Monaco"],["MN", "Mongolia"],["ME", "Montenegro"],["MS", "Montserrat"],["MA", "Morocco"],["MZ", "Mozambique"],["MM", "Myanmar"],["NA", "Namibia"],["NR", "Nauru"],["NP", "Nepal"],["NL", "Netherlands"],["AN", "Netherlands Antilles"],["NC", "New Caledonia"],["NZ", "New Zealand"],["NI", "Nicaragua"],["NE", "Niger"],["NG", "Nigeria"],["NU", "Niue"],["NF", "Norfolk Island"],["MP", "Northern Mariana Islands"],["NO", "Norway"],["OM", "Oman"],["PK", "Pakistan"],["PW", "Palau"],["PS", "Palestine"],["PA", "Panama"],["PG", "Papua New Guinea"],["PY", "Paraguay"],["PE", "Peru"],["PH", "Philippines"],["PN", "Pitcairn"],["PL", "Poland"],["PT", "Portugal"],["PR", "Puerto Rico"],["QA", "Qatar"],["RE", "Reunion"],["RO", "Romania"],["RU", "Russian Federation"],["RW", "Rwanda"],["BL", "Saint Barthélemy"],["SH", "Saint Helena"],["KN", "Saint Kitts and Nevis"],["LC", "Saint Lucia"],["MF", "Saint Martin (French part)"],["PM", "Saint Pierre and Miquelon"],["VC", "Saint Vincent and the Grenadines"],["WS", "Samoa"],["SM", "San Marino"],["ST", "Sao Tome and Principe"],["SA", "Saudi Arabia"],["SN", "Senegal"],["RS", "Serbia"],["SC", "Seychelles"],["SL", "Sierra Leone"],["SG", "Singapore"],["SK", "Slovakia"],["SI", "Slovenia"],["SB", "Solomon Islands"],["SO", "Somalia"],["ZA", "South Africa"],["GS", "South Georgia and South Sandwich Islands"],["ES", "Spain"],["LK", "Sri Lanka"],["SD", "Sudan"],["SR", "Suriname"],["SJ", "Svalbard and Jan Mayen Islands"],["SZ", "Swaziland"],["SE", "Sweden"],["CH", "Switzerland"],["SY", "Syria"],["TW", "Taiwan"],["TJ", "Tajikistan"],["TZ", "Tanzania"],["TH", "Thailand"],["TL", "Timor-Leste"],["TG", "Togo"],["TK", "Tokelau"],["TO", "Tonga"],["TT", "Trinidad and Tobago"],["TN", "Tunisia"],["TR", "Turkey"],["TM", "Turkmenistan"],["TC", "Turks and Caicos Islands"],["TV", "Tuvalu"],["UG", "Uganda"],["UA", "Ukraine"],["AE", "United Arab Emirates"],["GB", "United Kingdom"],["UM", "United States Minor Outlying Islands"],["US", "United States of America"],["UY", "Uruguay"],["UZ", "Uzbekistan"],["VU", "Vanuatu"],["VA", "Vatican City"],["VE", "Venezuela"],["VN", "Vietnam"],["VG", "Virgin Islands, British"],["VI", "Virgin Islands, U.S."],["WF", "Wallis and Futuna Islands"],["EH", "Western Sahara"],["YE", "Yemen"],["ZM", "Zambia"],["ZW", "Zimbabwe"]];
     return [
@@ -146,9 +146,9 @@ with (Hasher.View('Application')) {
       ),
 
       div({ id: 'main' },
-        div({ id: "sidebar" }, 
+        div({ id: "sidebar" },
           form({ id: "form-search", action: action('Search.search_box_changed') },
-            input({ id: 'form-search-input', type: 'text', value: '', placeholder: 'Start typing...', events: { 
+            input({ id: 'form-search-input', type: 'text', value: '', placeholder: 'Start typing...', events: {
               focus: action('Search.search_box_changed'),
               keyup: action('Search.search_box_changed'),
               keypress: function(e) {
@@ -159,10 +159,12 @@ with (Hasher.View('Application')) {
 
           ul({ id: 'menu' },
             li({ id: 'nav-my-domains' },
-              a({ href: "#" }, 'MY DOMAINS')
-              // ul(
-              //   li({ 'class': "email"}, a({ href: "#domain-transfers" }, 'TRANSFERS'))
-              // )
+              a({ href: "#" }, 'MY DOMAINS'),
+              ul(
+                li({ 'class': "website"}, a({ href: "#filter_domains/all" }, 'ALL DOMAINS')),
+                li({ 'class': "website"}, a({ href: "#filter_domains/transfers" }, 'TRANSFERS')),
+                li({ 'class': "website"}, a({ href: "#filter_domains/expiringsoon" }, 'EXPIRING SOON'))
+              )
             ),
 
             li({ id: 'nav-my-account' },
@@ -188,7 +190,7 @@ with (Hasher.View('Application')) {
         div({ 'id': 'content' },
           yield
         ),
-        
+
         div({ style: 'clear: both' })
       ),
 
@@ -221,7 +223,7 @@ with (Hasher.View('Application')) {
           h2('ACCREDITATIONS'),
           img({ src: 'images/icann.png' })
         ),
-        
+
         div({ style: 'clear: both'})
       )
     );
