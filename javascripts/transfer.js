@@ -64,22 +64,27 @@ with (Hasher.Controller('Transfer','Application')) {
 		Badger.registerDomain(form_data, function(response) {
 			if (response.meta.status == 'created') {
 				helper('Application.update_credits', true);
-				
 				BadgerCache.flush('domains');
-        BadgerCache.getDomains(function() {
-          if (registrar_name.toLowerCase().indexOf('godaddy') != -1) {
-            call_action('Modal.show', 'Transfer.godaddy_transfer_confirm');
-          } else {
-            call_action('Modal.show', 'Transfer.transfer_confirm');
-          }
-        })
+
+        if (registrar_name.toLowerCase().indexOf('godaddy') != -1) {
+          call_action('Modal.show', 'Transfer.godaddy_transfer_confirm', registrar_name);
+        } else {
+          call_action('Modal.show', 'Transfer.transfer_confirm', registrar_name);
+        }
+        
 			} else {
 				call_action('Modal.show', 'Transfer.get_auth_code', name, info, helper('Application.error_message', response));
 			}
 		});
 		
 	});
-	
+
+	create_action('transfer_complete', function() {
+    call_action('Modal.hide');
+    redirect_to('#');
+  });
+
+
 	layout('dashboard');
 };
 
@@ -226,19 +231,33 @@ with (Hasher.View('Transfer','Application')) {
 	create_helper('processing_request', function() {
 		return div({ align: 'center' },
 			strong('Processing request...')
-      );
+    );
 	});
 
-  create_helper('transfer_confirm', function() {
-    return[
-      p("This transfer will be completed automatically in 5 days. We'll email you when it is done.")
+  create_helper('transfer_confirm', function(registrar_name) {
+    return [
+      h1('Transfer Request Submitted'),
+      div("We have submitted your transfer request and will email you when it is complete."),
+      ul(
+        li("If you do nothing, this request will be ", strong("automatically appoved in 5 days.")),
+        li("You may be able to manually approve the domain transfer through ", registrar_name),
+        li(registrar_name, " may email you with instructions on how to approve the domain transfer sooner.")
+      ),
+      
+			div({ style: 'text-align: right; margin-top: 10px'}, 
+			  a({ href: action('transfer_complete'), 'class': 'myButton', value: "submit" }, "Close")
+			)
     ];
   });
 
   create_helper('godaddy_transfer_confirm', function() {
     return[
-      p(span("To complete this transfer immediately, go to godaddy and follow the instructions "),
-      a({href: "https://dcc.godaddy.com/default.aspx?activeview=transfer&filtertype=3&sa=#", target: "_blank"}, "there"), span("."))
+      h1('Transfer Request Submitted'),
+      div("This request will be ", strong("automatically approved in 5 days"), ".  If you'd like to manually approve this domain transfer, visit ", a({ href: "https://dcc.godaddy.com/default.aspx?activeview=transfer&filtertype=3&sa=#", target: "_blank" }, "GoDaddy's Pending Transfers"), ' page.'),
+      
+			div({ style: 'text-align: right; margin-top: 10px'}, 
+			  a({ href: action('transfer_complete'), 'class': 'myButton', value: "submit" }, "Close")
+			)
     ];
   });
 };

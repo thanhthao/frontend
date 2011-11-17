@@ -131,7 +131,7 @@ with (Hasher.View('Register', 'Application')) {
   create_helper('successful_register_confirmation', function(domain) {
     return [
       h1("Congratulations!"),
-      p("You've just registered" + domain + ". This domain will be ready to use in 15-30 seconds.  Here are some things you can do:"),
+      p("You've just registered ", strong(domain), ". Here are some things you can do:"),
       ul(
         li(a({ href: action('Register.open_link', "#domains/" + domain) }, "View domain details")),
         li(a({ href: action('Register.open_link', "#domains/" + domain + "/dns") }, "Modify DNS Settings")),
