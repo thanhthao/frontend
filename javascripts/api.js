@@ -237,6 +237,12 @@ var Badger = {
 	},
 
   
+  //Temporary function to test the view Contact Us
+
+	//append account info to emails. linked to Contact Us on frontend
+  sendEmail: function(subject, body) {
+		
+  },
 
 
   //ADMIN COMMANDS, requires person to have admin flag set to true
@@ -327,7 +333,7 @@ var Badger = {
 	
 	getRecordAdmin: function(domain_id, record_id, callback) {
 		Badger.api("/admin/domains/" + domain_id + "/records/" + record_id, callback);
-	},
+	}
 	
   
   
@@ -401,10 +407,5 @@ var Badger = {
   //     callback(whois);
   //   });
   // },
-
-  //Temporary function to test the view Contact Us
-  sendEmail: function(subject, body) {
-
-  }
   
 };
