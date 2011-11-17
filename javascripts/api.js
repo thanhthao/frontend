@@ -235,13 +235,9 @@ var Badger = {
 	getDomainInfo: function(data, callback) {
 		Badger.api("/domains/" + data.name + "/info", data, callback);
 	},
-
   
-  //Temporary function to test the view Contact Us
-
-	//append account info to emails. linked to Contact Us on frontend
-  sendEmail: function(subject, body) {
-		
+  sendEmail: function(subject, body, callback) {
+		Badger.api("account/contact_us", "POST", { subject: subject, body: body }, callback);
   },
 
 
