@@ -1,22 +1,44 @@
 with (Hasher.Controller('Domains','Application')) {
   route({
     '#': 'index',
+    '#filter_domains/:filter': 'index',
     '#domains/:domain': 'show',
     '#domains/:domain/whois': 'whois'
   });
-  
+
   create_action('show', function(domain) {
     render('show', domain);
-    
+
     Badger.getDomain(domain, function(response) {
       console.log(response)
       render('show_with_data', domain, response.data);
     });
   });
 
-  create_action('index', function() {
+  create_action('index', function(filter) {
     BadgerCache.getDomains(function(domains) {
-      render('index', domains);
+      var results = [];
+      switch (filter){
+        case 'transfers':
+          for (i = 0; i < domains.length; i ++) {
+            if (domains[i].status == 'pending_transfer_in')
+              results.push(domains[i]);
+          }
+          break;
+        case 'expiringsoon':
+          for (i = 0; i < domains.length; i ++) {
+            var current_date = new Date();
+            var expire_date = new Date(domains[i].expires);
+            var days = parseInt(expire_date - current_date)/(24*3600*1000);
+            if (days <= 90)
+              results.push(domains[i]);
+          }
+          break;
+        default:
+          filter = false;
+          results = domains
+      }
+      render('index', results, filter);
     });
   });
 
@@ -37,30 +59,46 @@ with (Hasher.Controller('Domains','Application')) {
       call_action('whois', domain.name);
     });
   });
-  
+
 
   layout('dashboard');
 }
 
 with (Hasher.View('Domains', 'Application')) { (function() {
 
-  create_view('index', function(domains) {
-    return div(
-      h1('My Domains'),
-      div({ style: 'float: right; margin-top: -44px' }, 
-        a({ 'class': 'myButton myButton-small', href: action('Transfer.show') }, 'Transfer in a Domain')
-      ),
-
-      (typeof domains == 'undefined') ? [
-        div('Loading domains...')
-      ]:((domains.length == 0) ? [
+  create_view('index', function(domains, filter) {
+    var empty_domain_message = [];
+    var title = "MY DOMAINS";
+    switch (filter) {
+      case 'transfers':
+        empty_domain_message = [div("It looks like you don't have any domains in pending transfer.")];
+        title = "MY DOMAINS IN PENDING TRANSFER";
+        break;
+      case 'expiringsoon':
+        empty_domain_message = [div("It looks like you don't have any domains expiring soon.")];
+        title = "MY DOMAINS EXPIRING SOON";
+        break;
+      default:
+        empty_domain_message = [
         div("It looks like you don't have any domains registered with us yet. You should probably:"),
         ul(
           li(a({ href: function() { $('#form-search-input').focus(); } }, "Search for a new domain")),
           li(a({ href: action('Transfer.show') }, "Transfer a domain from another registrar"))
         ),
         div("Then this page will be a lot more fun.")
-      ]:[
+      ];
+    }
+
+    return div(
+      h1(title),
+      div({ style: 'float: right; margin-top: -44px' },
+        a({ 'class': 'myButton myButton-small', href: action('Transfer.show') }, 'Transfer in a Domain')
+      ),
+
+      (typeof domains == 'undefined') ? [
+        div('Loading domains...')
+      ]:((domains.length == 0) ? empty_domain_message
+      :[
         table({ 'class': 'fancy-table' },
           tbody(
             tr({ 'class': 'table-header' },
@@ -77,7 +115,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
                 td(new Date(domain.expires).toDateString()),
                 td(
                   a({ href: '#domains/' + domain.name + '/dns' }, 'dns'),
-                  ' ', 
+                  ' ',
                   a({ href: '#domains/' + domain.name + '/whois' }, 'whois')
                 )
               );
@@ -109,24 +147,24 @@ with (Hasher.View('Domains', 'Application')) { (function() {
       )
     );
   });
-  
+
   create_view('whois_loading', function(domain_name) {
     return div(
       h1(domain_name + ' WHOIS'),
       'Loading... please wait.'
     );
-  });  
+  });
 
   create_view('whois', function(domain) {
     return div(
       h1(domain.name + ' WHOIS'),
-      
+
       table({ style: 'width: 100% '}, tbody(
         tr(
           td({ style: 'vertical-align: top; padding-right: 20px'},
             h2('Public Listing'),
             div({ style: 'border: 1px solid #ccc; width: 409px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois)
-          ), 
+          ),
           td({ style: 'vertical-align: top'},
             h2('Make Changes'),
 
@@ -139,21 +177,21 @@ with (Hasher.View('Domains', 'Application')) { (function() {
                   ))
                 ),
                 tr(
-                  td('Administrator:'), 
+                  td('Administrator:'),
                   td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
                     helper('Whois.profile_options_for_select', domain.administrator_contact && domain.administrator_contact.id)
                   ))
                 ),
                 tr(
-                  td('Billing:'), 
+                  td('Billing:'),
                   td(select({ name: 'billing_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
                     helper('Whois.profile_options_for_select', domain.billing_contact && domain.billing_contact.id)
                   ))
                 ),
                 tr(
-                  td('Technical:'), 
+                  td('Technical:'),
                   td(select({ name: 'technical_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
                     helper('Whois.profile_options_for_select', domain.technical_contact && domain.technical_contact.id)
