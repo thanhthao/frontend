@@ -1,7 +1,7 @@
 with (Hasher.Controller('Domains','Application')) {
   route({
     '#': 'index',
-    '#filter_domains/:filter': 'index',
+    '#filter_domains/:filter/:view_type': 'index',
     '#domains/:domain': 'show',
     '#domains/:domain/whois': 'whois'
   });
@@ -15,9 +15,11 @@ with (Hasher.Controller('Domains','Application')) {
     });
   });
 
-  create_action('index', function(filter) {
+  create_action('index', function(filter, view_type) {
     BadgerCache.getDomains(function(domains) {
       var results = [];
+      if (view_type == null)
+        view_type = "list";
       switch (filter){
         case 'transfers':
           for (i = 0; i < domains.length; i ++) {
@@ -35,10 +37,12 @@ with (Hasher.Controller('Domains','Application')) {
           }
           break;
         default:
-          filter = false;
+          filter = 'all';
           results = domains
       }
-      render('index', results, filter);
+      render('index', results, filter, view_type);
+      if (view_type == 'grid')
+        call_action('create_grid_view', results);
     });
   });
 
@@ -60,13 +64,42 @@ with (Hasher.Controller('Domains','Application')) {
     });
   });
 
+  create_action('create_grid_view', function(domains) {
+    var domain_names = [];
+    var search_keys = [];
+    $.each(domains, function() {
+      domain_names.push(this.name);
+      key = this.name.split(".")[0]
+      if (search_keys.indexOf(key) == -1)
+        search_keys.push(key);
+    })
+
+    $.each(search_keys, function(){
+      Badger.domainSearch(this, false, function(resp) {
+        $('#grid tbody').append(helper('add_grid_view', domain_names, resp.data.domains));
+      });
+    });
+
+    var name = BadgerCache.cached_account_info.data.name
+    var suggest_keys = [];
+    var first_name = name.split(" ")[0];
+    suggest_keys.push(first_name);
+    suggest_keys.push(name.replace(first_name,"").replace(/ /g, ""));
+    suggest_keys.push(name.replace(/ /g, ""));
+    suggest_keys.push(name.replace(/ /g, "-"));
+    $.each(suggest_keys, function(){
+      Badger.domainSearch(this, false, function(resp) {
+        $('#suggest-grid tbody').append(helper('add_grid_view', domain_names, resp.data.domains));
+      });
+    });
+  });
 
   layout('dashboard');
 }
 
 with (Hasher.View('Domains', 'Application')) { (function() {
 
-  create_view('index', function(domains, filter) {
+  create_view('index', function(domains, filter, view_type) {
     var empty_domain_message = [];
     var title = "MY DOMAINS";
     switch (filter) {
@@ -98,31 +131,11 @@ with (Hasher.View('Domains', 'Application')) { (function() {
       (typeof domains == 'undefined') ? [
         div('Loading domains...')
       ]:((domains.length == 0) ? empty_domain_message
-      :[
-        table({ 'class': 'fancy-table' },
-          tbody(
-            tr({ 'class': 'table-header' },
-              th('Name'),
-              th('Status'),
-              th('Expires'),
-              th('Links')
-            ),
-
-            (domains || []).map(function(domain) {
-              return tr(
-                td(a({ href: '#domains/' + domain.name }, domain.name)),
-                td(domain.status),
-                td(new Date(domain.expires).toDateString()),
-                td(
-                  a({ href: '#domains/' + domain.name + '/dns' }, 'dns'),
-                  ' ',
-                  a({ href: '#domains/' + domain.name + '/whois' }, 'whois')
-                )
-              );
-            })
-          )
-        )
-      ])
+      : [ p(span('View: '),
+        span(view_type == "list" ? "List" : a({href: "#filter_domains/" + filter + "/list"},'List')),
+        '|',
+        span(view_type == "grid" ? "Grid" : a({href: "#filter_domains/" + filter + "/grid"},'Grid'))),
+        helper(view_type + '_view', domains)])
     );
   });
 
@@ -212,6 +225,62 @@ with (Hasher.View('Domains', 'Application')) { (function() {
         )
       ))
     );
+  });
+
+  create_helper('list_view', function(domains) {
+    return [
+      table({ 'class': 'fancy-table' },
+        tbody(
+          tr({ 'class': 'table-header' },
+            th('Name'),
+            th('Status'),
+            th('Expires'),
+            th('Links')
+          ),
+
+          (domains || []).map(function(domain) {
+            return tr(
+              td(a({ href: '#domains/' + domain.name }, domain.name)),
+              td(domain.status),
+              td(new Date(domain.expires).toDateString()),
+              td(
+                a({ href: '#domains/' + domain.name + '/dns' }, 'dns'),
+                ' ',
+                a({ href: '#domains/' + domain.name + '/whois' }, 'whois')
+              )
+            );
+          })
+        )
+      )
+    ];
+  });
+
+  create_helper('add_grid_view', function(domains, results) {
+    return tr(
+      td(results[0][0].split('.')[0]),
+      results.map(function(domain) {
+        if (domains.indexOf(domain[0])!=-1)
+          return td({ 'class': 'tld'}, img({ src: "/images/check.png" }));
+        else {
+          var tld = domain[0].split('.')[1];
+          return domain[1] ? td({ 'class': 'tld' }, a({ href: action('Register.show', domain[0]) }, tld))
+                           : td({ 'class': 'tld' }, span({ style: 'text-decoration: line-through' }, tld));
+        }
+      })
+    );
+  })
+
+  create_helper('grid_view', function(domains) {
+    return [
+      table({ id: 'grid', 'class': 'fancy-table' }, tbody(
+        tr(
+          th("Domain"),
+          th({ 'class': 'tld' }, "Com"),
+          th({ 'class': 'tld' }, "Net")
+        )
+      )),
+      table({ id: 'suggest-grid', 'class': 'fancy-table' }, tbody())
+    ];
   });
 
 })(); }

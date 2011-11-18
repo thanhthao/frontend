@@ -95,8 +95,10 @@ a { color: #1E31F5; }
 input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5px; font-size: 17px; border: 1px solid #aaa; border-radius: 3px }
 
 
-#search-results td.tld { width: 10%; text-align: center; }
-#search-results td a { font-weight: bold; }
+#search-results td.tld, #grid th.tld, #grid td.tld, #suggest-grid td.tld { width: 10%; text-align: center; }
+#search-results td a, #grid td a, #suggest-grid td a { font-weight: bold; }
+
+#suggest-grid { border-top: 1px solid #333; }
 
 
 #modal-dialog { position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); }

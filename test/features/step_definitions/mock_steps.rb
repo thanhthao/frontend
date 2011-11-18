@@ -1,6 +1,17 @@
-Given /^I mock domain search result for key "([^"]*)"$/ do |domain|
-  page.execute_script("Badger.domainSearch = function(query, callback) {
-    callback({ data: { domains : [['#{domain}.com', true],['#{domain}.net', true]] } });
+Given /^I mock domain search result for keys:$/ do |table|
+  search_results = []
+  table.hashes.each do |attributes|
+    search_results << "case '#{attributes['key']}':
+      callback({ data: { domains : [['#{attributes['key']}.com', #{attributes['com']}],['#{attributes['key']}.net', #{attributes['net']}]] } });
+      break;"
+  end
+  domain = "acb"
+  page.execute_script("Badger.domainSearch = function(query, use_serial, callback) {
+    query = query.toString();
+    switch (query) {
+      //callback({ data: { domains : [['#{domain}.com', true],['#{domain}.net', true]] } });
+      #{search_results.join("\n")}
+    }
   };")
 end
 
@@ -50,14 +61,14 @@ end
 
 Given /^I mock getAccountInfo$/ do
   page.execute_script("Badger.accountInfo = function(callback) {
-    callback({data : {domain_credits: 35, name: 'EA'}, meta : {status: 'ok'}});
+    callback({data : {domain_credits: 35, name: 'East Agile Company'}, meta : {status: 'ok'}});
   };")
 end
 
 Given /^I mock getContacts$/ do
   page.execute_script("Badger.getContacts = function(callback) {
     callback({data : [{ address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
-                      email: 'tester@eastagile.com', fax: '', first_name: 'E', id: 4, last_name: 'A', organization: '',
+                      email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
                       phone: '123456789', state: '1', zip: '084'}]})
   };")
 end

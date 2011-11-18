@@ -22,7 +22,7 @@ with (Hasher.Controller('Search','Application')) {
         clearTimeout(this.search_timeout);
       }
       this.search_timeout = setTimeout(function() {
-        Badger.domainSearch(current_value, function(resp) {
+        Badger.domainSearch(current_value, true, function(resp) {
           $('#search-instructions').remove();
           var most_recent_result = $('#search-results tbody tr:first td:first').text();
           if (resp.data.domains[0][0].indexOf(most_recent_result) == 0) {
