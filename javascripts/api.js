@@ -123,12 +123,12 @@ var Badger = {
     });
   },
   
-  domainSearch: function(query, callback) {
+  domainSearch: function(query, use_serial, callback) {
     Badger.__search_serial_next = (Badger.__search_serial_next || 1) + 1;
     Badger.__search_serial_last = (Badger.__search_serial_last || 0);
     
     Badger.api("/domains/search", 'POST', { query: query, serial: Badger.__search_serial_next }, function(results) {
-      if (parseInt(results.data.serial) > Badger.__search_serial_last) {
+      if (!use_serial || parseInt(results.data.serial) > Badger.__search_serial_last) {
         Badger.__search_serial_last = parseInt(results.data.serial);
         callback(results);
       }

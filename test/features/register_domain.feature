@@ -2,7 +2,9 @@ Feature: Register Domain
 
   Background:
     Given I logged in with mock data for domains and user info
-    Given I mock domain search result for key "mydomain"
+    Given I mock domain search result for keys:
+      | key              | com   | net   |
+      | mydomain         | true  | false |
     Then I fill in "form-search-input" with "mydomain"
     When I wait until xpath "//table[@id='search-results']/td" is visible
     Then I should see "mydomain" within "#search-results"
