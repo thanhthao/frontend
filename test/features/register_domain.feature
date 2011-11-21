@@ -17,6 +17,7 @@ Feature: Register Domain
     Then I should see "Keep contact information private"
     Given I mock registerDomain api
     Then I press "register-button"
+    Then I mock getDomain
 
   Scenario: I successfully register a domain
     Then I should see "Congratulations!"
@@ -30,6 +31,7 @@ Feature: Register Domain
     Then I should see "mydomain.com"
 
   Scenario: I successfully register a domain and follow the link to show its dns
+    Given I mock getRecords with empty records
     And I follow "Modify DNS Settings"
     Then I should see "mydomain.com DNS"
 

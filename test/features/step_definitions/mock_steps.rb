@@ -78,3 +78,34 @@ Given /^I mock getPaymentMethods$/ do
     callback({data: {id : 5, name: 'Visa (411111******1111 01/2012)'}});
   };")
 end
+
+Given /^I mock createAccount$/ do
+  page.execute_script("Badger.createAccount = function(data, callback){
+    Badger.setAccessToken('2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a');
+    callback({meta : {status : 'ok'}});
+  };")
+end
+
+Given /^I mock sendEmail$/ do
+  page.execute_script("Badger.sendEmail = function(subject, body, callback) {
+    //return nothing
+  };")
+end
+
+Given /^I mock getDomain$/ do
+  page.execute_script("Badger.getDomain = function(name, callback){
+    callback({ data: {expires_on: '2011-11-30T04:21:43Z', status: 'active', registered_on: '2011-10-30T04:21:43Z',
+                created_at: '2011-10-30T04:21:43Z', updated_at: '2011-10-30T04:21:43Z', updated_on: '2011-10-30T04:21:43Z',
+                name_servers: ['ns1.badger.com', 'ns2.badger.com'], created_registrar: 'rhino',
+                whois: 'The data contained in this whois database is provided \"as is\" with no guarantee or warranties regarding its accuracy.',
+                registrant_contact: { address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
+                      email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
+                      phone: '123456789', state: '1', zip: '084' } }});
+  };")
+end
+
+Given /^I mock getRecords with empty records$/ do
+  page.execute_script("Badger.getRecords = function(name, callback){
+    callback([]);
+  };")
+end

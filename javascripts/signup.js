@@ -45,7 +45,7 @@ with (Hasher.Controller('Signup','Application')) {
 			if(data.password != data.confirm_password) {
 				$('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "Passwords do not match" } }));
 			} else if (response.meta.status == 'ok') {
-        redirect_to('#');
+        redirect_to('#site_tour');
       } else {
         $('#signup-errors').empty().append(helper('Application.error_message', response));
       }
@@ -78,7 +78,7 @@ with (Hasher.Controller('Signup','Application')) {
 			}
 		});
 	});
-  
+
   layout('signup');
 }
 
@@ -149,7 +149,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 					input({ name: 'confirm_password', placeholder: 'Confirm Password', type: 'password' })
 				),
 
-        div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit' }, "Submit"))
+        div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit', value: 'Submit' }))
       )
     );
   });
@@ -186,5 +186,5 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 			)
 		);
 	});
-  
+
 })(); }
