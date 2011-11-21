@@ -15,5 +15,6 @@ Feature: Contact Us
   Scenario: I can send message through Contact Us page
     And I fill in "subject" with "Testing Subject"
     And I fill in "body" with "Test body"
+    Given I mock sendEmail
     And I press "Send"
     Then I should see "Thank you. Your message has been sent."

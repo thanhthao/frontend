@@ -1,6 +1,7 @@
 with (Hasher.Controller('Domains','Application')) {
   route({
     '#': 'index',
+    '#site_tour': 'site_tour',
     '#filter_domains/:filter/:view_type': 'index',
     '#domains/:domain': 'show',
     '#domains/:domain/whois': 'whois'
@@ -13,6 +14,11 @@ with (Hasher.Controller('Domains','Application')) {
       console.log(response)
       render('show_with_data', domain, response.data);
     });
+  });
+
+  create_action('site_tour', function() {
+    call_action('index');
+    call_action('Modal.show', 'SiteTour.site_tour_0');
   });
 
   create_action('index', function(filter, view_type) {
@@ -75,12 +81,14 @@ with (Hasher.Controller('Domains','Application')) {
     })
 
     $.each(search_keys, function(){
+      var key = this.toString();
+      $('#grid tbody').append(helper('add_grid_view', domain_names, [[key, null], [key, null]]));
       Badger.domainSearch(this, false, function(resp) {
-        $('#grid tbody').append(helper('add_grid_view', domain_names, resp.data.domains));
+        $("#grid tbody tr[key='" + key + "']").replaceWith(helper('add_grid_view', domain_names, resp.data.domains));
       });
     });
 
-    var name = BadgerCache.cached_account_info.data.name
+    var name = BadgerCache.cached_account_info.data.name.toLowerCase();
     var suggest_keys = [];
     var first_name = name.split(" ")[0];
     suggest_keys.push(first_name);
@@ -88,8 +96,10 @@ with (Hasher.Controller('Domains','Application')) {
     suggest_keys.push(name.replace(/ /g, ""));
     suggest_keys.push(name.replace(/ /g, "-"));
     $.each(suggest_keys, function(){
+      var key = this.toString();
+      $('#suggest-grid tbody').append(helper('add_grid_view', domain_names, [[key, null], [key, null]]));
       Badger.domainSearch(this, false, function(resp) {
-        $('#suggest-grid tbody').append(helper('add_grid_view', domain_names, resp.data.domains));
+        $("#suggest-grid tbody tr[key='" + key + "']").replaceWith(helper('add_grid_view', domain_names, resp.data.domains));
       });
     });
   });
@@ -256,8 +266,9 @@ with (Hasher.View('Domains', 'Application')) { (function() {
   });
 
   create_helper('add_grid_view', function(domains, results) {
-    return tr(
+    return tr( {'key': results[0][0].split('.')[0]},
       td(results[0][0].split('.')[0]),
+
       results.map(function(domain) {
         if (domains.indexOf(domain[0])!=-1)
           return td({ 'class': 'tld'}, img({ src: "/images/check.png" }));
