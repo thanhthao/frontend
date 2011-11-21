@@ -43,7 +43,7 @@ with (Hasher.View('SiteTour', 'Application')) { (function() {
   create_helper('site_tour_3', function() {
 		return div(
       h1("Already have a domain? Transfer it!"),
-      p("If you have a domain registered at another registrar, you can easily transfer it to badger.com."),
+      p(span("If you have a domain registered at another registrar, you can easily transfer it to "), a({href: "http://www.badger.com"}, "Badger.com"), span(".")),
       img({ src: 'images/site_tour_3.jpg'}),
       p("Domain transfers cost 1 Credit and will extend your existing registration by one year."),
       a({ href: action('Modal.show', 'SiteTour.site_tour_4'), 'class': 'myButton', value: "submit" }, "Next")
@@ -53,9 +53,9 @@ with (Hasher.View('SiteTour', 'Application')) { (function() {
   create_helper('site_tour_4', function() {
 		return div(
       h1("Please give us feedback!"),
-      p("Feedback from people like you will make Badger.com a better place, so please don't hold back!"),
-      p("Feel free to email us: support@badger.com."),
-      p("We hope you enjoy Badger.com!"),
+      p(span("Feedback from people like you will make "), a({href: "http://www.badger.com"},"Badger.com"), span(" a better place, so please don't hold back!")),
+      p(span("Feel free to email us: "), a({href: "mailto:support@badger.com#"}, "support@badger.com"), span(".")),
+      p(span("We hope you enjoy "), a({href: "http://www.badger.com"},"Badger.com"), span("!")),
       a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Finish")
 		);
 	});

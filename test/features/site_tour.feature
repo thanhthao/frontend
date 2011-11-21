@@ -29,7 +29,7 @@ Feature: Register successfully
     And I should see "Registering or renewing a domain costs 1 Credit per year."
     Then I follow "Next"
     Then I should see "Already have a domain? Transfer it!"
-    And I should see "If you have a domain registered at another registrar, you can easily transfer it to badger.com."
+    And I should see "If you have a domain registered at another registrar, you can easily transfer it to Badger.com."
     And I should see "Domain transfers cost 1 Credit and will extend your existing registration by one year."
     Then I follow "Next"
     Then I should see "Please give us feedback!"
