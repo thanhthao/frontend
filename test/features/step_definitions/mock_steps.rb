@@ -78,3 +78,10 @@ Given /^I mock getPaymentMethods$/ do
     callback({data: {id : 5, name: 'Visa (411111******1111 01/2012)'}});
   };")
 end
+
+Given /^I mock createAccount$/ do
+  page.execute_script("Badger.createAccount = function(data, callback){
+    Badger.setAccessToken('2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a');
+    callback({meta : {status : 'ok'}});
+  };")
+end

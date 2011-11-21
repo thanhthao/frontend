@@ -17,7 +17,7 @@ Feature: Account
   Scenario: As a logged in user I want to see Whois profiles page
     And I follow "WHOIS PROFILES"
     And I should see "Create New Profile"
-    And I should see "E A"
+    And I should see "East Agile Company"
     And I should see "tester@eastagile.com"
     And I should see "123456789"
     And I should see "My address"
