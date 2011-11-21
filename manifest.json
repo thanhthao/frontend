@@ -35,7 +35,8 @@
     "/images/bg-page.jpg",
     "/images/sprite.png",
     "/images/submit.gif",
-    "/images/icann.png"
+    "/images/icann.png",
+		"/images/check.png"
   ],
   
   "lib": [ 

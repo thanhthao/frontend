@@ -260,7 +260,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
       td(results[0][0].split('.')[0]),
       results.map(function(domain) {
         if (domains.indexOf(domain[0])!=-1)
-          return td({ 'class': 'tld'}, img({ src: "/images/check.png" }));
+          return td({ 'class': 'tld'}, img({ src: "images/check.png" }));
         else {
           var tld = domain[0].split('.')[1];
           return domain[1] ? td({ 'class': 'tld' }, a({ href: action('Register.show', domain[0]) }, tld))
