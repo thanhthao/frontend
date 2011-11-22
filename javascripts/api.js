@@ -44,7 +44,8 @@ var Badger = {
       // }
 
       delete Badger.jsonp_callbacks[callback_name];
-      document.head.removeChild(script);
+      var head = document.getElementsByTagName('head')[0];
+      head.removeChild(script);
 
       if (response && response.meta && response.meta.status == 'unauthorized') {
         Badger.logout();
@@ -53,7 +54,8 @@ var Badger = {
       }
     };
 
-    document.head.appendChild(script);
+    var head = document.getElementsByTagName('head')[0];
+    head.appendChild(script);
   },
   jsonp_callbacks: {},
   
