@@ -11,7 +11,7 @@ with (Hasher.Controller('Modal')) {
 
 with (Hasher.View('Modal')) {
   create_helper('modal', function() {
-    return div({ id: 'modal-dialog', events: { click: function(e) { if (e.target.id == 'modal-dialog') action('hide').call(); } } },
+    return div({ id: 'modal-dialog', events: { click: function(e) { if (e.target && e.target.id == 'modal-dialog') action('hide').call(); } } },
       div({ id: 'modal-content' }, 
         a({ href: action('hide'), 'class': 'close-button' }, 'X'),
         Array.prototype.slice.call(arguments)
