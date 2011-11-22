@@ -23,7 +23,8 @@
     "/javascripts/register.js",
     "/javascripts/help.js",
     "/javascripts/terms_of_service.js",
-    "/javascripts/contact_us.js"
+    "/javascripts/contact_us.js",
+		"/javascripts/email_forwards.js"
   ],
 
   "images": [

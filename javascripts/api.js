@@ -240,6 +240,22 @@ var Badger = {
 		Badger.api("account/contact_us", "POST", { subject: subject, body: body }, callback);
   },
 
+	getEmailForwards: function(domain, callback) {
+		Badger.api("domains/" + domain + "/email_forwards", callback);
+	},
+	
+	createEmailForward: function(domain, data, callback) {
+		Badger.api("domains/" + domain + "/email_forwards", "POST", data, callback);
+	},
+	
+	updateEmailForward: function(domain, id, data, callback) {
+		Badger.api("domains/" + domain + "/email_forwards/" + id, "PUT", data, callback);
+	},
+	
+	deleteEmailForward: function(domain, id, callback) {
+		Badger.api("domains/" + domain + "/email_forwards/" + id, "DELETE", callback);
+	},
+
 
   //ADMIN COMMANDS, requires person to have admin flag set to true
 	
