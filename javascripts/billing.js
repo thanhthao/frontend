@@ -152,7 +152,7 @@ with (Hasher.View('Billing', 'Application')) { (function() {
         else if (num_credits == 50) price = 50*12;
         else if (num_credits == 100) price = 100*11;
         else if (num_credits == 250) price = 250*10;
-        $('#purchase-button').html('Purchase ' + num_credits + (num_credits == 1 ? ' Credit' : ' Credits') + " for $" + price);
+        $('#purchase-button').val('Purchase ' + num_credits + (num_credits == 1 ? ' Credit' : ' Credits') + " for $" + price);
       });
 
       $(inp).parent().parent().click(function(e) { if (e.target != inp) $(inp).click() });
@@ -254,7 +254,7 @@ with (Hasher.View('Billing', 'Application')) { (function() {
         )
       )),
 
-      div({ style: 'text-align: right; margin-top: 10px' }, button({ 'class': 'myButton', id: 'purchase-button' }, 'Purchase 1 Credit for $15'))
+      div({ style: 'text-align: right; margin-top: 10px' }, input({ 'class': 'myButton', id: 'purchase-button', type: 'submit', value: 'Purchase 1 Credit for $15' }))
     );
   });
 })(); }

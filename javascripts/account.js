@@ -59,7 +59,7 @@ with (Hasher.View('Account', 'Application')) { (function() {
 			div({ id: 'change-password-form', style: 'text-align: center; margin: 20px 0' },
 				input({ name: 'new_password', type: 'password', 'class': 'fancy', placeholder: 'New Password', value: data.new_password || '' }),
 				input({ name: 'confirm_password', type: 'password', 'class': 'fancy', placeholder: 'Confirm Password', value: data.confirm_password || '' }),
-				button({ 'class': 'myButton', type: 'submit' }, "Update")
+				input({ 'class': 'myButton', type: 'submit', value: 'Update' })
 			)
 		);
 	});
