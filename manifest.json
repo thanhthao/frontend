@@ -36,7 +36,10 @@
     "/images/sprite.png",
     "/images/submit.gif",
     "/images/icann.png",
-		"/images/check.png"
+		"/images/check.png",
+		"/images/site_tour_1.jpg",
+		"/images/site_tour_2.jpg",
+		"/images/site_tour_3.jpg"
   ],
   
   "lib": [ 
