@@ -2,6 +2,9 @@ with (Hasher.Controller('Modal')) {
   create_action('show', function() {
     if ($('#modal-dialog').length > 0) call_action('hide');
     document.body.appendChild(helper('modal', helper.apply(null, Array.prototype.slice.call(arguments))));
+
+    // Fix placeholder does not work in IE
+    Placeholder.fix_ie();
   });
   
   create_action('hide', function() {

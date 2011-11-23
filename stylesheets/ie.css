@@ -14,3 +14,7 @@
 	filter: dropshadow(color=#252525, offx=1, offy=0);
 	
 }
+
+.has-placeholder {
+  color: #777777;
+}

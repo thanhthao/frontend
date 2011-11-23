@@ -52,6 +52,9 @@ with (Hasher.Controller('Application')) {
       }
 
     }
+
+    // Fix placeholder does not work in IE
+    Placeholder.fix_ie();
   });
 }
 
