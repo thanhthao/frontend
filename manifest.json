@@ -25,7 +25,8 @@
     "/javascripts/terms_of_service.js",
     "/javascripts/contact_us.js",
     "/javascripts/site_tour.js",
-    "/javascripts/ie_fix.js"
+    "/javascripts/ie_fix.js",
+		"/javascripts/email_forwards.js"
   ],
 
   "images": [
