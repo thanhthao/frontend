@@ -127,3 +127,5 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 
 .purchase-credits td, .purchase-credits th { text-align: center; }
 .purchase-credits tr { cursor: pointer; }
+
+.has-placeholder { color: #777777; }

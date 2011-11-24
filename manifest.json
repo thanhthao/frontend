@@ -23,7 +23,9 @@
     "/javascripts/register.js",
     "/javascripts/help.js",
     "/javascripts/terms_of_service.js",
-    "/javascripts/contact_us.js"
+    "/javascripts/contact_us.js",
+    "/javascripts/site_tour.js",
+    "/javascripts/ie_fix.js"
   ],
 
   "images": [
@@ -35,7 +37,11 @@
     "/images/bg-page.jpg",
     "/images/sprite.png",
     "/images/submit.gif",
-    "/images/icann.png"
+    "/images/icann.png",
+    "/images/check.png",
+    "/images/site_tour_1.jpg",
+    "/images/site_tour_2.jpg",
+    "/images/site_tour_3.jpg"
   ],
   
   "lib": [ 
