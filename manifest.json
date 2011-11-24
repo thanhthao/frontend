@@ -24,7 +24,8 @@
     "/javascripts/help.js",
     "/javascripts/terms_of_service.js",
     "/javascripts/contact_us.js",
-		"/javascripts/email_forwards.js"
+		"/javascripts/email_forwards.js",
+		"/javascripts/web_forwards.js"
   ],
 
   "images": [

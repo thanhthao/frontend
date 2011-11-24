@@ -17,10 +17,7 @@ with (Hasher.Controller('Domains', 'Application')) {
 			if(response.meta.status == 'ok') {
 				call_action('Modal.hide');
 				
-				console.log( helper('show_email_forward_table_row', domain, response.data) );
-				
 				$('#email-forwards-table').append( helper('show_email_forward_table_row', domain, response.data) );
-				
 			} else {
 				$('#email-forwards-errors').empty().append(
 					helper('Application.error_message', response)
@@ -45,23 +42,7 @@ with (Hasher.Controller('Domains', 'Application')) {
 			});
 		}
 	});
-	
-	create_action('update_email_forward', function(domain, email_forward, fomr_data) {
-		$('#update-email-forward-errors').empty();
 		
-		Badger.updateEmailForward(domain, email_forward.id, form_data, function(response) {
-			if(response.meta.status != 'ok') {
-				$('#update-email-forward-errors').empty().append(
-					helper('Application.error_message', response)
-				);
-			} else {
-				call_action('Modal.hide');
-				
-				$('#email-forwards-table tr#' + email_forward.username).remove(); //remove the row
-			}
-		});
-	});
-	
 };
 
 with (Hasher.View('Domains', 'Application')) {

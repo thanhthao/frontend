@@ -11,7 +11,7 @@ with (Hasher.Controller('Domains','Application')) {
     render('show', domain);
 
     Badger.getDomain(domain, function(response) {
-      console.log(response)
+      // console.log(response);
       render('show_with_data', domain, response.data);
     });
   });

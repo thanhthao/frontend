@@ -94,8 +94,8 @@ with (Hasher.View('Application')) {
       ul(
         li({ 'class': "email" }, a({ href: "#domains/" + domain + "/dns" }, 'DNS')),
         li({ 'class': "email" }, a({ href: "#domains/" + domain + "/whois" }, 'WHOIS & PRIVACY')),
-				li({ 'class': "email" }, a({ href: "#domains/" + domain + "/email_forwards" }, 'EMAIL FORWARDS'))
-				// li({ 'class': "email" }, a({ href: "#domains/" + domain + "/web_forwards" }, 'WEB FORWARDS'))
+				li({ 'class': "email" }, a({ href: "#domains/" + domain + "/email_forwards" }, 'EMAIL FORWARDS')),
+				li({ 'class': "email" }, a({ href: "#domains/" + domain + "/web_forwards" }, 'WEB FORWARDS'))
         //li({ 'class': "email" }, a({ href: "#domains/" + domain + "/whois" }, 'TRANSFER'))
       )
     );
