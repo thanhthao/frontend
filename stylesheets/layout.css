@@ -1,7 +1,7 @@
 img { border-style: none; }
 a { text-decoration: none; }
 a:hover { text-decoration: underline; }
-input, textarea, select { vertical-align: middle; }
+input, textarea, select { vertical-align: middle; margin: 5px 5px 0 0;}
 form,fieldset { margin:0; padding:0; border-style:none; }
 
 html { height: 100%; background: #0085aa url(../images/bg-page.jpg) repeat top center; }
@@ -127,6 +127,8 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 
 .purchase-credits td, .purchase-credits th { text-align: center; }
 .purchase-credits tr { cursor: pointer; }
+
+.contact-subject, .contact-body { width: 430px; border: 1px solid #aaa; }
 
 /* adding css for ie browser */
 .has-placeholder { color: #777777; }

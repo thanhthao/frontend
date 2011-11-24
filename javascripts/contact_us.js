@@ -34,9 +34,9 @@ with (Hasher.View('ContactUs', 'Application')) {
       p('Phone: 415-787-5050'),
       h3('Send us a message:'),
       form({ action: action('submit_email') },
-        input({ type: 'text', id: 'subject', placeholder: 'Subject', size: 50 }),
+        input({ type: 'text', id: 'subject', 'class': 'contact-subject', placeholder: 'Subject', size: 50 }),
         br(),
-        textarea({ rows: 10, cols: 50, id: 'body', placeholder: 'Body' }),
+        textarea({ rows: 10, cols: 50, id: 'body', 'class': 'contact-body', placeholder: 'Body' }),
         br(),
         input({ type: 'submit', value: 'Send', 'class': "myButton" })
       )

@@ -160,12 +160,12 @@ with (Hasher.View('Domains', 'Application')) { (function() {
     return div(
       h1(domain),
       dl({ 'class': 'fancy-dl' },
-        dt('Expires:'), dd(new Date(Date.parse(data.expires_on)).toDateString()),
-        dt('Status: '), dd(data.status),
-        dt('Registered:'), dd(new Date(Date.parse(data.registered_on)).toDateString(), (data.created_registrar ? ' via '+data.created_registrar : '')),
-        dt('Previous Registrar: '), dd(data.losing_registrar),
-        dt('Created At: '), dd(new Date(Date.parse(data.created_at)).toDateString()),
-        dt('Updated At: '), dd(new Date(Date.parse(data.updated_at)).toDateString()),
+        dt('Expires:'), dd(new Date(Date.parse(data.expires_on)).toDateString()), br(),
+        dt('Status: '), dd(data.status), br(),
+        dt('Registered:'), dd(new Date(Date.parse(data.registered_on)).toDateString(), (data.created_registrar ? ' via '+data.created_registrar : '')), br(),
+        dt('Previous Registrar: '), dd(data.losing_registrar), br(),
+        dt('Created At: '), dd(new Date(Date.parse(data.created_at)).toDateString()), br(),
+        dt('Updated At: '), dd(new Date(Date.parse(data.updated_at)).toDateString()), br(),
         dt('Updated On: '), dd(new Date(Date.parse(data.updated_on)).toDateString())
       )
     );
