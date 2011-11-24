@@ -61,7 +61,7 @@ with (Hasher.View('Billing', 'Application')) { (function() {
         tbody(
           (credit_historys || []).map(function(credit_history) {
             return tr(
-              td(new Date(credit_history.created_at).toDateString()),
+              td(new Date(Date.parse(credit_history.created_at)).toDateString()),
               td(credit_history.details),
               td(credit_history.domain ? a({ href: '#domains/' + credit_history.domain.name }, credit_history.domain.name) : ''),
               td(credit_history.num_credits)

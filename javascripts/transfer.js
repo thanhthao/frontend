@@ -101,11 +101,11 @@ with (Hasher.View('Transfer','Application')) {
 				),
 				tr(
 					td( strong("Created:") ),
-					td(new Date(info.created_at).toDateString())
+					td(new Date(Date.parse(info.created_at)).toDateString())
 				),
 				tr(
 					td( strong("Expiration:") ),
-					td(new Date(info.expires_on).toDateString())
+					td(new Date(Date.parse(info.expires_on)).toDateString())
 				),
 				tr(
 					td( strong("Locked:") ),
