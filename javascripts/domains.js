@@ -1,7 +1,6 @@
 with (Hasher.Controller('Domains','Application')) {
   route({
     '#': 'index',
-    '#site_tour': 'site_tour',
     '#filter_domains/:filter/:view_type': 'index',
     '#domains/:domain': 'show',
     '#domains/:domain/whois': 'whois'
@@ -14,11 +13,6 @@ with (Hasher.Controller('Domains','Application')) {
       // console.log(response);
       render('show_with_data', domain, response.data);
     });
-  });
-
-  create_action('site_tour', function() {
-    call_action('index');
-    call_action('Modal.show', 'SiteTour.site_tour_0');
   });
 
   create_action('index', function(filter, view_type) {

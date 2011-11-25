@@ -3,7 +3,7 @@ with (Hasher.View('SiteTour', 'Application')) { (function() {
 		return div(
       h1("Welcome to Badger.com!"),
       p("We do things a little bit differently around here, so please take a moment to read the next few screens. It will be quick!"),
-      a({ href: action('Modal.show', 'SiteTour.site_tour_1'), 'class': 'myButton', value: "submit" }, "Next")
+      div({ style: 'text-align: right' }, a({ href: action('Modal.show', 'SiteTour.site_tour_1'), 'class': 'myButton', value: "submit" }, "Next"))
 		);
 	});
 
@@ -15,7 +15,7 @@ with (Hasher.View('SiteTour', 'Application')) { (function() {
         strong(" It costs 1 Credit to register, transfer or renew a domain for one year."),
         span(" If you don't have enough credits, you will be asked to purchase more:")
       ),
-      img({ src: 'images/site_tour_1.jpg'}),
+      div({ style: 'text-align: center' }, img({ src: 'images/site_tour_1.jpg', style: 'border: 1px solid #333' })),
       p(
         span("Credits cost"),
         strong(" between $10 and $15 depending on how many you buy"),
@@ -26,7 +26,7 @@ with (Hasher.View('SiteTour', 'Application')) { (function() {
         span(strong({style: 'color: red; size: 120%;'}, BadgerCache.cached_account_info.data.domain_credits + " free "
         + (BadgerCache.cached_account_info.data.domain_credits == 1 ? 'Credit' : 'Credits'))),
         span(", congrats!")) : "",
-      a({ href: action('Modal.show', 'SiteTour.site_tour_2'), 'class': 'myButton', value: "submit" }, "Next")
+      div({ style: 'text-align: right' }, a({ href: action('Modal.show', 'SiteTour.site_tour_2'), 'class': 'myButton', value: "submit" }, "Next"))
 		);
 	});
 
@@ -34,9 +34,9 @@ with (Hasher.View('SiteTour', 'Application')) { (function() {
 		return div(
       h1("To search, just start typing."),
       p("If you want to search for a new domain, just start typing in the search box and results will appear as you type:"),
-      img({ src: 'images/site_tour_2.jpg'}),
+      div({ style: 'text-align: center' }, img({ src: 'images/site_tour_2.jpg', style: 'border: 1px solid #333' })),
       p("Registering or renewing a domain costs 1 Credit per year."),
-      a({ href: action('Modal.show', 'SiteTour.site_tour_3'), 'class': 'myButton', value: "submit" }, "Next")
+      div({ style: 'text-align: right' }, a({ href: action('Modal.show', 'SiteTour.site_tour_3'), 'class': 'myButton', value: "submit" }, "Next"))
 		);
 	});
 
@@ -44,9 +44,9 @@ with (Hasher.View('SiteTour', 'Application')) { (function() {
 		return div(
       h1("Already have a domain? Transfer it!"),
       p(span("If you have a domain registered at another registrar, you can easily transfer it to "), a({href: "http://www.badger.com"}, "Badger.com"), span(".")),
-      img({ src: 'images/site_tour_3.jpg'}),
+      div({ style: 'text-align: center' }, img({ src: 'images/site_tour_3.jpg', style: 'border: 1px solid #333' })),
       p("Domain transfers cost 1 Credit and will extend your existing registration by one year."),
-      a({ href: action('Modal.show', 'SiteTour.site_tour_4'), 'class': 'myButton', value: "submit" }, "Next")
+      div({ style: 'text-align: right' }, a({ href: action('Modal.show', 'SiteTour.site_tour_4'), 'class': 'myButton', value: "submit" }, "Next"))
 		);
 	});
 
@@ -56,7 +56,7 @@ with (Hasher.View('SiteTour', 'Application')) { (function() {
       p(span("Feedback from people like you will make "), a({href: "http://www.badger.com"},"Badger.com"), span(" a better place, so please don't hold back!")),
       p(span("Feel free to email us: "), a({href: "mailto:support@badger.com#"}, "support@badger.com"), span(".")),
       p(span("We hope you enjoy "), a({href: "http://www.badger.com"},"Badger.com"), span("!")),
-      a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Finish")
+      div({ style: 'text-align: right' }, a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Finish"))
 		);
 	});
 })(); }
