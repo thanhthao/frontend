@@ -199,7 +199,7 @@ with (Hasher.View('Application')) {
             ),
 
             li({ id: 'nav-help-and-support' },
-              a({ href: "#help-and-support" }, 'HELP & SUPPORT')
+              a({ href: "#contact_us" }, 'HELP & SUPPORT')
               // ul(
               //   li({ 'class': "website" }, a({ href: "#knowledge-base" }, 'KNOWLEDGE BASE')),
               //   li({ 'class': "email" }, a({ href: "#tickets" }, 'SUPPORT TICKETS'))
@@ -220,8 +220,8 @@ with (Hasher.View('Application')) {
         div({ 'class': "col" },
           h2('COMPANY'),
           ul(
-            li(a({ href: "#" }, 'Blog')),
-            li(a({ href: "#" }, 'Jobs')),
+            // li(a({ href: "#" }, 'Blog')),
+            // li(a({ href: "#" }, 'Jobs')),
             li(a({ href: "#terms_of_service" }, 'Terms of Service'))
           )
         ),
@@ -229,16 +229,16 @@ with (Hasher.View('Application')) {
           h2('HELP AND SUPPORT'),
           ul(
             li(a({ href: "#contact_us" }, 'Contact Us')),
-            li(a({ href: "#" }, 'Frequently Asked Questions')),
-            li(a({ href: "#" }, 'Knowledge Center'))
+            li(a({ href: "https://twitter.com/BadgerDotCom", target: "_blank" }, 'Twitter'), ' / ', a({ href: "https://www.facebook.com/BadgerDotCom", target: "_blank" }, 'Facebook'))
+            // li(a({ href: "#" }, 'Frequently Asked Questions')),
+            // li(a({ href: "#" }, 'Knowledge Center'))
           )
         ),
         div({ 'class': "col" },
           h2('CONTACT US'),
           ul(
             li(a({ href: "mailto:support@badger.com#" }, 'support@badger.com')),
-            li('415-787-5050'),
-            li(a({ href: "https://twitter.com/BadgerDotCom", target: "_blank" }, 'Twitter'), ' / ', a({ href: "https://www.facebook.com/BadgerDotCom", target: "_blank" }, 'Facebook'))
+            li(a({ href: 'tel:+14157875050' }, '415-787-5050' ))
           )
         ),
         div({ 'class': "col" },

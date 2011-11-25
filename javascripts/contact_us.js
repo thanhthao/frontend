@@ -30,16 +30,22 @@ with (Hasher.View('ContactUs', 'Application')) {
   create_view('contact_us', function() {
     return div(
       h1('Contact Us'),
-      p(span('Email: '), a({href: "mailto:support@badger.com#"}, "support@badger.com")),
-      p('Phone: 415-787-5050'),
-      h3('Send us a message:'),
-      form({ action: action('submit_email') },
-        input({ type: 'text', id: 'subject', 'class': 'contact-subject', placeholder: 'Subject', size: 50 }),
-        br(),
-        textarea({ rows: 10, cols: 50, id: 'body', 'class': 'contact-body', placeholder: 'Body' }),
-        br(),
-        input({ type: 'submit', value: 'Send', 'class': "myButton" })
-      )
+      p("If you've come here looking for help and support, then we've failed somewhere along the way.  Please let us know what went wrong by emailing us at ", a({ href: 'mailto:support@badger.com' }, 'support@badger.com'), " or by calling us at ", a({ href: 'tel:+14157875050' }, '415-787-5050' ), " and we'll try to make things better.  Sorry!"),
+			
+			br(),
+			div({ 'class': 'info-message', style: 'width: 450px; margin: 0 auto' },
+				h2({ style: 'margin: 0 0 15px 0' }, 'Send Us an Email'),
+	      form({ action: action('submit_email') },
+					div(strong('To: '),  a({ href: 'mailto:support@badger.com' }, 'support@badger.com')),
+	        input({ type: 'text', id: 'subject', 'class': 'contact-subject', placeholder: 'Subject', style: 'width: 98%' }),
+	        br(),
+	        textarea({ id: 'body', 'class': 'contact-body', placeholder: 'Body', style: 'height: 100px; width: 98%' }),
+	        br(),
+					div({ style: 'text-align: right' },
+	        	input({ type: 'submit', value: 'Send', 'class': "myButton" })
+					)
+	      )
+			)
     )
   });
 
