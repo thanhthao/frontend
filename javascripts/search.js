@@ -11,27 +11,27 @@ with (Hasher.Controller('Search','Application')) {
     
     var current_value = $('#form-search-input').val().toLowerCase().replace(/[^a-zA-Z0-9\-]/g,'');
 
+		var search_callback = function() {
+      Badger.domainSearch(current_value, true, function(resp) {
+        $('#search-instructions').remove();
+        var most_recent_result = $('#search-results tbody tr:first td:first').text();
+        if (resp.data.domains[0][0].indexOf(most_recent_result) == 0) {
+          $('#search-results tbody tr:first').remove();
+        }
+        $('#search-results tbody').prepend(helper('search_result_row', resp.data.domains));
+      });
+    };
+
+    if (this.search_timeout) clearTimeout(this.search_timeout);
+    if (this.backspace_search_timeout) clearTimeout(this.backspace_search_timeout);
+
     if (this.last_search_value && (this.last_search_value.indexOf(current_value) == 0)) {
-      this.last_search_value = current_value;
+      this.backspace_search_timeout = setTimeout(search_callback, 750);
     } else if (current_value && (this.last_search_value != current_value)) {
-      this.last_search_value = current_value;
-
-
-      if (this.search_timeout) {
-        console.log('clear timeout')
-        clearTimeout(this.search_timeout);
-      }
-      this.search_timeout = setTimeout(function() {
-        Badger.domainSearch(current_value, true, function(resp) {
-          $('#search-instructions').remove();
-          var most_recent_result = $('#search-results tbody tr:first td:first').text();
-          if (resp.data.domains[0][0].indexOf(most_recent_result) == 0) {
-            $('#search-results tbody tr:first').remove();
-          }
-          $('#search-results tbody').prepend(helper('search_result_row', resp.data.domains));
-        });
-      }, 100);
+      this.search_timeout = setTimeout(search_callback, 100);
     }
+
+    this.last_search_value = current_value;
   });
   
   create_action('search', function() {
