@@ -143,8 +143,24 @@ with (Hasher.View('Application')) {
     ];
   });
 
-  create_layout('dashboard', function(yield) {
+  create_helper('my_account_nav', function(){
+    var nav = ul(
+                  li({ 'class': "email"}, a({ href: "#account/profiles" }, 'WHOIS PROFILES')),
+                  li({ 'class': "website"}, a({ href: "#account/billing" }, 'CREDITS & BILLING')),
+                  li({ 'class': "website"}, a({ href: "#account/settings" }, 'SETTINGS')),
+                  li({ 'class': "website hidden", id : 'invites_available'}, a({ href: "#invites" }, 'INVITES'))
+                );
 
+    BadgerCache.getAccountInfo(function(response) {
+      if (response.data.invites_available > 0) {
+        $('#nav-my-account ul li#invites_available').removeClass('hidden');
+      }
+    });
+
+    return nav;
+  });
+
+  create_layout('dashboard', function(yield) {
     return div({ id: 'wrapper' },
 
       div({ id: 'header' },
@@ -182,11 +198,7 @@ with (Hasher.View('Application')) {
 
             li({ id: 'nav-my-account' },
               a({ href: "#account" }, 'MY ACCOUNT'),
-              ul(
-                li({ 'class': "email"}, a({ href: "#account/profiles" }, 'WHOIS PROFILES')),
-                li({ 'class': "website"}, a({ href: "#account/billing" }, 'CREDITS & BILLING')),
-                li({ 'class': "website"}, a({ href: "#account/settings" }, 'SETTINGS'))
-              )
+              helper('my_account_nav')
             ),
 
             li({ id: 'nav-help-and-support' },

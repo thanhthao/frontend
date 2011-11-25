@@ -59,10 +59,11 @@ Given /^I mock getDomains with ([^"]*) normal domains, ([^"]*) in transfer domai
   page.execute_script(" BadgerCache.cached_domains = null;");
 end
 
-Given /^I mock getAccountInfo$/ do
+Given /^I mock accountInfo with ([^"]*) domain credits and ([^"]*) invites available$/ do |domain_credits, invites_available|
   page.execute_script("Badger.accountInfo = function(callback) {
-    callback({data : {domain_credits: 35, name: 'East Agile Company'}, meta : {status: 'ok'}});
-  };")
+    callback({data : {domain_credits: #{domain_credits}, name: 'East Agile Company', invites_available: #{invites_available}}, meta : {status: 'ok'}});
+  };
+ ")
 end
 
 Given /^I mock getContacts$/ do
@@ -107,5 +108,11 @@ end
 Given /^I mock getRecords with empty records$/ do
   page.execute_script("Badger.getRecords = function(name, callback){
     callback([]);
+  };")
+end
+
+Given /^I mock sendInvite with status "([^"]*)"$/ do |status|
+  page.execute_script("Badger.sendInvite = function(data, callback){
+    callback({ meta : {status: '#{status}'}, data : { message: 'Notification message' } });
   };")
 end

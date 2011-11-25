@@ -1,7 +1,7 @@
 Feature: Domains
 
   Background:
-    Given I logged in with mock data for domains and user info
+    Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
 
   Scenario: I should see all pending transfer domains when clicking on Transfers tab with list view
     Then I follow "TRANSFERS"

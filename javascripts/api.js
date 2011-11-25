@@ -347,6 +347,10 @@ var Badger = {
 	
 	getRecordAdmin: function(domain_id, record_id, callback) {
 		Badger.api("/admin/domains/" + domain_id + "/records/" + record_id, callback);
+	},
+
+	sendInvite: function(data, callback) {
+		Badger.api("/account/send_invite", "POST", { first_name: data.first_name, last_name: data.last_name, email: data.invitation_email }, callback);
 	}
 	
   

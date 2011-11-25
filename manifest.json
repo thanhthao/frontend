@@ -26,7 +26,8 @@
     "/javascripts/contact_us.js",
     "/javascripts/site_tour.js",
     "/javascripts/ie_fix.js",
-		"/javascripts/email_forwards.js"
+		"/javascripts/email_forwards.js",
+		"/javascripts/invite.js"
   ],
 
   "images": [

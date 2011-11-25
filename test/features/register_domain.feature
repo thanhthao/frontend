@@ -1,7 +1,7 @@
 Feature: Register Domain
 
   Background:
-    Given I logged in with mock data for domains and user info
+    Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
     Given I mock domain search result for keys:
       | key              | com   | net   |
       | mydomain         | true  | false |

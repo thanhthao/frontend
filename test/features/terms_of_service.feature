@@ -2,7 +2,7 @@ Feature: Terms of Service
 
   @javascript
   Scenario: As a logged in user I want to see tems of service
-    Given I logged in with mock data for domains and user info
+    Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
     Then I follow "Terms of Service"
     Then I should see "Domain Name Registration Agreement"
     Then I should see "1. Introduction"
