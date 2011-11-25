@@ -276,8 +276,9 @@ with (Hasher.View('Domains', 'Application')) { (function() {
         if (domains.indexOf(domain[0])!=-1)
           return td({ 'class': 'tld'}, a({ href: '#domains/' + domain[0], style: 'color: #0a0' }, img({ src: "images/check.png" }), ' ', tld));
         else {
-          return domain[1] ? td({ 'class': 'tld' }, a({ href: action('Register.show', domain[0]) }, tld))
-                           : td({ 'class': 'tld' }, span({ style: 'text-decoration: line-through' }, tld));
+					if (!tld) return span();
+					else if (domain[1]) return td({ 'class': 'tld' }, a({ href: action('Register.show', domain[0]) }, img({ src: "images/icon-plus.png" }), ' ', tld));
+					else return td({ 'class': 'tld' }, span(img({ src: "images/icon-no.gif" }), ' ', span({ style: 'text-decoration: line-through' }, tld)));
         }
       })
     );
