@@ -109,11 +109,11 @@ with (Hasher.View('Domains', 'Application')) { (function() {
     switch (filter) {
       case 'transfers':
         empty_domain_message = [div("It looks like you don't have any domains in pending transfer.")];
-        title = "MY DOMAINS IN PENDING TRANSFER";
+        title = "DOMAIN TRANSFERS";
         break;
       case 'expiringsoon':
         empty_domain_message = [div("It looks like you don't have any domains expiring soon.")];
-        title = "MY DOMAINS EXPIRING SOON";
+        title = "DOMAINS EXPIRING SOON";
         break;
       default:
         empty_domain_message = [
