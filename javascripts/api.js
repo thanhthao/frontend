@@ -241,6 +241,43 @@ var Badger = {
   },
 
 
+
+	getEmailForwards: function(domain, callback) {
+		Badger.api("domains/" + domain + "/email_forwards", callback);
+	},
+	
+	createEmailForward: function(domain, data, callback) {
+		Badger.api("domains/" + domain + "/email_forwards", "POST", data, callback);
+	},
+	
+	updateEmailForward: function(domain, id, data, callback) {
+		Badger.api("domains/" + domain + "/email_forwards/" + id, "PUT", data, callback);
+	},
+	
+	deleteEmailForward: function(domain, id, callback) {
+		Badger.api("domains/" + domain + "/email_forwards/" + id, "DELETE", callback);
+	},
+
+
+	
+	getWebForwards: function(domain, callback) {
+		Badger.api("domains/" + domain + "/web_forwards", callback);
+	},
+	
+	createWebForward: function(domain, data, callback) {
+		Badger.api("domains/" + domain + "/web_forwards", "POST", data, callback);
+	},
+	
+	updateWebForward: function(domain, id, data, callback) {
+		Badger.api("domains/" + domain + "/web_forwards/" + id, "PUT", data, callback);
+	},
+	
+	deleteWebForward: function(domain, id, callback) {
+		Badger.api("domains/" + domain + "/web_forwards/" + id, "DELETE", callback);
+	},
+	
+
+
   //ADMIN COMMANDS, requires person to have admin flag set to true
 	
 	isAdmin: function(callback) {
