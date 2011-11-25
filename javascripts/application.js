@@ -186,7 +186,7 @@ with (Hasher.View('Application')) {
 
           ul({ id: 'menu' },
             li({ id: 'nav-my-domains' },
-              a({ href: "#filter_domains/all/list" }, 'MY DOMAINS'),
+              a({ href: "#" }, 'MY DOMAINS'),
               ul(
                 li({ 'class': "website"}, a({ href: "#filter_domains/transfers/list" }, 'TRANSFERS')),
                 li({ 'class': "website"}, a({ href: "#filter_domains/expiringsoon/list" }, 'EXPIRING SOON'))
