@@ -35,8 +35,8 @@ with (Hasher.Controller('Application')) {
           $('#nav-help-and-support').after(helper('domain_menu_item', domain));
         }
       }
-      if (request_uri.indexOf("filter_domains") != -1)
-        request_uri = request_uri.replace('grid', 'list')
+	    if (request_uri.indexOf("filter_domains/all") != -1) request_uri = '#';
+      else if (request_uri.indexOf("filter_domains") != -1) request_uri = request_uri.replace('grid', 'list');
 
       // select active link and expand parent
       $('#sidebar ul').removeClass('expanded');
@@ -188,7 +188,6 @@ with (Hasher.View('Application')) {
             li({ id: 'nav-my-domains' },
               a({ href: "#" }, 'MY DOMAINS'),
               ul(
-                li({ 'class': "website"}, a({ href: "#filter_domains/all/list" }, 'ALL DOMAINS')),
                 li({ 'class': "website"}, a({ href: "#filter_domains/transfers/list" }, 'TRANSFERS')),
                 li({ 'class': "website"}, a({ href: "#filter_domains/expiringsoon/list" }, 'EXPIRING SOON'))
               )

@@ -47,7 +47,9 @@
     "/images/check.png",
     "/images/site_tour_1.jpg",
     "/images/site_tour_2.jpg",
-    "/images/site_tour_3.jpg"
+    "/images/site_tour_3.jpg",
+    "/images/icon-grid-view.gif",
+    "/images/icon-list-view.jpg"
   ],
   
   "lib": [ 

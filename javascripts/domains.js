@@ -127,19 +127,25 @@ with (Hasher.View('Domains', 'Application')) { (function() {
     }
 
     return div(
-      h1(title),
+      h1(
+				title,
+				span({ style: 'padding-left: 20px' },
+					a({href: "#filter_domains/" + filter + "/list"}, img({ src: 'images/icon-list-view.jpg' })),
+					' ',
+					a({href: "#filter_domains/" + filter + "/grid"}, img({ src: 'images/icon-grid-view.gif' }))
+				)
+			),
       div({ style: 'float: right; margin-top: -44px' },
         a({ 'class': 'myButton myButton-small', href: action('Transfer.show') }, 'Transfer in a Domain')
       ),
 
       (typeof domains == 'undefined') ? [
         div('Loading domains...')
-      ]:((domains.length == 0) ? empty_domain_message
-      : [ p(span('View: '),
-        span(view_type == "list" ? "List" : a({href: "#filter_domains/" + filter + "/list"},'List')),
-        '|',
-        span(view_type == "grid" ? "Grid" : a({href: "#filter_domains/" + filter + "/grid"},'Grid'))),
-        helper(view_type + '_view', domains)])
+      ]:((domains.length == 0) ? 
+				empty_domain_message
+      : [ 
+        helper(view_type + '_view', domains)
+			])
     );
   });
 
@@ -239,7 +245,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
             th('Name'),
             th('Status'),
             th('Expires'),
-            th('Links')
+            th('Shortcuts')
           ),
 
           (domains || []).map(function(domain) {
@@ -248,8 +254,10 @@ with (Hasher.View('Domains', 'Application')) { (function() {
               td(domain.status),
               td(new Date(Date.parse(domain.expires)).toDateString()),
               td(
+                a({ href: '#domains/' + domain.name }, 'info'),
+                ', ',
                 a({ href: '#domains/' + domain.name + '/dns' }, 'dns'),
-                ' ',
+                ', ',
                 a({ href: '#domains/' + domain.name + '/whois' }, 'whois')
               )
             );
@@ -264,10 +272,10 @@ with (Hasher.View('Domains', 'Application')) { (function() {
       td(results[0][0].split('.')[0]),
 
       results.map(function(domain) {
+        var tld = domain[0].split('.')[1];
         if (domains.indexOf(domain[0])!=-1)
-          return td({ 'class': 'tld'}, img({ src: "images/check.png" }));
+          return td({ 'class': 'tld'}, a({ href: '#domains/' + domain[0], style: 'color: #0a0' }, img({ src: "images/check.png" }), ' ', tld));
         else {
-          var tld = domain[0].split('.')[1];
           return domain[1] ? td({ 'class': 'tld' }, a({ href: action('Register.show', domain[0]) }, tld))
                            : td({ 'class': 'tld' }, span({ style: 'text-decoration: line-through' }, tld));
         }
@@ -277,13 +285,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
 
   create_helper('grid_view', function(domains) {
     return [
-      table({ id: 'grid', 'class': 'fancy-table' }, tbody(
-        tr(
-          th("Domain"),
-          th({ 'class': 'tld' }, "Com"),
-          th({ 'class': 'tld' }, "Net")
-        )
-      )),
+      table({ id: 'grid', 'class': 'fancy-table' }, tbody()),
       table({ id: 'suggest-grid', 'class': 'fancy-table' }, tbody())
     ];
   });
