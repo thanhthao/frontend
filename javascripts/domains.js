@@ -36,7 +36,7 @@ with (Hasher.Controller('Domains','Application')) {
         case 'expiringsoon':
           for (i = 0; i < domains.length; i ++) {
             var current_date = new Date();
-            var expire_date = new Date(domains[i].expires);
+            var expire_date = new Date(Date.parse(domains[i].expires));
             var days = parseInt(expire_date - current_date)/(24*3600*1000);
             if (days <= 90)
               results.push(domains[i]);
@@ -160,13 +160,13 @@ with (Hasher.View('Domains', 'Application')) { (function() {
     return div(
       h1(domain),
       dl({ 'class': 'fancy-dl' },
-        dt('Expires:'), dd(new Date(data.expires_on).toDateString()),
-        dt('Status: '), dd(data.status),
-        dt('Registered:'), dd(new Date(data.registered_on).toDateString(), (data.created_registrar ? ' via '+data.created_registrar : '')),
-        dt('Previous Registrar: '), dd(data.losing_registrar),
-        dt('Created At: '), dd(new Date(data.created_at).toDateString()),
-        dt('Updated At: '), dd(new Date(data.updated_at).toDateString()),
-        dt('Updated On: '), dd(new Date(data.updated_on).toDateString())
+        dt('Expires:'), dd(new Date(Date.parse(data.expires_on)).toDateString()), br(),
+        dt('Status: '), dd(data.status), br(),
+        dt('Registered:'), dd(new Date(Date.parse(data.registered_on)).toDateString(), (data.created_registrar ? ' via '+data.created_registrar : '')), br(),
+        dt('Previous Registrar: '), dd(data.losing_registrar), br(),
+        dt('Created At: '), dd(new Date(Date.parse(data.created_at)).toDateString()), br(),
+        dt('Updated At: '), dd(new Date(Date.parse(data.updated_at)).toDateString()), br(),
+        dt('Updated On: '), dd(new Date(Date.parse(data.updated_on)).toDateString())
       )
     );
   });
@@ -252,7 +252,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
             return tr(
               td(a({ href: '#domains/' + domain.name }, domain.name)),
               td(domain.status),
-              td(new Date(domain.expires).toDateString()),
+              td(new Date(Date.parse(domain.expires)).toDateString()),
               td(
                 a({ href: '#domains/' + domain.name + '/dns' }, 'dns'),
                 ' ',

@@ -165,7 +165,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 						input({ name: "code", placeholder: "Reset Code", value: data.code || '' }),
 						input({ name: "new_password", type: 'password', placeholder: "New Password", value: data.new_password || '' }),
 						input({ name: "confirm_password", type: 'password', placeholder: "Confirm New Password", value: data.confirm_password || '' }),
-						button({ 'class': 'myButton myButton-small', type: 'submit' }, "Update")
+						input({ 'class': 'myButton myButton-small', type: 'submit', value: 'Update' })
 					)
 				)
 			)
@@ -181,7 +181,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 				div({ id: 'forgot-password-messages' }),
 				div({ id: 'forgot-password-form', style: 'margin: 20px 0; text-align: center' },
 					input({ name: "email", type: "text", 'class': 'fancy', size: 30, placeholder: "Email", value: data.email || '' }),
-					button({ 'class': 'myButton', type: 'submit' }, "Send Reset Code")
+					input({ 'class': 'myButton', type: 'submit', value: 'Send Reset Code' })
 				)
 			)
 		);

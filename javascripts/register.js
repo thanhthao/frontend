@@ -123,7 +123,7 @@ with (Hasher.View('Register', 'Application')) {
           )
         )),
 
-        div({ style: "text-align: right; margin-top: 10px" }, button({ 'class': 'myButton', id: 'register-button' }, 'Register ' + domain + ' for 1 credit'))
+        div({ style: "text-align: right; margin-top: 10px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + domain + ' for 1 credit' }))
       )
     ];
   });

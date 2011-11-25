@@ -240,7 +240,7 @@ with (Hasher.View('DNS', 'Application')) { (function() {
 
         div({ style: 'font-weight: bold; margin-top: 10px' }, 'Name Servers:'),
         ul({ id: 'name_server_ul' }),
-        div({ style: 'text-align: right; margin-top: 10px' }, button({ 'class': 'myButton' }, 'Save'))
+        div({ style: 'text-align: right; margin-top: 10px' }, input({ 'class': 'myButton', type: 'submit', value: 'Save' }))
       )
     );
   });

@@ -10,7 +10,7 @@ Feature: Register successfully
     And I fill in "email" with "tester1@eastagile.com"
     And I fill in "password" with "pwd123"
     And I fill in "confirm_password" with "pwd123"
-    And I mock neccessary data to mock login
+    And I mock neccessary data to mock login with 35 domain credits and 5 invites available
     And I mock createAccount
     Then I press "Submit"
     And The home page is fully loaded

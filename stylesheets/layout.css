@@ -1,7 +1,7 @@
 img { border-style: none; }
 a { text-decoration: none; }
 a:hover { text-decoration: underline; }
-input, textarea, select { vertical-align: middle; }
+input, textarea, select { vertical-align: middle; margin: 5px 5px 0 0;}
 form,fieldset { margin:0; padding:0; border-style:none; }
 
 html { height: 100%; background: #0085aa url(../images/bg-page.jpg) repeat top center; }
@@ -101,11 +101,11 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 #suggest-grid { border-top: 1px solid #333; }
 
 
-#modal-dialog { position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); }
+.modal-dialog { position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); }
 #modal-content { margin: 100px auto 0 auto; width: 600px; padding: 20px; border-radius: 5px; background: white; position: relative; }
-#modal-dialog .close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
-#modal-dialog .close-button:hover { text-decoration: none; }
-#modal-dialog h1 { font: 28px "Oswald", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
+.modal-dialog .close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
+.modal-dialog .close-button:hover { text-decoration: none; }
+.modal-dialog h1 { font: 28px "Oswald", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
 
 
 
@@ -127,3 +127,11 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 
 .purchase-credits td, .purchase-credits th { text-align: center; }
 .purchase-credits tr { cursor: pointer; }
+
+.contact-subject, .contact-body { width: 430px; border: 1px solid #aaa; }
+.hidden { display: none; }
+
+/* adding css for ie browser */
+.has-placeholder { color: #777777; }
+
+.ie-modal-dialog { background:transparent; filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#80000000,endColorstr=#80000000); zoom: 1; }

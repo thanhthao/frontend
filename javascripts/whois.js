@@ -126,7 +126,7 @@ with (Hasher.View('Whois', 'Application')) { (function() {
       div(
         select({ name: 'country' }, option({ disabled: 'disabled' }, 'Country:'), helper("Application.country_options", data.country))
       ),
-      div({ style: 'text-align: right; margin-top: 10px' }, button({ 'class': 'myButton' }, data.id ? 'Save' : 'Create'))
+      div({ style: 'text-align: right; margin-top: 10px' }, input({ 'class': 'myButton', type: 'submit', value: data.id ? 'Save' : 'Create' }))
     );
   });
 })(); }

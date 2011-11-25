@@ -7,6 +7,9 @@
   ],
 
   "javascripts": [
+    "/javascripts/ie_fix.js",
+    "/lib/iso8601.min.js",
+
     "/javascripts/api.js",
     "/javascripts/api_cache.js",
 
@@ -24,8 +27,11 @@
     "/javascripts/help.js",
     "/javascripts/terms_of_service.js",
     "/javascripts/contact_us.js",
-		"/javascripts/email_forwards.js",
-		"/javascripts/web_forwards.js"
+    "/javascripts/email_forwards.js",
+    "/javascripts/web_forwards.js"
+    "/javascripts/site_tour.js",
+    "/javascripts/ie_fix.js",
+    "/javascripts/invite.js"
   ],
 
   "images": [
@@ -38,10 +44,10 @@
     "/images/sprite.png",
     "/images/submit.gif",
     "/images/icann.png",
-		"/images/check.png",
-		"/images/site_tour_1.jpg",
-		"/images/site_tour_2.jpg",
-		"/images/site_tour_3.jpg"
+    "/images/check.png",
+    "/images/site_tour_1.jpg",
+    "/images/site_tour_2.jpg",
+    "/images/site_tour_3.jpg"
   ],
   
   "lib": [ 

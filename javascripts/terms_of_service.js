@@ -16,53 +16,21 @@ with (Hasher.View('TermsOfService', 'Application')) {
       h1('Domain Name Registration Agreement'),
       h2('Domain Name Registration Agreement'),
       h3('1. Introduction'),
-      p('1.1. This domain name registration agreement ("Registration Agreement") governs the terms and conditions upon which Rhino Names, \n\
-              Inc ("Rhinonames.com") agrees to provide you ("Registered Name Holder") with the domain name registration service and \n\
-              associated services as described on the website located at www.Rhinonames.com ("Website") and as otherwise described in \n\
-              this Registration Agreement ("Services").'),
-      p('1.2. By using the Services, you acknowledge that you have read, understood, and agree to be bound by the terms and \n\
-              conditions of this Registration Agreement, as well as our Privacy Policy and Anti-Spam Policy.'),
-      p('1.3. You acknowledge and agree that if you are in breach of this Registration Agreement, Rhinonames.com may suspend, \n\
-              cancel or modify your use of the Services by providing you with notice to your primary email address listed on your Rhinonames.com account.'),
-      p('1.4. Rhinonames.com reserves the right to amend the terms and conditions set out in this Registration Agreement or \n\
-              the operation of the Services by notice to your Rhinonames.com account. Where we vary the charges applying to the Services, \n\
-              we will give you 14 days\' prior notice of the change. If you do not agree to the amendment of the terms or conditions of \n\
-              the Registration Agreement or the operation of the Services or the variation in the charges, you may terminate \n\
-              the Registration Agreement by emailing support@rhinonames.com and we will assist you to transfer your domain name to \n\
-              the ICANN accredited domain name registrar of your choice.'),
+      p('1.1. This domain name registration agreement ("Registration Agreement") governs the terms and conditions upon which Rhino Names, Inc ("Rhinonames.com") agrees to provide you ("Registered Name Holder") with the domain name registration service and associated services as described on the website located at www.Rhinonames.com ("Website") and as otherwise described in this Registration Agreement ("Services").'),
+      p('1.2. By using the Services, you acknowledge that you have read, understood, and agree to be bound by the terms and conditions of this Registration Agreement, as well as our Privacy Policy and Anti-Spam Policy.'),
+      p('1.3. You acknowledge and agree that if you are in breach of this Registration Agreement, Rhinonames.com may suspend, cancel or modify your use of the Services by providing you with notice to your primary email address listed on your Rhinonames.com account.'),
+      p('1.4. Rhinonames.com reserves the right to amend the terms and conditions set out in this Registration Agreement or the operation of the Services by notice to your Rhinonames.com account. Where we vary the charges applying to the Services, we will give you 14 days\' prior notice of the change. If you do not agree to the amendment of the terms or conditions of the Registration Agreement or the operation of the Services or the variation in the charges, you may terminate the Registration Agreement by emailing support@rhinonames.com and we will assist you to transfer your domain name to the ICANN accredited domain name registrar of your choice.'),
       h3('2. Domain Name Registration, Administration, and Renewal Services'),
-      p('2.1. Rhinonames.com is an accredited Registrar of the Internet Corporation For Assigned Names and Numbers ("ICANN") for the .com, \n\
-              .net, .org, .biz and .info top level domains ("gTLDs").'),
-      p('2.2. All gTLDs that Rhinonames.com registers or renews for you ("Registered Names") shall not be effective unless and until \n\
-              the administrator for the .particular gTLD ("Registry") updates the central domain name registry database in accordance with \n\
-              the information you have provided to Rhinonames.com, pursuant to the terms of the relevant Registry-Registrar Agreement \n\
-              entered into between that Registry and Rhinonames.com.'),
+      p('2.1. Rhinonames.com is an accredited Registrar of the Internet Corporation For Assigned Names and Numbers ("ICANN") for the .com, .net, .org, .biz and .info top level domains ("gTLDs").'),
+      p('2.2. All gTLDs that Rhinonames.com registers or renews for you ("Registered Names") shall not be effective unless and until the administrator for the .particular gTLD ("Registry") updates the central domain name registry database in accordance with the information you have provided to Rhinonames.com, pursuant to the terms of the relevant Registry-Registrar Agreement entered into between that Registry and Rhinonames.com.'),
       h3('3. Registration, Renewal, Recovery and Transfer of Domain Names'),
-      p('3.1. Rhinonames.com registers domain names on a first come, first served basis and does not guarantee that any domain name applied for \n\
-              by you will be able to be registered.'),
-      p('3.2. You agree that you will not take any action in relation to a particular domain name until the successful registration of \n\
-              that domain name ("Registered Name") has been confirmed by Rhinonames.com.'),
-      p('3.3. You shall not have any proprietary rights in a Registered Name. Registration and/or renewal of a Registered Name only gives you \n\
-              a personal license ("Domain Name Licence") to use the Registered Name for the period during which the registration of the domain name \n\
-              remains current ("Registration Period").'),
-      p('3.4. The continued registration and use of a Registered Name is subject to the payment of the applicable renewal fees prior to \n\
-              the expiry of the Registration Period and subject to your continued compliance with the terms of this Registration Agreement \n\
-              and any rules or policies published on the Website. In the event that the applicable renewal fees for a Registered Name have not been \n\
-              received by Rhinonames.com (as cleared funds) on or before the expiry date, Rhinonames.com reserves the right to immediately cancel \n\
-              the registration of the Registered Name and remove it from the Registry\'s root zone file, at which time, the Registered Name \n\
-              will cease to resolve to the nominated nameservers.'),
-      p('3.5. If you agree to have the Registration Period for the Registered Name automatically renewed by selecting the \'Auto-Renewal\' \n\
-              feature (accessible via the online interface to your Rhinonames.com account), then:'),
-      p('3.5.1 Rhinonames.com will automatically renew the Registration Period for the Registered Name for a period of one (1) year from \n\
-              the expiry date of the current Registration Period for the Registered Name, subject to your continued compliance with \n\
-              the terms of this Registration Agreement and any rules or policies published on the Website. If the Auto-Renewal feature \n\
-              has been enabled, you hereby authorize and instruct Rhinonames.com to charge and deduct the applicable registration renewals \n\
-              fees from your Rhinonames.com account in accordance with clause 3.5.2.'),
-      p('3.5.2. Registration renewal fees are charged to you and deducted from your Rhinonames.com account on the twentieth (15th) day of \n\
-              the month preceding the month in which the current Registration Period for the Registered Name expires. In the event that \n\
-              you do not have sufficient cleared funds in your account for the applicable registration renewal fees to be deducted, \n\
-              Rhinonames.com reserves the right to cancel the registration of the Registered Name and remove it from the Registry\'s root zone file \n\
-              upon the expiry of the current Registration Period without further notice to you.'),
+      p('3.1. Rhinonames.com registers domain names on a first come, first served basis and does not guarantee that any domain name applied for by you will be able to be registered.'),
+      p('3.2. You agree that you will not take any action in relation to a particular domain name until the successful registration of that domain name ("Registered Name") has been confirmed by Rhinonames.com.'),
+      p('3.3. You shall not have any proprietary rights in a Registered Name. Registration and/or renewal of a Registered Name only gives you a personal license ("Domain Name Licence") to use the Registered Name for the period during which the registration of the domain name remains current ("Registration Period").'),
+      p('3.4. The continued registration and use of a Registered Name is subject to the payment of the applicable renewal fees prior to the expiry of the Registration Period and subject to your continued compliance with the terms of this Registration Agreement and any rules or policies published on the Website. In the event that the applicable renewal fees for a Registered Name have not been received by Rhinonames.com (as cleared funds) on or before the expiry date, Rhinonames.com reserves the right to immediately cancel the registration of the Registered Name and remove it from the Registry\'s root zone file, at which time, the Registered Name will cease to resolve to the nominated nameservers.'),
+      p('3.5. If you agree to have the Registration Period for the Registered Name automatically renewed by selecting the \'Auto-Renewal\' feature (accessible via the online interface to your Rhinonames.com account), then:'),
+      p('3.5.1 Rhinonames.com will automatically renew the Registration Period for the Registered Name for a period of one (1) year from the expiry date of the current Registration Period for the Registered Name, subject to your continued compliance with the terms of this Registration Agreement and any rules or policies published on the Website. If the Auto-Renewal feature has been enabled, you hereby authorize and instruct Rhinonames.com to charge and deduct the applicable registration renewals fees from your Rhinonames.com account in accordance with clause 3.5.2.'),
+      p('3.5.2. Registration renewal fees are charged to you and deducted from your Rhinonames.com account on the twentieth (15th) day of the month preceding the month in which the current Registration Period for the Registered Name expires. In the event that you do not have sufficient cleared funds in your account for the applicable registration renewal fees to be deducted, Rhinonames.com reserves the right to cancel the registration of the Registered Name and remove it from the Registry\'s root zone file upon the expiry of the current Registration Period without further notice to you.'),
       p('3.6. You acknowledge that it is your responsibility to ensure that the Domain Name Licence is renewed and release and hold Rhinonames.com harmless against any claim for damage or loss arising from your failure to renew registration of a Registered Name.'),
       p('3.7. It is your responsibility to ensure payment details remain current and that you maintain sufficient funds in your account for the applicable registration renewal fees where the Auto-Renewal feature has been enabled.'),
       p('3.8. In the event that a Registered Name is not renewed by you prior to the expiry of the current Registration Period, the Registered Name is immediately removed from the Registry\'s root zone file and is then held by Rhinonames.com for a period of thirty-three (33) days ("Registrar Hold Period"). You may renew the Registered Name at any time during the Registrar Hold Period, by paying the applicable registration fees and any past due renewal fees for the Registered Name to Rhinonames.com. Upon payment of these fees, the Registrar Hold will be removed from the Registered Name and the relevant domain name data reinstated to the Registry\'s root zone file.'),

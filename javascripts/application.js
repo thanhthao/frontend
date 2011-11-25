@@ -52,6 +52,9 @@ with (Hasher.Controller('Application')) {
       }
 
     }
+
+    // Fix placeholder does not work in IE
+    Placeholder.fix_ie();
   });
 }
 
@@ -140,8 +143,24 @@ with (Hasher.View('Application')) {
     ];
   });
 
-  create_layout('dashboard', function(yield) {
+  create_helper('my_account_nav', function(){
+    var nav = ul(
+                  li({ 'class': "email"}, a({ href: "#account/profiles" }, 'WHOIS PROFILES')),
+                  li({ 'class': "website"}, a({ href: "#account/billing" }, 'CREDITS & BILLING')),
+                  li({ 'class': "website"}, a({ href: "#account/settings" }, 'SETTINGS')),
+                  li({ 'class': "website hidden", id : 'invites_available'}, a({ href: "#invites" }, 'INVITES'))
+                );
 
+    BadgerCache.getAccountInfo(function(response) {
+      if (response.data.invites_available > 0) {
+        $('#nav-my-account ul li#invites_available').removeClass('hidden');
+      }
+    });
+
+    return nav;
+  });
+
+  create_layout('dashboard', function(yield) {
     return div({ id: 'wrapper' },
 
       div({ id: 'header' },
@@ -156,7 +175,13 @@ with (Hasher.View('Application')) {
               focus: action('Search.search_box_changed'),
               keyup: action('Search.search_box_changed'),
               keypress: function(e) {
-                if (/[^a-zA-Z0-9\-]/.test(String.fromCharCode(e.charCode))) Hasher.Event.stop(e);
+                if (e.charCode)
+                  code = e.charCode
+                else // In IE charCode is Undefined, use keyCode
+                  code = e.keyCode
+                // Hack to make it work on Firefox
+                // In Firefox, charCode of Arrow and Delete key is 0, keyCode is 37, 38, 39, 40, 8
+                if (!([37, 38, 39, 40, 8].indexOf(parseInt(e.keyCode)) != -1 && e.charCode == 0) && /[^a-zA-Z0-9\-]/.test(String.fromCharCode(code))) Hasher.Event.stop(e);
               }
             }})
           ),
@@ -173,11 +198,7 @@ with (Hasher.View('Application')) {
 
             li({ id: 'nav-my-account' },
               a({ href: "#account" }, 'MY ACCOUNT'),
-              ul(
-                li({ 'class': "email"}, a({ href: "#account/profiles" }, 'WHOIS PROFILES')),
-                li({ 'class': "website"}, a({ href: "#account/billing" }, 'CREDITS & BILLING')),
-                li({ 'class': "website"}, a({ href: "#account/settings" }, 'SETTINGS'))
-              )
+              helper('my_account_nav')
             ),
 
             li({ id: 'nav-help-and-support' },

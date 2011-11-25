@@ -101,11 +101,11 @@ with (Hasher.View('Transfer','Application')) {
 				),
 				tr(
 					td( strong("Created:") ),
-					td(new Date(info.created_at).toDateString())
+					td(new Date(Date.parse(info.created_at)).toDateString())
 				),
 				tr(
 					td( strong("Expiration:") ),
-					td(new Date(info.expires_on).toDateString())
+					td(new Date(Date.parse(info.expires_on)).toDateString())
 				),
 				tr(
 					td( strong("Locked:") ),
@@ -127,7 +127,7 @@ with (Hasher.View('Transfer','Application')) {
 			div({ style: 'text-align: center; margin: 30px 0'}, 
 				input({ name: 'auth_code', 'class': 'fancy', placeholder: 'Auth Code' }),
 				input({ name: 'name', type: 'hidden', value: name }),
-				button({ 'class': 'myButton', value: 'submit' }, "Next")
+				input({ 'class': 'myButton', type: 'submit', value: 'Next' })
 			)
 
 			//helper('get_auth_code_instructions_for_registrar', info.registrar.name),
@@ -200,20 +200,20 @@ with (Hasher.View('Transfer','Application')) {
         )
       )),
 
-			div({ style: "text-align: right; margin-top: 10px" }, button({ 'class': 'myButton', value: 'submit' }, 'Transfer Domain'))
+			div({ style: "text-align: right; margin-top: 10px" }, input({ 'class': 'myButton', type: 'submit', value: 'Transfer Domain' }))
 		);
 	})
 	
 	create_helper('get_domain_form', function(data, error) {
 		return div(
 			h1("TRANSFER IN A DOMAIN"),
-			form({ id: "get-domain-info-form", action: action('get_domain_info') },
+      form({ id: "get-domain-info-form", action: action('get_domain_info') },
 			  div({ id: "get-domain-form-errors" }, error ? error : null),
 				div("Use this form if you've registered a domain at another registrar and would like to transfer the domain to Badger."),
-				div({ style: 'text-align: center; margin: 30px 0'}, 
+				div({ style: 'text-align: center; margin: 30px 0'},
   				input({ name: "name", 'class': 'fancy', placeholder: "example.com", value: data && data.name || '' }),
-  				button({ 'class': 'myButton', value: "submit" }, "Next")
-				)
+  				input({ 'class': 'myButton', type: "submit", value: "Next"})
+        )
 			)
 		);
 	});
