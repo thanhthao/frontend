@@ -25,7 +25,7 @@ with (Hasher.Controller('Search','Application')) {
     if (this.search_timeout) clearTimeout(this.search_timeout);
     if (this.backspace_search_timeout) clearTimeout(this.backspace_search_timeout);
 
-    if (this.last_search_value && (this.last_search_value.indexOf(current_value) == 0)) {
+    if (current_value && this.last_search_value && (this.last_search_value.indexOf(current_value) == 0)) {
       this.backspace_search_timeout = setTimeout(search_callback, 750);
     } else if (current_value && (this.last_search_value != current_value)) {
       this.search_timeout = setTimeout(search_callback, 100);
