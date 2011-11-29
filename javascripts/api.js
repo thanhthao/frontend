@@ -119,6 +119,12 @@ var Badger = {
     Badger.api("/account/request_invite", 'POST', { email: email }, callback);
   },
 
+  requestInviteExtraInfo: function(data, callback) {
+    Badger.api("/account/request_invite_extra_info", 'POST',
+      { invite_request_id: data.invite_request_id, full_name: data.full_name,
+        total_domains_registered: data.total_domains_registered, suggestions: data.suggestions }, callback);
+  },
+
   createAccount: function(data, callback) {
     Badger.api("/account", 'POST', data, function(response) {
       if (response.meta.status == 'ok') Badger.setAccessToken(response.data.access_token);

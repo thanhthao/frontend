@@ -52,6 +52,10 @@ When /^I wait until xpath "([^"]*)" is visible$/ do |selector|
   page.has_xpath?("#{selector}", :visible => true)
 end
 
+When /^(?:|I )choose "([^"]*)"$/ do |field|
+  choose(field)
+end
+
 When /^I wait ([^"]*) seconds$/ do |second|
   sleep(second.to_i)
 end

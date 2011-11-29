@@ -122,3 +122,15 @@ Given /^I mock confirmEmail with status "([^"]*)"$/ do |status|
     setTimeout(function() { callback({ meta : {status: '#{status}'}, data : { message: 'Confirmation Email Notification message' } }); }, 250);
   };")
 end
+
+Given /^I mock requestInvite with status "([^"]*)"$/ do |status|
+  page.execute_script("Badger.requestInvite = function(email, callback){
+    setTimeout(function() {callback({ meta : {status: '#{status}'}, data : { #{status == "ok" ? "message: 'Ok', invite_request_id: '1'" : "message: 'Invalid email address'" } } }); }, 250);
+  };")
+end
+
+Given /^I mock requestInviteExtraInfo with status "([^"]*)"$/ do |status|
+  page.execute_script("Badger.requestInviteExtraInfo = function(data, callback){
+    setTimeout(function() {callback({ meta : {status: '#{status}'}, data : { message: 'Ok' } }); }, 250);
+  };")
+end
