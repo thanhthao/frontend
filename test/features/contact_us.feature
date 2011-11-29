@@ -7,9 +7,9 @@ Feature: Contact Us
   @javascript
   Scenario: As a logged in user I want to see Contact Us page
     Then I should see "Contact Us"
-    And I should see "Email: support@badger.com"
-    And I should see "Phone: 415-787-5050"
-    And I should see "Send us a message:"
+    And I should see "If you've come here looking for help and support, then we've failed somewhere along the way. Please let us know what went wrong by emailing us at support@badger.com or by calling us at 415-787-5050 and we'll try to make things better. Sorry!"
+    And I should see "Send Us an Email"
+    And I should see "To: support@badger.com"
 
   @javascript
   Scenario: I can send message through Contact Us page

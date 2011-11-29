@@ -18,9 +18,13 @@ with (Hasher.Controller('Application')) {
 
     // hack until skip_before_filters works
     if (Hasher.Routes.getHash().match(/^#(request_invite|login|register\/.*)$/)) return;
-
-    // got this far? send 'em away
-    redirect_to('#request_invite');
+    if (Hasher.Routes.getHash().match(/^#confirm_email\/.*$/)) {
+      Badger.back_url = Hasher.Routes.getHash();
+      redirect_to('#login');
+    } else {
+      // got this far? send 'em away
+      redirect_to('#request_invite');
+    }
   });
 
   after_filter('update_sidebar_with_active_class', function() {

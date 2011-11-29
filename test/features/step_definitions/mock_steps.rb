@@ -116,3 +116,9 @@ Given /^I mock sendInvite with status "([^"]*)"$/ do |status|
     callback({ meta : {status: '#{status}'}, data : { message: 'Notification message' } });
   };")
 end
+
+Given /^I mock confirmEmail with status "([^"]*)"$/ do |status|
+  page.execute_script("Badger.confirmEmail = function(code, callback){
+    setTimeout(function() { callback({ meta : {status: '#{status}'}, data : { message: 'Confirmation Email Notification message' } }); }, 250);
+  };")
+end

@@ -1,9 +1,10 @@
-Feature: Register successfully
+Feature: Site Tour
+  In order to see all functions of the page
+  As a new register user
+  I want to see site tour
 
-  Background:
+  Scenario: Visit site tour after register
     Given I am on the register page
-
-  Scenario: As a new user I want to see site tour
     Then I should see "Create Your Badger.com Account"
     And I fill in "first_name" with "East Agile"
     And I fill in "last_name" with "Company"

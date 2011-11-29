@@ -2,6 +2,7 @@ with (Hasher.Controller('Signup','Application')) {
   route({
     '#request_invite': 'request_invite',
     '#register/:code': 'register',
+    '#confirm_email/:code': 'confirm_email',
     '#login': 'login'
   });
   
@@ -29,7 +30,12 @@ with (Hasher.Controller('Signup','Application')) {
     $('#signup-errors').empty();
     Badger.login(form.email, form.password, function(response) {
       if (response.meta.status == 'ok') {
-        redirect_to('#');
+        if (Badger.back_url != "") {
+          redirect_to(Badger.back_url);
+          Badger.back_url = "";
+        } else {
+          redirect_to('#');
+        }
       } else {
         $('#signup-errors').empty().append(helper('Application.error_message', response));
       }
@@ -78,6 +84,13 @@ with (Hasher.Controller('Signup','Application')) {
 				$('#reset-password-messages').empty().append(helper('Application.error_message', response));
 			}
 		});
+	});
+
+	create_action('confirm_email', function(code) {
+		Badger.confirmEmail(code, function(response) {
+       call_action('Modal.show', 'Signup.confirm_email_notification', response.data, response.meta.status);
+		});
+    redirect_to('#');
 	});
 
   layout('signup');
@@ -185,6 +198,14 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 					input({ 'class': 'myButton', type: 'submit', value: 'Send Reset Code' })
 				)
 			)
+		);
+	});
+
+  create_helper('confirm_email_notification', function(data, status) {
+    return div(
+      h1("Confirm Email Message"),
+      status == 'ok' ? p(data.message + ". You can close this window now.") : p({ 'class':  'error-message'}, data.message),
+      a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close")
 		);
 	});
 
