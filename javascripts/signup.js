@@ -2,6 +2,7 @@ with (Hasher.Controller('Signup','Application')) {
   route({
     '#request_invite': 'request_invite',
     '#register/:code': 'register',
+    '#confirm_email/:code': 'confirm_email',
     '#login': 'login'
   });
   
@@ -16,10 +17,26 @@ with (Hasher.Controller('Signup','Application')) {
     Badger.requestInvite($('#email-address').val(), function(response) {
       console.log(response)
       if (response.meta.status == 'ok') {
-        render('request_invite_thanks');
+        render('request_invite_extra_info', response.data.invite_request_id);
       } else {
         render('request_invite');
         $('#signup-errors').empty().append(helper('Application.error_message', response));
+      }
+    });
+    render('request_invite_processing');
+  });
+
+  create_action('submit_invite_request_extra_info', function(data) {
+    if (data.full_name == "" || data.total_domains_registered == "")
+      return $('#extra-information-errors').empty().append(helper('Application.error_message', { data: { message: "Full name or number of domains registered can not be empty" }}));
+
+    Badger.requestInviteExtraInfo(data, function(response) {
+      console.log(response)
+      if (response.meta.status == 'ok') {
+        render('request_invite_thanks');
+      } else {
+        render('request_invite_extra_info', data.invite_request_id);
+        $('#extra-information-errors').empty().append(helper('Application.error_message', response));
       }
     });
     render('request_invite_processing');
@@ -29,7 +46,12 @@ with (Hasher.Controller('Signup','Application')) {
     $('#signup-errors').empty();
     Badger.login(form.email, form.password, function(response) {
       if (response.meta.status == 'ok') {
-        redirect_to('#');
+        if (Badger.back_url != "") {
+          redirect_to(Badger.back_url);
+          Badger.back_url = "";
+        } else {
+          redirect_to('#');
+        }
       } else {
         $('#signup-errors').empty().append(helper('Application.error_message', response));
       }
@@ -80,6 +102,13 @@ with (Hasher.Controller('Signup','Application')) {
 		});
 	});
 
+	create_action('confirm_email', function(code) {
+		Badger.confirmEmail(code, function(response) {
+       call_action('Modal.show', 'Signup.confirm_email_notification', response.data, response.meta.status);
+		});
+    redirect_to('#');
+	});
+
   layout('signup');
 }
 
@@ -123,8 +152,62 @@ with (Hasher.View('Signup', 'Application')) { (function() {
     );
   });
 
+  create_view('request_invite_extra_info', function(invite_request_id) {
+    return div(
+      h1('Extra Infomation'),
+      div({ id: 'extra-information-errors' }),
+      form({ action: action('submit_invite_request_extra_info') },
+        input({ type: 'hidden', name: 'invite_request_id', value: invite_request_id }),
+
+        div("What's your name?"),
+        div(
+          input({ name: 'full_name', 'class': 'invite-extra-info' })
+        ),
+
+        div("How many domains do you currently registered?"),
+        div({ 'class': 'invite-extra-info' },
+          div(
+            input({ id: 'total_domains_0', type: 'radio', name: 'total_domains_registered', value: "0" }),
+            label({ 'for': 'total_domains_0' }, "0")
+          ),
+          div(
+            input({ id: 'total_domains_1_10', type: 'radio', name: 'total_domains_registered', value: "1-10" }),
+            label({ 'for': 'total_domains_1_10' }, "1-10")
+          ),
+          div(
+            input({ id: 'total_domains_11_50', type: 'radio', name: 'total_domains_registered', value: "11-50" }),
+            label({ 'for': 'total_domains_11_50' }, "11-50")
+          ),
+          div(
+            input({ id: 'total_domains_51_100', type: 'radio', name: 'total_domains_registered', value: "51-100" }),
+            label({ 'for': 'total_domains_51_100' }, "51-100")
+          ),
+          div(
+            input({ id: 'total_domains_101_250', type: 'radio', name: 'total_domains_registered', value: "101-250" }),
+            label({ 'for': 'total_domains_101_250' }, "101-250")
+          ),
+          div(
+            input({ id: 'total_domains_250_1000', type: 'radio', name: 'total_domains_registered', value: "250-1000" }),
+            label({ 'for': 'total_domains_250_1000' }, "250-1000")
+          ),
+          div(
+            input({ id: 'total_domains_1000', type: 'radio', name: 'total_domains_registered', value: "1000+" }),
+            label({ 'for': 'total_domains_1000' }, "1000+")
+          )
+        ),
+
+        div("Have any suggestion for us? (optional)"),
+				div(
+					textarea({ name: 'suggestions', 'class': 'invite-extra-info' })
+				),
+
+        div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit', value: 'Submit' }))
+      )
+    );
+  });
+
   create_view('request_invite_thanks', function() {
-    return div({ id: 'signup-box' }, 
+    return div({ id: 'signup-box' },
       h3('Thanks!  We\'ll get back to you shortly!')
     );
   });
@@ -185,6 +268,14 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 					input({ 'class': 'myButton', type: 'submit', value: 'Send Reset Code' })
 				)
 			)
+		);
+	});
+
+  create_helper('confirm_email_notification', function(data, status) {
+    return div(
+      h1("Confirm Email Message"),
+      status == 'ok' ? p(data.message + ". You can close this window now.") : p({ 'class':  'error-message'}, data.message),
+      a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close")
 		);
 	});
 

@@ -1,4 +1,7 @@
 Feature: Invite
+  In order to invite my friends to join the site
+  As a logged-in user
+  I want to send my friends invitations
 
   Background:
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available

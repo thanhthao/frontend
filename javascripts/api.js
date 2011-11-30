@@ -1,5 +1,6 @@
 var Badger = {
   api_host: 'https://api.badger.com/',
+  back_url: "",
 
   api: function() {
     // parse arguments: url, [http_method], [params], [callback]
@@ -116,6 +117,12 @@ var Badger = {
   
   requestInvite: function(email, callback) {
     Badger.api("/account/request_invite", 'POST', { email: email }, callback);
+  },
+
+  requestInviteExtraInfo: function(data, callback) {
+    Badger.api("/account/request_invite_extra_info", 'POST',
+      { invite_request_id: data.invite_request_id, full_name: data.full_name,
+        total_domains_registered: data.total_domains_registered, suggestions: data.suggestions }, callback);
   },
 
   createAccount: function(data, callback) {
@@ -372,11 +379,14 @@ var Badger = {
 
 	sendInvite: function(data, callback) {
 		Badger.api("/account/send_invite", "POST", { first_name: data.first_name, last_name: data.last_name, email: data.invitation_email }, callback);
-	}
+	},
 	
+	confirmEmail: function(code, callback) {
+		Badger.api("/account/confirm_email", "POST", { code: code }, callback);
+	}
   
-  
-  
+
+
   // getRecordsByType: function(accessToken, name, type, callback) {
   //   Badger.api("/domains/" + name + "/records/" + type, { headers: { access_token: accessToken } }, function(records) {
   //     callback(records);

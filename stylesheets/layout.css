@@ -120,7 +120,7 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 .success-message { border: 1px solid #619934; background: #E6F8D8; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
 .success-message ul { margin: 10px 0 0 0; }
 
-
+.invite-extra-info { margin: 5px 10px; width: 450px; }
 
 
 

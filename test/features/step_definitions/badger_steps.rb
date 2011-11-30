@@ -2,18 +2,6 @@ Given /^I am not logged in$/ do
   page.execute_script("Badger.logout();")
 end
 
-Given /^I am on the home page$/ do
-  visit('/index.html')
-end
-
-Given /^I am on the register page$/ do
-  visit('/index.html#register/code1')
-end
-
-Given /^I am on the invites page$/ do
-  visit('/index.html#invites')
-end
-
 Given /^The home page is fully loaded$/ do
   When 'I wait until xpath "//table/tr[@class=\'table-header\']" is visible'
   When 'I wait until xpath "//table/td" is visible'

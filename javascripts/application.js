@@ -18,12 +18,16 @@ with (Hasher.Controller('Application')) {
 
     // hack until skip_before_filters works
     if (Hasher.Routes.getHash().match(/^#(request_invite|login|register\/.*)$/)) return;
-
-    // got this far? send 'em away
-    redirect_to('#request_invite');
+    if (Hasher.Routes.getHash().match(/^#confirm_email\/.*$/)) {
+      Badger.back_url = Hasher.Routes.getHash();
+      redirect_to('#login');
+    } else {
+      // got this far? send 'em away
+      redirect_to('#request_invite');
+    }
   });
 
-  after_filter('update_sidebar_with_active_class', function() {
+  after_filter('update_sidebar', function() {
     if ($('#sidebar')) {
       var request_uri = Hasher.Routes.getHash();
 
@@ -37,6 +41,9 @@ with (Hasher.Controller('Application')) {
       }
 	    if (request_uri.indexOf("filter_domains/all") != -1) request_uri = '#';
       else if (request_uri.indexOf("filter_domains") != -1) request_uri = request_uri.replace('grid', 'list');
+
+      if (Badger.getAccessToken())
+        helper('update_my_domains_count');
 
       // select active link and expand parent
       $('#sidebar ul').removeClass('expanded');
@@ -106,6 +113,21 @@ with (Hasher.View('Application')) {
     if (refresh) BadgerCache.flush('account_info');
     BadgerCache.getAccountInfo(function(response) {
       $('#user_nav_credits').html(response.data.domain_credits == 1 ? '1 Credit' : response.data.domain_credits + ' Credits');
+    });
+  });
+
+  create_helper('update_my_domains_count', function() {
+    BadgerCache.getDomains(function(results) {
+      var count = 0
+      $.each(results, function() {
+        if (this.status == 'active')
+          count +=1;
+      })
+      if (count > 0) {
+        $('#my-domains-count').html(" (" + count + ")");
+        if ($('#all-my-domains-h1'))
+          $('#all-my-domains-h1').html(" (" + count + ")");
+      }
     });
   });
 
@@ -186,7 +208,7 @@ with (Hasher.View('Application')) {
 
           ul({ id: 'menu' },
             li({ id: 'nav-my-domains' },
-              a({ href: "#" }, 'MY DOMAINS'),
+              a({ href: "#" }, span(span('MY DOMAINS'), span({ id: 'my-domains-count' }))),
               ul(
                 li({ 'class': "website"}, a({ href: "#filter_domains/transfers/list" }, 'TRANSFERS')),
                 li({ 'class': "website"}, a({ href: "#filter_domains/expiringsoon/list" }, 'EXPIRING SOON'))
