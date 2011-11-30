@@ -1,8 +1,11 @@
 Feature: Contact Us
+  In order to contact badger.com
+  As a logged-in user
+  I want to send a message to badger.com
 
   Background:
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
-    Then I follow "Contact Us"
+    And I follow "Contact Us"
 
   @javascript
   Scenario: As a logged in user I want to see Contact Us page
@@ -15,6 +18,6 @@ Feature: Contact Us
   Scenario: I can send message through Contact Us page
     And I fill in "subject" with "Testing Subject"
     And I fill in "body" with "Test body"
-    Given I mock sendEmail
+    And I mock sendEmail
     And I press "Send"
     Then I should see "Thank you. Your message has been sent."

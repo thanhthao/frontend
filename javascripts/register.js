@@ -33,6 +33,7 @@ with (Hasher.Controller('Register','Application')) {
         BadgerCache.flush('domains');
         BadgerCache.getDomains(function() {
           call_action('Modal.show', 'Register.successful_register_confirmation', domain);
+          helper('Application.update_my_domains_count');
         })
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));

@@ -128,7 +128,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
 
     return div(
       h1(
-				title,
+				span(span(title), span({ id: filter + '-my-domains-h1' })),
 				span({ style: 'padding-left: 20px' },
 					a({href: "#filter_domains/" + filter + "/list"}, img({ src: 'images/icon-list-view.jpg' })),
 					' ',

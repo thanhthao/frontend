@@ -1,13 +1,10 @@
 Feature: Home page
+  In order to use the site
+  As a logged-in user
+  I want to view homepage
 
-  Scenario: As a non-logged in user I want to see homepage
-    Given I am on the home page
-    And I am not logged in
-    Then I should see "Badger.com... a different kind of domain registrar."
-    Then I should see "Thanks for visiting! We're not quite ready yet but if you'd like an invite when we are, please enter your email address:"
-
-  Scenario: As a logged in user I want to see homepage
+  Scenario: view homepage
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
     Then I should see "Twitter / Facebook"
-    Then I should see a link with href "https://twitter.com/BadgerDotCom" with new window
-    Then I should see a link with href "https://www.facebook.com/BadgerDotCom" with new window
+    And I should see a link with href "https://twitter.com/BadgerDotCom" with new window
+    And I should see a link with href "https://www.facebook.com/BadgerDotCom" with new window
