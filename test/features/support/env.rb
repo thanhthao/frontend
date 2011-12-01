@@ -3,6 +3,7 @@ require 'capybara/dsl'
 require 'capybara/cucumber'
 
 Capybara.default_driver = :selenium
+Capybara.default_wait_time = 0.5
 Capybara.register_driver :selenium do |app|
   Capybara::Driver::Selenium.new(app, :browser => :chrome)
 end

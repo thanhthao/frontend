@@ -13,6 +13,7 @@ Feature: Confirm Email
     And I fill in "password" with "12345678"
     And I press "Login"
     And The home page is fully loaded
+    And A dialog has popped up
     Then I should see "Confirmation Email Notification message. You can close this window now."
     And I follow "Close"
 
@@ -26,6 +27,7 @@ Feature: Confirm Email
     And I fill in "password" with "12345678"
     And I press "Login"
     And The home page is fully loaded
+    And A dialog has popped up
     And I should see "Confirmation Email Notification message"
     And I follow "Close"
 
@@ -33,6 +35,7 @@ Feature: Confirm Email
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
     And I mock confirmEmail with status "ok"
     And I visit the confirm email path
+    And A dialog has popped up
     Then I should see "Confirmation Email Notification message. You can close this window now."
     And I follow "Close"
 
@@ -40,6 +43,7 @@ Feature: Confirm Email
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
     And I mock confirmEmail with status "bad_request"
     And I visit the confirm email path
+    And A dialog has popped up
     And I should see "Confirmation Email Notification message"
     And I follow "Close"
     

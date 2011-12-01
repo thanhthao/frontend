@@ -5,6 +5,12 @@ end
 Given /^The home page is fully loaded$/ do
   When 'I wait until xpath "//table/tr[@class=\'table-header\']" is visible'
   When 'I wait until xpath "//table/td" is visible'
+  And 'I should not see "Loading domains..."'
+end
+
+Given /^A dialog has popped up$/ do
+  When 'I wait until "#modal-dialog" is visible'
+  When 'I wait until "#modal-content" is visible'
 end
 
 Given /^I logged in with mock data for domains and user info with ([^"]*) domain credits and ([^"]*) invites available$/ do |domain_credits, invites_available|
