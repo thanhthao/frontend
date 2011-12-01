@@ -51,8 +51,8 @@ var BadgerCache = {
     } else {
       Badger.getPaymentMethods(function(results) { 
         BadgerCache.cached_payment_methods = results;
-        console.log("SETTING PAYMENT METHOD");
-        console.log(results);
+        // console.log("SETTING PAYMENT METHOD");
+        // console.log(results);
         callback(BadgerCache.cached_payment_methods);
       });
     }
