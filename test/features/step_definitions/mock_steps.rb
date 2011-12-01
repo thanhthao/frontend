@@ -44,13 +44,13 @@ end
 Given /^I mock getDomains with ([^"]*) normal domains, ([^"]*) in transfer domain and ([^"]*) expiring soon domains$/ do |normal, transfer, expire|
   domains = []
   normal.to_i.times do |i|
-    domains << "{ name: 'mydomain#{i}.com', status: 'active', expires: '2012-11-16T04:21:43Z' }"
+    domains << "{ name: 'mydomain#{i}.com', status: 'active', expires: '2012-11-16T14:21:43Z' }"
   end
   transfer.to_i.times do |i|
-    domains << "{ name: 'transfer#{i}.com', status: 'pending_transfer_in', expires: '2012-11-16T04:21:43Z' }"
+    domains << "{ name: 'transfer#{i}.com', status: 'pending_transfer_in', expires: '2012-11-16T14:21:43Z' }"
   end
   expire.to_i.times do |i|
-    domains << "{ name: 'expiresoon#{i}.com', status: 'active', expires: '2011-11-30T04:21:43Z' }"
+    domains << "{ name: 'expiresoon#{i}.com', status: 'active', expires: '2011-11-30T14:21:43Z' }"
   end
   page.execute_script("Badger.getDomains = function(callback) {
     callback([#{domains.join(',')}]);
