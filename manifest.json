@@ -7,6 +7,9 @@
   ],
 
   "javascripts": [
+		"/lib/hasher-0.0.1.js",
+		"/lib/hasher-0.0.1-compat.js",
+		
     "/javascripts/ie_fix.js",
     "/lib/iso8601.min.js",
 
@@ -56,7 +59,6 @@
   
   "lib": [ 
     "https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js",
-    "https://raw.github.com/wkonkel/hasher/master/javascripts/hasher.js",
     "https://d24z2fz21y4fag.cloudfront.net/downloads/braintree/braintree_client_side_encryption/braintree-1.1.0.min.js"
   ]
 }
