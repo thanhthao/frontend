@@ -7,8 +7,14 @@
   ],
 
   "javascripts": [
-		"/lib/hasher-0.0.1.js",
-		"/lib/hasher-0.0.1-compat.js",
+		"/lib/hasher-0.1.0/hasher.js",
+		"/lib/hasher-0.1.0/util.js",
+		"/lib/hasher-0.1.0/initializers.js",
+		"/lib/hasher-0.1.0/elements.js",
+		"/lib/hasher-0.1.0/routes.js",
+		"/lib/hasher-0.1.0/render.js",
+		"/lib/hasher-0.1.0/filters.js",
+		"/lib/hasher-0.1.0/legacy.js",
 		
     "/javascripts/ie_fix.js",
     "/lib/iso8601.min.js",
