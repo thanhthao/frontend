@@ -118,7 +118,6 @@ var Placeholder = {
           $(this).val('').removeClass('has-placeholder');
         }
       };
-      
       var blurer = function () {
         if ($(this).attr('placeholder') != '' && ($(this).val() == '' || $(this).val() == $(this).attr('placeholder'))) {
           $(this).val($(this).attr('placeholder')).addClass('has-placeholder');
@@ -126,12 +125,11 @@ var Placeholder = {
       };
       
       $.each([':text', ':password', 'textarea'], function() {
-        $(this.toString()).focus(focuser).blur(blurer);
-        blurer.call($(this.toString()))
+        $(this.toString()).focus(focuser).blur(blurer).each(function(index,element) {
+          if (document.activeElement != element) blurer.call(element);
+        });
       });
 
-      focuser.call($(document.activeElement));
-      
       $('form').submit(function () {
         $(this).find('.has-placeholder').each(function() { $(this).val(''); });
       });
