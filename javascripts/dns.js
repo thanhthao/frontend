@@ -179,8 +179,6 @@ with (Hasher.View('DNS', 'Application')) { (function() {
   });
 
   create_helper('dns_provider_options', function(current) {
-    console.log("CURRENT: ");
-    console.log(current);
     var dns_providers = [
       ['Badger DNS (recommended)', 'ns1.badger.com,ns2.badger.com'],
       ['Rackspace', 'ns1.rackspace.com,ns2.rackspace.com'],
