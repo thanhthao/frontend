@@ -113,21 +113,25 @@ jQuery(function() {
 var Placeholder = {
   fix_ie: function() {
     if(!$.support.placeholder) {
-      var active = document.activeElement;
+      var focuser = function () {
+        if ($(this).attr('placeholder') != '' && $(this).val() == $(this).attr('placeholder')) {
+          $(this).val('').removeClass('has-placeholder');
+        }
+      };
+      
+      var blurer = function () {
+        if ($(this).attr('placeholder') != '' && ($(this).val() == '' || $(this).val() == $(this).attr('placeholder'))) {
+          $(this).val($(this).attr('placeholder')).addClass('has-placeholder');
+        }
+      };
+      
       $.each([':text', ':password', 'textarea'], function() {
-        $(this.toString()).focus(function () {
-          if ($(this).attr('placeholder') != '' && $(this).val() == $(this).attr('placeholder')) {
-            $(this).val('').removeClass('has-placeholder');
-          }
-        }).blur(function () {
-          if ($(this).attr('placeholder') != '' && ($(this).val() == '' || $(this).val() == $(this).attr('placeholder'))) {
-            $(this).val($(this).attr('placeholder')).addClass('has-placeholder');
-          }
-        });
-        $(this.toString()).blur();
+        $(this.toString()).focus(focuser).blur(blurer);
+        blurer.call($(this.toString()))
       });
 
-      $(active).focus();
+      focuser.call($(document.activeElement));
+      
       $('form').submit(function () {
         $(this).find('.has-placeholder').each(function() { $(this).val(''); });
       });
