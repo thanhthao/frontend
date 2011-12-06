@@ -62,27 +62,19 @@ var Badger = {
   
   // reads from "badger_access_token" cookie
   getAccessToken: function() {
-    if (document.location.protocol == 'file:') {
-      return localStorage.getItem('badger_access_token');
-    } else {
-      var ca = document.cookie.split(';');
-      for (var i=0; i < ca.length; i++) {
-        while (ca[i].charAt(0)==' ') ca[i] = ca[i].substring(1,ca[i].length);
-        if (ca[i].length > 0) {
-          var kv = ca[i].split('=');
-          if (kv[0] == 'badger_access_token') return kv[1];
-        }
+    var ca = document.cookie.split(';');
+    for (var i=0; i < ca.length; i++) {
+      while (ca[i].charAt(0)==' ') ca[i] = ca[i].substring(1,ca[i].length);
+      if (ca[i].length > 0) {
+        var kv = ca[i].split('=');
+        if (kv[0] == 'badger_access_token') return kv[1];
       }
     }
   },
   
   // writes to "badger_access_token" cookie
   setAccessToken: function(token) {
-    if (document.location.protocol == 'file:') {
-      token ? localStorage.setItem('badger_access_token', token) : localStorage.removeItem('badger_access_token')
-    } else {
-      document.cookie = token ? "badger_access_token="+token+"; path=/" : "badger_access_token=; path=/; expires=Thu, 01-Jan-1970 00:00:01 GMT";
-    }
+    document.cookie = token ? "badger_access_token="+token+"; path=/" : "badger_access_token=; path=/; expires=Thu, 01-Jan-1970 00:00:01 GMT";
   },
 
   onLogin: function(callback) {
