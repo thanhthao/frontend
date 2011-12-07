@@ -1,10 +1,10 @@
 with (Hasher.View('GoogleMail', 'Application')) { 
 
   register_domain_app({
-    id: 'gmail',
-    name: 'GMail',
+    id: 'google_mail',
+    name: 'Google Mail',
     icon: 'images/apps/gmail.png',
-    menu_item: { text: 'GMAIL', href: '#domains/:domain/google_apps/gmail' },
+    menu_item: { text: 'GOOGLE MAIL', href: '#domains/:domain/google_apps/gmail' },
 
     requires: {
       dns: [
@@ -24,8 +24,8 @@ with (Hasher.View('GoogleMail', 'Application')) {
 
   route('#domains/:domain/google_apps/gmail', function(domain) {
     render(
-      h1("Gmail for ", domain),
-      domain_app_settings_button('gmail', domain),
+      h1("Google Mail for ", domain),
+      domain_app_settings_button('google_mail', domain),
       p("If you haven't already, you'll need to ", a({ href: 'https://www.google.com/a/cpanel/domain/new', target: '_blank'}, 'setup Google Apps for Your Domain'), '.'),
       p("Once you've done that, you can head on over to ", a({ href: 'http://mail.' + domain + '/', target: '_blank' }, 'mail.' + domain), " and get started!")
     );
