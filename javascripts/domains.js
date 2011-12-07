@@ -137,9 +137,9 @@ with (Hasher.View('Domains', 'Application')) { (function() {
               td(domain.status),
               td(new Date(Date.parse(domain.expires)).toDateString()),
               td(
-								img({ src: 'images/apps/facebook-icon.png'}),
-								', ',
-                a({ href: '#domains/' + domain.name }, 'info'),
+                // img({ src: 'images/apps/facebook-icon.png'}),
+                // ', ',
+                a({ href: '#domains/' + domain.name + '/registration' }, 'registration'),
                 ', ',
                 a({ href: '#domains/' + domain.name + '/dns' }, 'dns'),
                 ', ',

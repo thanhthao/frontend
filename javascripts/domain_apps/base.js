@@ -1,9 +1,9 @@
 // todo
 // - conflicts between apps
 // - require "badger dns" for apps
-// - fix fields on registration screen
 // - show which app the dns entry belongs to
 // - add extra apps
+// - fix broken "mydomains.com" test
 
 with (Hasher('Application')) {
   define('register_domain_app', function(options) {
@@ -12,7 +12,6 @@ with (Hasher('Application')) {
   });
   
   define('app_is_installed_on_domain', function(app, domain_obj) {
-    console.log(domain_obj);
     for (var key in app.requires) {
       switch(key) {
         case 'registrar':
