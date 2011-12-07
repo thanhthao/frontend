@@ -105,8 +105,8 @@ with (Hasher('Application')) {
   });
   
   
-	define('show_settings_modal_for_app', function(app_id, domain) {
-	  var app = Hasher.domain_apps[app_id];
+  define('show_settings_modal_for_app', function(app_id, domain) {
+    var app = Hasher.domain_apps[app_id];
     show_modal(
       h1('SETTINGS FOR ', app.name),
       a({ href: function() {
@@ -118,9 +118,9 @@ with (Hasher('Application')) {
         });
       }}, 'Uninstall')
     )
-	});
-	
-	define('domain_app_settings_button', function(app_id, domain) {
+  });
+        
+  define('domain_app_settings_button', function(app_id, domain) {
     return div({ style: 'float: right; margin-top: -44px' }, 
       a({ 'class': 'myButton myButton-small', href: curry(show_settings_modal_for_app, app_id, domain) }, 'Settings')
     );
