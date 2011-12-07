@@ -7,6 +7,9 @@ with (Hasher.Controller('Invite','Application')) {
     BadgerCache.getAccountInfo(function(response) {
   		render('invites', response.data.invites_available, response.data.domain_credits);
     });
+    Badger.getInviteStatus(function(response) {
+      $("#invite-status-holder").html(helper("invite_status", response.data))
+    });
 	});
 
 	create_action('send_invite', function(data) {
@@ -36,7 +39,8 @@ with (Hasher.View('Invite', 'Application')) { (function() {
       (invites_available <= 0 ? span('Sorry, you don\'t have any invites available right now... check back soon!')
       :[
         p('You have ' + invites_available + ' invites available'),
-        table({ id: 'send-invite-messages', style: 'width: 500px' },
+        div({ id: 'send-invite-messages' }),
+        table({ id: 'invitee-information' },
           tr(
             td(label({ 'for': 'first_name' }, 'First Name')),
             td(input({ name: 'first_name', 'class': 'fancy' }))
@@ -63,9 +67,30 @@ with (Hasher.View('Invite', 'Application')) { (function() {
           )
         )
       ]
-      )
+      ),
+      div({ id: "invite-status-holder" })
 		);
   });
+
+  create_helper('invite_status', function(invites) {
+    return table({ 'class': 'fancy-table invite-status-table' },
+      tr(
+        th("Email"),
+        th("Date Sent"),
+        th({'class': 'center' }, "Domain Credits"),
+        th({'class': 'center' }, "Accepted")
+      ),
+
+      invites.map(function(invite) {
+        return tr(
+          td(invite.email),
+          td(invite.date_sent),
+          td({'class': 'center' }, invite.domain_credits),
+          td({'class': 'center' }, invite.accepted ? "Yes" : "No")
+        )
+      })
+    )
+	});
 
   create_helper('send_invite_result', function(data, status) {
     return div(

@@ -5,6 +5,7 @@ Feature: Invite
 
   Scenario: As I have invites available and domain credits, I should be able to send out invitation with credits to gift when I input correct information
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
+    And I mock getInviteStatus with 1 accepted and 1 pending
     And I am on the invites page
     Then I should see "You have 5 invites available"
     And I fill in "first_name" with "East"
@@ -23,6 +24,7 @@ Feature: Invite
 
   Scenario: As I have invites available and no domain credits, I should not be able to see credits_to_gift drop box
     Given I logged in with mock data for domains and user info with 0 domain credits and 5 invites available
+    And I mock getInviteStatus with 1 accepted and 1 pending
     And I am on the invites page
     Then I should see "You have 5 invites available"
     And I fill in "first_name" with "East"
@@ -33,6 +35,7 @@ Feature: Invite
 
   Scenario: As I have invites available and 2 domain credits, I should be able to see credits_to_gift drop box with options 0, 1, 2 only
     Given I logged in with mock data for domains and user info with 2 domain credits and 5 invites available
+    And I mock getInviteStatus with 1 accepted and 1 pending
     And I am on the invites page
     Then I should see "You have 5 invites available"
     And I fill in "first_name" with "East"
@@ -47,6 +50,7 @@ Feature: Invite
 
   Scenario: As I have invites available, I should not be able to send out invitation when I input incorrect information
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
+    And I mock getInviteStatus with 1 accepted and 1 pending
     And I am on the invites page
     Then I should see "You have 5 invites available"
     And I fill in "first_name" with "East"
@@ -59,6 +63,7 @@ Feature: Invite
 
   Scenario: As I have invites available, I should not be able to send out invitation when I leave the fields empty
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
+    And I mock getInviteStatus with 1 accepted and 1 pending
     And I am on the invites page
     Then I should see "You have 5 invites available"
     And I press "Send"
@@ -66,8 +71,24 @@ Feature: Invite
 
   Scenario: As I have no invites available, I should not be able to send out invitation
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
+    And I mock getInviteStatus with 1 accepted and 1 pending
     And I am on the invites page
     Given I logged in with mock data for domains and user info with 35 domain credits and 0 invites available
     And I am on the invites page
     Then I should see "Sorry, you don't have any invites available right now... check back soon!"
     And I should not see "Send"
+
+  Scenario: As I have send invites to my friends, I want to see invites that I have sent
+    Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
+    And I mock getInviteStatus with 1 accepted and 1 pending
+    And I am on the invites page
+    Then I should see "Email" within ".invite-status-table"
+    And I should see "Date Sent" within ".invite-status-table"
+    And I should see "Domain Credits" within ".invite-status-table"
+    And I should see "Accepted" within ".invite-status-table"
+    And I should see "accepted_invite0@example.com" within ".invite-status-table"
+    And I should see "pending_invite0@example.com" within ".invite-status-table"
+    And I should see "2011-11-12T14:29:26Z" within ".invite-status-table"
+    And I should see "2011-10-12T14:29:26Z" within ".invite-status-table"
+    And I should see "Yes" within ".invite-status-table"
+    And I should see "No" within ".invite-status-table"

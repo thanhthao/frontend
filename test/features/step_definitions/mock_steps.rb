@@ -134,3 +134,19 @@ Given /^I mock requestInviteExtraInfo with status "([^"]*)"$/ do |status|
     setTimeout(function() {callback({ meta : {status: '#{status}'}, data : { message: 'Ok' } }); }, 250);
   };")
 end
+
+Given /^I mock getInviteStatus with ([^"]*) accepted and ([^"]*) pending$/ do |accepted_count, pending_count|
+  invites = []
+  accepted_count.to_i.times do |i|
+    invites << "{email: 'accepted_invite#{i}@example.com', date_sent: '2011-11-12T14:29:26Z', domain_credits: 3, accepted: true}"
+  end
+  pending_count.to_i.times do |i|
+    invites << "{email: 'pending_invite#{i}@example.com', date_sent: '2011-10-12T14:29:26Z', domain_credits: 1, accepted: false}"
+  end
+
+  page.execute_script("Badger.getInviteStatus = function(callback){
+    setTimeout(function() {
+      callback({data : [#{invites.join(',')}]});
+    }, 250);
+  };")
+end

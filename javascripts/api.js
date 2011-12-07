@@ -383,7 +383,11 @@ var Badger = {
 	
 	confirmEmail: function(code, callback) {
 		Badger.api("/account/confirm_email", "POST", { code: code }, callback);
-	}
+	},
+
+  getInviteStatus: function(callback) {
+    Badger.api("/account/all_sent_invites", callback);
+  }
   
 
 
