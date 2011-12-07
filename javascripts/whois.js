@@ -1,4 +1,5 @@
 with (Hasher.Controller('Whois','Application')) {
+
   route({
     '#account/profiles': 'index'
   });
@@ -74,14 +75,6 @@ with (Hasher.View('Whois', 'Application')) { (function() {
         )
       )
     );
-  });
-
-  create_helper('profile_options_for_select', function(selected_id) {
-    return BadgerCache.cached_contacts.data.map(function(profile) { 
-      var opts = { value: profile.id };
-      if (''+profile.id == ''+selected_id) opts['selected'] = 'selected';
-      return option(opts, profile.first_name + ' ' + profile.last_name + (profile.organization ? ", " + profile.organization : '') + " (" + profile.address + (profile.address2 ? ', ' + profile.address2 : '') + ")");
-    });
   });
 
   create_helper('whois_contact', function(whois) {

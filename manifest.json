@@ -23,6 +23,7 @@
     "/javascripts/api_cache.js",
 
     "/javascripts/application.js",
+    "/javascripts/layout.js",
     "/javascripts/modal.js",
     "/javascripts/search.js",
     "/javascripts/signup.js",
@@ -30,17 +31,22 @@
     "/javascripts/account.js",
     "/javascripts/whois.js",
     "/javascripts/billing.js",
-    "/javascripts/dns.js",
     "/javascripts/transfer.js",
     "/javascripts/register.js",
     "/javascripts/help.js",
     "/javascripts/terms_of_service.js",
     "/javascripts/contact_us.js",
-    "/javascripts/email_forwards.js",
-    "/javascripts/web_forwards.js",
     "/javascripts/site_tour.js",
-    "/javascripts/ie_fix.js",
-    "/javascripts/invite.js"
+    "/javascripts/invite.js",
+
+    "/javascripts/domain_apps/base.js",
+    "/javascripts/domain_apps/show.js",
+    "/javascripts/domain_apps/registration.js",
+    "/javascripts/domain_apps/dns.js",
+    "/javascripts/domain_apps/whois.js",
+    "/javascripts/domain_apps/email_forwards.js",
+    "/javascripts/domain_apps/web_forwards.js",
+    "/javascripts/domain_apps/google_mail.js" 
   ],
 
   "images": [
@@ -60,7 +66,24 @@
     "/images/icon-grid-view.gif",
     "/images/icon-list-view.jpg",
     "/images/icon-no.gif",
-    "/images/icon-plus.png"
+    "/images/icon-plus.png",
+    
+    "/images/apps/aboutme.png",
+    "/images/apps/appengine.png",
+    "/images/apps/badger.png",
+    "/images/apps/blogger.png",
+    "/images/apps/facebook-icon.png",
+    "/images/apps/facebook.png",
+    "/images/apps/flavorsme.png",
+    "/images/apps/flickr.png",
+    "/images/apps/gmail.png",
+    "/images/apps/googleapps.png",
+    "/images/apps/googledocs.png",
+    "/images/apps/heroku.png",
+    "/images/apps/posterous.png",
+    "/images/apps/tumblr.png",
+    "/images/apps/twitter.png",
+    "/images/apps/wordpress.png"
   ],
   
   "lib": [ 

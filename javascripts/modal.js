@@ -1,3 +1,34 @@
+with (Hasher('Application')) {
+  define('show_modal', function() {
+    if ($('#modal-dialog').length > 0) call_action('hide')
+    
+    var ie_browser = (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
+    document.body.appendChild(
+      div({ 
+        'id': 'modal-dialog', 
+        'class': (ie_browser? 'ie-modal-dialog ' : '') + 'modal-dialog', 
+        onclick: function(e) { if (e.target && e.target.id == 'modal-dialog') hide_modal(); } 
+      },
+        div({ id: 'modal-content' },
+          a({ href: hide_modal, 'class': 'close-button' }, 'X'),
+          Array.prototype.slice.call(arguments)
+        )
+      )
+    );
+    
+    // Fix placeholder does not work in IE
+    Placeholder.fix_ie();
+  });
+  
+  define('hide_modal', function() {
+    $('#modal-dialog').remove();
+  });
+}
+
+
+
+
+
 with (Hasher.Controller('Modal')) {
   create_action('show', function() {
     if ($('#modal-dialog').length > 0) call_action('hide');

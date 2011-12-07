@@ -1,4 +1,11 @@
 with (Hasher.Controller('DNS','Application')) {
+
+  register_domain_app({
+    id: 'badger_dns',
+    name: 'DNS',
+    menu_item: { text: 'DNS', href: '#domains/:domain/dns' }
+  });
+
   route({
     '#domains/:domain/dns': 'index'
   });

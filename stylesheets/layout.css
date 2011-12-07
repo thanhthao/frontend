@@ -135,3 +135,17 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 .has-placeholder { color: #777777; }
 
 .ie-modal-dialog { background:transparent; filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#80000000,endColorstr=#80000000); zoom: 1; }
+
+.app_store_container { float: left; width: 90px; padding: 10px 13px 20px 13px; border: 1px solid white; }
+.app_store_container:hover { text-decoration: none; border: 1px solid #e2c822; background: #fff9d7; border-radius: 10px; cursor: pointer; }
+.app_store_container span { display: block; color: #000; }
+.app_store_icon { 
+	box-shadow: 1px 1px 5px #666;
+	background-repeat: no-repeat;
+	background-size: 100%;
+	border-radius: 12px; 
+	width: 90px; 
+	height: 90px;
+ 	margin-bottom: 10px;
+	overflow: hidden; 
+}
