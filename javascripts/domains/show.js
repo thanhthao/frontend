@@ -33,6 +33,8 @@ with (Hasher.Controller('DomainShow','Application')) {
               span({ style: 'text-align: center; font-weight: bold' }, app.name)
             )
           );
+          // add a clear every six icons
+          if (target.childNodes.length % 7 == 6) target.appendChild(div({ style: 'clear: left ' }));
         }
       }
     });
