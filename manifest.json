@@ -27,7 +27,6 @@
     "/javascripts/modal.js",
     "/javascripts/search.js",
     "/javascripts/signup.js",
-    "/javascripts/domains.js",
     "/javascripts/account.js",
     "/javascripts/whois.js",
     "/javascripts/billing.js",
@@ -39,14 +38,16 @@
     "/javascripts/site_tour.js",
     "/javascripts/invite.js",
 
-    "/javascripts/domain_apps/base.js",
-    "/javascripts/domain_apps/show.js",
-    "/javascripts/domain_apps/registration.js",
-    "/javascripts/domain_apps/dns.js",
-    "/javascripts/domain_apps/whois.js",
-    "/javascripts/domain_apps/email_forwards.js",
-    "/javascripts/domain_apps/web_forwards.js",
-    "/javascripts/domain_apps/google_mail.js" 
+
+    "/javascripts/domains/index.js",
+    "/javascripts/domains/show.js",
+    "/javascripts/domains/apps/base.js",
+    "/javascripts/domains/apps/registration.js",
+    "/javascripts/domains/apps/dns.js",
+    "/javascripts/domains/apps/whois.js",
+    "/javascripts/domains/apps/email_forwards.js",
+    "/javascripts/domains/apps/web_forwards.js",
+    "/javascripts/domains/apps/google_mail.js" 
   ],
 
   "images": [

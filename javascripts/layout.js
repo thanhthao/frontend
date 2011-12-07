@@ -13,6 +13,9 @@ with (Hasher('Application')) {
  
   define('update_sidebar_with_correct_actives', function(request_uri) {
     if (!request_uri) request_uri = get_route();
+    if (request_uri.indexOf("filter_domains/all") != -1) request_uri = '#';
+    else if (request_uri.indexOf("filter_domains") != -1) request_uri = request_uri.replace('grid', 'list');
+             
     // select active link and expand parent
     $('#sidebar ul').removeClass('expanded');
     $('#sidebar a').removeClass('active');
