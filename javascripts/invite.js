@@ -5,7 +5,7 @@ with (Hasher.Controller('Invite','Application')) {
 
 	create_action('invites', function() {
     BadgerCache.getAccountInfo(function(response) {
-  		render('invites', response.data.invites_available);
+  		render('invites', response.data.invites_available, response.data.domain_credits);
     });
 	});
 
@@ -16,6 +16,7 @@ with (Hasher.Controller('Invite','Application')) {
 		Badger.sendInvite(data, function(response) {
       BadgerCache.cached_account_info = null
 			call_action('Modal.show', 'Invite.send_invite_result', response.data, response.meta.status);
+      helper('Application.update_credits');
       redirect_to("#invites")
 		});
 	});
@@ -24,17 +25,43 @@ with (Hasher.Controller('Invite','Application')) {
 }
 
 with (Hasher.View('Invite', 'Application')) { (function() {
-  create_view('invites', function(invites_available) {
+  create_view('invites', function(invites_available, domain_credits) {
+    options = [];
+    var credits_to_gift = domain_credits > 3 ? 3 : domain_credits
+    for(i = 0; i <= credits_to_gift; i++) {
+      options.push(option(i.toString()))
+    }
 		return form({ action: action('send_invite') },
 			h1("INVITES"),
       (invites_available <= 0 ? span('Sorry, you don\'t have any invites available right now... check back soon!')
       :[
         p('You have ' + invites_available + ' invites available'),
-        div({ id: 'send-invite-messages' }),
-        input({ name: 'first_name', 'class': 'fancy', placeholder: 'First Name' }),
-        input({ name: 'last_name', 'class': 'fancy', placeholder: 'Last Name' }),
-        input({ name: 'invitation_email', 'class': 'fancy', placeholder: 'Email' }),
-        input({ 'class': 'myButton', type: 'submit', value: 'Send' })
+        table({ id: 'send-invite-messages', style: 'width: 500px' },
+          tr(
+            td(label({ 'for': 'first_name' }, 'First Name')),
+            td(input({ name: 'first_name', 'class': 'fancy' }))
+          ),
+          tr(
+            td(label({ 'for': 'last_name' }, 'Last Name')),
+            td(input({ name: 'last_name', 'class': 'fancy' }))
+          ),
+          tr(
+            td(label({ 'for': 'invitation_email' }, 'Email')),
+            td(input({ name: 'invitation_email', 'class': 'fancy' }))
+          ),
+          domain_credits > 0 ? tr(
+            td(label({ 'for': 'credits_to_gift' }, "Credits to Gift: ")),
+            td(select({ name: 'credits_to_gift' }, options))
+          ) : '',
+          tr(
+            td(label({ 'for': 'custom_message' }, 'Custom Message')),
+            td(textarea({ name: 'custom_message' }))
+          ),
+          tr(
+            td(),
+            td(input({ 'class': 'myButton', type: 'submit', value: 'Send' }))
+          )
+        )
       ]
       )
 		);

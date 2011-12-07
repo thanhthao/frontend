@@ -122,6 +122,10 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 
 .invite-extra-info { margin: 5px 10px; width: 450px; }
 
+#send-invite-messages { width: 500px; }
+#send-invite-messages .fancy{ width: 100%; }
+#send-invite-messages textarea{ height: 100px; width: 100%; }
+#send-invite-messages select{ width: 50px; }
 
 
 

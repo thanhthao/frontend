@@ -59,3 +59,31 @@ end
 When /^I wait ([^"]*) seconds$/ do |second|
   sleep(second.to_i)
 end
+
+When /^(?:|I )select "([^"]*)" from "([^"]*)"$/ do |value, field|
+  select(value, :from => field)
+end
+
+When /^(?:|I )check "([^"]*)"$/ do |field|
+  check(field)
+end
+
+When /^(?:|I )uncheck "([^"]*)"$/ do |field|
+  uncheck(field)
+end
+
+Then /^(?:|I )should not see item with xpath "([^"]*)"$/ do |xpath|
+  page.should have_no_selector(:xpath, xpath)
+end
+
+Then /^(?:|I )should see item with xpath "([^"]*)"$/ do |xpath|
+  page.should have_selector(:xpath, xpath)
+end
+
+Then /^the "([^"]*)" drop-down should contain the option "([^"]*)"$/ do |id, value|
+  page.should have_xpath "//select[@name = '#{id}']/option[text() = '#{value}']"
+end
+
+Then /^the "([^"]*)" drop-down should not contain the option "([^"]*)"$/ do |id, value|
+  page.should_not have_xpath "//select[@name = '#{id}']/option[text() = '#{value}']"
+end

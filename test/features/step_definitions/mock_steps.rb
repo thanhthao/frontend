@@ -62,8 +62,8 @@ end
 Given /^I mock accountInfo with ([^"]*) domain credits and ([^"]*) invites available$/ do |domain_credits, invites_available|
   page.execute_script("Badger.accountInfo = function(callback) {
     callback({data : {domain_credits: #{domain_credits}, name: 'East Agile Company', invites_available: #{invites_available}}, meta : {status: 'ok'}});
-  };
- ")
+  };")
+   page.execute_script(" BadgerCache.cached_account_info = null;");
 end
 
 Given /^I mock getContacts$/ do
