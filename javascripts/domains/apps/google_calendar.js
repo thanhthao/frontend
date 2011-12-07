@@ -3,7 +3,7 @@ with (Hasher.View('GoogleCalendar', 'Application')) {
   register_domain_app({
     id: 'google_calendar',
     name: 'Google Calendar',
-    icon: 'images/apps/googleapps.png',
+    icon: 'images/apps/google_calendar.png',
     menu_item: { text: 'GOOGLE CALENDAR', href: '#domains/:domain/google_apps/calendar' },
 
     requires: {
