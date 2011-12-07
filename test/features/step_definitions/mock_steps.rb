@@ -62,8 +62,8 @@ end
 Given /^I mock accountInfo with ([^"]*) domain credits and ([^"]*) invites available$/ do |domain_credits, invites_available|
   page.execute_script("Badger.accountInfo = function(callback) {
     callback({data : {domain_credits: #{domain_credits}, name: 'East Agile Company', invites_available: #{invites_available}}, meta : {status: 'ok'}});
-  };
- ")
+  };")
+   page.execute_script(" BadgerCache.cached_account_info = null;");
 end
 
 Given /^I mock getContacts$/ do
@@ -132,5 +132,21 @@ end
 Given /^I mock requestInviteExtraInfo with status "([^"]*)"$/ do |status|
   page.execute_script("Badger.requestInviteExtraInfo = function(data, callback){
     setTimeout(function() {callback({ meta : {status: '#{status}'}, data : { message: 'Ok' } }); }, 250);
+  };")
+end
+
+Given /^I mock getInviteStatus with ([^"]*) accepted and ([^"]*) pending$/ do |accepted_count, pending_count|
+  invites = []
+  accepted_count.to_i.times do |i|
+    invites << "{email: 'accepted_invite#{i}@example.com', date_sent: '2011-11-12T14:29:26Z', domain_credits: 3, accepted: true}"
+  end
+  pending_count.to_i.times do |i|
+    invites << "{email: 'pending_invite#{i}@example.com', date_sent: '2011-10-12T14:29:26Z', domain_credits: 1, accepted: false}"
+  end
+
+  page.execute_script("Badger.getInviteStatus = function(callback){
+    setTimeout(function() {
+      callback({data : [#{invites.join(',')}]});
+    }, 250);
   };")
 end

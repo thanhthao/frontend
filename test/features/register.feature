@@ -4,7 +4,9 @@ Feature: Register
   I want to register new user
 
   Scenario: register new user successfully
-    Given I am on the register page
+    Given I am on the home page
+    And I am not logged in
+    And I am on the register page
     Then I should see "Create Your Badger.com Account"
     And I fill in "first_name" with "East Agile"
     And I fill in "last_name" with "Company"

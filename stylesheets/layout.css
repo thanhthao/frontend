@@ -122,7 +122,14 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 
 .invite-extra-info { margin: 5px 10px; width: 450px; }
 
+#invitee-information { width: 500px; }
+#invitee-information .fancy{ width: 100%; }
+#invitee-information textarea{ height: 100px; width: 100%; }
+#invitee-information select{ width: 50px; }
 
+.invite-status-table { margin-top: 30px; border-top: 1px solid #333; }
+.invite-status-table th{ padding-top: 20px; }
+.invite-status-table .center { text-align: center; }
 
 
 .purchase-credits td, .purchase-credits th { text-align: center; }
