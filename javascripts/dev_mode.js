@@ -21,7 +21,7 @@ with (Hasher()) {
   after_filter('add_dev_mode_bar', function() {
     if (!document.getElementById('dev-bar')) { 
       document.body.appendChild(
-        div({ id: 'dev-bar', style: "position: absolute; top: 0; right: 0; background: white; color: black; padding: 5px" }, 
+        div({ id: 'dev-bar', style: "position: fixed; bottom: 0; right: 0; background: white; color: black; padding: 5px" }, 
           (Badger.api_host == 'http://api.badger.dev/' ? b('dev') : a({ href: curry(set_api_host, 'dev') }, 'dev')), 
           ' | ',
           (Badger.api_host == 'https://api-qa.badger.com/' ? b('qa') : a({ href: curry(set_api_host, 'qa') }, 'qa')), 
