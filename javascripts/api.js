@@ -373,6 +373,10 @@ var Badger = {
 		Badger.api("/account/send_invite", "POST", { first_name: data.first_name, last_name: data.last_name, email: data.invitation_email, credits_to_gift: data.credits_to_gift, custom_message: data.custom_message }, callback);
 	},
 	
+  revokeInvite: function(invite_id, callback) {
+    Badger.api("/account/revoke_invite", "POST", { invite_id: invite_id }, callback);
+  },
+
 	confirmEmail: function(code, callback) {
 		Badger.api("/account/confirm_email", "POST", { code: code }, callback);
 	},
@@ -380,7 +384,7 @@ var Badger = {
   getInviteStatus: function(callback) {
     Badger.api("/account/all_sent_invites", callback);
   }
-  
+
 
 
   // getRecordsByType: function(accessToken, name, type, callback) {
