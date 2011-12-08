@@ -6,7 +6,7 @@ with (Hasher.Controller('BaseDnsApp','DomainApps')) {
         h1('DNS SETTINGS'),
         div({ id: 'errors_modal' }),
       
-        div({ style: 'width: 275px; padding-right: 20px; float: left' },
+        div({ style: 'width: 275px; padding-right: 20px; float: left; margin-right: -1px; border-right: 1px solid #ccc' },
           h2(span({ style: 'cursor: pointer', onclick: function() { $('#remote-dns-details').hide(); $('#badger-dns-details').show(); $('#radio-nameservers-badger').click(); } }, radio({ id: 'radio-nameservers-badger', style: 'margin: 0 8px 2px 0', name: 'nameservers' }), 'BADGER DNS'), span({ style: 'padding-left: 10px; font-weight: normal; font-size: 11px'}, '(RECOMMENDED)')),
           div({ id: 'badger-dns-details' },
             ul(
@@ -15,7 +15,11 @@ with (Hasher.Controller('BaseDnsApp','DomainApps')) {
               li("Manage from within Badger.com")
             ),
 
-            div({ style: 'margin-top: 10px' }, button({ 'class': 'myButton', onclick: curry(save_name_servers, domain_info, 'ns1.badger.com,ns2.badger.com') }, 'Save'))
+            div({ id: 'badger-dns-installed-div', style: 'margin-top: 30px; font-size: 20px; font-weight: bold; text-align: center; font-style: italic; display: none'}, 
+              img({ src: "images/check.png" }),
+              'Already Installed!'
+            ),
+            div({ id: 'badger-dns-install-button-div', style: 'margin-top: 10px; text-align: center; display: none' }, button({ 'class': 'myButton', onclick: curry(save_name_servers, domain_info, 'ns1.badger.com,ns2.badger.com') }, 'Install'))
           )
         ),
 
@@ -47,8 +51,10 @@ with (Hasher.Controller('BaseDnsApp','DomainApps')) {
     );
 
     if (domain_info.name_servers.join(',') == 'ns1.badger.com,ns2.badger.com') {
+      $('#badger-dns-installed-div').show();
       $('#radio-nameservers-badger').click();
     } else {
+      $('#badger-dns-install-button-div').show();
       $('#radio-nameservers-remote').click();
     }
 

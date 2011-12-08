@@ -25,8 +25,9 @@ with (Hasher('WebForwards', 'DomainApps')) {
             tbody({ id: 'web-forwards-table-tbody' },
               tr({ 'class': 'table-header'},
                 th('Source'),
+                th(''),
                 th('Destination'),
-                th('Actions')
+                th('')
               ),
 
               tr(
@@ -35,10 +36,11 @@ with (Hasher('WebForwards', 'DomainApps')) {
                     domain, "/", input({ id: 'input-path', name: 'path', placeholder: 'path' })
                   )
                 ),
+                td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
                 td(
                   input({ id: 'input-destination', name: 'destination', placeholder: 'example.com' })
                 ),
-                td(
+                td({ style: 'text-align: center' }, 
                   button({ 'class': 'myButton myButton-small' }, 'Add')
                 )
               )
@@ -95,9 +97,10 @@ with (Hasher('WebForwards', 'DomainApps')) {
   define('show_web_forward_table_row', function(domain, web_forward) {
     return tr({ id: web_forward.path },
       td(domain, "/", web_forward.path),
+      td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
       td(web_forward.destination),
-      td(
-        a({ 'class': 'myButton myButton-small', href: action('WebForwards.delete_web_forward', domain, web_forward) }, 'Delete')
+      td({ style: 'text-align: center' }, 
+        a({ href: curry(delete_web_forward, domain, web_forward) }, img({ src: 'images/icon-no.gif' }))
       )
     );
   });

@@ -26,13 +26,15 @@ with (Hasher('EmailForwards', 'DomainApps')) {
             tbody({ id: 'email-forwards-table-tbody' },
               tr({ 'class': 'table-header'},
                 th('Source'),
+                th(''),
                 th('Destination'),
-                th('Actions')
+                th('')
               ),
               tr(
                 td(div(input({ id: 'input-username', name: 'username', placeholder: 'username' }), '@', domain)),
+                td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
                 td(input({ id: 'input-destination', name: 'destination', placeholder: 'test@example.com' })),
-                td(button({ 'class': 'myButton myButton-small' }, 'Add'))
+                td({ style: 'text-align: center' }, button({ 'class': 'myButton myButton-small' }, 'Add'))
               )
             )
           )
@@ -51,9 +53,10 @@ with (Hasher('EmailForwards', 'DomainApps')) {
   define('show_email_forward_table_row', function(domain, email_forward) {
     return tr({ id: email_forward.username },
       td(email_forward.username, "@", domain),
+      td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
       td(email_forward.destination),
-      td(
-        a({ 'class': 'myButton myButton-small', href: curry(delete_email_forward, domain, email_forward) }, 'Delete')
+      td({ style: 'text-align: center' },
+        a({ href: curry(delete_email_forward, domain, email_forward) }, img({ src: 'images/icon-no.gif' }))
       )
     );
   })

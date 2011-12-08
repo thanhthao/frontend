@@ -1,5 +1,5 @@
 img { border-style: none; }
-a { text-decoration: none; outline: 0; }
+a { text-decoration: none; }
 a:hover { text-decoration: underline; }
 input, textarea, select { vertical-align: middle; margin: 5px 5px 0 0;}
 form,fieldset { margin:0; padding:0; border-style:none; }
@@ -157,3 +157,5 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
  	margin-bottom: 10px;
 	overflow: hidden; 
 }
+
+.fancy-table td.fancy-table-destination-td { padding-right: 30px; background: transparent url(../images/icon-arrow-right.png) right center no-repeat }

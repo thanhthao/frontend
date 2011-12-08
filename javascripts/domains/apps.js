@@ -5,6 +5,8 @@
 // - better app descriptions on install/settings modal
 // - show which app the dns entry belongs to (h2 for each app showing DNS entries but no X)
 // - add extra apps
+// - on transfer in flow, instead of nameservers dropdown, have a "[ ] Import current DNS" option
+
 
 with (Hasher('Application')) {
   // TODO: this despearetly needs to be cached
@@ -93,7 +95,7 @@ with (Hasher('DomainApps','Application')) {
 
   define('show_modal_install_app', function(app, domain_obj) {  
     show_modal(
-      h1('INSTALL ', app.name, " on ", domain_obj.name),
+      h1(app.name, " for ", domain_obj.name),
 
       table({ 'class': 'fancy-table' },
         tbody(
@@ -141,14 +143,20 @@ with (Hasher('DomainApps','Application')) {
     var app = Hasher.domain_apps[app_id];
     show_modal(
       h1('SETTINGS FOR ', app.name),
-      a({ href: function() {
-        load_domain(domain, function(domain_obj) {
-          remove_app_from_domain(app, domain_obj);
-          hide_modal();
-          $('#domain-menu-item-' + domain_obj.name.replace('.','-')).remove();
-          redirect_to('#domains/' + domain_obj.name);
-        });
-      }}, 'Uninstall')
+      p("If you'd like to uninstall this application, click the uninstall button below."),
+      div({ style: "text-align: right; margin-top: 30px" },
+        a({ 
+          'class': 'myButton', 
+          href: function() {
+            load_domain(domain, function(domain_obj) {
+              remove_app_from_domain(app, domain_obj);
+              hide_modal();
+              $('#domain-menu-item-' + domain_obj.name.replace('.','-')).remove();
+              redirect_to('#domains/' + domain_obj.name);
+            });
+          }
+        }, 'Uninstall ', app.name)
+      )
     )
   });
         
