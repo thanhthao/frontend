@@ -37,14 +37,14 @@ Feature: Register Domain
     And I follow "View domain details"
     #Then I should see "mydomain.com"
 
-  Scenario: I successfully register a domain and follow the link to show its dns
-    And I mock getRecords with empty records
-    And I follow "Modify DNS Settings"
-    Then I should see "mydomain.com DNS"
-
-  Scenario: I successfully register a domain and follow the link to show its whois
-    And I follow "Modify WHOIS Settings"
-    Then I should see "mydomain.com WHOIS"
+  # Scenario: I successfully register a domain and follow the link to show its dns
+  #   And I mock getRecords with empty records
+  #   And I follow "Modify DNS Settings"
+  #   Then I should see "mydomain.com DNS"
+  # 
+  # Scenario: I successfully register a domain and follow the link to show its whois
+  #   And I follow "Modify WHOIS Settings"
+  #   Then I should see "mydomain.com WHOIS"
 
   Scenario: I successfully register a domain and follow the link to show all domains
     And I follow "View all Domains"

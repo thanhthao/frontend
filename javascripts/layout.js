@@ -260,7 +260,7 @@ with (Hasher('Application')) {
 
     load_domain(domain, function(domain_obj) {
       for (var key in Hasher.domain_apps) {
-        if (app_is_installed_on_domain(Hasher.domain_apps[key], domain_obj) && Hasher.domain_apps[key].menu_item) {
+        if (DomainApps.app_is_installed_on_domain(Hasher.domain_apps[key], domain_obj) && Hasher.domain_apps[key].menu_item) {
           app_list.appendChild(
             li({ 'class': "website" }, 
               a({ 

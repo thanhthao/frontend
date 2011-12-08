@@ -151,28 +151,28 @@ with (Hasher.View('Transfer','Application')) {
               tr(
                 td('Registrant:'),
                 td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
-                  helper('Whois.profile_options_for_select')
+                  WhoisApp.profile_options_for_select()
                 ))
               ),
               tr(
                 td('Administrator:'), 
                 td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
                   option({ value: '' }, 'Same as Registrant'),
-                  helper('Whois.profile_options_for_select')
+                  WhoisApp.profile_options_for_select()
                 ))
               ),
               tr(
                 td('Billing:'), 
                 td(select({ name: 'billing_contact_id', style: 'width: 150px' },
                   option({ value: '' }, 'Same as Registrant'),
-                  helper('Whois.profile_options_for_select')
+                  WhoisApp.profile_options_for_select()
                 ))
               ),
               tr(
                 td('Technical:'), 
                 td(select({ name: 'technical_contact_id', style: 'width: 150px' },
                   option({ value: '' }, 'Same as Registrant'),
-                  helper('Whois.profile_options_for_select')
+                  WhoisApp.profile_options_for_select()
                 ))
               )
             ))
@@ -183,7 +183,7 @@ with (Hasher.View('Transfer','Application')) {
               tr(
                 td('DNS:'),
                 td(
-                  select({ name: 'name_servers' }, helper('DNS.dns_provider_options'))
+                  select({ name: 'name_servers' }, BaseDnsApp.dns_provider_options())
                 )
               )
             )),

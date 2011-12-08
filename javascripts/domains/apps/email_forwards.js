@@ -1,4 +1,4 @@
-with (Hasher('EmailForwards', 'Application')) {
+with (Hasher('EmailForwards', 'DomainApps')) {
 
   register_domain_app({
     id: 'badger_email_forward',

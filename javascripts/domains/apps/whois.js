@@ -1,4 +1,4 @@
-with (Hasher('Whois','Application')) {
+with (Hasher('WhoisApp','DomainApps')) {
 
   register_domain_app({
     id: 'badger_whois',
@@ -9,37 +9,31 @@ with (Hasher('Whois','Application')) {
     }
   });
 
+  route('#domains/:domain/whois', function(domain_name) {
+    render(
+      div(
+        h1(domain_name + ' WHOIS'),
+        'Loading... please wait.'
+      )
+    );
 
-  route({
-    '#domains/:domain/whois': 'whois'
-  });
-
-  create_action('whois', function(domain_name) {
     Badger.getContacts(function() {
       Badger.getDomain(domain_name, function(response) {
-        render('whois', response.data);
+        render(whois_view(response.data));
       });
     });
-    render('whois_loading', domain_name);
   });
 
-  create_action('update_whois', function(domain, form_data) {
+  define('update_whois', function(domain, form_data) {
     // force sends a "privacy=false"... exclusion isn't enough
     form_data['privacy'] = form_data['privacy'] ? 'true' : 'false';
     Badger.updateDomain(domain.name, form_data, function(response) {
       console.log(response);
-      call_action('whois', domain.name);
+      set_route(get_route());
     });
   });
 
-  create_view('whois_loading', function(domain_name) {
-    return div(
-      h1(domain_name + ' WHOIS'),
-      'Loading... please wait.'
-    );
-  });
-
-  create_helper('profile_options_for_select', function(selected_id) {
+  define('profile_options_for_select', function(selected_id) {
     return BadgerCache.cached_contacts.data.map(function(profile) { 
       var opts = { value: profile.id };
       if (''+profile.id == ''+selected_id) opts['selected'] = 'selected';
@@ -47,7 +41,7 @@ with (Hasher('Whois','Application')) {
     });
   });
 
-  create_view('whois', function(domain) {
+  define('whois_view', function(domain) {
     return div(
       h1(domain.name + ' WHOIS'),
 
@@ -60,33 +54,33 @@ with (Hasher('Whois','Application')) {
           td({ style: 'vertical-align: top'},
             h2('Make Changes'),
 
-            form({ action: action('update_whois', domain) },
+            form({ action: curry(update_whois, domain) },
               table(tbody(
                 tr(
                   td('Registrant:'),
                   td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
-                    helper('Whois.profile_options_for_select', domain.registrant_contact.id)
+                    profile_options_for_select(domain.registrant_contact.id)
                   ))
                 ),
                 tr(
                   td('Administrator:'),
                   td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
-                    helper('Whois.profile_options_for_select', domain.administrator_contact && domain.administrator_contact.id)
+                    profile_options_for_select(domain.administrator_contact && domain.administrator_contact.id)
                   ))
                 ),
                 tr(
                   td('Billing:'),
                   td(select({ name: 'billing_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
-                    helper('Whois.profile_options_for_select', domain.billing_contact && domain.billing_contact.id)
+                    profile_options_for_select(domain.billing_contact && domain.billing_contact.id)
                   ))
                 ),
                 tr(
                   td('Technical:'),
                   td(select({ name: 'technical_contact_id', style: 'width: 150px' },
                     option({ value: '' }, 'Same as Registrant'),
-                    helper('Whois.profile_options_for_select', domain.technical_contact && domain.technical_contact.id)
+                    profile_options_for_select(domain.technical_contact && domain.technical_contact.id)
                   ))
                 )
               )),

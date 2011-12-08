@@ -1,6 +1,6 @@
 with (Hasher('Application')) {
   define('show_modal', function() {
-    if ($('#modal-dialog').length > 0) call_action('hide')
+    if ($('#modal-dialog').length > 0) hide_modal();
     
     var ie_browser = (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
     document.body.appendChild(

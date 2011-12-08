@@ -1,4 +1,4 @@
-with (Hasher.Controller('Registration ','Application')) {
+with (Hasher('Registration ','DomainApps')) {
 
   register_domain_app({
     id: 'badger_registration',

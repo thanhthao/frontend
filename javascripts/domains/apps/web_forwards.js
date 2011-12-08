@@ -1,4 +1,4 @@
-with (Hasher('WebForwards', 'Application')) {
+with (Hasher('WebForwards', 'DomainApps')) {
 
   register_domain_app({
     id: 'badger_web_forward',
@@ -15,7 +15,7 @@ with (Hasher('WebForwards', 'Application')) {
   route('#domains/:domain/web_forwards', function(domain) {
     render(
       div({ id: 'web-forwards-wrapper' },
-        h1(domain, ' WEB FORWARDING'),
+        h1('WEB FORWARDING FOR ' + domain),
         domain_app_settings_button('badger_web_forward', domain),
 
         div({ id: 'web-forwards-errors' }),
