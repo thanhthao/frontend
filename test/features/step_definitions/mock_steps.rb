@@ -135,18 +135,32 @@ Given /^I mock requestInviteExtraInfo with status "([^"]*)"$/ do |status|
   };")
 end
 
-Given /^I mock getInviteStatus with ([^"]*) accepted and ([^"]*) pending$/ do |accepted_count, pending_count|
+Given /^I mock getInviteStatus with ([^"]*) accepted and ([^"]*) pending and ([^"]*) revoked$/ do |accepted_count, pending_count, revoked_count|
   invites = []
   accepted_count.to_i.times do |i|
-    invites << "{email: 'accepted_invite#{i}@example.com', date_sent: '2011-11-12T14:29:26Z', domain_credits: 3, accepted: true}"
+    invites << "{name: 'Accepted Full Name #{i}', email: 'accepted_invite#{i}@example.com', date_sent: '2011-11-12T14:29:26Z',
+                domain_credits: 3, accepted: true, id: '#{i}-accepted_invite#{i}@example.com', revoked_at: '' }"
   end
   pending_count.to_i.times do |i|
-    invites << "{email: 'pending_invite#{i}@example.com', date_sent: '2011-10-12T14:29:26Z', domain_credits: 1, accepted: false}"
+    invites << "{name: 'Pending Full Name #{i}', email: 'pending_invite#{i}@example.com', date_sent: '2011-10-12T14:29:26Z',
+                domain_credits: 1, accepted: false, id: '#{i}-pending_invite#{i}@example.com', revoked_at: '' }"
+  end
+  revoked_count.to_i.times do |i|
+    invites << "{name: 'Revoked Full Name #{i}', email: 'revoked_invite#{i}@example.com', date_sent: '2011-10-12T14:29:26Z',
+                domain_credits: 1, accepted: false, id: '#{i}-revoked_invite#{i}@example.com', revoked_at: '2011-12-12T14:29:26Z' }"
   end
 
   page.execute_script("Badger.getInviteStatus = function(callback){
     setTimeout(function() {
       callback({data : [#{invites.join(',')}]});
+    }, 250);
+  };")
+end
+
+When /^I mock revokeInvite with status "([^"]*)" and message "([^"]*)"$/ do |status, message|
+  page.execute_script("Badger.revokeInvite = function(invite_id, callback){
+    setTimeout(function() {
+      callback({ meta : {status: '#{status}'}, data : { message: '#{message}' } });
     }, 250);
   };")
 end

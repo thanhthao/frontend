@@ -130,6 +130,7 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 .invite-status-table { margin-top: 30px; border-top: 1px solid #333; }
 .invite-status-table th{ padding-top: 20px; }
 .invite-status-table .center { text-align: center; }
+.invite-status-table .revoke-button { font-size: 13px; padding: 4px 12px; }
 
 
 .purchase-credits td, .purchase-credits th { text-align: center; }
