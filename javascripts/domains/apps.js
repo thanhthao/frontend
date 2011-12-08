@@ -1,13 +1,3 @@
-// todo
-// - conflicts between apps
-// - cache load_domain and run all apps through it instead of getDomain()
-// todo later
-// - better app descriptions on install/settings modal
-// - show which app the dns entry belongs to (h2 for each app showing DNS entries but no X)
-// - add extra apps
-// - on transfer in flow, instead of nameservers dropdown, have a "[ ] Import current DNS" option
-
-
 with (Hasher('Application')) {
   // TODO: this despearetly needs to be cached
   define('load_domain', function(domain, callback) {

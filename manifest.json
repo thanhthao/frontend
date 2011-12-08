@@ -45,8 +45,8 @@
     "/javascripts/domains/apps/dns_badger.js",
     "/javascripts/domains/apps/dns_remote.js",
     "/javascripts/domains/apps/whois.js",
-    "/javascripts/domains/apps/email_forwards.js",
-    "/javascripts/domains/apps/web_forwards.js",
+    # "/javascripts/domains/apps/email_forwards.js",
+    # "/javascripts/domains/apps/web_forwards.js",
     "/javascripts/domains/apps/google_mail.js",
     "/javascripts/domains/apps/google_docs.js",
     "/javascripts/domains/apps/google_calendar.js"
