@@ -75,6 +75,7 @@ with (Hasher.View('Invite', 'Application')) { (function() {
   create_helper('invite_status', function(invites) {
     return table({ 'class': 'fancy-table invite-status-table' },
       tr(
+        th("Name"),
         th("Email"),
         th("Date Sent"),
         th({'class': 'center' }, "Domain Credits"),
@@ -83,6 +84,7 @@ with (Hasher.View('Invite', 'Application')) { (function() {
 
       invites.map(function(invite) {
         return tr(
+          td(invite.name),
           td(invite.email),
           td(invite.date_sent),
           td({'class': 'center' }, invite.domain_credits),

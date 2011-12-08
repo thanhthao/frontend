@@ -86,6 +86,8 @@ Feature: Invite
     And I should see "Date Sent" within ".invite-status-table"
     And I should see "Domain Credits" within ".invite-status-table"
     And I should see "Accepted" within ".invite-status-table"
+    And I should see "Accepted Full Name 0" within ".invite-status-table"
+    And I should see "Pending Full Name 0" within ".invite-status-table"
     And I should see "accepted_invite0@example.com" within ".invite-status-table"
     And I should see "pending_invite0@example.com" within ".invite-status-table"
     And I should see "2011-11-12T14:29:26Z" within ".invite-status-table"
