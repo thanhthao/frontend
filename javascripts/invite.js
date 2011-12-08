@@ -6,9 +6,9 @@ with (Hasher.Controller('Invite','Application')) {
 	create_action('invites', function() {
     BadgerCache.getAccountInfo(function(response) {
   		render('invites', response.data.invites_available, response.data.domain_credits);
-    });
-    Badger.getInviteStatus(function(response) {
-      $("#invite-status-holder").html(helper("invite_status", response.data))
+      Badger.getInviteStatus(function(response) {
+        $("#invite-status-holder").html(helper("invite_status", response.data))
+      });
     });
 	});
 
@@ -20,9 +20,18 @@ with (Hasher.Controller('Invite','Application')) {
       BadgerCache.cached_account_info = null
 			call_action('Modal.show', 'Invite.send_invite_result', response.data, response.meta.status);
       helper('Application.update_credits');
-      redirect_to("#invites")
+      redirect_to("#invites");
 		});
 	});
+
+  create_action('revoke_invite', function(invite_id) {
+    Badger.revokeInvite(invite_id, function(response) {
+      BadgerCache.cached_account_info = null
+      redirect_to('#invites');
+      helper('Application.update_credits');
+      call_action('Modal.show', 'Invite.revoke_message', response.data, response.meta.status);
+    });
+  });
 
   layout('dashboard');
 }
@@ -79,16 +88,20 @@ with (Hasher.View('Invite', 'Application')) { (function() {
         th("Email"),
         th("Date Sent"),
         th({'class': 'center' }, "Domain Credits"),
-        th({'class': 'center' }, "Accepted")
+        th({'class': 'center' }, "Accepted"),
+        th({'class': 'center' }, "Revoke")
       ),
 
       invites.map(function(invite) {
         return tr(
           td(invite.name),
           td(invite.email),
-          td(invite.date_sent),
+          td({'class': 'center' }, new Date(Date.parse(invite.date_sent)).toDateString()),
           td({'class': 'center' }, invite.domain_credits),
-          td({'class': 'center' }, invite.accepted ? "Yes" : "No")
+          td({'class': 'center' }, invite.accepted ? "Yes" : "No"),
+          invite.accepted ? td()
+          : invite.revoked_at ? td({ 'class': 'center' }, 'Revoked on ' + new Date(Date.parse(invite.revoked_at)).toDateString())
+          : td({ 'class': 'center' }, a({ href: action('Invite.revoke_invite', invite.id), 'class': 'myButton revoke-button', value: "submit" }, "Revoke"))
         )
       })
     )
@@ -101,4 +114,12 @@ with (Hasher.View('Invite', 'Application')) { (function() {
       a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close")
 		);
 	});
+
+  create_helper('revoke_message', function(data, status) {
+    return div (
+      h1("Revoke Result Message"),
+      p( {'class': status == 'ok' ? '' : 'error-message'}, data.message),
+      a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close")
+    );
+  });
 })(); }
