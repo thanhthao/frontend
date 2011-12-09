@@ -127,8 +127,7 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 #invitee-information textarea{ height: 100px; width: 100%; }
 #invitee-information select{ width: 50px; }
 
-.invite-status-table { margin-top: 30px; border-top: 1px solid #333; }
-.invite-status-table th{ padding-top: 20px; }
+.invite-status-table { margin-top: 30px; }
 .invite-status-table .center { text-align: center; }
 .invite-status-table .revoke-button { font-size: 13px; padding: 4px 12px; }
 
