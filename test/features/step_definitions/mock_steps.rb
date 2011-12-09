@@ -155,6 +155,8 @@ Given /^I mock getInviteStatus with ([^"]*) accepted and ([^"]*) pending and ([^
       callback({data : [#{invites.join(',')}]});
     }, 250);
   };")
+
+  page.execute_script(" BadgerCache.cached_invite_status = null;");
 end
 
 When /^I mock revokeInvite with status "([^"]*)" and message "([^"]*)"$/ do |status, message|

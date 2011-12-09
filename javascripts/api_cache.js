@@ -68,6 +68,17 @@ var BadgerCache = {
         callback.call(null,BadgerCache.cached_contacts);
       });
     }
+  },
+
+  getInviteStatus: function(callback) {
+    callback = callback || function(){};
+    if (BadgerCache.cached_invite_status) {
+      callback(BadgerCache.cached_invite_status);
+    } else {
+      Badger.getInviteStatus(function(results) {
+        BadgerCache.cached_invite_status = results;
+        callback(BadgerCache.cached_invite_status);
+      });
+    }
   }
-  
 };

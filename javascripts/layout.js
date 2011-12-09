@@ -3,19 +3,22 @@ with (Hasher('Application')) {
     if ($('#sidebar')) {
       var request_uri = get_route();
       check_if_domain_should_be_added_to_sidebar(request_uri);
-      if (Badger.getAccessToken()) update_my_domains_count();
+      if (Badger.getAccessToken()) {
+        update_my_domains_count();
+        update_invites_available_count();
+      }
       update_sidebar_with_correct_actives(request_uri);
     }
 
     // Fix placeholder does not work in IE
     Placeholder.fix_ie();
   });
- 
+
   define('update_sidebar_with_correct_actives', function(request_uri) {
     if (!request_uri) request_uri = get_route();
     if (request_uri.indexOf("filter_domains/all") != -1) request_uri = '#';
     else if (request_uri.indexOf("filter_domains") != -1) request_uri = request_uri.replace('grid', 'list');
-             
+
     // select active link and expand parent
     $('#sidebar ul').removeClass('expanded');
     $('#sidebar a').removeClass('active');
@@ -45,6 +48,20 @@ with (Hasher('Application')) {
     });
   });
 
+  define('update_invites_available_count', function() {
+    BadgerCache.getAccountInfo(function(response) {
+      $('#nav-my-account ul li#invites_available #invite_available_count').html(' (' + response.data.invites_available + ')')
+      if (response.data.invites_available > 0) {
+        $('#nav-my-account ul li#invites_available').removeClass('hidden');
+      } else {
+        BadgerCache.getInviteStatus(function(response) {
+          if (response.data.length > 0)
+            $('#nav-my-account ul li#invites_available').removeClass('hidden');
+        });
+      }
+    });
+  });
+
   define('check_if_domain_should_be_added_to_sidebar', function(request_uri) {
     if (!request_uri) request_uri = get_route();
     var domain = (request_uri.match(/#domains\/([^\/]+)/) || [])[1];
@@ -57,7 +74,7 @@ with (Hasher('Application')) {
       else if (request_uri.indexOf("filter_domains") != -1) request_uri = request_uri.replace('grid', 'list');
     }
   });
-  
+
   create_layout('signup', function(yield) {
     return div({ id: 'wrapper' },
       div({ id: 'user-nav' }, a({ href: '#login' }, 'Login')),
@@ -136,6 +153,7 @@ with (Hasher('Application')) {
     BadgerCache.getAccountInfo(function(response) {
       //$(user_nav).prepend(span(a({ href: '#account/settings'}, response.data.name)));
       $(user_nav).prepend(span(response.data.name));
+      $(user_nav).prepend(span({ id: 'user_nav_invites_available', 'class': response.data.invites_available <= 0 ? 'hidden' : '' }, a({ href: '#invites' }, response.data.invites_available + ' Invites')));
       $(user_nav).prepend(span(a({ href: '#account/billing', id: 'user_nav_credits' }, 'Credits')));
       helper('update_credits');
     });
@@ -147,6 +165,17 @@ with (Hasher('Application')) {
     if (refresh) BadgerCache.flush('account_info');
     BadgerCache.getAccountInfo(function(response) {
       $('#user_nav_credits').html(response.data.domain_credits == 1 ? '1 Credit' : response.data.domain_credits + ' Credits');
+    });
+  });
+
+  create_helper('update_invites_available', function(refresh) {
+    if (refresh) BadgerCache.flush('account_info');
+    BadgerCache.getAccountInfo(function(response) {
+      $('#user_nav_invites_available a').html(response.data.invites_available + ' Invites');
+      if (response.data.invites_available > 0)
+        $('#user_nav_invites_available').removeClass('hidden');
+      else
+        $('#user_nav_invites_available').addClass('hidden');
     });
   });
 
@@ -167,9 +196,9 @@ with (Hasher('Application')) {
       }})
     );
   });
-  
 
-  
+
+
 
   ////////////////
   // dom helpers
@@ -209,7 +238,7 @@ with (Hasher('Application')) {
 
 
   //////////////
-  // left nav 
+  // left nav
   //////////////
 
   define('left_nav', function() {
@@ -242,14 +271,8 @@ with (Hasher('Application')) {
       li({ 'class': "email"}, a({ href: "#account/profiles" }, 'WHOIS PROFILES')),
       li({ 'class': "website"}, a({ href: "#account/billing" }, 'CREDITS & BILLING')),
       li({ 'class': "website"}, a({ href: "#account/settings" }, 'SETTINGS')),
-      li({ 'class': "website hidden", id : 'invites_available'}, a({ href: "#invites" }, 'INVITES'))
+      li({ 'class': "website hidden", id : 'invites_available'}, a({ href: "#invites" }, span('SEND INVITES'), span({ id: 'invite_available_count' })))
     );
-
-    BadgerCache.getAccountInfo(function(response) {
-      if (response.data.invites_available > 0) {
-        $('#nav-my-account ul li#invites_available').removeClass('hidden');
-      }
-    });
 
     return nav;
   });
@@ -262,8 +285,8 @@ with (Hasher('Application')) {
       for (var key in Hasher.domain_apps) {
         if (DomainApps.app_is_installed_on_domain(Hasher.domain_apps[key], domain_obj) && Hasher.domain_apps[key].menu_item) {
           app_list.appendChild(
-            li({ 'class': "website" }, 
-              a({ 
+            li({ 'class': "website" },
+              a({
                 href: Hasher.domain_apps[key].menu_item.href.replace(/:domain/, domain)
               }, Hasher.domain_apps[key].menu_item.text)
             )
@@ -279,7 +302,7 @@ with (Hasher('Application')) {
       app_list
     );
   });
-  
+
 }
 
 
@@ -289,8 +312,8 @@ with (Hasher('Application')) {
 //     if (Hasher.domain_apps[key].is_installed(domain) && Hasher.domain_apps[key].menu_item) {
 //       Hasher.domain_apps[key].menu_item
 //       items.push(
-//         li({ 'class': "website" }, 
-//           a({ 
+//         li({ 'class': "website" },
+//           a({
 //             href: Hasher.domain_apps[key].menu_item.href.replace(/:domain/, domain)
 //           }, Hasher.domain_apps[key].menu_item.text)
 //         )
@@ -300,7 +323,7 @@ with (Hasher('Application')) {
 //   return items;
 
 //     li({ 'class': "email" }, a({ href: "#domains/" + domain + "/whois" }, 'WHOIS & PRIVACY'))
-// 
+//
 //     ul(
 //       li({ 'class': "email" }, a({ href: "#domains/" + domain + "/dns" }, 'DNS')),
 //       li({ 'class': "email" }, a({ href: "#domains/" + domain + "/whois" }, 'WHOIS & PRIVACY'))

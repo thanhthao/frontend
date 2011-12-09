@@ -5,9 +5,9 @@ with (Hasher.Controller('Invite','Application')) {
 
 	create_action('invites', function() {
     BadgerCache.getAccountInfo(function(response) {
-  		render('invites', response.data.invites_available, response.data.domain_credits);
-      Badger.getInviteStatus(function(response) {
-        $("#invite-status-holder").html(helper("invite_status", response.data))
+      BadgerCache.getInviteStatus(function(invite_status) {
+        render('invites', response.data.invites_available, response.data.domain_credits, invite_status.data.length);
+        $("#invite-status-holder").html(helper("invite_status", invite_status.data))
       });
     });
 	});
@@ -20,6 +20,7 @@ with (Hasher.Controller('Invite','Application')) {
       BadgerCache.cached_account_info = null
 			call_action('Modal.show', 'Invite.send_invite_result', response.data, response.meta.status);
       helper('Application.update_credits');
+      helper('Application.update_invites_available');
       redirect_to("#invites");
 		});
 	});
@@ -29,6 +30,7 @@ with (Hasher.Controller('Invite','Application')) {
       BadgerCache.cached_account_info = null
       redirect_to('#invites');
       helper('Application.update_credits');
+      helper('Application.update_invites_available');
       call_action('Modal.show', 'Invite.revoke_message', response.data, response.meta.status);
     });
   });
@@ -37,44 +39,18 @@ with (Hasher.Controller('Invite','Application')) {
 }
 
 with (Hasher.View('Invite', 'Application')) { (function() {
-  create_view('invites', function(invites_available, domain_credits) {
-    options = [];
-    var credits_to_gift = domain_credits > 3 ? 3 : domain_credits
-    for(i = 0; i <= credits_to_gift; i++) {
-      options.push(option(i.toString()))
-    }
-		return form({ action: action('send_invite') },
-			h1("INVITES"),
-      (invites_available <= 0 ? span('Sorry, you don\'t have any invites available right now... check back soon!')
+  create_view('invites', function(invites_available, domain_credits, sent_invites_count) {
+    if (invites_available == null)
+      return h1('SEND INVITES');
+		return div(
+      h1('SEND INVITES (' + invites_available + ')'),
+      (invites_available <= 0 ?
+        sent_invites_count <= 0 ? span('Sorry, you don\'t have any invites available right now... check back soon!') : ''
       :[
-        p('You have ' + invites_available + ' invites available'),
-        div({ id: 'send-invite-messages' }),
-        table({ id: 'invitee-information' },
-          tr(
-            td(label({ 'for': 'first_name' }, 'First Name')),
-            td(input({ name: 'first_name', 'class': 'fancy' }))
-          ),
-          tr(
-            td(label({ 'for': 'last_name' }, 'Last Name')),
-            td(input({ name: 'last_name', 'class': 'fancy' }))
-          ),
-          tr(
-            td(label({ 'for': 'invitation_email' }, 'Email')),
-            td(input({ name: 'invitation_email', 'class': 'fancy' }))
-          ),
-          domain_credits > 0 ? tr(
-            td(label({ 'for': 'credits_to_gift' }, "Credits to Gift: ")),
-            td(select({ name: 'credits_to_gift' }, options))
-          ) : '',
-          tr(
-            td(label({ 'for': 'custom_message' }, 'Custom Message')),
-            td(textarea({ name: 'custom_message' }))
-          ),
-          tr(
-            td(),
-            td(input({ 'class': 'myButton', type: 'submit', value: 'Send' }))
-          )
-        )
+        div({ style: 'float: right; margin-top: -44px' },
+          a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Invite.send_invite', domain_credits) }, 'Send Invite')
+        ),
+        p('You have ' + invites_available + ' invites available. Click the "Send Invites" button above to send an invite.')
       ]
       ),
       div({ id: "invite-status-holder" })
@@ -105,6 +81,45 @@ with (Hasher.View('Invite', 'Application')) { (function() {
         )
       })
     )
+	});
+
+  create_helper('send_invite', function(domain_credits) {
+    options = [];
+    var credits_to_gift = domain_credits > 3 ? 3 : domain_credits
+    for(i = 0; i <= credits_to_gift; i++) {
+      options.push(option(i.toString()))
+    }
+
+		return form({ action: action('send_invite') },
+      h1('SEND INVITE'),
+			div({ id: 'send-invite-messages' }),
+        table({ id: 'invitee-information' },
+          tr(
+            td(label({ 'for': 'first_name' }, 'First Name')),
+            td(input({ name: 'first_name', 'class': 'fancy' }))
+          ),
+          tr(
+            td(label({ 'for': 'last_name' }, 'Last Name')),
+            td(input({ name: 'last_name', 'class': 'fancy' }))
+          ),
+          tr(
+            td(label({ 'for': 'invitation_email' }, 'Email')),
+            td(input({ name: 'invitation_email', 'class': 'fancy' }))
+          ),
+          domain_credits > 0 ? tr(
+            td(label({ 'for': 'credits_to_gift' }, "Credits to Gift: ")),
+            td(select({ name: 'credits_to_gift' }, options))
+          ) : '',
+          tr(
+            td(label({ 'for': 'custom_message' }, 'Custom Message')),
+            td(textarea({ name: 'custom_message' }))
+          ),
+          tr(
+            td(),
+            td(input({ 'class': 'myButton', type: 'submit', value: 'Send' }))
+          )
+        )
+		);
 	});
 
   create_helper('send_invite_result', function(data, status) {
