@@ -6,7 +6,7 @@ with (Hasher('EmailForwards', 'DomainApps')) {
     menu_item: { text: 'EMAIL FORWARDING', href: '#domains/:domain/email_forwards' },
     requires: {
       dns: [
-        { type: 'mx', priority: 1, content: "smtp.badger.com" },
+        { type: 'mx', priority: 10, content: "smtp.badger.com" },
         { type: 'txt', content: 'v=spf1 mx mx:rhinonamesmail.com ~all' }
       ]
     }
