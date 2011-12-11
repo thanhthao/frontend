@@ -6,8 +6,8 @@ with (Hasher('WebForwards', 'DomainApps')) {
     menu_item: { text: 'WEB FORWARDING', href: '#domains/:domain/web_forwards' },
     requires: {
       dns: [
-        { type: 'cname', content: "forward.badger.com" },
-        { type: 'cname', subdomain: '*', content: "forward.badger.com" }
+        { type: 'a', content: "50.57.26.208" },
+        { type: 'a', subdomain: '*', content: "50.57.26.208" }
       ]
     }
   });
