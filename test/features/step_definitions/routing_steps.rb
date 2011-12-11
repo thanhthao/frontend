@@ -1,5 +1,6 @@
 Given /^I am on the home page$/ do
   visit('/index.html')
+  #page.execute_script("Badger.api_host = 'http://www.badger.dev/'; alert(Badger.api_host)")
 end
 
 Given /^I am on the register page$/ do

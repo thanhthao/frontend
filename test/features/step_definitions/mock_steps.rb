@@ -39,6 +39,9 @@ Given /^I mock login$/ do
     if (callback) callback({meta : {status : 'ok'}});
     for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
   };")
+  
+  # NOTE: THIS KILLS ALL REAL API CALLS
+  page.execute_script("Badger.api = function(url){};")
 end
 
 Given /^I mock getDomains with ([^"]*) normal domains, ([^"]*) in transfer domain and ([^"]*) expiring soon domains$/ do |normal, transfer, expire|

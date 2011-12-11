@@ -30,11 +30,11 @@ with (Hasher.Controller('Register','Application')) {
 
       if (response.meta.status == 'created') {
         helper('Application.update_credits', true);
+        hide_modal();
+        set_route('#domains/' + domain);
+
         BadgerCache.flush('domains');
-        BadgerCache.getDomains(function() {
-          call_action('Modal.show', 'Register.successful_register_confirmation', domain);
-          update_my_domains_count();
-        })
+        BadgerCache.getDomains(function() { update_my_domains_count(); });
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));
       }
@@ -52,93 +52,57 @@ with (Hasher.View('Register', 'Application')) {
 
   create_helper('buy_domain_modal', function(domain) {
     return [
-      h1(domain),
+      h1('Register ', domain),
       div({ id: 'errors' }),
+      p({ style: "margin-bottom: 0" }, "You'll be able to configure ", strong(domain), " on the next screen."),
       form({ action: action('buy_domain', domain) },
         input({ type: 'hidden', name: 'name', value: domain }),
+        input({ type: 'hidden', name: 'auto_renew', value: 'true'}),
+        input({ type: 'hidden', name: 'privacy', value: 'true'}),
+        input({ type: 'hidden', name: 'name_servers', value: 'ns1.badger.com,ns2.badger.com'}),
 
-        table({ style: 'width:100%' }, tbody(
+        table({ style: 'width: 100%' }, tbody(
           tr(
-            td({ style: "width: 50%; vertical-align: top" },
-
-            h3({ style: 'margin-bottom: 6px'}, 'Contact Information'),
-              table(tbody(
-                tr(
-                  td('Registrant:'),
-                  td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
-                    WhoisApp.profile_options_for_select()
-                  ))
-                ),
-                tr(
-                  td('Administrator:'),
-                  td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
-                    option({ value: '' }, 'Same as Registrant'),
-                    WhoisApp.profile_options_for_select()
-                  ))
-                ),
-                tr(
-                  td('Billing:'),
-                  td(select({ name: 'billing_contact_id', style: 'width: 150px' },
-                    option({ value: '' }, 'Same as Registrant'),
-                    WhoisApp.profile_options_for_select()
-                  ))
-                ),
-                tr(
-                  td('Technical:'),
-                  td(select({ name: 'technical_contact_id', style: 'width: 150px' },
-                    option({ value: '' }, 'Same as Registrant'),
-                    WhoisApp.profile_options_for_select()
-                  ))
-                )
-              )),
+            td({ style: "width: 50%" },
+              h3({ style: 'margin-bottom: 0' }, 'Registrant:'),
               div(
-                input({ name: 'privacy', type: 'checkbox', checked: 'checked' }),
-                'Keep contact information private'
+                select({ name: 'registrant_contact_id', style: 'width: 150px' },
+                  WhoisApp.profile_options_for_select()
+                )
               )
             ),
-            td({ style: "width: 50%; vertical-align: top" },
-              h3({ style: 'margin-bottom: 6px'}, 'Advanced'),
-              table(tbody(
-                tr(
-                  td('Length:'),
-                  td(
-                    select({ name: 'years', events: { change: function(e) { var years = $(e.target).val(); $('#register-button').html('Register ' + domain + ' for ' + years + (years == 1 ? ' credit' : ' credits')) } } },
-                      option({ value: 1 }, '1 Year'),
-                      option({ value: 2 }, '2 Years'),
-                      option({ value: 3 }, '3 Years'),
-                      option({ value: 4 }, '4 Years'),
-                      option({ value: 5 }, '5 Years'),
-                      option({ value: 10 }, '10 Years')
-                    ),
-                    input({ name: 'auto_renew', type: 'checkbox', checked: 'checked' }), 'Auto-renew'
-                  )
+            td({ style: "width: 50%" },
+              h3({ style: 'margin-bottom: 0' }, 'Length:'),
+              div(
+                select({ name: 'years', onchange: function(e) { var years = $(e.target).val(); $('#register-button').val('Register ' + domain + ' for ' + years + (years == 1 ? ' credit' : ' credits')) } },
+                  option({ value: 1 }, '1 Year'),
+                  option({ value: 2 }, '2 Years'),
+                  option({ value: 3 }, '3 Years'),
+                  option({ value: 4 }, '4 Years'),
+                  option({ value: 5 }, '5 Years'),
+                  option({ value: 10 }, '10 Years')
                 ),
-                tr(
-                  td('DNS:'),
-                  td(
-                    select({ name: 'name_servers' }, BaseDnsApp.dns_provider_options())
-                  )
-                )
-              ))
+                ' @ 1 credit per year'
+              )
             )
           )
         )),
-
-        div({ style: "text-align: right; margin-top: 10px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + domain + ' for 1 credit' }))
+        
+        div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + domain + ' for 1 credit' }))
       )
     ];
   });
 
-  create_helper('successful_register_confirmation', function(domain) {
-    return [
-      h1("Congratulations!"),
-      p("You've just registered ", strong(domain), ". Here are some things you can do:"),
-      ul(
-        li(a({ href: action('Register.open_link', "#domains/" + domain) }, "View domain details")),
-        li(a({ href: action('Register.open_link', "#domains/" + domain + "/dns") }, "Modify DNS Settings")),
-        li(a({ href: action('Register.open_link', "#domains/" + domain + "/whois") }, "Modify WHOIS Settings")),
-        li(a({ href: action('Register.open_link', "#") }, "View all Domains"))
-      )
-    ];
-  });
+  // create_helper('successful_register_confirmation', function(domain) {
+  //   return [
+  //     h1("Congratulations!"),
+  //     p("You've just registered ", strong(domain), ". Here are some things you can do:"),
+  //     ul(
+  //       li(a({ href: action('Register.open_link', "#domains/" + domain) }, "View domain details")),
+  //       li(a({ href: action('Register.open_link', "#domains/" + domain + "/dns") }, "Modify DNS Settings")),
+  //       li(a({ href: action('Register.open_link', "#domains/" + domain + "/whois") }, "Modify WHOIS Settings")),
+  //       li(a({ href: action('Register.open_link', "#") }, "View all Domains"))
+  //     )
+  //   ];
+  // });
 }

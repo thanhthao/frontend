@@ -14,7 +14,7 @@ Feature: Transfer
     And I fill in "auth_code" with "123456"
     And I press "Next"
     And I mock registerDomain api
-    And I press "Transfer Domain"
+    And I press "Transfer abc.com for 1 Credit"
     Then I should see "Transfer Request Submitted"
     And I should see "We have submitted your transfer request and will email you when it is complete."
 
@@ -24,7 +24,7 @@ Feature: Transfer
     And I fill in "auth_code" with "123456"
     And I press "Next"
     And I mock registerDomain api
-    And I press "Transfer Domain"
+    And I press "Transfer abc.com for 1 Credit"
     Then I should see "Transfer Request Submitted"
     And I should see "If you'd like to manually approve this domain transfer, visit GoDaddy's Pending Transfers"
     And I should see a link with href "https://dcc.godaddy.com/default.aspx?activeview=transfer&filtertype=3&sa=#" with new window

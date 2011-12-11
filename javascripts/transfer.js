@@ -123,7 +123,7 @@ with (Hasher.View('Transfer','Application')) {
 			h1('Auth Code'),
 
 			div({ id: "get-auth-code-errors" }, error),
-			div("Please obtain the auth code from ", strong(info.registrar.name), " and enter it below."),
+			div("Please obtain the auth code from ", strong(info.registrar ? info.registrar.name : 'Unknown'), " and enter it below."),
 			div({ style: 'text-align: center; margin: 30px 0'}, 
 				input({ name: 'auth_code', 'class': 'fancy', placeholder: 'Auth Code' }),
 				input({ name: 'name', type: 'hidden', value: name }),
@@ -136,71 +136,34 @@ with (Hasher.View('Transfer','Application')) {
 	});
 	
 	create_helper('select_whois_and_dns_settings', function(name, info, registrar_name) {
+	  console.log(info)
 		return form({ action: action('transfer_domain', name, info, registrar_name) },
-			h1("WHOIS/DNS SETTINGS FOR " + name),
+			h1("TRANSFER IN " + name),
 			
 			input({ type: 'hidden', name: 'name', value: name }),
 			input({ type: 'hidden', name: 'auth_code', value: info.auth_code }),
-			
+      input({ type: 'hidden', name: 'auto_renew', value: 'true'}),
+      input({ type: 'hidden', name: 'privacy', value: 'true'}),
+
 			table({ style: 'width:100%' }, tbody(
         tr(
           td({ style: "width: 50%; vertical-align: top" },
 
-          h3({ style: 'margin-bottom: 6px'}, 'Contact Information'),
-            table(tbody(
-              tr(
-                td('Registrant:'),
-                td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
-                  WhoisApp.profile_options_for_select()
-                ))
-              ),
-              tr(
-                td('Administrator:'), 
-                td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
-                  option({ value: '' }, 'Same as Registrant'),
-                  WhoisApp.profile_options_for_select()
-                ))
-              ),
-              tr(
-                td('Billing:'), 
-                td(select({ name: 'billing_contact_id', style: 'width: 150px' },
-                  option({ value: '' }, 'Same as Registrant'),
-                  WhoisApp.profile_options_for_select()
-                ))
-              ),
-              tr(
-                td('Technical:'), 
-                td(select({ name: 'technical_contact_id', style: 'width: 150px' },
-                  option({ value: '' }, 'Same as Registrant'),
-                  WhoisApp.profile_options_for_select()
-                ))
-              )
-            ))
+            h3({ style: 'margin-bottom: 3px'}, 'Registrant:'),
+            select({ name: 'registrant_contact_id', style: 'width: 150px' },
+              WhoisApp.profile_options_for_select()
+            )
           ),
           td({ style: "width: 50%; vertical-align: top" },
-            h3({ style: 'margin-bottom: 6px'}, 'Advanced'),
-            table(tbody(
-              tr(
-                td('DNS:'),
-                td(
-                  select({ name: 'name_servers' }, BaseDnsApp.dns_provider_options())
-                )
-              )
-            )),
-						h3({ style: 'margin-botton: 6px' }, "Options"),
-						table(tbody(
-							tr(
-								td( input({ name: 'auto_renew', type: 'checkbox', checked: 'checked' }), 'Auto-renew' )
-							),
-							tr(
-								td( input({ name: 'privacy', type: 'checkbox', checked: 'checked' }), 'Keep contact information private' )
-							)
-            ))
+						h3({ style: 'margin-bottom: 3px' }, "Length"),
+						'1 additional year @ 1 credit per year'
           )
         )
       )),
 
-			div({ style: "text-align: right; margin-top: 10px" }, input({ 'class': 'myButton', type: 'submit', value: 'Transfer Domain' }))
+      p({ style: "margin-bottom: 0" }, checkbox({ name: 'name_servers', value: 'ns1.badger.com,ns2.badger.com', checked: 'checked' }), 'Migrate to Badger DNS (experimental)'),
+			
+			div({ style: "text-align: center; margin-top: 10px" }, input({ 'class': 'myButton', type: 'submit', value: 'Transfer ' + name + ' for 1 Credit' }))
 		);
 	})
 	

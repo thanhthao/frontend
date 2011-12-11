@@ -46,12 +46,10 @@ with (Hasher.View('Invite', 'Application')) { (function() {
       h1('SEND INVITES (' + invites_available + ')'),
       (invites_available <= 0 ?
         sent_invites_count <= 0 ? span('Sorry, you don\'t have any invites available right now... check back soon!') : ''
-      :[
+      :
         div({ style: 'float: right; margin-top: -44px' },
           a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Invite.send_invite', domain_credits) }, 'Send Invite')
-        ),
-        p('You have ' + invites_available + ' invites available. Click the "Send Invites" button above to send an invite.')
-      ]
+        )
       ),
       div({ id: "invite-status-holder" })
 		);
@@ -60,24 +58,22 @@ with (Hasher.View('Invite', 'Application')) { (function() {
   create_helper('invite_status', function(invites) {
     return table({ 'class': 'fancy-table invite-status-table' },
       tr(
+        th("Date"),
         th("Name"),
         th("Email"),
-        th("Date Sent"),
-        th({'class': 'center' }, "Domain Credits"),
-        th({'class': 'center' }, "Accepted"),
-        th({'class': 'center' }, "Revoke")
+        th({'class': 'center' }, "Credits"),
+        th({'class': 'center' }, "Accepted")
       ),
 
       invites.map(function(invite) {
         return tr(
+          td(new Date(Date.parse(invite.date_sent)).toDateString()),
           td(invite.name),
           td(invite.email),
-          td({'class': 'center' }, new Date(Date.parse(invite.date_sent)).toDateString()),
           td({'class': 'center' }, invite.domain_credits),
-          td({'class': 'center' }, invite.accepted ? "Yes" : "No"),
-          invite.accepted ? td()
-          : invite.revoked_at ? td({ 'class': 'center' }, 'Revoked on ' + new Date(Date.parse(invite.revoked_at)).toDateString())
-          : td({ 'class': 'center' }, a({ href: action('Invite.revoke_invite', invite.id), 'class': 'myButton revoke-button', value: "submit" }, "Revoke"))
+          invite.accepted ? td({ 'class': 'center' }, 'Yes')
+          : invite.revoked_at ? td({ 'class': 'center' }, 'Revoked')
+          : td({ 'class': 'center' }, 'No - ', a({ href: action('Invite.revoke_invite', invite.id) }, "Revoke?"))
         )
       })
     )
@@ -95,30 +91,28 @@ with (Hasher.View('Invite', 'Application')) { (function() {
 			div({ id: 'send-invite-messages' }),
         table({ id: 'invitee-information' },
           tr(
-            td(label({ 'for': 'first_name' }, 'First Name')),
+            td(label({ 'for': 'first_name' }, 'First Name:')),
             td(input({ name: 'first_name', 'class': 'fancy' }))
           ),
           tr(
-            td(label({ 'for': 'last_name' }, 'Last Name')),
+            td(label({ 'for': 'last_name' }, 'Last Name:')),
             td(input({ name: 'last_name', 'class': 'fancy' }))
           ),
           tr(
-            td(label({ 'for': 'invitation_email' }, 'Email')),
+            td(label({ 'for': 'invitation_email' }, 'Email Address:')),
             td(input({ name: 'invitation_email', 'class': 'fancy' }))
+          ),
+          tr(
+            td({ style: 'vertical-align: top' }, label({ 'for': 'custom_message' }, 'Custom Message:')),
+            td(textarea({ name: 'custom_message' }))
           ),
           domain_credits > 0 ? tr(
             td(label({ 'for': 'credits_to_gift' }, "Credits to Gift: ")),
-            td(select({ name: 'credits_to_gift' }, options))
-          ) : '',
-          tr(
-            td(label({ 'for': 'custom_message' }, 'Custom Message')),
-            td(textarea({ name: 'custom_message' }))
-          ),
-          tr(
-            td(),
-            td(input({ 'class': 'myButton', type: 'submit', value: 'Send' }))
-          )
-        )
+            td(select({ name: 'credits_to_gift' }, options), ' of my Credits')
+          ) : ''
+        ),
+        
+        div({ style: 'text-align: center; margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit', value: 'Send Invitation' }))
 		);
 	});
 

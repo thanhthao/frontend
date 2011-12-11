@@ -8,11 +8,10 @@ Feature: Invite
     And I mock getInviteStatus with 1 accepted and 1 pending and 1 revoked
     And I am on the invites page
     Then I should see item with xpath "//span[@id='user_nav_invites_available']"
-    And I should see "5 invites"
     And I should see "SEND INVITES (5)"
     And I should see "Email" within ".invite-status-table"
-    And I should see "Date Sent" within ".invite-status-table"
-    And I should see "Domain Credits" within ".invite-status-table"
+    And I should see "Date" within ".invite-status-table"
+    And I should see "Credits" within ".invite-status-table"
     And I should see "Accepted" within ".invite-status-table"
     And I should see "Accepted Full Name 0" within ".invite-status-table"
     And I should see "Pending Full Name 0" within ".invite-status-table"
@@ -22,8 +21,8 @@ Feature: Invite
     And I should see "Sat Nov 12 2011" within ".invite-status-table"
     And I should see "Wed Oct 12 2011" within ".invite-status-table"
     And I should see "Yes" within ".invite-status-table"
-    And I should see "No" within ".invite-status-table"
-    And I should see "Revoked on Mon Dec 12 2011" within ".invite-status-table"
+    And I should see "No - Revoke?" within ".invite-status-table"
+    And I should see "Revoked" within ".invite-status-table"
     And I should see a link with href "#invites"
 
   Scenario: As I have no invites available yet I have history of sent invites I should see my history of sent invites
@@ -32,8 +31,8 @@ Feature: Invite
     And I am on the invites page
     Then I should see item with xpath "//span[@id='user_nav_invites_available' and @class='hidden']"
     And I should see "Email" within ".invite-status-table"
-    And I should see "Date Sent" within ".invite-status-table"
-    And I should see "Domain Credits" within ".invite-status-table"
+    And I should see "Date" within ".invite-status-table"
+    And I should see "Credits" within ".invite-status-table"
     And I should see "Accepted" within ".invite-status-table"
     And I should see "Accepted Full Name 0" within ".invite-status-table"
     And I should see "Pending Full Name 0" within ".invite-status-table"
@@ -43,8 +42,8 @@ Feature: Invite
     And I should see "Sat Nov 12 2011" within ".invite-status-table"
     And I should see "Wed Oct 12 2011" within ".invite-status-table"
     And I should see "Yes" within ".invite-status-table"
-    And I should see "No" within ".invite-status-table"
-    And I should see "Revoked on Mon Dec 12 2011" within ".invite-status-table"
+    And I should see "No - Revoke?" within ".invite-status-table"
+    And I should see "Revoked" within ".invite-status-table"
     And I should see a link with href "#invites"
 
   Scenario: As I have no invites available and no history of sent invites, I should not be able to send out invitation
@@ -58,7 +57,7 @@ Feature: Invite
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
     And I mock getInviteStatus with 1 accepted and 1 pending and 0 pending revoked
     And I am on the invites page
-    Then I should see "You have 5 invites available."
+    Then I should see "SEND INVITES (5)"
     Then I follow "Send Invite"
     And I fill in "first_name" with "East"
     And I fill in "last_name" with "Agile"
@@ -78,7 +77,7 @@ Feature: Invite
     Given I logged in with mock data for domains and user info with 0 domain credits and 5 invites available
     And I mock getInviteStatus with 1 accepted and 1 pending and 0 pending revoked
     And I am on the invites page
-    Then I should see "You have 5 invites available"
+    Then I should see "SEND INVITES (5)"
     Then I follow "Send Invite"
     And I fill in "first_name" with "East"
     And I fill in "last_name" with "Agile"
@@ -90,7 +89,7 @@ Feature: Invite
     Given I logged in with mock data for domains and user info with 2 domain credits and 5 invites available
     And I mock getInviteStatus with 1 accepted and 1 pending and 0 revoked
     And I am on the invites page
-    Then I should see "You have 5 invites available"
+    Then I should see "SEND INVITES (5)"
     Then I follow "Send Invite"
     And I fill in "first_name" with "East"
     And I fill in "last_name" with "Agile"
@@ -106,7 +105,7 @@ Feature: Invite
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
     And I mock getInviteStatus with 1 accepted and 1 pending and 0 revoked
     And I am on the invites page
-    Then I should see "You have 5 invites available"
+    Then I should see "SEND INVITES (5)"
     Then I follow "Send Invite"
     And I fill in "first_name" with "East"
     And I fill in "last_name" with "Agile"
@@ -120,7 +119,7 @@ Feature: Invite
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
     And I mock getInviteStatus with 1 accepted and 1 pending and 0 revoked
     And I am on the invites page
-    Then I should see "You have 5 invites available"
+    Then I should see "SEND INVITES (5)"
     Then I follow "Send Invite"
     And I press "Send"
     Then I should see "First Name, Last Name and Email can not be blank"

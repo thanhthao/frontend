@@ -124,5 +124,5 @@ Feature: Domains
       And I mock registerDomain api
       And I press "register-button"
       Then I should see "MY DOMAINS (3)" within "#sidebar"
-      And I should see "MY DOMAINS (3)" within "#content h1 span"
+      And I should see "Other Applications To Install"
     

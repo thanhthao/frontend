@@ -163,7 +163,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
         else {
 					if (!tld) return span();
 					else if (domain[1]) return td({ 'class': 'tld' }, a({ href: action('Register.show', domain[0]) }, img({ src: "images/icon-plus.png" }), ' ', tld));
-					else return td({ 'class': 'tld' }, span(img({ src: "images/icon-no.gif" }), ' ', span({ style: 'text-decoration: line-through' }, tld)));
+					else return td({ 'class': 'tld' }, span(img({ src: "images/icon-no-light.gif" }), ' ', span({ style: 'text-decoration: line-through' }, tld)));
         }
       })
     );

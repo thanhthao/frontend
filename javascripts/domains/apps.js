@@ -70,7 +70,7 @@ with (Hasher('DomainApps','Application')) {
     return [
       installed_apps,
       div({ style: 'clear: both '}),
-      h2('Popular Applications'),
+      h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Other Applications To Install'),
       available_apps,
       div({ style: 'clear: both '})
     ];
@@ -106,10 +106,10 @@ with (Hasher('DomainApps','Application')) {
       ),
 
       ((app.requires && app.requires.dns && domain_obj.name_servers.join(',') != 'ns1.badger.com,ns2.badger.com') ? 
-        div({ 'class': 'info-message', style: 'margin-top: 20px' }, 
+        div({ 'class': 'error-message', style: 'margin-top: 20px' }, 
           "Please install Badger DNS and try again.", 
           span({ style: 'padding-right: 20px'}, ' '), 
-          div({ style: 'float: right' }, a({ 'class': 'myButton myButton-small', href: curry(BaseDnsApp.change_name_servers_modal, domain_obj) }, 'DNS Settings'))
+          div({ style: 'float: right' }, a({ 'class': 'myButton myButton-small', href: curry(BaseDnsApp.change_name_servers_modal, domain_obj) }, 'Install Badger DNS'))
         )
       :
         div({ style: 'padding-top: 20px; text-align: right' }, 
