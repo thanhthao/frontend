@@ -79,6 +79,7 @@ with (Hasher('WebForwards', 'DomainApps')) {
   });
   
   define('delete_web_forward', function(domain, web_forward) {
+    console.log(arguments)
     $('#email-forwards-errors').empty();
     
     if( confirm('Delete web forward ' + domain + '/' + web_forward.path + '?') ) {
@@ -88,14 +89,14 @@ with (Hasher('WebForwards', 'DomainApps')) {
             helper('Application.error_message', response)
           )
         } else {
-          $('#web-forwards-table tr#' + web_forward.path).remove(); //remove the row
+          $('#web_forward_tr_' + web_forward.id).remove(); //remove the row
         }
       });
     }
   });
     
   define('show_web_forward_table_row', function(domain, web_forward) {
-    return tr({ id: web_forward.path },
+    return tr({ id: 'web_forward_tr_' + web_forward.id },
       td(domain, "/", web_forward.path),
       td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
       td(web_forward.destination),
