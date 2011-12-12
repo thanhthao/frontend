@@ -383,6 +383,10 @@ var Badger = {
 
   getInviteStatus: function(callback) {
     Badger.api("/account/all_sent_invites", callback);
+  },
+
+  remoteDNS: function(domain, callback) {
+    Badger.api("/domains/remote_dns", "POST", { domain: domain }, callback);
   }
 
 
