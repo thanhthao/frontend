@@ -12,7 +12,7 @@ with (Hasher.Controller('Domains','Application')) {
       switch (filter){
         case 'transfers':
           for (i = 0; i < domains.length; i ++) {
-            if (domains[i].status == 'pending_transfer_in')
+            if ((domains[i].status == 'pending_transfer_in') || (domains[i].status == 'transfer_rejected'))
               results.push(domains[i]);
           }
           break;

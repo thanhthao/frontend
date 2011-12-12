@@ -153,15 +153,11 @@ var Badger = {
   },
 
   addRecord: function(name, data, callback) {
-    Badger.api("/domains/" + name + "/records", 'POST', data, function(response) {
-      callback(response);
-    });   
+    Badger.api("/domains/" + name + "/records", 'POST', data, callback);   
   },
 
   deleteRecord: function(name, id, callback) {
-    Badger.api("/domains/" + name + "/records/" + id, "DELETE", function(resp) {
-      callback(resp);
-    });
+    Badger.api("/domains/" + name + "/records/" + id, "DELETE", callback);
   },
   
 
@@ -170,9 +166,7 @@ var Badger = {
   },
 
   updateDomain: function(domain, options, callback) {
-    Badger.api("/domains/" + domain, 'PUT', options, function(resp) {
-      callback(resp);
-    }); 
+    Badger.api("/domains/" + domain, 'PUT', options, callback); 
   },
 
   getContacts: function(callback) {
