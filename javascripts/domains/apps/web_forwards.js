@@ -79,7 +79,6 @@ with (Hasher('WebForwards', 'DomainApps')) {
   });
   
   define('delete_web_forward', function(domain, web_forward) {
-    console.log(arguments)
     $('#email-forwards-errors').empty();
     
     if( confirm('Delete web forward ' + domain + '/' + web_forward.path + '?') ) {
