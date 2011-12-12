@@ -7,39 +7,28 @@
   ],
 
   "javascripts": [
-		"/lib/hasher-0.1.0/hasher.js",
-		"/lib/hasher-0.1.0/util.js",
-		"/lib/hasher-0.1.0/initializers.js",
-		"/lib/hasher-0.1.0/elements.js",
-		"/lib/hasher-0.1.0/routes.js",
-		"/lib/hasher-0.1.0/render.js",
-		"/lib/hasher-0.1.0/filters.js",
-		"/lib/hasher-0.1.0/legacy.js",
+		"/javascripts/lib/hasher-0.1.0/hasher.js",
+		"/javascripts/lib/hasher-0.1.0/util.js",
+		"/javascripts/lib/hasher-0.1.0/initializers.js",
+		"/javascripts/lib/hasher-0.1.0/elements.js",
+		"/javascripts/lib/hasher-0.1.0/routes.js",
+		"/javascripts/lib/hasher-0.1.0/render.js",
+		"/javascripts/lib/hasher-0.1.0/filters.js",
+		"/javascripts/lib/hasher-0.1.0/legacy.js",
 		
-    "/javascripts/ie_fix.js",
-    "/lib/iso8601.min.js",
+    "/javascripts/lib/iso8601.min.js",
+    "/javascripts/lib/ie_fix.js",
 
-    "/javascripts/api.js",
-    "/javascripts/api_cache.js",
+    "/javascripts/models/api.js",
+    "/javascripts/models/api_cache.js",
 
-    "/javascripts/application.js",
-    "/javascripts/layout.js",
-    "/javascripts/modal.js",
-    "/javascripts/search.js",
-    "/javascripts/signup.js",
-    "/javascripts/account.js",
-    "/javascripts/whois.js",
-    "/javascripts/billing.js",
-    "/javascripts/transfer.js",
-    "/javascripts/register.js",
-    "/javascripts/help.js",
-    "/javascripts/terms_of_service.js",
-    "/javascripts/contact_us.js",
-    "/javascripts/site_tour.js",
-    "/javascripts/invite.js",
+    "/javascripts/layout/application.js",
+    "/javascripts/layout/layout.js",
+    "/javascripts/layout/modal.js",
 
-    "/javascripts/rhinonames.js",
-
+    "/javascripts/domains/search.js",
+    "/javascripts/domains/transfer.js",
+    "/javascripts/domains/register.js",
     "/javascripts/domains/index.js",
     "/javascripts/domains/apps.js",
     "/javascripts/domains/apps/registration.js",
@@ -51,7 +40,19 @@
     "/javascripts/domains/apps/web_forwards.js",
     "/javascripts/domains/apps/google_mail.js",
     "/javascripts/domains/apps/google_docs.js",
-    "/javascripts/domains/apps/google_calendar.js"
+    "/javascripts/domains/apps/google_calendar.js",
+
+    "/javascripts/accounts/signup.js",
+    "/javascripts/accounts/account.js",
+    "/javascripts/accounts/whois.js",
+    "/javascripts/accounts/billing.js",
+    "/javascripts/accounts/invite.js",
+
+    "/javascripts/help/help.js",
+    "/javascripts/help/terms_of_service.js",
+    "/javascripts/help/contact_us.js",
+    "/javascripts/help/site_tour.js",
+    "/javascripts/help/rhinonames.js"
   ],
 
   "images": [
