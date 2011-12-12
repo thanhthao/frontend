@@ -169,3 +169,16 @@ When /^I mock revokeInvite with status "([^"]*)" and message "([^"]*)"$/ do |sta
     }, 250);
   };")
 end
+
+When /^I mock remoteDNS for domain "([^"]*)"$/ do |domain|
+  page.execute_script("Badger.remoteDNS = function(domain_name, callback){
+    setTimeout(function() {
+      callback({ meta : {status: 'ok'},
+      data : [
+        {type:'TXT', ttl:'1590', value:'v=spf1 include:_netblocks.#{domain} ip4:216.73.93.70/31 ip4:216.73.93.72/31 ~all ', name:'#{domain}.'},
+        {type:'A', ttl:'41', value:'74.125.71.99', name:'#{domain}.'},
+        {type:'MX', ttl:'600', value:'aspmx.l.#{domain}.', name:'#{domain}.', priority:'10'},
+        {type:'CNAME', ttl:'86399', value:'www.l.#{domain}.', name:'www.#{domain}.'}] });
+    }, 250);
+  };")
+end

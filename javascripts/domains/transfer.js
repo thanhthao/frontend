@@ -16,20 +16,32 @@ with (Hasher.Controller('Transfer','Application')) {
 		      if (account_info.data.domain_credits <= 0) {
 						call_action('Modal.show', 'Billing.purchase_modal', action('Transfer.check_auth_code', name, info, form_data));
 		      } else {
-						call_action('Modal.show', 'Transfer.processing_request');
-		        
-						BadgerCache.getContacts(function(contacts) {
-							if (contacts.data.length == 0) {
-								call_action('Modal.show', 'Whois.edit_whois_modal', null, action('Transfer.check_auth_code', name, info, form_data));
-							} else {
-								call_action('Modal.show', 'Transfer.select_whois_and_dns_settings', name, form_data, info.registrar.name);
-							}
-						});			
+            call_action('Modal.show', 'Transfer.processing_request');
+
+            BadgerCache.getContacts(function(contacts) {
+              if (contacts.data.length == 0) {
+                call_action('Modal.show', 'Whois.edit_whois_modal', null, action('Transfer.check_auth_code', name, info, form_data));
+              } else {
+                call_action('import_dns_settings', name, info, form_data);
+              }
+            });
 		      }
 		    });
 			}
 		});		
 	});
+
+  create_action('import_dns_settings', function(name, info, form_data) {
+    call_action('Modal.show', 'Transfer.loading_dns_settings');
+
+    Badger.remoteDNS(name, function(response) {
+      call_action('Modal.show', 'Transfer.dns_settings', name, info, form_data, response.data);
+    });
+  });
+
+  create_action('select_whois_and_dns_settings', function(name, info, form_data, records, import_setting_form) {
+    call_action('Modal.show', 'Transfer.select_whois_and_dns_settings', name, form_data, info.registrar.name, records, import_setting_form);
+  });
 
 	create_action('get_domain_info', function(form_data) {
 		$('#get-domain-form-errors').empty();
@@ -58,7 +70,7 @@ with (Hasher.Controller('Transfer','Application')) {
 		}
 	});
 	
-	create_action('transfer_domain', function(name, info, registrar_name, form_data) {
+	create_action('transfer_domain', function(name, info, registrar_name, records, import_setting_form, form_data) {
 		call_action('Modal.show', 'Transfer.processing_request');
 
 		Badger.registerDomain(form_data, function(response) {
@@ -70,6 +82,13 @@ with (Hasher.Controller('Transfer','Application')) {
           call_action('Modal.show', 'Transfer.godaddy_transfer_confirm', registrar_name);
         } else {
           call_action('Modal.show', 'Transfer.transfer_confirm', registrar_name);
+        }
+
+        if (import_setting_form.import_dns_settings_checkbox) {
+          $.each(records, function() {
+            var record = { 'record_type': this.type, 'content': this.value, 'ttl': this.ttl, 'priority': this.priority, 'name': this.name };
+            Badger.addRecord(name, record);
+          });
         }
         
 			} else {
@@ -135,15 +154,16 @@ with (Hasher.View('Transfer','Application')) {
 		);
 	});
 	
-	create_helper('select_whois_and_dns_settings', function(name, info, registrar_name) {
+	create_helper('select_whois_and_dns_settings', function(name, info, registrar_name, records, import_setting_form) {
 	  console.log(info)
-		return form({ action: action('transfer_domain', name, info, registrar_name) },
+		return form({ action: action('transfer_domain', name, info, registrar_name, records, import_setting_form) },
 			h1("TRANSFER IN " + name),
 			
 			input({ type: 'hidden', name: 'name', value: name }),
 			input({ type: 'hidden', name: 'auth_code', value: info.auth_code }),
       input({ type: 'hidden', name: 'auto_renew', value: 'true'}),
       input({ type: 'hidden', name: 'privacy', value: 'true'}),
+      import_setting_form.import_dns_settings_checkbox ? input({ type: 'hidden', name: 'name_servers', value: 'ns1.badger.com,ns2.badger.com' }) : '',
 
 			table({ style: 'width:100%' }, tbody(
         tr(
@@ -161,8 +181,6 @@ with (Hasher.View('Transfer','Application')) {
         )
       )),
 
-      p({ style: "margin-bottom: 0" }, checkbox({ name: 'name_servers', value: 'ns1.badger.com,ns2.badger.com', checked: 'checked' }), 'Migrate to Badger DNS (experimental)'),
-			
 			div({ style: "text-align: center; margin-top: 10px" }, input({ 'class': 'myButton', type: 'submit', value: 'Transfer ' + name + ' for 1 Credit' }))
 		);
 	})
@@ -222,5 +240,43 @@ with (Hasher.View('Transfer','Application')) {
 			  a({ href: action('transfer_complete'), 'class': 'myButton', value: "submit" }, "Close")
 			)
     ];
+  });
+
+  create_helper('loading_dns_settings', function() {
+    return[
+      h1('DNS'),
+      div({ align: 'center' },
+			strong('Reading your current DNS settings, please wait')
+    )];
+  });
+
+  create_helper('dns_settings', function( name, info, form_data, records) {
+    var results = records.map(function(record) {
+      return tr(
+        td(record.type),
+        td(record.value),
+        td(record.name),
+        td(record.ttl),
+        td(record.priority)
+      )
+    });
+    return div(
+      h1('Found These DNS Settings. Import into Badger?'),
+      table({ 'class': 'fancy-table', id: 'dns-settings' },
+        tr(
+          th('Type'),
+          th('Destination'),
+          th('Host'),
+          th('TTL'),
+          th('Priority')
+        ),
+        results
+      ),
+      form({ action: action('select_whois_and_dns_settings', name, info, form_data, records) },
+        div(input({ type: 'checkbox', name: 'import_dns_settings_checkbox', value: 'ns1.badger.com,ns2.badger.com', checked: 'checked', id: 'import_dns_settings_checkbox' }),
+        label({ 'for': 'import_dns_settings_checkbox' }, 'Import these settings into Badger DNS')),
+        div(input({ 'class': 'myButton', id: 'next', type: 'submit', value: 'Next' }))
+      )
+    );
   });
 };
