@@ -70,16 +70,18 @@ with (Hasher.Controller('Signup','Application')) {
   });
   
   create_action('create_person', function(data) {
-    Badger.createAccount(data, function(response) {
-			if(data.password != data.confirm_password) {
-				$('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "Passwords do not match" } }));
-			} else if (response.meta.status == 'ok') {
-        redirect_to('#');
-		    setTimeout(function() { call_action('Modal.show', 'SiteTour.site_tour_0'); }, 250);
-      } else {
-        $('#signup-errors').empty().append(helper('Application.error_message', response));
-      }
-    });
+		if(data.password != data.confirm_password) {
+			$('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "Passwords do not match" } }));
+		} else {
+      Badger.createAccount(data, function(response) {
+        if (response.meta.status == 'ok') {
+          redirect_to('#');
+  		    setTimeout(function() { call_action('Modal.show', 'SiteTour.site_tour_0'); }, 250);
+        } else {
+          $('#signup-errors').empty().append(helper('Application.error_message', response));
+        }
+      });
+		}
   });
 
 	create_action('send_password_reset_email', function(callback, form_data) {
