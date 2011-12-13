@@ -66,20 +66,25 @@ Given /^I mock accountInfo with ([^"]*) domain credits and ([^"]*) invites avail
   page.execute_script("Badger.accountInfo = function(callback) {
     callback({data : {domain_credits: #{domain_credits}, name: 'East Agile Company', invites_available: #{invites_available}}, meta : {status: 'ok'}});
   };")
-   page.execute_script(" BadgerCache.cached_account_info = null;");
+   page.execute_script("BadgerCache.flush('account_info');");
 end
 
-Given /^I mock getContacts$/ do
+Given /^I mock getContacts returns ([^"]*) contacts$/ do |n|
+  contacts = []
+  n.to_i.times do |n|
+    contacts << "{ address: 'My address #{n}', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
+                      email: 'tester@eastagile.com', fax: '', first_name: 'East', id: #{n}, last_name: 'Agile Company', organization: '',
+                      phone: '123456789', state: '1', zip: '084'}"
+  end
   page.execute_script("Badger.getContacts = function(callback) {
-    callback({data : [{ address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
-                      email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
-                      phone: '123456789', state: '1', zip: '084'}]})
+    callback({data : [ #{contacts.join(',')} ]});
   };")
+  page.execute_script("BadgerCache.flush('contacts');")
 end
 
 Given /^I mock getPaymentMethods$/ do
   page.execute_script("Badger.getPaymentMethods = function(callback) {
-    callback({data: {id : 5, name: 'Visa (411111******1111 01/2012)'}});
+    callback({data: [{id : 5, name: 'Visa (411111******1111 01/2012)'}]});
   };")
 end
 
@@ -180,5 +185,17 @@ When /^I mock remoteDNS for domain "([^"]*)"$/ do |domain|
         {type:'MX', ttl:'600', value:'aspmx.l.#{domain}.', name:'#{domain}.', priority:'10'},
         {type:'CNAME', ttl:'86399', value:'www.l.#{domain}.', name:'www.#{domain}.'}] });
     }, 250);
+  };")
+end
+
+When /^I mock purchaseCredits$/ do
+  page.execute_script("Badger.purchaseCredits = function(invite_id, callback){
+      callback({ meta : {status: 'ok'} });
+  };")
+end
+
+When /^I mock createContact$/ do
+  page.execute_script("Badger.createContact = function(invite_id, callback){
+      callback({ meta : {status: 'ok'} });
   };")
 end
