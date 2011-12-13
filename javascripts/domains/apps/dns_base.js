@@ -3,7 +3,7 @@ with (Hasher.Controller('BaseDnsApp','DomainApps')) {
   define('change_name_servers_modal', function(domain_info) {
     show_modal(
       div(
-        h1('DNS SETTINGS'),
+        h1(domain_info.name, ' NAMESERVERS'),
         div({ id: 'errors_modal' }),
       
         div({ style: 'width: 275px; padding-right: 20px; float: left; margin-right: -1px; border-right: 1px solid #ccc' },
@@ -24,7 +24,7 @@ with (Hasher.Controller('BaseDnsApp','DomainApps')) {
         ),
 
         div({ style: 'width: 275px; padding-left: 20px; float: left; border-left: 1px solid #ccc' },
-          h2(span({ style: 'cursor: pointer', onclick: function() { $('#remote-dns-details').show(); $('#badger-dns-details').hide(); $('#radio-nameservers-remote').click(); } }, radio({ id: 'radio-nameservers-remote', style: 'margin: 0 8px 2px 0', name: 'nameservers' }), 'REMOTE DNS'), span({ style: 'padding-left: 10px; font-weight: normal; font-size: 11px'}, '(THE HARD WAY)')),
+          h2(span({ style: 'cursor: pointer', onclick: function() { $('#remote-dns-details').show(); $('#badger-dns-details').hide(); $('#radio-nameservers-remote').click(); } }, radio({ id: 'radio-nameservers-remote', style: 'margin: 0 8px 2px 0', name: 'nameservers' }), 'EXTERNAL'), span({ style: 'padding-left: 10px; font-weight: normal; font-size: 11px'}, '(THE HARD WAY)')),
           div({ id: 'remote-dns-details', style: "padding-left: 20px" },
             form({ action: function() { save_name_servers(domain_info, $('#name_server_select').val()); } },
               div({ style: 'font-weight: bold' }, 'DNS Provider:'), 

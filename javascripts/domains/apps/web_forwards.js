@@ -2,8 +2,8 @@ with (Hasher('WebForwards', 'DomainApps')) {
 
   register_domain_app({
     id: 'badger_web_forward',
-    name: 'Webpage Forwarding',
-    menu_item: { text: 'WEB FORWARDING', href: '#domains/:domain/web_forwards' },
+    name: 'URL Forwarding',
+    menu_item: { text: 'URL FORWARDING', href: '#domains/:domain/web_forwards' },
     requires: {
       dns: [
         { type: 'a', content: "50.57.26.208" },
@@ -15,7 +15,7 @@ with (Hasher('WebForwards', 'DomainApps')) {
   route('#domains/:domain/web_forwards', function(domain) {
     render(
       div({ id: 'web-forwards-wrapper' },
-        h1('WEB FORWARDING FOR ' + domain),
+        h1('URL FORWARDING FOR ' + domain),
         domain_app_settings_button('badger_web_forward', domain),
 
         div({ id: 'web-forwards-errors' }),

@@ -2,8 +2,8 @@ with (Hasher.Controller('RemoteDnsApp','BaseDnsApp')) {
 
   register_domain_app({
     id: 'remote_dns',
-    name: 'Remote DNS',
-    menu_item: { text: 'REMOTE DNS', href: '#domains/:domain/remote_dns' },
+    name: 'Nameservers',
+    menu_item: { text: 'NAMESERVERS', href: '#domains/:domain/remote_dns' },
     requires: {
       name_servers: ['!=', 'ns1.badger.com','ns2.badger.com']
     }
@@ -13,7 +13,7 @@ with (Hasher.Controller('RemoteDnsApp','BaseDnsApp')) {
     load_domain(domain, function(domain_info) {
       render(
         div(
-          h1('REMOTE DNS FOR ' + domain),
+          h1('NAMESERVERS FOR ' + domain),
           change_name_servers_button(domain_info),
 
           p("You are not currently using Badger DNS."),
@@ -30,7 +30,5 @@ with (Hasher.Controller('RemoteDnsApp','BaseDnsApp')) {
     });
     render('Loading...');
   });
-
-  
 
 }
