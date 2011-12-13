@@ -60,6 +60,13 @@ with (Hasher.Controller('Signup','Application')) {
 
   create_action('register', function(code) {
     render('register', code);
+    
+    Badger.createAccount({ invite_code: code }, function(response) {
+      if (response.data.message == 'Invite code not available') {
+        alert('Sorry, this invite code is no longer available!');
+        redirect_to('#');
+      }
+    });
   });
   
   create_action('create_person', function(data) {
