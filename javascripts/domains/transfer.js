@@ -114,22 +114,24 @@ with (Hasher.View('Transfer','Application')) {
 			h1('TRANSFER IN ' + name),
 			div({ 'class': 'error-message' }, div("You need to unlock this domain through " + (info.registrar.name.indexOf('Unknown') == 0 ? 'the current registrar' : info.registrar.name)) ),
 			table(
-				tr(
-					td( strong("Current Registrar:") ),
-					td(info.registrar.name)
-				),
-				tr(
-					td( strong("Created:") ),
-					td(new Date(Date.parse(info.created_at)).toDateString())
-				),
-				tr(
-					td( strong("Expiration:") ),
-					td(new Date(Date.parse(info.expires_on)).toDateString())
-				),
-				tr(
-					td( strong("Locked:") ),
-					td('Yes')
-				)
+        tbody(
+          tr(
+            td( strong("Current Registrar:") ),
+            td(info.registrar.name)
+          ),
+          tr(
+            td( strong("Created:") ),
+            td(new Date(Date.parse(info.created_at)).toDateString())
+          ),
+          tr(
+            td( strong("Expiration:") ),
+            td(new Date(Date.parse(info.expires_on)).toDateString())
+          ),
+          tr(
+            td( strong("Locked:") ),
+            td('Yes')
+          )
+        )
 			),
 			//helper('unlock_instructions_for_registrar', , info.registrar.name),
 			a({ 'class': 'myButton myButton-small', style: 'float: right', href: action('get_domain_info', { name: name }) }, "Retry"),
@@ -262,13 +264,17 @@ with (Hasher.View('Transfer','Application')) {
     });
     return div(
       h1('Import DNS into Badger?'),
-      table({ 'class': 'fancy-table', id: 'dns-settings' },
-        tr(
-          th('Host'),
-          th('Type'),
-          th('Destination')
-        ),
-        results
+      div({ 'class': 'y-scrollbar-div' },
+        table({ 'class': 'fancy-table', id: 'dns-settings' },
+          tbody(
+            tr(
+              th('Host'),
+              th('Type'),
+              th('Destination')
+            ),
+            results
+          )
+        )
       ),
       form({ action: action('select_whois_and_dns_settings', name, info, first_form_data, records) },
         div({ style: 'padding: 15px 0' }, 

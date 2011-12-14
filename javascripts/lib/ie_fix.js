@@ -114,16 +114,16 @@ var Placeholder = {
   fix_ie: function() {
     if(!$.support.placeholder) {
       var focuser = function () {
-        if ($(this).attr('placeholder') != '' && $(this).val() == $(this).attr('placeholder')) {
+        if ($(this).attr('placeholder') != '' && $(this).attr('placeholder') != null && $(this).val() == $(this).attr('placeholder')) {
           $(this).val('').removeClass('has-placeholder');
         }
       };
       var blurer = function () {
-        if ($(this).attr('placeholder') != '' && ($(this).val() == '' || $(this).val() == $(this).attr('placeholder'))) {
+        if ($(this).attr('placeholder') != '' && $(this).attr('placeholder') != null && ($(this).val() == '' || $(this).val() == $(this).attr('placeholder'))) {
           $(this).val($(this).attr('placeholder')).addClass('has-placeholder');
         }
       };
-      
+
       $.each([':text', ':password', 'textarea'], function() {
         $(this.toString()).focus(focuser).blur(blurer).each(function(index,element) {
           if (document.activeElement != element) blurer.call(element);
