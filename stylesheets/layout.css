@@ -65,9 +65,10 @@ a { color: #1E31F5; }
 #form-search input { background: #fff url(../images/submit.gif) no-repeat center right; border-radius: 3px; width:140px; border:0; color:#666; font-size:16px; line-height:17px; float:left; padding:8px 34px 8px 9px; margin:0 0 0 0; }
 
 /* primary menu */
+#menu a { outline: 0 !important; }
 #menu { border-top:1px solid #14161e; margin:0; padding:0; list-style:none; }
 #menu li { border-bottom:1px solid #191c25; background:#292f3e; }
-#menu li a { color:#919ab2; display:block; padding:9px 10px 9px 17px; text-shadow: 0px 1px 1px #000; font: 17px "Oswald", Arial, sans-serif; outline: 0; }
+#menu li a { color:#919ab2; display:block; padding:9px 10px 9px 17px; text-shadow: 0px 1px 1px #000; font: 17px "Oswald", Arial, sans-serif; }
 #sidebar .active { background-image: url(../images/bg-menu-hover.png); background-repeat: no-repeat; background-position: 100% 50%; }
 
 /* submenu */
