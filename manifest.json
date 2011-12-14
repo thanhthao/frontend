@@ -30,6 +30,7 @@
     "/javascripts/domains/transfer.js",
     "/javascripts/domains/bulk_transfer.js",
     "/javascripts/domains/register.js",
+    "/javascripts/domains/bulk_register.js",
     "/javascripts/domains/index.js",
     "/javascripts/domains/apps.js",
     "/javascripts/domains/apps/registration.js",

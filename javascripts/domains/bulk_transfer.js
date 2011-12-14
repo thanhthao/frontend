@@ -12,7 +12,7 @@ with (Hasher.Controller('BulkTransfer','Application')) {
   });
 
   create_action('get_transfer_domain_lists', function(form_data) {
-    var domains_list = form_data.transfer_domains_list.split('\n');
+    var domains_list = form_data.transfer_domains_list.split('\n').map(function(item) { return item.trim(); });
     var results = [];
     for(i = 0; i < domains_list.length; i++) {
       var split_arr = domains_list[i].split(' ');
@@ -48,22 +48,24 @@ with (Hasher.Controller('BulkTransfer','Application')) {
   create_action('proceed_bulk_transfer', function(domains_list, use_badger_dns, contacts_id) {
     call_action('Modal.show', 'BulkTransfer.bulk_transfer_result', domains_list);
 
+    var count = 0;
     $.each(domains_list, function() {
+      var local_count = ++count;
       var domain = this;
       Badger.getDomainInfo({ name: this.name, auth_code: this.auth_code }, function(response) {
         if (response.data.code == 2202 || response.meta.status != 'ok') {
-          $('#bulk-transfer-result-table td#' + domain.name.replace(/\./g,'-') + '-transfer-status').html('Failed');
+          $('#bulk-transfer-result-table td#' + domain.name.replace(/\./g,'-') + '-' + local_count + '-transfer-status').html('Failed');
         } else if (response.data.pending_transfer) {
-          $('#bulk-transfer-result-table td#' + domain.name.replace(/\./g,'-') + '-transfer-status').html('Pending transfer');
+          $('#bulk-transfer-result-table td#' + domain.name.replace(/\./g,'-') + '-' + local_count + '-transfer-status').html('Pending transfer');
         } else {
           var domain_info = { name: domain.name.toString(), auth_code: domain.auth_code, auto_renew: 'true', privacy: 'true',
                               name_servers: (use_badger_dns ? 'ns1.badger.com,ns2.badger.com' : (response.data.name_servers || []).join(',')),
                               registrant_contact_id: contacts_id};
           Badger.registerDomain(domain_info, function(response) {
             if (response.meta.status != 'created') {
-              $('#bulk-transfer-result-table td#' + domain.name.replace(/\./g,'-') + '-transfer-status').html('Failed');
+              $('#bulk-transfer-result-table td#' + domain.name.replace(/\./g,'-') + '-' + local_count + '-transfer-status').html('Failed');
             } else {
-              $('#bulk-transfer-result-table td#' + domain.name.replace(/\./g,'-') + '-transfer-status').html('Succeed');
+              $('#bulk-transfer-result-table td#' + domain.name.replace(/\./g,'-') + '-' + local_count + '-transfer-status').html('Succeed');
               helper('Application.update_credits', true);
               BadgerCache.flush('domains');
             }
@@ -103,25 +105,31 @@ with (Hasher.View('BulkTransfer','Application')) {
   });
 
   create_helper('bulk_transfer_result', function(domains_list) {
+    var count = 0;
     var list = domains_list.map(function(domain) {
       return tr(
         td(domain.name),
         td(domain.auth_code),
-        td({ id: domain.name.replace(/\./g,'-') + '-transfer-status' }, 'Processing')
+        td({ id: domain.name.replace(/\./g,'-') + '-' + ++count + '-transfer-status' }, 'Processing')
       )
     });
 
-    return div(
+    return [
       h1('BULK TRANSFER RESULT'),
       p('In processing, please wait...'),
-      table({ 'class': 'fancy-table', id: 'bulk-transfer-result-table' },
-        tr(
-          th('Domain Name'),
-          th('Authentication Code'),
-          th('Transfer Status')
-        ),
-        list
-      )
-    );
+      div({ 'class': 'y-scrollbar-div' },
+        table({ 'class': 'fancy-table', id: 'bulk-transfer-result-table' },
+          tbody(
+            tr(
+              th('Domain Name'),
+              th('Authentication Code'),
+              th('Transfer Status')
+            ),
+            list
+          )
+        )
+      ),
+      div({ style: 'text-align: right; margin-top: 10px;' }, a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close"))
+    ];
   });
 };
