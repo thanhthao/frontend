@@ -381,6 +381,10 @@ var Badger = {
 
   remoteDNS: function(domain, callback) {
     Badger.api("/domains/remote_dns", "POST", { domain: domain }, callback);
+  },
+
+  remoteWhois: function(domain, callback) {
+    Badger.api("/domains/remote_whois", "POST", { domain: domain }, callback);
   }
 
 

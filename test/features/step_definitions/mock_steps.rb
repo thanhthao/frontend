@@ -21,10 +21,10 @@ Given /^I mock registerDomain api$/ do
   };")
 end
 
-Given /^I mock getDomainInfo api for domain with registrar name "([^"]*)"$/ do |registrar_name|
+Given /^I mock getDomainInfo api for (locked |)domain with registrar name "([^"]*)"$/ do |locked, registrar_name|
   page.execute_script("Badger.getDomainInfo = function(data, callback) {
-     callback({data : {code: 1000, locked: false, pending_transfer: false, registrar: {name: '#{registrar_name}' }}, meta : {status: 'ok'}});
-  };")
+       callback({data : {code: 1000, locked: #{locked == 'locked '}, pending_transfer: false, registrar: {name: '#{registrar_name}' }}, meta : {status: 'ok'}});
+    };")
 end
 
 Given /^I mock getAccessToken return with "([^"]*)"$/ do |token|
@@ -197,5 +197,33 @@ end
 When /^I mock createContact$/ do
   page.execute_script("Badger.createContact = function(invite_id, callback){
       callback({ meta : {status: 'ok'} });
+  };")
+end
+
+When /^I mock remoteWhois( with privacy enabled|) with registrar name "([^"]*)"$/ do |privacy, registrar_name|
+  page.execute_script("Badger.remoteWhois = function(domain_name, callback){
+    callback( { data: {status: ['clientDeleteProhibited', 'clientRenewProhibited', 'clientTransferProhibited', 'clientUpdateProhibited'],
+              created_registrar: '#{registrar_name}',
+              privacy: #{privacy == ' with privacy enabled'}, updated_on: 'Thu May 12 00:00:00 +0700 2011',
+              administrator_contact: {
+                email: 'TOPZY.COM@domainsbyproxy.com',
+                zip: '85260', organization: 'DomainsByProxy.com',
+                state: 'Arizona', city: 'Scottsdale', fax: '(480) 624-2598',
+                first_name: 'Private, Registration',
+                country: '', phone: '(480) 624-2599', address: '15111 N. Hayden Rd., Ste 160, PMB 353' },
+              registered_on: 'Tue May 19 00:00:00 +0700 2009',
+              expires_on: 'Sat May 19 00:00:00 +0700 2012',
+              technical_contact: {
+                email: 'TOPZY.COM@domainsbyproxy.com',
+                zip: '85260', organization: 'DomainsByProxy.com', state: 'Arizona',
+                city: 'Scottsdale', fax: '(480) 624-2598', first_name: 'Private, Registration',
+                country: '', phone: '(480) 624-2599', address: '15111 N. Hayden Rd., Ste 160, PMB 353'},
+              name_servers: ['NS1.RACKSPACE.COM', 'NS2.RACKSPACE.COM'],
+              name: 'topzy.com',
+              registrant_contact: {
+                email: '', zip: '85260', organization: 'DomainsByProxy.com',
+                state: 'Arizona', city: 'Scottsdale', fax: '', first_name: 'Domains by Proxy, Inc.',
+                country: '', phone: '', address: '15111 N. Hayden Rd., Ste 160, PMB 353' },
+              whois: 'TERMS OF USE: You are not authorized to access or query ...'} });
   };")
 end

@@ -61,7 +61,15 @@ with (Hasher.Controller('Transfer','Application')) {
 					if(response.data.locked) {
 						call_action('Modal.show', 'Transfer.domain_locked_help', form_data.name, response.data);
 					} else {
-						call_action('Modal.show', 'Transfer.get_auth_code', form_data.name, response.data);
+            if (response.data.registrar.name.toLowerCase().indexOf('godaddy') != -1)
+              Badger.remoteWhois(form_data.name, function(whois_response) {
+                if (whois_response.data.privacy) {
+                  call_action('Modal.show', 'Transfer.domain_locked_help', form_data.name, response.data);
+                } else
+                  call_action('Modal.show', 'Transfer.get_auth_code', form_data.name, response.data);
+              });
+            else
+              call_action('Modal.show', 'Transfer.get_auth_code', form_data.name, response.data);
 					}
 				}
 			});
@@ -112,7 +120,8 @@ with (Hasher.View('Transfer','Application')) {
 	create_helper('domain_locked_help', function(name, info) {
 		return div(
 			h1('TRANSFER IN ' + name),
-			div({ 'class': 'error-message' }, div("You need to unlock this domain through " + (info.registrar.name.indexOf('Unknown') == 0 ? 'the current registrar' : info.registrar.name)) ),
+			div({ 'class': 'error-message' },
+      div("You need to " + ( info.locked ? "unlock" : "disable privacy of") + " this domain through " + (info.registrar.name.indexOf('Unknown') == 0 ? 'the current registrar' : info.registrar.name)) ),
 			table(
         tbody(
           tr(
@@ -127,9 +136,15 @@ with (Hasher.View('Transfer','Application')) {
             td( strong("Expiration:") ),
             td(new Date(Date.parse(info.expires_on)).toDateString())
           ),
+          info.locked ?
           tr(
             td( strong("Locked:") ),
             td('Yes')
+          )
+          :
+          tr(
+            td( strong("Privacy:") ),
+            td('Enabled')
           )
         )
 			),
