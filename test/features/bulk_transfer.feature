@@ -12,7 +12,11 @@ Feature: Bulk Transfer
     And I should see "Domains and their corresponding authentication codes, each pair per line:"
     And I should see "Registrant:"
     And I should see "Use Badger DNS"
-    And I fill in "transfer_domains_list" with multiple lines "abc.com authen_1\nabc123.com,authen,2"
+    And I fill multiple lines in "transfer_domains_list" with:
+      """
+      abc.com authen_1
+      abc123.com,authen,2
+      """
     And I mock getDomainInfo api for domain with registrar name "Registrar Name"
     And I mock registerDomain api
     And I press "Next"
@@ -34,7 +38,11 @@ Feature: Bulk Transfer
     And I should see "Domains and their corresponding authentication codes, each pair per line:"
     And I should see "Registrant:"
     And I should see "Use Badger DNS"
-    And I fill in "transfer_domains_list" with multiple lines "abc.com authen_1\nabc123.com,authen,2"
+    And I fill multiple lines in "transfer_domains_list" with:
+      """
+      abc.com authen_1
+      abc123.com,authen,2
+      """
     And I mock getDomainInfo api for domain with registrar name "Registrar Name"
     And I mock getPaymentMethods
     And I press "Next"
@@ -76,7 +84,11 @@ Feature: Bulk Transfer
     And I should see "Domains and their corresponding authentication codes, each pair per line:"
     And I should see "Registrant:"
     And I should see "Use Badger DNS"
-    And I fill in "transfer_domains_list" with multiple lines "abc.com authen_1\nabc123.com,authen,2"
+    And I fill multiple lines in "transfer_domains_list" with:
+      """
+      abc.com authen_1
+      abc123.com,authen,2
+      """
     And I mock getDomainInfo api for domain with registrar name "Registrar Name"
     And I mock registerDomain api
     And I press "Next"
@@ -113,7 +125,11 @@ Feature: Bulk Transfer
     And I should see "Domains and their corresponding authentication codes, each pair per line:"
     And I should see "Registrant:"
     And I should see "Use Badger DNS"
-    And I fill in "transfer_domains_list" with multiple lines "abc.com authen_1\nabc123.com,authen,2"
+    And I fill multiple lines in "transfer_domains_list" with:
+      """
+      abc.com authen_1
+      abc123.com,authen,2
+      """
     And I mock getDomainInfo api for domain with registrar name "Registrar Name"
     And I mock registerDomain api
     And I mock getPaymentMethods

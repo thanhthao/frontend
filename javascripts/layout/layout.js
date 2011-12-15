@@ -8,6 +8,7 @@ with (Hasher('Application')) {
         update_invites_available_count();
       }
       update_sidebar_with_correct_actives(request_uri);
+      OutlineFix.fix_ie_7();
     }
 
     // Fix placeholder does not work in IE

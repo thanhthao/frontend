@@ -44,9 +44,8 @@ When /^(?:|I )fill in "([^"]*)" with "([^"]*)"$/ do |field, value|
   fill_in(field, :with => value)
 end
 
-When /^(?:|I )fill in "([^"]*)" with multiple lines "([^"]*)"$/ do |field, value|
-  lines = value.split('\n')
-  fill_in(field, :with => lines.join("\n"))
+When /^I fill multiple lines in "([^"]*)" with:$/ do |field, value|
+  fill_in(field, :with => value)
 end
 
 When /^I wait until "([^"]*)" is visible$/ do |selector|

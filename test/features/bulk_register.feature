@@ -14,7 +14,11 @@ Feature: Bulk Transfer
     Then I should see "BULK REGISTER"
     And I should see "Type in domains you want to register, one per line:"
     And I should see "Registrant:"
-    And I fill in "register_domains_list" with multiple lines "abc.com\nabc123.com"
+    And I fill multiple lines in "register_domains_list" with:
+      """
+      abc.com
+      abc123.com
+      """
     And I mock getDomainInfo api for domain with registrar name "Registrar Name"
     And I mock registerDomain api
     And I press "Next"
@@ -41,7 +45,11 @@ Feature: Bulk Transfer
     Then I should see "BULK REGISTER"
     And I should see "Type in domains you want to register, one per line"
     And I should see "Registrant:"
-    And I fill in "register_domains_list" with multiple lines "abc.com\nabc123.com"
+    And I fill multiple lines in "register_domains_list" with:
+      """
+      abc.com
+      abc123.com
+      """
     And I mock getDomainInfo api for domain with registrar name "Registrar Name"
     And I mock registerDomain api
     And I mock getPaymentMethods
@@ -88,7 +96,11 @@ Feature: Bulk Transfer
     Then I should see "BULK REGISTER"
     And I should see "Type in domains you want to register, one per line"
     And I should see "Registrant:"
-    And I fill in "register_domains_list" with multiple lines "abc.com\nabc123.com"
+    And I fill multiple lines in "register_domains_list" with:
+      """
+      abc.com
+      abc123.com
+      """
     And I mock getDomainInfo api for domain with registrar name "Registrar Name"
     And I mock registerDomain api
     And I press "Next"
@@ -130,7 +142,11 @@ Feature: Bulk Transfer
     Then I should see "BULK REGISTER"
     And I should see "Type in domains you want to register, one per line"
     And I should see "Registrant:"
-    And I fill in "register_domains_list" with multiple lines "abc.com\nabc123.com"
+    And I fill multiple lines in "register_domains_list" with:
+      """
+      abc.com
+      abc123.com
+      """
     And I mock getDomainInfo api for domain with registrar name "Registrar Name"
     And I mock registerDomain api
     And I mock getPaymentMethods

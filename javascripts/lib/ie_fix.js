@@ -135,3 +135,19 @@ var Placeholder = {
       });
     }
 }};
+
+/**********************************************************************************
+ * Remove css outline on left-menu in Internet Explorer 7
+ **********************************************************************************/
+
+var OutlineFix = {
+  fix_ie_7: function() {
+    if (/MSIE (\d+\.\d+);/.test(navigator.userAgent) && (new Number(RegExp.$1) == 7)) {
+//      With this option, we cannot see the outline around the item in side-nav when we using tab
+//      $('#sidebar a').focus(function() {
+      $('#sidebar a').click(function() {
+        $(this).attr("hideFocus", "true").css("outline", "none");
+      })
+    }
+  }
+}
