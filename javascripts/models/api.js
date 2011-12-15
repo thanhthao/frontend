@@ -129,10 +129,17 @@ var Badger = {
     Badger.__search_serial_last = (Badger.__search_serial_last || 0);
     
     Badger.api("/domains/search", 'POST', { query: query, serial: Badger.__search_serial_next }, function(results) {
+			// Log domain searches
+			// if (results.data.domains) {
+			// 	results.data.domains.forEach(function(domain) {
+			// 		Badger.createDomainSearchHistory({ query: domain[0], available: domain[1] });
+			// 	});
+			// }
+			
       if (!use_serial || parseInt(results.data.serial) > Badger.__search_serial_last) {
         Badger.__search_serial_last = parseInt(results.data.serial);
         callback(results);
-      }
+      }			
     });
   },
 
@@ -271,6 +278,15 @@ var Badger = {
 		Badger.api("domains/" + domain + "/web_forwards/" + id, "DELETE", callback);
 	},
 	
+
+	// Comment out until used
+	// getDomainSearchHistory: function(callback) {
+	// 	Badger.api("domains/search_history", callback);
+	// },
+	// 
+	// createDomainSearchHistory: function(data, callback) {
+	// 	Badger.api("domains/search_history", "POST", data, callback);
+	// },
 
 
   //ADMIN COMMANDS, requires person to have admin flag set to true
