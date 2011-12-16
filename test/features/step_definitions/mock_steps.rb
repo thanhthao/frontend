@@ -39,7 +39,7 @@ Given /^I mock login$/ do
     if (callback) callback({meta : {status : 'ok'}});
     for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
   };")
-  
+
   # NOTE: THIS KILLS ALL REAL API CALLS
   page.execute_script("Badger.api = function(url){};")
 end
@@ -101,15 +101,17 @@ Given /^I mock sendEmail$/ do
   };")
 end
 
-Given /^I mock getDomain$/ do
+Given /^I mock getDomain( with domain "([^"]*)"|)$/ do |with_domain, domain|
   page.execute_script("Badger.getDomain = function(name, callback){
-    callback({ data: {expires_on: '2011-11-30T04:21:43Z', status: 'active', registered_on: '2011-10-30T04:21:43Z',
-                created_at: '2011-10-30T04:21:43Z', updated_at: '2011-10-30T04:21:43Z', updated_on: '2011-10-30T04:21:43Z',
-                name_servers: ['ns1.badger.com', 'ns2.badger.com'], created_registrar: 'rhino',
-                whois: 'The data contained in this whois database is provided \"as is\" with no guarantee or warranties regarding its accuracy.',
-                registrant_contact: { address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
-                      email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
-                      phone: '123456789', state: '1', zip: '084' } }});
+    callback({ meta: { status: 'ok' },
+                data: {
+                  name: '#{ domain ? domain : 'mydomain.com' }', expires_on: '2011-11-30T04:21:43Z', status: 'active', registered_on: '2011-10-30T04:21:43Z',
+                  created_at: '2011-10-30T04:21:43Z', updated_at: '2011-10-30T04:21:43Z', updated_on: '2011-10-30T04:21:43Z',
+                  name_servers: ['ns1.badger.com', 'ns2.badger.com'], created_registrar: 'rhino',
+                  whois: 'The data contained in this whois database is provided \"as is\" with no guarantee or warranties regarding its accuracy.',
+                  registrant_contact: { address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
+                        email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
+                        phone: '123456789', state: '1', zip: '084' } }});
   };")
 end
 
@@ -225,5 +227,21 @@ When /^I mock remoteWhois( with privacy enabled|) with registrar name "([^"]*)"$
                 state: 'Arizona', city: 'Scottsdale', fax: '', first_name: 'Domains by Proxy, Inc.',
                 country: '', phone: '', address: '15111 N. Hayden Rd., Ste 160, PMB 353' },
               whois: 'TERMS OF USE: You are not authorized to access or query ...'} });
+  };")
+end
+
+When /^I mock getRecords for domain "([^"]*)"$/ do |domain|
+  page.execute_script("Badger.getRecords = function(name, callback){
+    callback([
+      { id: 78, domain_id: 2, record_type: 'A', content: '244.245.123.19', ttl: 1800, priority: '',
+        name: 'subdomain.#{domain}', active: true },
+      { id: 79, domain_id: 2, record_type: 'MX', content: 'smtp.badger.com', ttl: 1800, priority: 10,
+        name: '#{domain}', active: true },
+      { id: 80, domain_id: 2, record_type: 'TXT', content: 'v=spf1 mx mx:rhinonamesmail.com ~all', ttl: 1800, priority: '',
+        name: '#{domain}', active: true },
+      { id: 81, domain_id: 2, record_type: 'CNAME', content: 'ghs.google.com', ttl: 1800, priority: '',
+        name: 'calendar.#{domain}', active: true }
+    ]
+    );
   };")
 end

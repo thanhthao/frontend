@@ -19,3 +19,6 @@ When /^I visit grid view "([^"]*)" of domains$/ do |filter|
   visit("/index.html#filter_domains/#{filter}/grid")
 end
 
+When /^I visit Badger DNS for domain "([^"]*)"$/ do |domain|
+  visit("/index.html#domains/#{domain}/dns")
+end

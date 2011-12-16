@@ -90,6 +90,8 @@ a { color: #1E31F5; }
 .fancy-table tr:hover { background: #FFFBD8; }
 .fancy-table tr.table-header:hover { background: none; }
 
+.fancy-table tr td.app_dns_header { border-bottom: none; padding-top: 20px; }
+
 .fancy-dl dt { font-weight: bold; float: left; clear: left; width: 140px; text-align: right; }
 .fancy-dl dd { float: left; margin-left: 8px; }
 

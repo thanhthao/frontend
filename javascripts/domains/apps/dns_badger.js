@@ -17,8 +17,28 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
     Badger.getDomain(domain, function(response) {
       var domain_info = response['data'];
       if (domain_info.name_servers.join(',') == 'ns1.badger.com,ns2.badger.com') {
-        Badger.getRecords(domain, function(records) {
-          render(manager_view(domain_info, records));
+        var app_dns = []
+        load_domain(domain, function(domain_obj) {
+          for (var key in Hasher.domain_apps) {
+            var app = Hasher.domain_apps[key];
+            if (app.requires.dns && app_is_installed_on_domain(app, domain_obj)) {
+              var app_result = { app_id: key, app_name: app.name, records: [] }
+              for (var dns_record in app.requires.dns) {
+                for (var i=0; app.requires.dns && (i<app.requires.dns.length); i++) {
+                  var found_record = domain_has_record(domain_obj, app.requires.dns[i]);
+                  if (found_record) {
+                    app_result.records.push(found_record);
+
+                    domain_obj.records = $.grep(domain_obj.records, function(value) {
+                      return value != found_record;
+                    });
+                  }
+                }
+              }
+              app_dns.push(app_result);
+            }
+          }
+          render(manager_view(domain_info, domain_obj.records, app_dns));
           show_correct_form_fields();
         });
       } else {
@@ -26,13 +46,13 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
       }
     });
   });
-  
-  define('manager_view', function(domain_info, records) {
+
+  define('manager_view', function(domain_info, records, app_dns) {
     var domain = domain_info.name;
     return div(
       h1('BADGER DNS FOR ' + domain),
       change_name_servers_button(domain_info),
-      
+
       div({ id: 'errors' }),
       table({ 'class': 'fancy-table' },
         tbody(
@@ -77,19 +97,41 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
           ),
           
           records.map(function(record) {
-            return tr(
-              td(record.record_type.toUpperCase()),
-              td(record.name.replace(domain,''), span({ style: 'color: #888' }, domain)),
-              td(record.priority, ' ', record.content),
-              td(record.ttl),
-              td({ style: "text-align: center" },
-                //button({ events: { 'click': action('dns_edit', domain, record.id) }}, 'Edit'),
-                a({ href: curry(dns_delete, domain, record.id) }, img({ src: 'images/icon-no.gif'}))
-              )
-            );
+            return record_row(record, domain, true)
+          }),
+
+          app_dns.map(function(app_item) {
+            return app_dns_rows(app_item.app_name, app_item.app_id, app_item.records, domain);
           })
         )
       )
+    );
+  });
+
+  define('app_dns_rows', function(app_name, app_id, records, domain) {
+    return [
+      tr(
+        td({ colspan: 5, 'class': 'app_dns_header' }, h1(app_name),
+        div({ style: 'float: right; margin-top: -44px' },
+          a({ 'class': 'myButton myButton-small', href: curry(show_settings_modal_for_app, app_id, domain) }, 'Settings')
+        ))
+      ),
+      records.map(function(record) {
+        return record_row(record, domain, false)
+      })
+    ];
+  });
+
+  define('record_row', function(record, domain, editable) {
+    return tr(
+      td(record.record_type.toUpperCase()),
+      td(record.name.replace(domain,''), span({ style: 'color: #888' }, domain)),
+      td(record.priority, ' ', record.content),
+      td(record.ttl),
+      editable ? td({ style: "text-align: center" },
+        //button({ events: { 'click': action('dns_edit', domain, record.id) }}, 'Edit'),
+        a({ href: curry(dns_delete, domain, record.id) }, img({ src: 'images/icon-no.gif'}))
+      ) : td()
     );
   });
   
