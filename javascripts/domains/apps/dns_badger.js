@@ -127,7 +127,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
       td(record.record_type.toUpperCase()),
       td(record.name.replace(domain,''), span({ style: 'color: #888' }, domain)),
       td(record.priority, ' ', record.content),
-      td(record.ttl),
+      td(parse_readable_ttl(record.ttl)),
       editable ? td({ style: "text-align: center" },
         //button({ events: { 'click': action('dns_edit', domain, record.id) }}, 'Edit'),
         a({ href: curry(dns_delete, domain, record.id) }, img({ src: 'images/icon-no.gif'}))
@@ -183,5 +183,18 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
       })
     }
   });
-  
+
+  define('parse_readable_ttl', function(ttl) {
+    var array = []
+    array.push(["week", parseInt(ttl / 604800)]);
+    array.push(["day", parseInt((ttl % 604800) / 86400)]);
+    array.push(["hour", parseInt((ttl % 86400) / 3600)]);
+    array.push(["min", parseInt((ttl % 3600) / 60)]);
+    array.push(["second", ttl % 60]);
+
+    array = array.map(function(item) {
+      return item[1] > 0 ? (item[1] > 1 ? (item[1] + ' ' + item[0] + 's') : "1 " + item[0]) : ''
+    });
+    return $.grep(array, function(item) { return item != '' }).join(' ');
+  });
 }
