@@ -103,28 +103,28 @@ with (Hasher.View('Whois', 'Application')) { (function() {
           td({ style: 'width: 50%; vertical-align: top' },
             h3({ style: 'margin: 0' }, 'Contact Information'),
             div(
-              input({ style: 'width: 110px', name: 'first_name', placeholder: 'First Name', value: data.first_name || '' }),
-              input({ style: 'width: 110px', name: 'last_name', placeholder: 'Last Name', value: data.last_name || '' })
+              input({ style: 'width: 120px', name: 'first_name', placeholder: 'First Name', value: data.first_name || '' }),
+              input({ style: 'width: 120px', name: 'last_name', placeholder: 'Last Name', value: data.last_name || '' })
             ),
-            div(input({ style: 'width: 200px', name: 'organization', placeholder: 'Organization (optional)', value: data.organization || '' })),
-            div(input({ style: 'width: 200px', name: 'email', placeholder: 'Email', value: data.email || '' })),
+            div(input({ style: 'width: 250px', name: 'organization', placeholder: 'Organization (optional)', value: data.organization || '' })),
+            div(input({ style: 'width: 250px', name: 'email', placeholder: 'Email', value: data.email || '' })),
             div(
-              input({ style: 'width: 90px', name: 'phone', placeholder: 'Phone', value: data.phone || '' }),
-              input({ style: 'width: 90px', name: 'fax', placeholder: 'Fax (optional)', value: data.fax || '' })
+              input({ style: 'width: 120px', name: 'phone', placeholder: 'Phone', value: data.phone || '' }),
+              input({ style: 'width: 120px', name: 'fax', placeholder: 'Fax (optional)', value: data.fax || '' })
             )
           ),
           td({ style: 'width: 50%; vertical-align: top' },
             h3({ style: 'margin: 0' }, 'Mailing Address'),
             div(
-              input({ style: 'width: 200px', name: 'address', placeholder: 'Address Line 1', value: data.address || '' })
+              input({ style: 'width: 250px', name: 'address', placeholder: 'Address Line 1', value: data.address || '' })
             ),
             div(
-              input({ style: 'width: 200px', name: 'address2', placeholder: 'Address Line 2 (Optional)', value: data.address2 || '' })
+              input({ style: 'width: 250px', name: 'address2', placeholder: 'Address Line 2 (Optional)', value: data.address2 || '' })
             ),
             div(
-              input({ style: 'width: 100px', name: 'city', placeholder: 'City', value: data.city || '' }),
+              input({ style: 'width: 118px', name: 'city', placeholder: 'City', value: data.city || '' }),
               input({ style: 'width: 40px', name: 'state', placeholder: 'State', value: data.state || '' }),
-              input({ style: 'width: 50px', name: 'zip', placeholder: 'Zip', value: data.zip || '' })
+              input({ style: 'width: 70px', name: 'zip', placeholder: 'Zip', value: data.zip || '' })
             ),
             div(
               select({ style: 'width: 150px', name: 'country' }, option({ disabled: 'disabled' }, 'Country:'), helper("Application.country_options", data.country))
