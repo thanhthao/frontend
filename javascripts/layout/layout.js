@@ -131,8 +131,8 @@ with (Hasher('Application')) {
         div({ 'class': "col" },
           h2('CONTACT US'),
           ul(
-            li(a({ href: "mailto:support@badger.com#" }, 'support@badger.com')),
-            li(a({ href: 'tel:+14157875050' }, '415-787-5050' ))
+            li(a({ href: "mailto:support@badger.com" }, 'support@badger.com')),
+            li(a({ href: 'tel:+1-415-787-5050' }, '+1-415-787-5050' ))
           )
         ),
         div({ 'class': "col" },
