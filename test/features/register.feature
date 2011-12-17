@@ -6,7 +6,8 @@ Feature: Register
   Scenario: register new user successfully
     Given I am on the home page
     And I am not logged in
-    And I am on the register page
+    And I mock createAccount
+    When I am on the register page
     Then I should see "Create Your Badger.com Account"
     And I fill in "first_name" with "East Agile"
     And I fill in "last_name" with "Company"
@@ -14,7 +15,6 @@ Feature: Register
     And I fill in "password" with "pwd123"
     And I fill in "confirm_password" with "pwd123"
     And I mock neccessary data to mock login with 35 domain credits and 5 invites available
-    And I mock createAccount
     Then I press "Submit"
     And The home page is fully loaded
     Then I should see "Welcome to Badger.com!"

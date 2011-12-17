@@ -61,7 +61,15 @@ with (Hasher.Controller('Transfer','Application')) {
 					if(response.data.locked) {
 						call_action('Modal.show', 'Transfer.domain_locked_help', form_data.name, response.data);
 					} else {
-						call_action('Modal.show', 'Transfer.get_auth_code', form_data.name, response.data);
+            if (response.data.registrar.name.toLowerCase().indexOf('godaddy') != -1)
+              Badger.remoteWhois(form_data.name, function(whois_response) {
+                if (whois_response.data.privacy) {
+                  call_action('Modal.show', 'Transfer.domain_locked_help', form_data.name, response.data);
+                } else
+                  call_action('Modal.show', 'Transfer.get_auth_code', form_data.name, response.data);
+              });
+            else
+              call_action('Modal.show', 'Transfer.get_auth_code', form_data.name, response.data);
 					}
 				}
 			});
@@ -112,24 +120,33 @@ with (Hasher.View('Transfer','Application')) {
 	create_helper('domain_locked_help', function(name, info) {
 		return div(
 			h1('TRANSFER IN ' + name),
-			div({ 'class': 'error-message' }, div("You need to unlock this domain through " + (info.registrar.name.indexOf('Unknown') == 0 ? 'the current registrar' : info.registrar.name)) ),
+			div({ 'class': 'error-message' },
+      div("You need to " + ( info.locked ? "unlock" : "disable privacy of") + " this domain through " + (info.registrar.name.indexOf('Unknown') == 0 ? 'the current registrar' : info.registrar.name)) ),
 			table(
-				tr(
-					td( strong("Current Registrar:") ),
-					td(info.registrar.name)
-				),
-				tr(
-					td( strong("Created:") ),
-					td(new Date(Date.parse(info.created_at)).toDateString())
-				),
-				tr(
-					td( strong("Expiration:") ),
-					td(new Date(Date.parse(info.expires_on)).toDateString())
-				),
-				tr(
-					td( strong("Locked:") ),
-					td('Yes')
-				)
+        tbody(
+          tr(
+            td( strong("Current Registrar:") ),
+            td(info.registrar.name)
+          ),
+          tr(
+            td( strong("Created:") ),
+            td(new Date(Date.parse(info.created_at)).toDateString())
+          ),
+          tr(
+            td( strong("Expiration:") ),
+            td(new Date(Date.parse(info.expires_on)).toDateString())
+          ),
+          info.locked ?
+          tr(
+            td( strong("Locked:") ),
+            td('Yes')
+          )
+          :
+          tr(
+            td( strong("Privacy:") ),
+            td('Enabled')
+          )
+        )
 			),
 			//helper('unlock_instructions_for_registrar', , info.registrar.name),
 			a({ 'class': 'myButton myButton-small', style: 'float: right', href: action('get_domain_info', { name: name }) }, "Retry"),
@@ -187,6 +204,9 @@ with (Hasher.View('Transfer','Application')) {
 	create_helper('get_domain_form', function(data, error) {
 		return div(
 			h1("TRANSFER IN A DOMAIN"),
+      div({ style: 'float: right; margin-top: -44px' },
+        a({ 'class': 'myButton myButton-small', href: action('BulkTransfer.show') }, 'Bulk Transfer')
+      ),
       form({ id: "get-domain-info-form", action: action('get_domain_info') },
 			  div({ id: "get-domain-form-errors" }, error ? error : null),
 				div("Use this form if you've registered a domain at another registrar and would like to transfer the domain to Badger."),
@@ -259,13 +279,17 @@ with (Hasher.View('Transfer','Application')) {
     });
     return div(
       h1('Import DNS into Badger?'),
-      table({ 'class': 'fancy-table', id: 'dns-settings' },
-        tr(
-          th('Host'),
-          th('Type'),
-          th('Destination')
-        ),
-        results
+      div({ 'class': 'y-scrollbar-div' },
+        table({ 'class': 'fancy-table', id: 'dns-settings' },
+          tbody(
+            tr(
+              th('Host'),
+              th('Type'),
+              th('Destination')
+            ),
+            results
+          )
+        )
       ),
       form({ action: action('select_whois_and_dns_settings', name, info, first_form_data, records) },
         div({ style: 'padding: 15px 0' }, 

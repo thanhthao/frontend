@@ -22,6 +22,7 @@ Feature: Transfer
 
   Scenario: Transfer in a domain from GoDaddy
     And I mock getDomainInfo api for domain with registrar name "GoDaddy"
+    And I mock remoteWhois with registrar name "ABC.com, Inc."
     And I press "Next"
     And I fill in "auth_code" with "123456"
     And I mock remoteDNS for domain "abc.com"
@@ -61,3 +62,25 @@ Feature: Transfer
     And I press "Transfer abc.com for 1 Credit"
     Then I should see "Transfer Request Submitted"
     And I should see "We have submitted your transfer request and will email you when it is complete."
+
+  Scenario: If request to transfer a domain from GoDaddy which has privacy enabled, an error message should be displayed
+    And I mock getDomainInfo api for domain with registrar name "GoDaddy.com, Inc."
+    And I mock remoteWhois with privacy enabled with registrar name "GoDaddy.com, Inc."
+    And I press "Next"
+    Then I should see "You need to disable privacy of this domain through GoDaddy.com, Inc."
+    And I should see "Current Registrar"
+    And I should see "Retry"
+
+  Scenario: If request to transfer a domain not from GoDaddy which has privacy enabled, the flow still continue
+    And I mock getDomainInfo api for domain with registrar name "ABC.com, Inc."
+    And I mock remoteWhois with privacy enabled with registrar name "ABC.com, Inc."
+    And I press "Next"
+    Then I should see "Auth Code"
+    And I should see "Please obtain the auth code "
+
+  Scenario: If request to transfer a locked domain, an error message should be displayed
+    And I mock getDomainInfo api for locked domain with registrar name "ABC.com, Inc."
+    And I press "Next"
+    Then I should see "You need to unlock this domain through ABC.com, Inc."
+    And I should see "Current Registrar"
+    And I should see "Retry"

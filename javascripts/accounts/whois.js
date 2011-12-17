@@ -90,10 +90,11 @@ with (Hasher.View('Whois', 'Application')) { (function() {
     );
   });
   
-  create_helper('edit_whois_modal', function(data, callback) {
+  create_helper('edit_whois_modal', function(data, callback, custom_message) {
     data = data || {};
     return form({ action: action('create_or_update_whois', data.id, callback) },
       h1(data.id ? 'Edit Profile' : 'Create Profile'),
+      div({ style: 'color: green;' }, custom_message),
       div({ id: 'errors' }),
 
       p("This information will ", strong('automatically be private'), " unless you install ", i('Public Whois'), " on a domain."),

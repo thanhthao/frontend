@@ -90,6 +90,8 @@ a { color: #1E31F5; }
 .fancy-table tr:hover { background: #FFFBD8; }
 .fancy-table tr.table-header:hover { background: none; }
 
+.fancy-table tr td.app_dns_header { border-bottom: none; padding-top: 20px; }
+
 .fancy-dl dt { font-weight: bold; float: left; clear: left; width: 140px; text-align: right; }
 .fancy-dl dd { float: left; margin-left: 8px; }
 
@@ -156,6 +158,12 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 	height: 90px;
  	margin-bottom: 10px;
 	overflow: hidden; 
+}
+
+.y-scrollbar-div {
+  max-height: 300px;
+  width: 100%;
+  overflow: auto;
 }
 
 .fancy-table td.fancy-table-destination-td { padding-right: 30px; background: transparent url(../images/icon-arrow-right.png) right center no-repeat }

@@ -40,7 +40,17 @@ When /^(?:|I )follow "([^"]*)"$/ do |link|
   click_link(link)
 end
 
+When /^(?:|I )follow "([^"]*)" within "([^"]*)"$/ do |link, context|
+  within(context) do
+    click_link(link)
+  end
+end
+
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"$/ do |field, value|
+  fill_in(field, :with => value)
+end
+
+When /^I fill multiple lines in "([^"]*)" with:$/ do |field, value|
   fill_in(field, :with => value)
 end
 

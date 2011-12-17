@@ -13,6 +13,7 @@ with (Hasher.Controller('Search','Application')) {
 
 		var search_callback = function() {
       Badger.domainSearch(current_value, true, function(resp) {
+        $('#bulk-transfer-link').removeClass('hidden');
         $('#search-instructions').remove();
         var most_recent_result = $('#search-results tbody tr:first td:first').text();
         if (resp.data.domains[0][0].indexOf(most_recent_result) == 0) {
@@ -61,7 +62,12 @@ with (Hasher.View('Search', 'Application')) {
       div({ style: 'float: right; margin-top: -44px' }, 
         a({ 'class': 'myButton myButton-small', href: action('Transfer.show') }, 'Transfer in a Domain')
       ),
-      
+      p({ id: 'bulk-transfer-link', 'class': 'hidden' },
+        span('If you would like to register many domains at once, try our '),
+        a({ href: action('BulkRegister.show') }, 'Bulk Register'),
+        span(' tool.')
+      ),
+
       table({ id: 'search-results', 'class': 'fancy-table' }, tbody()),
       div({ id: 'search-instructions' }, 'Start typing to search for available domains.')
     );

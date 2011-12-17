@@ -21,10 +21,10 @@ Given /^I mock registerDomain api$/ do
   };")
 end
 
-Given /^I mock getDomainInfo api for domain with registrar name "([^"]*)"$/ do |registrar_name|
+Given /^I mock getDomainInfo api for (locked |)domain with registrar name "([^"]*)"$/ do |locked, registrar_name|
   page.execute_script("Badger.getDomainInfo = function(data, callback) {
-     callback({data : {code: 1000, locked: false, pending_transfer: false, registrar: {name: '#{registrar_name}' }}, meta : {status: 'ok'}});
-  };")
+       callback({data : {code: 1000, locked: #{locked == 'locked '}, pending_transfer: false, registrar: {name: '#{registrar_name}' }}, meta : {status: 'ok'}});
+    };")
 end
 
 Given /^I mock getAccessToken return with "([^"]*)"$/ do |token|
@@ -39,7 +39,7 @@ Given /^I mock login$/ do
     if (callback) callback({meta : {status : 'ok'}});
     for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
   };")
-  
+
   # NOTE: THIS KILLS ALL REAL API CALLS
   page.execute_script("Badger.api = function(url){};")
 end
@@ -66,20 +66,25 @@ Given /^I mock accountInfo with ([^"]*) domain credits and ([^"]*) invites avail
   page.execute_script("Badger.accountInfo = function(callback) {
     callback({data : {domain_credits: #{domain_credits}, name: 'East Agile Company', invites_available: #{invites_available}}, meta : {status: 'ok'}});
   };")
-   page.execute_script(" BadgerCache.cached_account_info = null;");
+   page.execute_script("BadgerCache.flush('account_info');");
 end
 
-Given /^I mock getContacts$/ do
+Given /^I mock getContacts returns ([^"]*) contacts$/ do |n|
+  contacts = []
+  n.to_i.times do |n|
+    contacts << "{ address: 'My address #{n}', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
+                      email: 'tester@eastagile.com', fax: '', first_name: 'East', id: #{n}, last_name: 'Agile Company', organization: '',
+                      phone: '123456789', state: '1', zip: '084'}"
+  end
   page.execute_script("Badger.getContacts = function(callback) {
-    callback({data : [{ address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
-                      email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
-                      phone: '123456789', state: '1', zip: '084'}]})
+    callback({data : [ #{contacts.join(',')} ]});
   };")
+  page.execute_script("BadgerCache.flush('contacts');")
 end
 
 Given /^I mock getPaymentMethods$/ do
   page.execute_script("Badger.getPaymentMethods = function(callback) {
-    callback({data: {id : 5, name: 'Visa (411111******1111 01/2012)'}});
+    callback({data: [{id : 5, name: 'Visa (411111******1111 01/2012)'}]});
   };")
 end
 
@@ -96,15 +101,17 @@ Given /^I mock sendEmail$/ do
   };")
 end
 
-Given /^I mock getDomain$/ do
+Given /^I mock getDomain( with domain "([^"]*)"|)$/ do |with_domain, domain|
   page.execute_script("Badger.getDomain = function(name, callback){
-    callback({ data: {expires_on: '2011-11-30T04:21:43Z', status: 'active', registered_on: '2011-10-30T04:21:43Z',
-                created_at: '2011-10-30T04:21:43Z', updated_at: '2011-10-30T04:21:43Z', updated_on: '2011-10-30T04:21:43Z',
-                name_servers: ['ns1.badger.com', 'ns2.badger.com'], created_registrar: 'rhino',
-                whois: 'The data contained in this whois database is provided \"as is\" with no guarantee or warranties regarding its accuracy.',
-                registrant_contact: { address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
-                      email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
-                      phone: '123456789', state: '1', zip: '084' } }});
+    callback({ meta: { status: 'ok' },
+                data: {
+                  name: '#{ domain ? domain : 'mydomain.com' }', expires_on: '2011-11-30T04:21:43Z', status: 'active', registered_on: '2011-10-30T04:21:43Z',
+                  created_at: '2011-10-30T04:21:43Z', updated_at: '2011-10-30T04:21:43Z', updated_on: '2011-10-30T04:21:43Z',
+                  name_servers: ['ns1.badger.com', 'ns2.badger.com'], created_registrar: 'rhino',
+                  whois: 'The data contained in this whois database is provided \"as is\" with no guarantee or warranties regarding its accuracy.',
+                  registrant_contact: { address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
+                        email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
+                        phone: '123456789', state: '1', zip: '084' } }});
   };")
 end
 
@@ -180,5 +187,61 @@ When /^I mock remoteDNS for domain "([^"]*)"$/ do |domain|
         {type:'MX', ttl:'600', value:'aspmx.l.#{domain}.', name:'#{domain}.', priority:'10'},
         {type:'CNAME', ttl:'86399', value:'www.l.#{domain}.', name:'www.#{domain}.'}] });
     }, 250);
+  };")
+end
+
+When /^I mock purchaseCredits$/ do
+  page.execute_script("Badger.purchaseCredits = function(invite_id, callback){
+      callback({ meta : {status: 'ok'} });
+  };")
+end
+
+When /^I mock createContact$/ do
+  page.execute_script("Badger.createContact = function(invite_id, callback){
+      callback({ meta : {status: 'ok'} });
+  };")
+end
+
+When /^I mock remoteWhois( with privacy enabled|) with registrar name "([^"]*)"$/ do |privacy, registrar_name|
+  page.execute_script("Badger.remoteWhois = function(domain_name, callback){
+    callback( { data: {status: ['clientDeleteProhibited', 'clientRenewProhibited', 'clientTransferProhibited', 'clientUpdateProhibited'],
+              created_registrar: '#{registrar_name}',
+              privacy: #{privacy == ' with privacy enabled'}, updated_on: 'Thu May 12 00:00:00 +0700 2011',
+              administrator_contact: {
+                email: 'TOPZY.COM@domainsbyproxy.com',
+                zip: '85260', organization: 'DomainsByProxy.com',
+                state: 'Arizona', city: 'Scottsdale', fax: '(480) 624-2598',
+                first_name: 'Private, Registration',
+                country: '', phone: '(480) 624-2599', address: '15111 N. Hayden Rd., Ste 160, PMB 353' },
+              registered_on: 'Tue May 19 00:00:00 +0700 2009',
+              expires_on: 'Sat May 19 00:00:00 +0700 2012',
+              technical_contact: {
+                email: 'TOPZY.COM@domainsbyproxy.com',
+                zip: '85260', organization: 'DomainsByProxy.com', state: 'Arizona',
+                city: 'Scottsdale', fax: '(480) 624-2598', first_name: 'Private, Registration',
+                country: '', phone: '(480) 624-2599', address: '15111 N. Hayden Rd., Ste 160, PMB 353'},
+              name_servers: ['NS1.RACKSPACE.COM', 'NS2.RACKSPACE.COM'],
+              name: 'topzy.com',
+              registrant_contact: {
+                email: '', zip: '85260', organization: 'DomainsByProxy.com',
+                state: 'Arizona', city: 'Scottsdale', fax: '', first_name: 'Domains by Proxy, Inc.',
+                country: '', phone: '', address: '15111 N. Hayden Rd., Ste 160, PMB 353' },
+              whois: 'TERMS OF USE: You are not authorized to access or query ...'} });
+  };")
+end
+
+When /^I mock getRecords for domain "([^"]*)"$/ do |domain|
+  page.execute_script("Badger.getRecords = function(name, callback){
+    callback([
+      { id: 78, domain_id: 2, record_type: 'A', content: '244.245.123.19', ttl: 1800, priority: '',
+        name: 'subdomain.#{domain}', active: true },
+      { id: 79, domain_id: 2, record_type: 'MX', content: 'smtp.badger.com', ttl: 1800, priority: 10,
+        name: '#{domain}', active: true },
+      { id: 80, domain_id: 2, record_type: 'TXT', content: 'v=spf1 mx mx:rhinonamesmail.com ~all', ttl: 1800, priority: '',
+        name: '#{domain}', active: true },
+      { id: 81, domain_id: 2, record_type: 'CNAME', content: 'ghs.google.com', ttl: 1800, priority: '',
+        name: 'calendar.#{domain}', active: true }
+    ]
+    );
   };")
 end
