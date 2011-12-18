@@ -53,13 +53,16 @@ with (Hasher.Controller('BulkRegister','Application')) {
           $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html('Failed');
         } else {
           $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html('Succeed');
-          helper('Application.update_credits', true);
-          BadgerCache.flush('domains');
-          BadgerCache.getDomains(function() { update_my_domains_count(); });
         }
       });
     });
-
+  });
+  
+  create_action('close_bulk_modal', function() {
+    BadgerCache.flush('domains');
+    BadgerCache.getDomains(function() { update_my_domains_count(); });
+    helper('Application.update_credits', true);
+    call_action('Modal.hide');
     redirect_to('#');
   });
 
@@ -115,7 +118,7 @@ with (Hasher.View('BulkRegister','Application')) {
           )
         )
       ),
-      div({ style: 'text-align: right; margin-top: 10px;' }, a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close"))
+      div({ style: 'text-align: right; margin-top: 10px;' }, a({ href: action('close_bulk_modal'), 'class': 'myButton', value: "submit" }, "Close"))
     ];
   });
 }

@@ -66,14 +66,21 @@ with (Hasher.Controller('BulkTransfer','Application')) {
               $('#bulk-transfer-result-table td#' + domain.name.replace(/\./g,'-') + '-' + local_count + '-transfer-status').html('Failed');
             } else {
               $('#bulk-transfer-result-table td#' + domain.name.replace(/\./g,'-') + '-' + local_count + '-transfer-status').html('Succeed');
-              helper('Application.update_credits', true);
-              BadgerCache.flush('domains');
             }
           });
       }});
     });
 
   });
+
+  create_action('close_bulk_modal', function() {
+    BadgerCache.flush('domains');
+    BadgerCache.getDomains(function() { update_my_domains_count(); });
+    helper('Application.update_credits', true);
+    call_action('Modal.hide');
+    redirect_to('#');
+  });
+
 };
 
 with (Hasher.View('BulkTransfer','Application')) {
@@ -129,7 +136,7 @@ with (Hasher.View('BulkTransfer','Application')) {
           )
         )
       ),
-      div({ style: 'text-align: right; margin-top: 10px;' }, a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close"))
+      div({ style: 'text-align: right; margin-top: 10px;' }, a({ href: action('close_bulk_modal'), 'class': 'myButton', value: "submit" }, "Close"))
     ];
   });
 };
