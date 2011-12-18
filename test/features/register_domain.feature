@@ -27,7 +27,8 @@ Feature: Register Domain
 
   Scenario: I successfully register a domain
     Then I should see "MY DOMAINS (3)" within "#sidebar"
-    And I should see "Other Applications To Install"
+    And I should see "Installed Applications"
+    And I should see "Available Applications"
     # And I should see "You've just registered mydomain.com. Here are some things you can do:"
     # And I should see "View domain details"
     # And I should see "Modify DNS Settings"

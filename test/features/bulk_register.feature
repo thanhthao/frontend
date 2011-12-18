@@ -5,12 +5,9 @@ Feature: Bulk Transfer
 
   Scenario: I should be able to bulk-register domains when I have at least one contact and enough credits
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
-    And I mock domain search result for keys:
-      | key              | com   | net   |
-      | mydomain         | true  | false |
-    And I fill in "form-search-input" with "mydomain"
-    Then I should see "If you would like to register many domains at once, try our Bulk Register tool."
-    And I follow "Bulk Register"
+    And I fill in "form-search-input" with ""
+    Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
+    And I follow "Bulk Register Tool"
     Then I should see "BULK REGISTER"
     And I should see "Type in domains you want to register, one per line:"
     And I should see "Registrant:"
@@ -36,12 +33,9 @@ Feature: Bulk Transfer
 
   Scenario: I should be able to bulk-register my domains when I have at least one contact but not enough credits
     Given I logged in with mock data for domains and user info with 1 domain credits and 5 invites available
-    And I mock domain search result for keys:
-      | key              | com   | net   |
-      | mydomain         | true  | false |
-    And I fill in "form-search-input" with "mydomain"
-    Then I should see "If you would like to register many domains at once, try our Bulk Register tool."
-    And I follow "Bulk Register"
+    And I fill in "form-search-input" with ""
+    Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
+    And I follow "Bulk Register Tool"
     Then I should see "BULK REGISTER"
     And I should see "Type in domains you want to register, one per line"
     And I should see "Registrant:"
@@ -73,12 +67,9 @@ Feature: Bulk Transfer
   Scenario: I should be able to bulk-register my domains when I have no contact but enough credits
     Given I logged in with mock data for domains and user info with 10 domain credits and 5 invites available
     And I mock getContacts returns 0 contacts
-    And I mock domain search result for keys:
-      | key              | com   | net   |
-      | mydomain         | true  | false |
-    And I fill in "form-search-input" with "mydomain"
-    Then I should see "If you would like to register many domains at once, try our Bulk Register tool."
-    And I follow "Bulk Register"
+    And I fill in "form-search-input" with ""
+    Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
+    And I follow "Bulk Register Tool"
     Then I should see "Create Profile"
     And I should see "You must have at least one contact profile to bulk-register domain."
     And I fill in "first_name" with "East Agile"
@@ -119,12 +110,9 @@ Feature: Bulk Transfer
   Scenario: I should be able to bulk-register my domains when I have no contact and not enough credits
     Given I logged in with mock data for domains and user info with 1 domain credits and 5 invites available
     And I mock getContacts returns 0 contacts
-    And I mock domain search result for keys:
-      | key              | com   | net   |
-      | mydomain         | true  | false |
-    And I fill in "form-search-input" with "mydomain"
-    Then I should see "If you would like to register many domains at once, try our Bulk Register tool."
-    And I follow "Bulk Register"
+    And I fill in "form-search-input" with ""
+    Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
+    And I follow "Bulk Register Tool"
     Then I should see "Create Profile"
     And I should see "You must have at least one contact profile to bulk-register domain."
     And I fill in "first_name" with "East Agile"

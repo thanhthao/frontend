@@ -34,9 +34,14 @@ with (Hasher('DomainApps','Application')) {
     console.log("load domain object for: " + get_route());
   });
 
+  define('domain_status_description', function(domain_obj) {
+    return p('This domain is in active and will auto-renew for 1 Credit on ', new Date(Date.parse(domain_obj.expires_on)).toDateString(), '.');
+  });
+
   define('render_all_application_icons', function(domain) {
     var installed_apps = div();
     var available_apps = div();
+    var status_div = div();
 
     load_domain(domain, function(domain_obj) {
       for (var key in Hasher.domain_apps) {
@@ -65,12 +70,16 @@ with (Hasher('DomainApps','Application')) {
           if (target.childNodes.length % 7 == 6) target.appendChild(div({ style: 'clear: left ' }));
         }
       }
+      
+      status_div.appendChild(domain_status_description(domain_obj));
     });
     
     return [
+      status_div,
+      h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Installed Applications'),
       installed_apps,
       div({ style: 'clear: both '}),
-      h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Other Applications To Install'),
+      h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Available Applications'),
       available_apps,
       div({ style: 'clear: both '})
     ];
