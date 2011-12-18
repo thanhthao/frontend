@@ -87,7 +87,7 @@ with (Hasher.View('BulkTransfer','Application')) {
 
 	create_helper('get_bulk_domain_form', function() {
     return div(
-      h1('BULK TRANSFER'),
+      h1('BULK TRANSFER (EXPERIMENTAL)'),
       div({ 'class': 'error-message hidden', id: 'bulk-transfer-form-error' }),
       form({ action: action('BulkTransfer.get_transfer_domain_lists') },
         p('Domains and their corresponding authentication codes, each pair per line:'),

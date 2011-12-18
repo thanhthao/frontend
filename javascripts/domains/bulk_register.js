@@ -72,7 +72,7 @@ with (Hasher.View('BulkRegister','Application')) {
 
 	create_helper('get_bulk_domain_form', function() {
     return div(
-      h1('BULK REGISTER'),
+      h1('BULK REGISTER (EXPERIMENTAL)'),
       div({ 'class': 'error-message hidden', id: 'bulk-register-form-error' }),
       form({ action: action('get_register_domain_lists') },
         p('Type in domains you want to register, one per line:'),
