@@ -35,7 +35,7 @@ with (Hasher('DomainApps','Application')) {
   });
 
   define('domain_status_description', function(domain_obj) {
-    return p('This domain is in active and will auto-renew for 1 Credit on ', new Date(Date.parse(domain_obj.expires_on)).toDateString(), '.');
+    return p('This domain is ', domain_obj.status, ' and will auto-renew for 1 Credit on ', new Date(Date.parse(domain_obj.expires_on)).toDateString(), '.');
   });
 
   define('render_all_application_icons', function(domain) {

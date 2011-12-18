@@ -110,9 +110,9 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
 
   define('app_dns_rows', function(app_name, app_id, records, domain) {
     return [
-      tr(
-        td({ colspan: 5, 'class': 'app_dns_header' }, h1(app_name),
-        div({ style: 'float: right; margin-top: -44px' },
+      tr({ 'class': 'table-header' },
+        td({ colspan: 5, 'class': 'app_dns_header' }, h2({ style: "border-bottom: 1px solid #888; padding-bottom: 5px; margin-bottom: 0" }, app_name),
+        div({ style: 'float: right; margin-top: -30px' },
           a({ 'class': 'myButton myButton-small', href: curry(show_settings_modal_for_app, app_id, domain) }, 'Settings')
         ))
       ),

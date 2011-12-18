@@ -48,7 +48,7 @@ with (Hasher()) {
     'div', 'p', 'span', 'img', 'br', 'hr', 'i', 'b', 'strong',
     'ul', 'ol', 'li', 'dl', 'dt', 'dd',
     'table', 'tr', 'td', 'th', 'thead', 'tbody', 'tfoot',
-    'select', 'option', 'textarea', 'button', 'label',
+    'select', 'option', 'optgroup', 'textarea', 'button', 'label',
     function(tag) { 
       define(tag, function() { return element(tag, arguments) }); 
     }
