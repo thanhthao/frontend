@@ -97,3 +97,15 @@ end
 Then /^the "([^"]*)" drop-down should not contain the option "([^"]*)"$/ do |id, value|
   page.should_not have_xpath "//select[@name = '#{id}']/option[text() = '#{value}']"
 end
+
+Then /^I click "([^"]*)" on the confirmation$/ do |action|
+  if action == "Ok"
+    page.driver.browser.switch_to.alert.accept
+  elsif action == "Cancel"
+    page.driver.browser.switch_to.alert.dismiss
+  end
+end
+
+Given /^I click on item with xpath "([^"]*)"$/ do |path|
+  find(:xpath, path).click
+end

@@ -51,7 +51,7 @@ with (Hasher('EmailForwards', 'DomainApps')) {
   });
   
   define('show_email_forward_table_row', function(domain, email_forward) {
-    return tr({ id: email_forward.username },
+    return tr({ id: 'id-' + (email_forward.username == '*' ? '' : email_forward.username) },
       td(email_forward.username, "@", domain),
       td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
       td(email_forward.destination),
@@ -91,7 +91,7 @@ with (Hasher('EmailForwards', 'DomainApps')) {
             helper('Application.error_message', response)
           )
         } else {
-          $('#email-forwards-table tr#' + email_forward.username).remove(); //remove the row
+          $('#email-forwards-table tr#id-' + (email_forward.username == '*' ? '' : email_forward.username)).remove(); //remove the row
         }
       });
     }
