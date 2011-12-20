@@ -166,7 +166,10 @@ var Badger = {
   deleteRecord: function(name, id, callback) {
     Badger.api("/domains/" + name + "/records/" + id, "DELETE", callback);
   },
-  
+
+  updateRecord: function(name, id, data, callback) {
+    Badger.api("/domains/" + name + "/records/" + id, "PUT", data, callback);
+  },
 
   registerDomain: function(data, callback) {
     Badger.api("/domains", 'POST', data, callback);

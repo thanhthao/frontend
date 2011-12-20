@@ -24,6 +24,16 @@ Then /^(?:|I )should see "([^"]*)" within "([^"]*)"$/ do |text, context|
   end
 end
 
+Then /^(?:|I )should not see "([^"]*)" within "([^"]*)"$/ do |text, context|
+  within(context) do
+    if page.respond_to? :should
+      page.should_not have_content(text)
+    else
+      assert !page.has_content?(text)
+    end
+  end
+end
+
 Then /^(?:|I )should see a link with href "([^"]*)"( with new window|)$/ do |href, new_window|
   page.should have_xpath("//a[@href='#{href}'#{" and @target='_blank'" unless new_window.empty?}]")
 end
@@ -108,4 +118,8 @@ end
 
 Given /^I click on item with xpath "([^"]*)"$/ do |path|
   find(:xpath, path).click
+end
+
+When /^I hover mouse over item with id "([^"]*)"$/ do |id|
+  page.evaluate_script("$('##{id}').click();")
 end

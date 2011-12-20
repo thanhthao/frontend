@@ -66,10 +66,10 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
           
           tr(
             td(
-              select({ id: 'dns-add-type', onchange: show_correct_form_fields }, 
+              select({ id: 'dns-add-type', onchange: function() { show_correct_form_fields(); } },
                 option('A'), 
                 //option('AAAA'), 
-                option('CNAME'), 
+                option('CNAME'),
                 option('MX'), 
                 option('TXT')
               )
@@ -86,14 +86,14 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
               select({ id: 'dns-add-ttl' }, 
                 option({ value: '1800' }, '30 mins'), 
                 option({ value: '3600' }, '1 hour'),
-                option({ value: '3600' }, '6 hours'),
-                option({ value: '3600' }, '12 hours'),
+                option({ value: '21600' }, '6 hours'),
+                option({ value: '43200' }, '12 hours'),
                 option({ value: '86400' }, '1 day'),
                 option({ value: '259200' }, '3 days'),
                 option({ value: '604800' }, '1 week')
               )
             ),
-            td({ style: 'text-align: center' }, button({ 'class': 'myButton myButton-small', onclick: curry(dns_add, domain) }, 'Add'))
+            td({ style: 'text-align: center' }, button({ style: "background-image: url(images/add.gif); background-color:Transparent; border: none; width: 16px; height: 16px;", onclick: curry(dns_add, domain) }))
           ),
           
           records.map(function(record) {
@@ -111,7 +111,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
   define('app_dns_rows', function(app_name, app_id, records, domain) {
     return [
       tr({ 'class': 'table-header' },
-        td({ colspan: 5, 'class': 'app_dns_header' }, h2({ style: "border-bottom: 1px solid #888; padding-bottom: 5px; margin-bottom: 0" }, app_name),
+        td({ colSpan: 5, 'class': 'app_dns_header' }, h2({ style: "border-bottom: 1px solid #888; padding-bottom: 5px; margin-bottom: 0" }, app_name),
         div({ style: 'float: right; margin-top: -30px' },
           a({ 'class': 'myButton myButton-small', href: curry(show_settings_modal_for_app, app_id, domain) }, 'Settings')
         ))
@@ -123,50 +123,65 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
   });
 
   define('record_row', function(record, domain, editable) {
-    return tr(
+    return tr({ id: 'dns-row-' + record.id },
       td(record.record_type.toUpperCase()),
       td(record.name.replace(domain,''), span({ style: 'color: #888' }, domain)),
       td(record.priority, ' ', record.content),
       td(parse_readable_ttl(record.ttl)),
-      editable ? td({ style: "text-align: center" },
-        //button({ events: { 'click': action('dns_edit', domain, record.id) }}, 'Edit'),
-        a({ href: curry(dns_delete, domain, record.id) }, img({ src: 'images/icon-no.gif'}))
-      ) : td()
+      editable ? td({ style: "text-align: center; min-width: 40px;"},
+        div({ 'class': 'edit-buttons' },
+          //button({ events: { 'click': action('dns_edit', domain, record.id) }}, 'Edit'),
+          a({ 'class': 'hover-buttons icon-buttons', href: curry(dns_delete, domain, record.id) }, img({ src: 'images/trash.gif'})),
+          a({ 'class': 'hover-buttons icon-buttons', href: curry(edit_dns, domain, record) }, img({ src: 'images/edit.gif'}))
+      )) : td()
     );
   });
   
-  define('show_correct_form_fields', function() {
-    var record_type = $('#dns-add-type').val();
-    $('#dns-add-content-ipv4')[['A'].indexOf(record_type) >= 0 ? 'show' : 'hide']();
-    $('#dns-add-content-ipv6')[['AAAA'].indexOf(record_type) >= 0  ? 'show' : 'hide']();
-    $('#dns-add-content-host')[['CNAME','MX'].indexOf(record_type) >= 0  ? 'show' : 'hide']();
-    $('#dns-add-content-priority')[['MX'].indexOf(record_type) >= 0  ? 'show' : 'hide']();
-    $('#dns-add-content-text')[['TXT'].indexOf(record_type) >= 0  ? 'show' : 'hide']();
+  define('show_correct_form_fields', function(id) {
+    var type = '-add-';
+    if (id != null)
+      type = '-' + id + '-edit-';
+    var record_type = $('#dns' + type + 'type').val();
+    $('#dns' + type + 'content-ipv4')[['A'].indexOf(record_type) >= 0 ? 'show' : 'hide']();
+    $('#dns' + type + 'content-ipv6')[['AAAA'].indexOf(record_type) >= 0  ? 'show' : 'hide']();
+    $('#dns' + type + 'content-host')[['CNAME','MX'].indexOf(record_type) >= 0  ? 'show' : 'hide']();
+    $('#dns' + type + 'content-priority')[['MX'].indexOf(record_type) >= 0  ? 'show' : 'hide']();
+    $('#dns' + type + 'content-text')[['TXT'].indexOf(record_type) >= 0  ? 'show' : 'hide']();
   });
-  
-  define('dns_add', function(domain) {
+
+define('get_dns_params', function(id) {
+    var type = '-add-';
+    if (id != null)
+      type = '-' + id + '-edit-';
+
     $('#errors').empty();
-    
+
     var dns_fields = {
-      record_type: $('#dns-add-type').val(),
-      name: $('#dns-add-name').val(),
-      ttl: $('#dns-add-ttl').val()
+      record_type: $('#dns' + type + 'type').val(),
+      name: $('#dns' + type + 'name').val(),
+      ttl: $('#dns' + type + 'ttl').val()
     };
-    
+
     if (dns_fields.record_type == 'A') {
-      dns_fields.content = $('#dns-add-content-ipv4').val();
+      dns_fields.content = $('#dns' + type + 'content-ipv4').val();
     } else if (dns_fields.record_type == 'AAAA') {
-      dns_fields.content = $('#dns-add-content-ipv6').val();
+      dns_fields.content = $('#dns' + type + 'content-ipv6').val();
     } else if (dns_fields.record_type == 'CNAME') {
-      dns_fields.content = $('#dns-add-content-host').val();
+      dns_fields.content = $('#dns' + type + 'content-host').val();
     } else if (dns_fields.record_type == 'MX') {
-      dns_fields.content = $('#dns-add-content-host').val();
-      dns_fields.priority = $('#dns-add-content-priority').val();
+      dns_fields.content = $('#dns' + type + 'content-host').val();
+      dns_fields.priority = $('#dns' + type + 'content-priority').val();
     } else if (dns_fields.record_type == 'TXT') {
-      dns_fields.content = $('#dns-add-content-text').val();
+      dns_fields.content = $('#dns' + type + 'content-text').val();
     }
 
-    Badger.addRecord(domain, dns_fields, function(response) {
+    return dns_fields;
+  });
+
+  define('dns_add', function(domain) {
+    $('#errors').empty();
+
+    Badger.addRecord(domain, get_dns_params(), function(response) {
       if (response.meta.status == 'ok') {
         set_route(get_route());
       } else {
@@ -182,6 +197,73 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
         set_route(get_route());
       })
     }
+  });
+
+  define('dns_update', function(domain, record) {
+    $('#errors').empty();
+
+    Badger.updateRecord(domain, record.id, get_dns_params(record.id), function(results) {
+      if (results.meta.status == 'ok') {
+        $('#dns-row-' + record.id).remove();
+        $('#edit-dns-' + record.id).after(record_row(results.data, domain, true));
+        $('#edit-dns-' + record.id).remove();
+      } else {
+        $('#errors').empty().append(helper('Application.error_message', results));
+      }
+    })
+  });
+
+  define('edit_dns', function(domain, record) {
+    $('#dns-row-' + record.id).after(edit_dns_row(domain, record));
+    $('#dns-row-' + record.id).addClass('hidden');
+    show_correct_form_fields(record.id);
+  });
+
+  define('reset_dns_row', function(id) {
+    $('#dns-row-' + id).removeClass('hidden');
+    $('#edit-dns-' + id).remove();
+  });
+
+  define('edit_dns_row', function(domain, record) {
+    return tr({ id: 'edit-dns-' + record.id },
+            td(
+              select({ id: 'dns-' + record.id + '-edit-type', onchange: function() { show_correct_form_fields(record.id); } },
+                option( record.record_type == 'A' ? { selected: 'selected' } : {}, 'A'),
+                option( record.record_type == 'CNAME' ? { selected: 'selected' } : {}, 'CNAME'),
+                option( record.record_type == 'MX' ? { selected: 'selected' } : {}, 'MX'),
+                option( record.record_type == 'TXT' ? { selected: 'selected' } : {}, 'TXT')
+              )
+            ),
+            td(input({ style: 'width: 60px', id: 'dns-'+record.id+'-edit-name', value: record.name.replace('.'+domain,'') }), span({ style: 'color: #888' }, '.' + domain)),
+            td(
+              select({ id: 'dns-' + record.id + '-edit-content-priority' },
+                option( record.priority == 10 ? { selected: 'selected' } : {}, '10'),
+                option( record.priority == 20 ? { selected: 'selected' } : {}, '20'),
+                option( record.priority == 30 ? { selected: 'selected' } : {}, '30'),
+                option( record.priority == 40 ? { selected: 'selected' } : {}, '40'),
+                option( record.priority == 50 ? { selected: 'selected' } : {}, '50')
+              ),
+              input({ id: 'dns-' + record.id + '-edit-content-ipv4', placeholder: 'XXX.XXX.XXX.XXX', value: record.content }),
+              input({ id: 'dns-' + record.id + '-edit-content-ipv6', placeholder: 'XXXX:XXXX:XXXX:XXXX:XXXX:XXXX:XXXX:XXXX', value: record.content }),
+              input({ id: 'dns-' + record.id + '-edit-content-host', placeholder: 'example.com', value: record.content }),
+              input({ id: 'dns-' + record.id + '-edit-content-text', placeholder: 'SPF, domain keys, etc.', value: record.content })
+            ),
+            td(
+              select({ id: 'dns-' + record.id + '-edit-ttl' },
+                option({ value: '1800' }, '30 mins'),
+                option(record.ttl == 3600 ? { selected: 'selected', value: '3600' } : { value: '3600' }, '1 hour'),
+                option(record.ttl == 21600 ? { selected: 'selected', value: '21600' } : { value: '21600' }, '6 hours'),
+                option(record.ttl == 43200 ? { selected: 'selected', value: '43200' } : { value: '43200' }, '12 hours'),
+                option(record.ttl == 86400 ? { selected: 'selected', value: '86400' } : { value: '86400' }, '1 day'),
+                option(record.ttl == 259200 ? { selected: 'selected', value: '259200' } : { value: '259200' }, '3 days'),
+                option(record.ttl == 604800 ? { selected: 'selected', value: '604800' } : { value: '604800' }, '1 week')
+              )
+            ),
+            td({ style: 'text-align: center; min-width: 40px' },
+              a({ 'class': 'icon-buttons', href: curry(dns_update, domain, record) }, img({ src: 'images/save.png'})),
+              a({ 'class': 'icon-buttons', href: curry(reset_dns_row, record.id) }, img({ src: 'images/cancel.png'}))
+            )
+    )
   });
 
   define('parse_readable_ttl', function(ttl) {

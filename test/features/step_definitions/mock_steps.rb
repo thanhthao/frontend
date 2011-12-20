@@ -121,6 +121,22 @@ Given /^I mock getRecords with empty records$/ do
   };")
 end
 
+Given /^I mock updateRecord with status "([^"]*)" for keys:$/ do |status, table|
+  attributes = table.hashes.first
+  record = "{ id: 78, domain_id: 2, record_type: 'A', name: '#{attributes['name']}',
+              content: '#{attributes['content']}', ttl: #{attributes['ttl']}, priority: '',
+              active: true }"
+  if status == 'ok'
+    page.execute_script("Badger.updateRecord = function(name, id, data, callback){
+      callback({ meta: { status: 'ok' }, data: #{record} });
+    };")
+  else
+    page.execute_script("Badger.updateRecord = function(name, id, data, callback){
+      callback({ meta: { status: 'unprocessable_entity' }, data: { message: 'Unable to update record' }});
+    };")
+  end
+end
+
 Given /^I mock sendInvite with status "([^"]*)"$/ do |status|
   page.execute_script("Badger.sendInvite = function(data, callback){
     callback({ meta : {status: '#{status}'}, data : { message: 'Notification message' } });
