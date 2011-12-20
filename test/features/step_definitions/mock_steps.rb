@@ -245,3 +245,19 @@ When /^I mock getRecords for domain "([^"]*)"$/ do |domain|
     );
   };")
 end
+
+When /^I mock getEmailForwards for domain "([^"]*)"$/ do |domain|
+  page.execute_script("Badger.getEmailForwards = function(domain, callback){
+    callback( { data: [
+      { id: 15, domain_id: 2, username: 'abc', destination: 'abc@abc.com', created_at: '2011-12-19 05:01:23', updated_at: '2011-12-19 05:01:23'},
+      { id: 16, domain_id: 2, username: '*', destination: '*@abc.com', created_at: '2011-12-19 05:01:43', updated_at: '2011-12-19 05:01:43'}
+    ] }
+    );
+  };")
+end
+
+When /^I mock deleteEmailForwards for domain "([^"]*)"$/ do |domain|
+  page.execute_script("Badger.deleteEmailForward = function(domain, id, callback){
+    callback({ meta : {status: 'ok'} });
+  };")
+end
