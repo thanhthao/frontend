@@ -63,14 +63,14 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
             th('TTL'),
             th(' ')
           ),
-          
+
           tr(
             td(
               select({ id: 'dns-add-type', onchange: function() { show_correct_form_fields(); } },
-                option('A'), 
-                //option('AAAA'), 
+                option('A'),
+                //option('AAAA'),
                 option('CNAME'),
-                option('MX'), 
+                option('MX'),
                 option('TXT')
               )
             ),
@@ -83,8 +83,8 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
               input({ id: 'dns-add-content-text', placeholder: 'SPF, domain keys, etc.' })
             ),
             td(
-              select({ id: 'dns-add-ttl' }, 
-                option({ value: '1800' }, '30 mins'), 
+              select({ id: 'dns-add-ttl' },
+                option({ value: '1800' }, '30 mins'),
                 option({ value: '3600' }, '1 hour'),
                 option({ value: '21600' }, '6 hours'),
                 option({ value: '43200' }, '12 hours'),
@@ -95,13 +95,13 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
             ),
             td({ style: 'text-align: center' }, button({ style: "background-image: url(images/add.gif); background-color:Transparent; border: none; width: 16px; height: 16px;", onclick: curry(dns_add, domain) }))
           ),
-          
-          records.map(function(record) {
+
+          sort_dns_records(records).map(function(record) {
             return record_row(record, domain, true)
           }),
 
           app_dns.map(function(app_item) {
-            return app_dns_rows(app_item.app_name, app_item.app_id, app_item.records, domain);
+            return app_dns_rows(app_item.app_name, app_item.app_id, sort_dns_records(app_item.records), domain);
           })
         )
       )
@@ -136,7 +136,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
       )) : td()
     );
   });
-  
+
   define('show_correct_form_fields', function(id) {
     var type = '-add-';
     if (id != null)
@@ -204,9 +204,7 @@ define('get_dns_params', function(id) {
 
     Badger.updateRecord(domain, record.id, get_dns_params(record.id), function(results) {
       if (results.meta.status == 'ok') {
-        $('#dns-row-' + record.id).remove();
-        $('#edit-dns-' + record.id).after(record_row(results.data, domain, true));
-        $('#edit-dns-' + record.id).remove();
+        set_route(get_route());
       } else {
         $('#errors').empty().append(helper('Application.error_message', results));
       }
@@ -278,5 +276,29 @@ define('get_dns_params', function(id) {
       return item[1] > 0 ? (item[1] > 1 ? (item[1] + ' ' + item[0] + 's') : "1 " + item[0]) : ''
     });
     return $.grep(array, function(item) { return item != '' }).join(' ');
+  });
+
+  define('sort_dns_records', function(records) {
+    var results = [];
+    var count = 0;
+    var tempts = records.map(function(record) {
+      return [record.record_type + (record.priority || '').toString() + record.name + record.content, count++];
+    });
+
+    tempts.sort(function(x,y){
+      var a = x.toString().toUpperCase();
+      var b = y.toString().toUpperCase();
+      if (a > b)
+         return 1
+      if (a < b)
+         return -1
+      return 0;
+    });
+
+    results = tempts.map(function(item) {
+      return records[item[1]];
+    })
+
+    return results;
   });
 }
