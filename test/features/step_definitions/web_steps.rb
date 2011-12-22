@@ -123,3 +123,7 @@ end
 When /^I hover mouse over item with id "([^"]*)"$/ do |id|
   page.evaluate_script("$('##{id}').click();")
 end
+
+When /^I switch to new window$/ do
+  page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
+end

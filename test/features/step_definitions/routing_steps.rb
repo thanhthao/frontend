@@ -27,3 +27,7 @@ end
 When /^I visit Email Forwarding for domain "([^"]*)"$/ do |domain|
   visit("/index.html#domains/#{domain}/email_forwards")
 end
+
+Given /^I view terms of service when registering$/ do
+  visit('/index.html#register_terms_of_service')
+end

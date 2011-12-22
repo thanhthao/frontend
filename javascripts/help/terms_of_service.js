@@ -4,14 +4,14 @@ with (Hasher.Controller('TermsOfService','Application')) {
   });
 
   create_action('terms_of_service', function() {
-    render('terms_of_service');
+    render(helper('terms_of_service'));
   });
 
   layout('dashboard');
 }
 
 with (Hasher.View('TermsOfService', 'Application')) {
-  create_view('terms_of_service', function() {
+  create_helper('terms_of_service', function() {
     return div(
       h1('Domain Name Registration Agreement'),
       h2('Domain Name Registration Agreement'),
