@@ -134,6 +134,8 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 .invite-status-table .center { text-align: center; }
 .invite-status-table .revoke-button { font-size: 13px; padding: 4px 12px; }
 
+#signup-box .terms_of_service { margin: 10px 0; }
+#signup-box .terms_of_service input { margin-top: 0; }
 
 .purchase-credits td, .purchase-credits th { text-align: center; }
 .purchase-credits tr { cursor: pointer; }

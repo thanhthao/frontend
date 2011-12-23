@@ -251,12 +251,12 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 					input({ name: 'confirm_password', placeholder: 'Confirm Password', type: 'password' })
 				),
 
-        div(
+        div({ 'class': 'terms_of_service' },
           input({ type: 'checkbox', name: 'agree_to_terms', id: 'agree_to_terms', checked: 'checked', value: true }),
-          label({ 'for': 'agree_to_terms' }, ' I agree to ')
+          label({ 'for': 'agree_to_terms' }, ' I agree to ',
+            a({ href: window.location.href.split('#')[0] + '#register_terms_of_service', target: '_blank' }, 'Terms of Service'))
         ),
-        a({ href: window.location.href.split('#')[0] + '#register_terms_of_service', target: '_blank' }, 'Terms of Service'),
-        div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit', value: 'Submit' }))
+        div( input({ 'class': 'myButton', type: 'submit', value: 'Submit' }))
       )
     );
   });
