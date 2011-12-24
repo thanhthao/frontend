@@ -44,6 +44,7 @@ with (Hasher('DomainApps','Application')) {
     var status_div = div();
 
     load_domain(domain, function(domain_obj) {
+      //domain_obj.current_registrar = '1and1';
       for (var key in Hasher.domain_apps) {
         var app = Hasher.domain_apps[key];
         if (app.menu_item) {
@@ -62,8 +63,8 @@ with (Hasher('DomainApps','Application')) {
           }
           target.appendChild(
             a({ 'class': 'app_store_container', href: href },
-              span({ 'class': 'app_store_icon', style: 'background-image: url(' + (app.icon || 'images/apps/badger.png') + ')' } ),
-              span({ style: 'text-align: center; font-weight: bold' }, app.name)
+              span({ 'class': 'app_store_icon', style: 'background-image: url(' + ((app.icon && app.icon.call ? app.icon.call(null, domain_obj) : app.icon) || 'images/apps/badger.png') + ')' } ),
+              span({ style: 'text-align: center; font-weight: bold' }, (app.name.call ? app.name.call(null, domain_obj) : app.name))
             )
           );
           // add a clear every six icons

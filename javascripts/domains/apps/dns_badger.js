@@ -93,7 +93,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
                 option({ value: '604800' }, '1 week')
               )
             ),
-            td({ style: 'text-align: center' }, button({ style: "background-image: url(images/add.gif); background-color:Transparent; border: none; width: 16px; height: 16px;", onclick: curry(dns_add, domain) }))
+            td({ style: 'text-align: center' }, button({ style: "background-image: url(images/add.gif); background-color:Transparent; border: none; width: 16px; height: 16px; cursor: pointer", onclick: curry(dns_add, domain) }))
           ),
 
           sort_dns_records(records).map(function(record) {
@@ -131,8 +131,8 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
       editable ? td({ style: "text-align: center; min-width: 40px;"},
         div({ 'class': 'edit-buttons' },
           //button({ events: { 'click': action('dns_edit', domain, record.id) }}, 'Edit'),
-          a({ 'class': 'hover-buttons icon-buttons', href: curry(dns_delete, domain, record.id) }, img({ src: 'images/trash.gif'})),
-          a({ 'class': 'hover-buttons icon-buttons', href: curry(edit_dns, domain, record) }, img({ src: 'images/edit.gif'}))
+          a({ 'class': 'hover-buttons icon-buttons', href: curry(edit_dns, domain, record) }, img({ src: 'images/edit.gif'})),
+          a({ 'class': 'hover-buttons icon-buttons', href: curry(dns_delete, domain, record.id) }, img({ src: 'images/trash.gif'}))
       )) : td()
     );
   });
@@ -224,44 +224,44 @@ define('get_dns_params', function(id) {
 
   define('edit_dns_row', function(domain, record) {
     return tr({ id: 'edit-dns-' + record.id },
-            td(
-              select({ id: 'dns-' + record.id + '-edit-type', onchange: function() { show_correct_form_fields(record.id); } },
-                option( record.record_type == 'A' ? { selected: 'selected' } : {}, 'A'),
-                option( record.record_type == 'CNAME' ? { selected: 'selected' } : {}, 'CNAME'),
-                option( record.record_type == 'MX' ? { selected: 'selected' } : {}, 'MX'),
-                option( record.record_type == 'TXT' ? { selected: 'selected' } : {}, 'TXT')
-              )
-            ),
-            td(input({ style: 'width: 60px', id: 'dns-'+record.id+'-edit-name', value: record.name.replace('.'+domain,'') }), span({ style: 'color: #888' }, '.' + domain)),
-            td(
-              select({ id: 'dns-' + record.id + '-edit-content-priority' },
-                option( record.priority == 10 ? { selected: 'selected' } : {}, '10'),
-                option( record.priority == 20 ? { selected: 'selected' } : {}, '20'),
-                option( record.priority == 30 ? { selected: 'selected' } : {}, '30'),
-                option( record.priority == 40 ? { selected: 'selected' } : {}, '40'),
-                option( record.priority == 50 ? { selected: 'selected' } : {}, '50')
-              ),
-              input({ id: 'dns-' + record.id + '-edit-content-ipv4', placeholder: 'XXX.XXX.XXX.XXX', value: record.content }),
-              input({ id: 'dns-' + record.id + '-edit-content-ipv6', placeholder: 'XXXX:XXXX:XXXX:XXXX:XXXX:XXXX:XXXX:XXXX', value: record.content }),
-              input({ id: 'dns-' + record.id + '-edit-content-host', placeholder: 'example.com', value: record.content }),
-              input({ id: 'dns-' + record.id + '-edit-content-text', placeholder: 'SPF, domain keys, etc.', value: record.content })
-            ),
-            td(
-              select({ id: 'dns-' + record.id + '-edit-ttl' },
-                option({ value: '1800' }, '30 mins'),
-                option(record.ttl == 3600 ? { selected: 'selected', value: '3600' } : { value: '3600' }, '1 hour'),
-                option(record.ttl == 21600 ? { selected: 'selected', value: '21600' } : { value: '21600' }, '6 hours'),
-                option(record.ttl == 43200 ? { selected: 'selected', value: '43200' } : { value: '43200' }, '12 hours'),
-                option(record.ttl == 86400 ? { selected: 'selected', value: '86400' } : { value: '86400' }, '1 day'),
-                option(record.ttl == 259200 ? { selected: 'selected', value: '259200' } : { value: '259200' }, '3 days'),
-                option(record.ttl == 604800 ? { selected: 'selected', value: '604800' } : { value: '604800' }, '1 week')
-              )
-            ),
-            td({ style: 'text-align: center; min-width: 40px' },
-              a({ 'class': 'icon-buttons', href: curry(dns_update, domain, record) }, img({ src: 'images/save.png'})),
-              a({ 'class': 'icon-buttons', href: curry(reset_dns_row, record.id) }, img({ src: 'images/cancel.png'}))
-            )
-    )
+      td(
+        select({ id: 'dns-' + record.id + '-edit-type', onchange: function() { show_correct_form_fields(record.id); } },
+          option( record.record_type == 'A' ? { selected: 'selected' } : {}, 'A'),
+          option( record.record_type == 'CNAME' ? { selected: 'selected' } : {}, 'CNAME'),
+          option( record.record_type == 'MX' ? { selected: 'selected' } : {}, 'MX'),
+          option( record.record_type == 'TXT' ? { selected: 'selected' } : {}, 'TXT')
+        )
+      ),
+      td(input({ style: 'width: 60px', id: 'dns-'+record.id+'-edit-name', value: record.name.replace('.'+domain,'') }), span({ style: 'color: #888' }, '.' + domain)),
+      td(
+        select({ id: 'dns-' + record.id + '-edit-content-priority' },
+          option( record.priority == 10 ? { selected: 'selected' } : {}, '10'),
+          option( record.priority == 20 ? { selected: 'selected' } : {}, '20'),
+          option( record.priority == 30 ? { selected: 'selected' } : {}, '30'),
+          option( record.priority == 40 ? { selected: 'selected' } : {}, '40'),
+          option( record.priority == 50 ? { selected: 'selected' } : {}, '50')
+        ),
+        input({ id: 'dns-' + record.id + '-edit-content-ipv4', placeholder: 'XXX.XXX.XXX.XXX', value: record.content }),
+        input({ id: 'dns-' + record.id + '-edit-content-ipv6', placeholder: 'XXXX:XXXX:XXXX:XXXX:XXXX:XXXX:XXXX:XXXX', value: record.content }),
+        input({ id: 'dns-' + record.id + '-edit-content-host', placeholder: 'example.com', value: record.content }),
+        input({ id: 'dns-' + record.id + '-edit-content-text', placeholder: 'SPF, domain keys, etc.', value: record.content })
+      ),
+      td(
+        select({ id: 'dns-' + record.id + '-edit-ttl' },
+          option({ value: '1800' }, '30 mins'),
+          option(record.ttl == 3600 ? { selected: 'selected', value: '3600' } : { value: '3600' }, '1 hour'),
+          option(record.ttl == 21600 ? { selected: 'selected', value: '21600' } : { value: '21600' }, '6 hours'),
+          option(record.ttl == 43200 ? { selected: 'selected', value: '43200' } : { value: '43200' }, '12 hours'),
+          option(record.ttl == 86400 ? { selected: 'selected', value: '86400' } : { value: '86400' }, '1 day'),
+          option(record.ttl == 259200 ? { selected: 'selected', value: '259200' } : { value: '259200' }, '3 days'),
+          option(record.ttl == 604800 ? { selected: 'selected', value: '604800' } : { value: '604800' }, '1 week')
+        )
+      ),
+      td({ style: 'text-align: center; min-width: 40px' },
+        a({ 'class': 'icon-buttons', href: curry(dns_update, domain, record) }, img({ src: 'images/save.png'})),
+        a({ 'class': 'icon-buttons', href: curry(reset_dns_row, record.id) }, img({ src: 'images/cancel.png'}))
+      )
+    );
   });
 
   define('parse_readable_ttl', function(ttl) {

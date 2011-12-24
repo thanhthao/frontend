@@ -141,8 +141,8 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 .contact-subject, .contact-body { width: 430px; border: 1px solid #aaa; }
 .hidden { display: none; }
 
-.edit-buttons { display: none }
-.fancy-table tr:hover > td .edit-buttons{ display: block; }
+.edit-buttons { visibility: hidden; }
+.fancy-table tr:hover > td .edit-buttons { visibility: visible; }
 
 .icon-buttons { padding-left:2px; float: left; }
 
