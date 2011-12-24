@@ -121,6 +121,18 @@ Given /^I mock getRecords with empty records$/ do
   };")
 end
 
+Given /^I mock updateRecord with status "([^"]*)"$/ do |status|
+  if status == 'ok'
+    page.execute_script("Badger.updateRecord = function(name, id, data, callback){
+      callback({ meta: { status: 'ok' }, data: {} });
+    };")
+  else
+    page.execute_script("Badger.updateRecord = function(name, id, data, callback){
+      callback({ meta: { status: 'unprocessable_entity' }, data: { message: 'Unable to update record' }});
+    };")
+  end
+end
+
 Given /^I mock sendInvite with status "([^"]*)"$/ do |status|
   page.execute_script("Badger.sendInvite = function(data, callback){
     callback({ meta : {status: '#{status}'}, data : { message: 'Notification message' } });
@@ -242,6 +254,18 @@ When /^I mock getRecords for domain "([^"]*)"$/ do |domain|
       { id: 81, domain_id: 2, record_type: 'CNAME', content: 'ghs.google.com', ttl: 1800, priority: '',
         name: 'calendar.#{domain}', active: true }
     ]
+    );
+  };")
+end
+
+When /^I mock getRecords for domain "([^"]*)" with records:$/ do |domain, table|
+  records = []
+  table.hashes.each do |attributes|
+    records << "{ id: #{attributes['id']}, domain_id: 2, record_type: '#{attributes['record_type']}', content: '#{attributes['content']}',
+                  ttl: #{attributes['ttl']}, priority: '#{attributes['priority']}', name: '#{attributes['name']}.#{domain}', active: true }"
+  end
+  page.execute_script("Badger.getRecords = function(name, callback){
+    callback([ #{records.join(',')}]
     );
   };")
 end

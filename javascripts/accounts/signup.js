@@ -2,17 +2,18 @@ with (Hasher.Controller('Signup','Application')) {
   route({
     '#request_invite': 'request_invite',
     '#register/:code': 'register',
+    '#register_terms_of_service': 'register_terms_of_service',
     '#confirm_email/:code': 'confirm_email',
     '#login': 'login'
   });
-  
+
   //skip_before_filter('redirect_to_root_unless_logged_in');
-  
+
   create_action('request_invite', function() {
     render('request_invite');
     $('#email-address').focus();
   });
-  
+
   create_action('submit_invite_request', function() {
     Badger.requestInvite($('#email-address').val(), function(response) {
       console.log(response)
@@ -41,7 +42,7 @@ with (Hasher.Controller('Signup','Application')) {
     });
     render('request_invite_processing');
   });
-  
+
   create_action('process_login', function(form) {
     $('#signup-errors').empty();
     Badger.login(form.email, form.password, function(response) {
@@ -60,7 +61,7 @@ with (Hasher.Controller('Signup','Application')) {
 
   create_action('register', function(code) {
     render('register', code);
-    
+
     Badger.createAccount({ invite_code: code }, function(response) {
       if (response.data.message == 'Invite code not available') {
         alert('Sorry, this invite code is no longer available!');
@@ -68,20 +69,24 @@ with (Hasher.Controller('Signup','Application')) {
       }
     });
   });
-  
+
   create_action('create_person', function(data) {
 		if(data.password != data.confirm_password) {
 			$('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "Passwords do not match" } }));
-		} else {
-      Badger.createAccount(data, function(response) {
-        if (response.meta.status == 'ok') {
-          redirect_to('#');
-  		    setTimeout(function() { call_action('Modal.show', 'SiteTour.site_tour_0'); }, 250);
-        } else {
-          $('#signup-errors').empty().append(helper('Application.error_message', response));
-        }
-      });
+      return;
 		}
+    if (!data.agree_to_terms) {
+      $('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "You must accept terms of service to use our site" } }));
+      return;
+    }
+    Badger.createAccount(data, function(response) {
+      if (response.meta.status == 'ok') {
+        redirect_to('#');
+        setTimeout(function() { call_action('Modal.show', 'SiteTour.site_tour_0'); }, 250);
+      } else {
+        $('#signup-errors').empty().append(helper('Application.error_message', response));
+      }
+    });
   });
 
 	create_action('send_password_reset_email', function(callback, form_data) {
@@ -93,11 +98,11 @@ with (Hasher.Controller('Signup','Application')) {
 			}
 		});
 	});
-	
+
 	create_action('reset_password', function(callback, form_data) {
 		if(form_data.new_password != form_data.confirm_password)
 			return $('#reset-password-messages').empty().append( helper('Application.error_message', { data: { message: "Passwords do not match" } }) );
-		
+
 		Badger.resetPasswordWithCode(form_data, function(response) {
 			if (response.meta.status == 'ok')
 			{
@@ -118,19 +123,23 @@ with (Hasher.Controller('Signup','Application')) {
     redirect_to('#');
 	});
 
+  create_action('register_terms_of_service', function() {
+    render(helper('TermsOfService.terms_of_service'));
+  });
+
   layout('signup');
 }
 
 with (Hasher.View('Signup', 'Application')) { (function() {
 
   create_view('request_invite', function() {
-    return div({ id: 'signup-box' }, 
+    return div({ id: 'signup-box' },
       h1('Badger.com'),
       h2("Thanks for visiting!  We're not quite ready yet but if you'd like an invite when we are, please enter your email address:"),
 
       div({ id: 'signup-errors' }),
 
-      form({ style: 'text-align: center', action: action('submit_invite_request') }, 
+      form({ style: 'text-align: center', action: action('submit_invite_request') },
         input({ type: 'text', id: 'email-address', placeholder: 'Your Email Address' }),
         input({ type: 'submit', value: 'Request Invite', 'class': "myButton" })
       )
@@ -145,7 +154,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
         input({ name: 'email', placeholder: 'Email Address' }),
 
         input({ name: 'password', type: 'password', placeholder: 'Password' }),
-        
+
         input({ 'class': 'myButton', type: 'submit', value: 'Login' })
       ),
       div({ style: 'margin-top: 20px' },
@@ -156,7 +165,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
   });
 
   create_view('request_invite_processing', function() {
-    return div({ id: 'signup-box' }, 
+    return div({ id: 'signup-box' },
       h3('Processing... please wait.')
     );
   });
@@ -222,7 +231,7 @@ with (Hasher.View('Signup', 'Application')) { (function() {
   });
 
   create_view('register', function(code) {
-    return div({ id: 'signup-box' }, 
+    return div({ id: 'signup-box' },
       h1('Create Your Badger.com Account'),
       div({ id: 'signup-errors' }),
       form({ action: action('create_person') },
@@ -242,6 +251,11 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 					input({ name: 'confirm_password', placeholder: 'Confirm Password', type: 'password' })
 				),
 
+        div(
+          input({ type: 'checkbox', name: 'agree_to_terms', id: 'agree_to_terms', checked: 'checked', value: true }),
+          label({ 'for': 'agree_to_terms' }, ' I agree to ')
+        ),
+        a({ href: window.location.href.split('#')[0] + '#register_terms_of_service', target: '_blank' }, 'Terms of Service'),
         div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit', value: 'Submit' }))
       )
     );
@@ -267,9 +281,9 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 
 	create_helper('forgot_password_modal', function(data) {
 		data = data || {};
-		
+
 		return div(
-			form({ action: action('send_password_reset_email', data) }, 
+			form({ action: action('send_password_reset_email', data) },
 				h1("Forgot Password"),
 				div({ id: 'forgot-password-messages' }),
 				div({ id: 'forgot-password-form', style: 'margin: 20px 0; text-align: center' },

@@ -141,6 +141,11 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 .contact-subject, .contact-body { width: 430px; border: 1px solid #aaa; }
 .hidden { display: none; }
 
+.edit-buttons { display: none }
+.fancy-table tr:hover > td .edit-buttons{ display: block; }
+
+.icon-buttons { padding-left:2px; float: left; }
+
 /* adding css for ie browser */
 .has-placeholder { color: #777777; }
 
