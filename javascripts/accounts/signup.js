@@ -75,10 +75,10 @@ with (Hasher.Controller('Signup','Application')) {
 			$('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "Passwords do not match" } }));
       return;
 		}
-    if (!data.agree_to_terms) {
-      $('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "You must accept terms of service to use our site" } }));
-      return;
-    }
+    // if (!data.agree_to_terms) {
+    //   $('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "You must accept terms of service to use our site" } }));
+    //   return;
+    // }
     Badger.createAccount(data, function(response) {
       if (response.meta.status == 'ok') {
         redirect_to('#');
@@ -250,12 +250,13 @@ with (Hasher.View('Signup', 'Application')) { (function() {
 					input({ name: 'password', placeholder: 'Desired Password', type: 'password' }),
 					input({ name: 'confirm_password', placeholder: 'Confirm Password', type: 'password' })
 				),
-
+        
+        br(),
         div(
-          input({ type: 'checkbox', name: 'agree_to_terms', id: 'agree_to_terms', checked: 'checked', value: true }),
-          label({ 'for': 'agree_to_terms' }, ' I agree to ')
+          input({ type: 'checkbox', name: 'agree_to_terms', id: 'agree_to_terms', value: true }),
+          label({ 'for': 'agree_to_terms' }, ' I agree to the Badger.com '),
+          a({ href: window.location.href.split('#')[0] + '#register_terms_of_service', target: '_blank' }, 'Terms of Service')
         ),
-        a({ href: window.location.href.split('#')[0] + '#register_terms_of_service', target: '_blank' }, 'Terms of Service'),
         div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit', value: 'Submit' }))
       )
     );

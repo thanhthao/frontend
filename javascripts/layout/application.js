@@ -17,7 +17,7 @@ with (Hasher.Controller('Application')) {
     if (Badger.getAccessToken()) return;
 
     // hack until skip_before_filters works
-    if (Hasher.Routes.getHash().match(/^#(rhinonames|request_invite|login|register\/.*)$/)) return;
+    if (Hasher.Routes.getHash().match(/^#(rhinonames|request_invite|login|register_terms_of_service|register\/.*)$/)) return;
     if (Hasher.Routes.getHash().match(/^#confirm_email\/.*$/)) {
       Badger.back_url = Hasher.Routes.getHash();
       redirect_to('#login');
