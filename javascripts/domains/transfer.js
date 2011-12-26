@@ -94,7 +94,7 @@ with (Hasher.Controller('Transfer','Application')) {
 
         if (import_setting_form.import_dns_settings_checkbox) {
           $.each(records, function() {
-            var record = { 'record_type': this.type, 'content': this.value, 'ttl': 1800, 'priority': this.priority, 'name': this.name };
+            var record = { 'record_type': this.record_type, 'content': this.value, 'ttl': 1800, 'priority': this.priority, 'subdomain': this.subdomain };
             Badger.addRecord(name, record);
           });
         }
@@ -269,8 +269,8 @@ with (Hasher.View('Transfer','Application')) {
   create_helper('dns_settings', function( name, info, first_form_data, records) {
     var results = records.map(function(record) {
       return tr(
-        td(record.name),
-        td(record.type),
+        td(record.subdomain),
+        td(record.record_type),
         td(record.priority ? record.priority + ' ' : '',  record.value)
       )
     });

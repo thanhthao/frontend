@@ -194,10 +194,10 @@ When /^I mock remoteDNS for domain "([^"]*)"$/ do |domain|
     setTimeout(function() {
       callback({ meta : {status: 'ok'},
       data : [
-        {type:'TXT', ttl:'1590', value:'v=spf1 include:_netblocks.#{domain} ip4:216.73.93.70/31 ip4:216.73.93.72/31 ~all ', name:'#{domain}.'},
-        {type:'A', ttl:'41', value:'74.125.71.99', name:'#{domain}.'},
-        {type:'MX', ttl:'600', value:'aspmx.l.#{domain}.', name:'#{domain}.', priority:'10'},
-        {type:'CNAME', ttl:'86399', value:'www.l.#{domain}.', name:'www.#{domain}.'}] });
+        {record_type:'TXT', ttl:'1590', value:'v=spf1 include:_netblocks.#{domain} ip4:216.73.93.70/31 ip4:216.73.93.72/31 ~all ', subdomain:'#{domain}.'},
+        {record_type:'A', ttl:'41', value:'74.125.71.99', subdomain:'#{domain}.'},
+        {record_type:'MX', ttl:'600', value:'aspmx.l.#{domain}.', subdomain:'#{domain}.', priority:'10'},
+        {record_type:'CNAME', ttl:'86399', value:'www.l.#{domain}.', subdomain:'www.#{domain}.'}] });
     }, 250);
   };")
 end
@@ -246,13 +246,13 @@ When /^I mock getRecords for domain "([^"]*)"$/ do |domain|
   page.execute_script("Badger.getRecords = function(name, callback){
     callback([
       { id: 78, domain_id: 2, record_type: 'A', content: '244.245.123.19', ttl: 1800, priority: '',
-        name: 'subdomain.#{domain}', active: true },
+        subdomain: 'subdomain.#{domain}', active: true },
       { id: 79, domain_id: 2, record_type: 'MX', content: 'smtp.badger.com', ttl: 1800, priority: 10,
-        name: '#{domain}', active: true },
+        subdomain: '#{domain}', active: true },
       { id: 80, domain_id: 2, record_type: 'TXT', content: 'v=spf1 mx mx:rhinonamesmail.com ~all', ttl: 1800, priority: '',
-        name: '#{domain}', active: true },
+        subdomain: '#{domain}', active: true },
       { id: 81, domain_id: 2, record_type: 'CNAME', content: 'ghs.google.com', ttl: 1800, priority: '',
-        name: 'calendar.#{domain}', active: true }
+        subdomain: 'calendar.#{domain}', active: true }
     ]
     );
   };")
@@ -262,7 +262,7 @@ When /^I mock getRecords for domain "([^"]*)" with records:$/ do |domain, table|
   records = []
   table.hashes.each do |attributes|
     records << "{ id: #{attributes['id']}, domain_id: 2, record_type: '#{attributes['record_type']}', content: '#{attributes['content']}',
-                  ttl: #{attributes['ttl']}, priority: '#{attributes['priority']}', name: '#{attributes['name']}.#{domain}', active: true }"
+                  ttl: #{attributes['ttl']}, priority: '#{attributes['priority']}', subdomain: '#{attributes['name']}.#{domain}', active: true }"
   end
   page.execute_script("Badger.getRecords = function(name, callback){
     callback([ #{records.join(',')}]
