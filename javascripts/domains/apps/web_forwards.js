@@ -15,7 +15,7 @@ with (Hasher('WebForwards', 'DomainApps')) {
   route('#domains/:domain/web_forwards', function(domain) {
     render(
       div({ id: 'web-forwards-wrapper' },
-        h1('URL FORWARDING FOR ' + domain),
+        h1({ 'class': 'header-with-right-btn' }, div({ 'class': 'long-domain-name' }, 'URL FORWARDING FOR ' + domain)),
         domain_app_settings_button('badger_web_forward', domain),
 
         div({ id: 'web-forwards-errors' }),
@@ -33,7 +33,7 @@ with (Hasher('WebForwards', 'DomainApps')) {
               tr(
                 td(
                   div(
-                    domain, "/", input({ id: 'input-path', name: 'path', placeholder: 'path' })
+                    Utils.truncate_domain_name(domain), "/ ", input({ id: 'input-path', name: 'path', placeholder: 'path' })
                   )
                 ),
                 td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
@@ -96,7 +96,7 @@ with (Hasher('WebForwards', 'DomainApps')) {
     
   define('show_web_forward_table_row', function(domain, web_forward) {
     return tr({ id: 'web_forward_tr_' + web_forward.id },
-      td(domain, "/", web_forward.path),
+      td(Utils.truncate_domain_name(domain), "/", web_forward.path),
       td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
       td(web_forward.destination),
       td({ style: 'text-align: center' }, 

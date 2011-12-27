@@ -26,6 +26,7 @@
     "/javascripts/layout/layout.js",
     "/javascripts/layout/modal.js",
 
+    "/javascripts/domains/utils.js",
     "/javascripts/domains/search.js",
     "/javascripts/domains/transfer.js",
     "/javascripts/domains/bulk_transfer.js",

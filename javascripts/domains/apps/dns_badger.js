@@ -50,7 +50,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
   define('manager_view', function(domain_info, records, app_dns) {
     var domain = domain_info.name;
     return div(
-      h1('BADGER DNS FOR ' + domain),
+      h1({ 'class': 'header-with-right-btn' }, div({ 'class': 'long-domain-name' }, 'BADGER DNS FOR ' + domain)),
       change_name_servers_button(domain_info),
 
       div({ id: 'errors' }),
@@ -74,7 +74,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
                 option('TXT')
               )
             ),
-            td(input({ style: 'width: 60px', id: 'dns-add-subdomain' }), span({ style: 'color: #888' }, '.' + domain)),
+            td(input({ id: 'dns-add-subdomain' }), div({ 'class': 'long-domain-name domain-name-label' }, '.' + domain)),
             td(
               select({ id: 'dns-add-content-priority' }, option('10'), option('20'), option('30'), option('40'), option('50')),
               input({ id: 'dns-add-content-ipv4', placeholder: 'XXX.XXX.XXX.XXX' }),
@@ -125,7 +125,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
   define('record_row', function(record, domain, editable) {
     return tr({ id: 'dns-row-' + record.id },
       td(record.record_type.toUpperCase()),
-      td(record.subdomain.replace(domain,''), span({ style: 'color: #888' }, domain)),
+      td(div({ 'class': 'long-domain-name', style: 'width: 300px;' }, record.subdomain.replace(domain,''), span({ style: 'color: #888' }, domain))),
       td(record.priority, ' ', record.content),
       td(parse_readable_ttl(record.ttl)),
       editable ? td({ style: "text-align: center; min-width: 40px;"},

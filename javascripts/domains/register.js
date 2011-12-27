@@ -55,7 +55,7 @@ with (Hasher.View('Register', 'Application')) {
 
   create_helper('buy_domain_modal', function(domain) {
     return [
-      h1('Register ', domain),
+      h1({ 'class': 'long-domain-name'}, 'Register ', domain),
       div({ id: 'errors' }),
       p({ style: "margin-bottom: 0" }, "You'll be able to configure ", strong(domain), " on the next screen."),
       form({ action: action('buy_domain', domain) },
@@ -91,7 +91,7 @@ with (Hasher.View('Register', 'Application')) {
           )
         )),
         
-        div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + domain + ' for 1 credit' }))
+        div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + Utils.truncate_domain_name(domain) + ' for 1 credit' }))
       )
     ];
   });

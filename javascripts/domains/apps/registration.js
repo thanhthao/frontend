@@ -11,7 +11,7 @@ with (Hasher('Registration ','DomainApps')) {
 
   route('#domains/:domain/registration', function(domain) {
     render(
-      h1(domain, ' Registration'),
+      h1({ 'class': 'long-domain-name' }, domain, ' Registration'),
       domain_data_block(domain)
     );
   });

@@ -299,7 +299,7 @@ with (Hasher('Application')) {
     });
 
     return li({ id: 'domain-menu-item-' + domain.replace('.','-'), 'class': 'domain-menu-item' },
-      a({ href: "#domains/" + domain }, domain.toUpperCase()),
+      a({ href: "#domains/" + domain }, div({ 'class': 'long-domain-name' }, domain.toUpperCase())),
       app_list
     );
   });
