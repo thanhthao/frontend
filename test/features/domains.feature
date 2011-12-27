@@ -117,11 +117,14 @@ Feature: Domains
         | transfer0           | true  | false |
         | expiresoon0         | true  | false |
       And I visit grid view "all" of domains
-      And I wait 5 seconds
       And I follow "net"
       And I mock getDomainInfo api for domain with registrar name "REGISTRAR NAME"
       And I mock getDomains with 2 normal domains, 1 in transfer domain and 1 expiring soon domains
       And I mock registerDomain api
+      # because Web forwarding app is added when a new domain is registered
+      And I mock addRecord
+      And I mock getRecords with empty records
+      And I mock getDomain
       And I press "register-button"
       Then I should see "MY DOMAINS (3)" within "#sidebar"
       And I should see "Available Applications"

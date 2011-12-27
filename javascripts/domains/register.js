@@ -29,12 +29,15 @@ with (Hasher.Controller('Register','Application')) {
       $('#register-button').attr('disabled', false);
 
       if (response.meta.status == 'created') {
-        helper('Application.update_credits', true);
-        hide_modal();
-        set_route('#domains/' + domain);
+        Application.load_domain(response.data.name, function(domain_object) {
+          DomainApps.install_app_on_domain(Hasher.domain_apps["badger_web_forward"], domain_object);
+          helper('Application.update_credits', true);
+          hide_modal();
+          set_route('#domains/' + domain);
 
-        BadgerCache.flush('domains');
-        BadgerCache.getDomains(function() { update_my_domains_count(); });
+          BadgerCache.flush('domains');
+          BadgerCache.getDomains(function() { update_my_domains_count(); });
+        })
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));
       }

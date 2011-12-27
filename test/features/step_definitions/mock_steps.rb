@@ -121,6 +121,12 @@ Given /^I mock getRecords with empty records$/ do
   };")
 end
 
+Given /^I mock addRecord$/ do
+  page.execute_script("Badger.addRecord = function(name, data, callback){
+    callback({ meta: { status: 'ok'} });
+  };")
+end
+
 Given /^I mock updateRecord with status "([^"]*)"$/ do |status|
   if status == 'ok'
     page.execute_script("Badger.updateRecord = function(name, id, data, callback){
