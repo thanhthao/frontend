@@ -233,7 +233,7 @@ with (Hasher('DomainApps','Application')) {
         var dns_fields = {
           record_type: record.type,
           priority: record.priority,
-          name: record.subdomain,
+          subdomain: record.subdomain,
           ttl: 1800,
           content: record.content
         };
