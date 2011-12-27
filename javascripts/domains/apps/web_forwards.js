@@ -41,7 +41,7 @@ with (Hasher('WebForwards', 'DomainApps')) {
                   input({ id: 'input-destination', name: 'destination', placeholder: 'example.com' })
                 ),
                 td({ style: 'text-align: center' }, 
-                  button({ 'class': 'myButton myButton-small' }, 'Add')
+                  input({ 'class': 'myButton myButton-small', type: 'submit', value: 'Add' })
                 )
               )
             )
