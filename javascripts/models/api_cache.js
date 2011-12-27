@@ -4,6 +4,7 @@ var BadgerCache = {
     if (!key || (key == 'payment_methods')) BadgerCache.cached_payment_methods = null;
     if (!key || (key == 'contacts')) BadgerCache.cached_contacts = null;
     if (!key || (key == 'account_info')) BadgerCache.cached_account_info = null;
+    if (!key || (key == 'invite_status')) BadgerCache.cached_invite_status = null;
   },
 
   reload: function(key) {

@@ -17,7 +17,8 @@ with (Hasher.Controller('Invite','Application')) {
 			return $('#send-invite-messages').empty().append( helper('Application.error_message', { data: { message: "First Name, Last Name and Email can not be blank" } }) );
     }
 		Badger.sendInvite(data, function(response) {
-      BadgerCache.cached_account_info = null
+      BadgerCache.flush('account_info');
+      BadgerCache.flush('invite_status');
 			call_action('Modal.show', 'Invite.send_invite_result', response.data, response.meta.status);
       helper('Application.update_credits');
       helper('Application.update_invites_available');
@@ -27,7 +28,8 @@ with (Hasher.Controller('Invite','Application')) {
 
   create_action('revoke_invite', function(invite_id) {
     Badger.revokeInvite(invite_id, function(response) {
-      BadgerCache.cached_account_info = null
+      BadgerCache.flush('account_info');
+      BadgerCache.flush('invite_status');
       redirect_to('#invites');
       helper('Application.update_credits');
       helper('Application.update_invites_available');
