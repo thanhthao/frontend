@@ -256,7 +256,8 @@ with (Hasher.View('Billing', 'Application')) { (function() {
         )
       )),
 
-      div({ style: 'text-align: right; margin-top: 10px' }, input({ 'class': 'myButton', id: 'purchase-button', type: 'submit', value: 'Purchase 1 Credit for $15' }))
+      // TEMP PROMO
+      div({ style: 'text-align: right; margin-top: 10px' }, input({ 'class': 'myButton', id: 'purchase-button', type: 'submit', value: 'Purchase 1 Credit for $8' }))
     );
   });
 })(); }
