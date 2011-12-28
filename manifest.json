@@ -52,6 +52,7 @@
     "/javascripts/accounts/invite.js",
 
     "/javascripts/help/help.js",
+    "/javascripts/help/blogs.js",
     "/javascripts/help/terms_of_service.js",
     "/javascripts/help/contact_us.js",
     "/javascripts/help/site_tour.js",

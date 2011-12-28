@@ -291,3 +291,27 @@ When /^I mock deleteEmailForwards for domain "([^"]*)"$/ do |domain|
     callback({ meta : {status: 'ok'} });
   };")
 end
+
+When /^I mock getBlogs return with:$/ do |table|
+  blogs = []
+  table.hashes.each do |attributes|
+    blogs << "{ id: #{attributes['id']}, title: '#{attributes['title']}', author: '#{attributes['author']}',
+                body: '#{attributes['body']}', published_at: '#{attributes['published_at']}' }"
+  end
+
+  page.execute_script("Badger.getBlogs = function(callback){
+    callback({ data: [ #{blogs.join(',')}] }
+    );
+  };")
+end
+
+When /^I mock getBlog return with:$/ do |table|
+  attributes = table.hashes.first
+  blogs = "{ id: #{attributes['id']}, title: '#{attributes['title']}', author: '#{attributes['author']}',
+              body: '#{attributes['body']}', published_at: '#{attributes['published_at']}' }"
+
+  page.execute_script("Badger.getBlog = function(id, callback){
+    callback({ meta: { status: 'ok' }, data: #{blogs} }
+    );
+  };")
+end

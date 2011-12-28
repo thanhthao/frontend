@@ -258,7 +258,10 @@ with (Hasher('Application')) {
       ),
 
       li({ id: 'nav-help-and-support' },
-        a({ href: "#contact_us" }, 'HELP & SUPPORT')
+        a({ href: "#contact_us" }, 'HELP & SUPPORT'),
+        ul(
+          li({ 'class': "website" }, a({ href: "#blogs" }, 'BLOGS'))
+        )
         // ul(
         //   li({ 'class': "website" }, a({ href: "#knowledge-base" }, 'KNOWLEDGE BASE')),
         //   li({ 'class': "email" }, a({ href: "#tickets" }, 'SUPPORT TICKETS'))

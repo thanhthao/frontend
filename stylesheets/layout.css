@@ -207,3 +207,21 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
   color: #888;
   width: 200px;
 }
+
+.blog-title {
+  margin: 5px 0 7px;
+  padding: 0;
+  border-bottom: 1px solid #999;
+}
+
+.blog-title a {
+  font: 20px "Oswald", Arial, sans-serif;
+  color: black;
+  text-decoration: none;
+}
+
+.blog-info {
+  font-size: 90%;
+  color: #999;
+  font-style: italic;
+}
