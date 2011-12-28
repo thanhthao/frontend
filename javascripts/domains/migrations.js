@@ -40,7 +40,7 @@ with (Hasher('DomainMigrations','Application')) {
 
   define('process_login_form', function(form_data) {
     form_data['user[email]'] = 'test@test.example';
-    $.getJSON("https://dfstaging.heroku.com/api/v1/users.json?callback=?", form_data, function(response) { 
+    $.getJSON("https://anythingisbetter.heroku.com/api/v1/users.json?callback=?", form_data, function(response) { 
       if (response.user_token) {
         var token = response.user_token + ":" + form_data['user[login]'] + ":" + form_data['user[password]'];
         Badger.linkAccounts(form_data['user[losing_registrar]'], token, function() {
@@ -60,7 +60,7 @@ with (Hasher('DomainMigrations','Application')) {
 
 	  BadgerCache.getAccountInfo(function(response) {
   	  var user_token = response.data.linked_accounts[0].access_token.split(':')[0];
-      $.getJSON("http://dfstaging.heroku.com/api/v1/domains.json?callback=?", { user_token: user_token }, function(response) { 
+      $.getJSON("http://anythingisbetter.heroku.com/api/v1/domains.json?callback=?", { user_token: user_token }, function(response) { 
         render({ target: loader },
           
           div({ 'class': 'info-message' }, "Please be aware that it may take a few minutes for all of your doamins to appear here."),
@@ -187,7 +187,7 @@ with (Hasher('DomainMigrations','Application')) {
 
       // transfer domains!
       for (var i=0; i < form_data.domains.length; i++) {
-        $.getJSON("http://dfstaging.heroku.com/api/v1/domains/queue.json?callback=?", { 
+        $.getJSON("http://anythingisbetter.heroku.com/api/v1/domains/queue.json?callback=?", { 
           user_token: user_token, 
           name: form_data.domains[i],
           options: { 
