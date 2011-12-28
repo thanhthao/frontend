@@ -28,6 +28,7 @@
 
     "/javascripts/domains/search.js",
     "/javascripts/domains/transfer.js",
+    "/javascripts/domains/migrations.js",
     "/javascripts/domains/bulk_transfer.js",
     "/javascripts/domains/register.js",
     "/javascripts/domains/bulk_register.js",

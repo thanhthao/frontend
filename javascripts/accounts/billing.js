@@ -163,13 +163,17 @@ with (Hasher.View('Billing', 'Application')) { (function() {
     return tmp_table;
   });
 
-  create_helper('purchase_modal', function(callback) {
+  create_helper('purchase_modal', function(callback, necessary_credits) {
     var payment_methods = ((BadgerCache.cached_payment_methods && BadgerCache.cached_payment_methods.data) || []);
 
     return form({ action: action('purchase_credits', callback) },
       h1('Purchase Credits'),
       //div({ style: 'margin-bottom: 15px' }, 'Use credits to buy new domains, transfer in existing domains, or renew expiring domain.'),
-      div({ id: 'modal-errors' }),
+      div({ id: 'modal-errors' },
+        (necessary_credits ?
+          div({ 'class': 'error-message' }, "You need at least ", necessary_credits, " to continue.")
+        : [])
+      ),
       table({ style: 'width: 100%' }, tbody(
         tr(
           td({ style: 'vertical-align: top; width: 300px; padding-right: 30px' },

@@ -94,7 +94,13 @@ with (Hasher()) {
               // TODO: support multiple select
               serialized_form[elems[i].name] = elems[i].options[elems[i].selectedIndex].value;
             } else if ((['radio', 'checkbox'].indexOf(elems[i].getAttribute('type')) == -1) || elems[i].checked) {
-              serialized_form[elems[i].name] = elems[i].value;
+              if (elems[i].name.substring(elems[i].name.length - 2) == '[]') {
+                var name = elems[i].name.substring(0,elems[i].name.length - 2);
+                if (!serialized_form[name]) serialized_form[name] = [];
+                serialized_form[name].push(elems[i].value);
+              } else {
+                serialized_form[elems[i].name] = elems[i].value;
+              }
             } 
           }
         }

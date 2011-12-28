@@ -404,7 +404,12 @@ var Badger = {
 
   remoteWhois: function(domain, callback) {
     Badger.api("/domains/remote_whois", "POST", { domain: domain }, callback);
-  }
+  },
+  
+
+	linkAccounts: function(site, site_access_token, callback) {
+		Badger.api("/account/link_accounts", "POST", { site: site, site_access_token: site_access_token }, callback);
+	}
 
 
 
