@@ -60,7 +60,7 @@ with (Hasher('DomainMigrations','Application')) {
 
 	  BadgerCache.getAccountInfo(function(response) {
   	  var user_token = response.data.linked_accounts[0].access_token.split(':')[0];
-      $.getJSON("http://anythingisbetter.heroku.com/api/v1/domains.json?callback=?", { user_token: user_token }, function(response) { 
+      $.getJSON("https://anythingisbetter.heroku.com/api/v1/domains.json?callback=?", { user_token: user_token }, function(response) { 
         render({ target: loader },
           
           div({ 'class': 'info-message' }, "Please be aware that it may take a few minutes for all of your doamins to appear here."),
@@ -187,7 +187,7 @@ with (Hasher('DomainMigrations','Application')) {
 
       // transfer domains!
       for (var i=0; i < form_data.domains.length; i++) {
-        $.getJSON("http://anythingisbetter.heroku.com/api/v1/domains/queue.json?callback=?", { 
+        $.getJSON("https://anythingisbetter.heroku.com/api/v1/domains/queue.json?callback=?", { 
           user_token: user_token, 
           name: form_data.domains[i],
           options: { 
