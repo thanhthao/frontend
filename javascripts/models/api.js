@@ -416,6 +416,14 @@ var Badger = {
 
   getFaqs: function(callback) {
     Badger.api("/faqs", callback);
+  },
+
+  getKnowledgeCenterArticles: function(callback) {
+    Badger.api("/knowledge_center_articles/", callback);
+  },
+
+  getKnowledgeCenterArticle: function(id, callback) {
+    Badger.api("/knowledge_center_articles/" + id, callback);
   }
 
 

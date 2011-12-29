@@ -20,6 +20,7 @@ with (Hasher('Application')) {
     if (request_uri.indexOf("filter_domains/all") != -1) request_uri = '#';
     else if (request_uri.indexOf("filter_domains") != -1) request_uri = request_uri.replace('grid', 'list');
     else if (request_uri.indexOf("blogs/") != -1) request_uri = '#blogs';
+    else if (request_uri.indexOf("knowledge_center/") != -1) request_uri = '#knowledge_center';
 
     // select active link and expand parent
     $('#sidebar ul').removeClass('expanded');
@@ -262,7 +263,8 @@ with (Hasher('Application')) {
         a({ href: "#contact_us" }, 'HELP & SUPPORT'),
         ul(
           li({ 'class': "website" }, a({ href: "#blogs" }, 'BLOGS')),
-          li({ 'class': "website" }, a({ href: "#faqs" }, 'FAQS'))
+          li({ 'class': "website" }, a({ href: "#faqs" }, 'FAQS')),
+          li({ 'class': "website" }, a({ href: "#knowledge_center" }, 'KNOWLEDGE CENTER'))
         )
         // ul(
         //   li({ 'class': "website" }, a({ href: "#knowledge-base" }, 'KNOWLEDGE BASE')),
