@@ -19,7 +19,7 @@ with (Hasher.Controller('ContactUs','Application')) {
       Badger.sendEmail($('#subject').val(), $('#body').val());
       redirect_to('#email_sent')
     } else {
-      alert("Either your subject or body is left blank.")
+      alert("Either your subject or body is left blank.");
     }
   });
 

@@ -31,3 +31,7 @@ end
 Given /^I view terms of service when registering$/ do
   visit('/index.html#register_terms_of_service')
 end
+
+Given /^I am on the view blog page with blog_id "([^"]*)"$/ do |blog_id|
+  visit("/index.html#blogs/#{blog_id}")
+end

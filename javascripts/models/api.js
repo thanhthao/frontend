@@ -412,6 +412,10 @@ var Badger = {
 
   getBlog: function(id, callback) {
     Badger.api("/blogs/" + id , callback);
+  },
+
+  getFaqs: function(callback) {
+    Badger.api("/faqs", callback);
   }
 
 

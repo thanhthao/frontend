@@ -315,3 +315,20 @@ When /^I mock getBlog return with:$/ do |table|
     );
   };")
 end
+
+When /^I mock getBlog return false$/ do
+  page.execute_script("Badger.getBlog = function(id, callback){
+    callback({ meta: { status: 'not_found' }, data: { message: 'Cannot find blog' } }
+    );
+  };")
+end
+
+When /^I mock getFaqs return with:$/ do |table|
+  faqs = []
+  table.hashes.each do |attributes|
+    faqs << "{ id: #{attributes['id']}, question: '#{attributes['question']}', answer: '#{attributes['answer']}' }"
+  end
+  page.execute_script("Badger.getFaqs = function(callback){
+    callback({ data: [ #{faqs.join(',')}] } );
+  };")
+end

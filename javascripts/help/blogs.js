@@ -26,6 +26,7 @@ with (Hasher.Controller('Blogs', 'Application')) {
 
 with (Hasher.View('Blogs', 'Application')) {
   create_view('blogs', function(blogs) {
+    blogs = (blogs || [])
     var result = blogs.map(function(blog) {
       return [
         h2({ 'class': 'blog-title' }, a({ href: '#blogs/' + blog.id + '-' + blog.title.replace(/ /g, '-') }, blog.title)),
@@ -40,6 +41,7 @@ with (Hasher.View('Blogs', 'Application')) {
   });
 
   create_view('view_blog', function(blog) {
+    blog = (blog || {})
     return div(
       h1(blog.title),
       div({ 'class': 'blog-info' }, 'by ' + blog.author + ' on ' + new Date(Date.parse(blog.published_at)).toDateString()),

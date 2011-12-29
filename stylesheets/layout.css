@@ -208,9 +208,9 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
   width: 200px;
 }
 
-.blog-title {
+.blog-title, .faq-title {
   margin: 5px 0 7px;
-  padding: 0;
+  padding: 5px 0;
   border-bottom: 1px solid #999;
 }
 

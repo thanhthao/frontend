@@ -19,6 +19,7 @@ with (Hasher('Application')) {
     if (!request_uri) request_uri = get_route();
     if (request_uri.indexOf("filter_domains/all") != -1) request_uri = '#';
     else if (request_uri.indexOf("filter_domains") != -1) request_uri = request_uri.replace('grid', 'list');
+    else if (request_uri.indexOf("blogs/") != -1) request_uri = '#blogs';
 
     // select active link and expand parent
     $('#sidebar ul').removeClass('expanded');
@@ -260,7 +261,8 @@ with (Hasher('Application')) {
       li({ id: 'nav-help-and-support' },
         a({ href: "#contact_us" }, 'HELP & SUPPORT'),
         ul(
-          li({ 'class': "website" }, a({ href: "#blogs" }, 'BLOGS'))
+          li({ 'class': "website" }, a({ href: "#blogs" }, 'BLOGS')),
+          li({ 'class': "website" }, a({ href: "#faqs" }, 'FAQS'))
         )
         // ul(
         //   li({ 'class': "website" }, a({ href: "#knowledge-base" }, 'KNOWLEDGE BASE')),

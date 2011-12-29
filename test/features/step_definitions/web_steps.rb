@@ -116,6 +116,10 @@ Then /^I click "([^"]*)" on the confirmation$/ do |action|
   end
 end
 
+Then /^I click Ok on the next confirmation$/ do
+  page.evaluate_script('window.confirm = function() { return true; }')
+end
+
 Given /^I click on item with xpath "([^"]*)"$/ do |path|
   find(:xpath, path).click
 end
