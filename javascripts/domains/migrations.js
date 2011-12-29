@@ -61,60 +61,65 @@ with (Hasher('DomainMigrations','Application')) {
 	  BadgerCache.getAccountInfo(function(response) {
   	  var user_token = response.data.linked_accounts[0].access_token.split(':')[0];
       $.getJSON("https://anythingisbetter.heroku.com/api/v1/domains.json?callback=?", { user_token: user_token }, function(response) { 
-        render({ target: loader },
-          
-          div({ 'class': 'info-message' }, "Please be aware that it may take a few minutes for all of your doamins to appear here."),
-          
-          form({ action: initiate_domain_transfers },
-            table({ 'id': 'migration-status-table', 'class': 'fancy-table' }, tbody(
-              tr({ 'class': 'table-header' },
-                th({ style: 'width: 1px' }, checkbox({ 'id': 'select_all' })),
-                th('Domain'),
-                th('Expires'),
-                th('State')
-              ),
-            
-              response.domains.map(function(domain) {
-                return tr(
-                  td(domain.domain.state == 'found' ? 
-                    checkbox({ 
-                      'id': 'migration-checkbox-' + domain.domain.name.replace('.',''), 
-                      'class': 'select_one', 
-                      name: 'domains[]', 
-                      value: domain.domain.name
-                    })
-                  :''),
-                  td(label({ 'for': 'migration-checkbox-' + domain.domain.name.replace('.','') }, domain.domain.name)),
-                  td(domain.domain.expires_on),
-                  td(domain.domain.state)
-                );
-              })
-            )),
-          
-            br(),
-            button({ 'class': 'myButton', id: 'migration-transfer-button'}, 'Transfer 0 Domains')
-          )
-        );
-        
-        $('#migration-status-table #select_all').change(function () {
-          $('#migration-status-table .select_one').attr('checked', $(this).is(':checked'));
-          $(this).removeClass('some_selected');
+        if (response.domains.length == 0) {
+          render({ target: loader },
+            div({ 'class': 'info-message' }, "We are loading information about your domains.  This process can take 2-3 minutes so please check back here shortly.")
+          );
+        } else {
+          render({ target: loader },
 
-          var num_checked_boxes = $('#migration-status-table .select_one:checked').length;
-          $('#migration-transfer-button').html('Transfer ' + num_checked_boxes + ' Domains');
-        });
+            form({ action: initiate_domain_transfers },
+              table({ 'id': 'migration-status-table', 'class': 'fancy-table' }, tbody(
+                tr({ 'class': 'table-header' },
+                  th({ style: 'width: 1px' }, checkbox({ 'id': 'select_all' })),
+                  th('Domain'),
+                  th('Expires'),
+                  th('State')
+                ),
 
-        $('#migration-status-table .select_one').change(function () {
-          var num_checked_boxes = $('#migration-status-table .select_one:checked').length;
-          if (num_checked_boxes == 0)
-            $('#migration-status-table #select_all').removeClass('some_selected').attr('checked', false);
-          else if ($('#migration-status-table .select_one:not(:checked)').length == 0)
-            $('#migration-status-table #select_all').removeClass('some_selected').attr('checked', true);
-          else
-            $('#migration-status-table #select_all').addClass('some_selected').attr('checked', true);
-            
-          $('#migration-transfer-button').html('Transfer ' + num_checked_boxes + ' Domains');
-        });
+                response.domains.map(function(domain) {
+                  return tr(
+                    td(domain.domain.state == 'found' ? 
+                      checkbox({ 
+                        'id': 'migration-checkbox-' + domain.domain.name.replace('.',''), 
+                        'class': 'select_one', 
+                        name: 'domains[]', 
+                        value: domain.domain.name
+                      })
+                    :''),
+                    td(label({ 'for': 'migration-checkbox-' + domain.domain.name.replace('.','') }, domain.domain.name)),
+                    td(domain.domain.expires_on),
+                    td(domain.domain.state)
+                  );
+                })
+              )),
+
+              br(),
+              button({ 'class': 'myButton', id: 'migration-transfer-button'}, 'Transfer 0 Domains')
+            )
+          );
+
+          $('#migration-status-table #select_all').change(function () {
+            $('#migration-status-table .select_one').attr('checked', $(this).is(':checked'));
+            $(this).removeClass('some_selected');
+
+            var num_checked_boxes = $('#migration-status-table .select_one:checked').length;
+            $('#migration-transfer-button').html('Transfer ' + num_checked_boxes + ' Domains');
+          });
+
+          $('#migration-status-table .select_one').change(function () {
+            var num_checked_boxes = $('#migration-status-table .select_one:checked').length;
+            if (num_checked_boxes == 0)
+              $('#migration-status-table #select_all').removeClass('some_selected').attr('checked', false);
+            else if ($('#migration-status-table .select_one:not(:checked)').length == 0)
+              $('#migration-status-table #select_all').removeClass('some_selected').attr('checked', true);
+            else
+              $('#migration-status-table #select_all').addClass('some_selected').attr('checked', true);
+
+            $('#migration-transfer-button').html('Transfer ' + num_checked_boxes + ' Domains');
+          });
+          
+        }
 
       });
     });
