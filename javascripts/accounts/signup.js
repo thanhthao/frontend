@@ -38,7 +38,8 @@ with (Hasher('Signup','Application')) {
                 p({ style: "margin-top: 5px" }, 'WHOIS privacy, DNS hosting, email forwarding, website forwarding and more.'),
 
                 h3({ style: "margin: 0" }, "Already have a domain?"),
-                p({ style: "margin-top: 5px" }, "Read about out ", a({ href: '#faqs/how-were-different' }, "how we're different"), ".  Or, you can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), ".")
+                //p({ style: "margin-top: 5px" }, "Read about out ", a({ href: '#faqs/how-were-different' }, "how we're different"), ".  Or, you can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), ".")
+                p({ style: "margin-top: 5px" }, "You can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), ".")
               )
             )
           )
