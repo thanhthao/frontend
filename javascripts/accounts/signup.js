@@ -16,6 +16,8 @@ with (Hasher('Signup','Application')) {
   route('#welcome', function() {
     render(
       div(
+        div({ 'class': 'info-message', style: 'font-weight: bold; text-align: center; font-size: 17px' }, "Dec 29th - Domain Transfer Day Special - $8 domains!"),
+        
         h1({ style: 'margin-top: 0' }, 'Welcome to Badger.com'),
         
         table({ style: 'width: 100%' },
@@ -31,6 +33,9 @@ with (Hasher('Signup','Application')) {
 
                 h3({ style: "margin: 0" }, "Where do I begin?"),
                 p({ style: "margin-top: 5px" }, "Start typing in the search box in the top left.  If you're not sure of what to type, start with your name."),
+
+                h3({ style: "margin: 0" }, "What services do you offer for free?"),
+                p({ style: "margin-top: 5px" }, 'WHOIS privacy, DNS hosting, email forwarding, website forwarding and more.'),
 
                 h3({ style: "margin: 0" }, "Already have a domain?"),
                 p({ style: "margin-top: 5px" }, "Read about out ", a({ href: '#faqs/how-were-different' }, "how we're different"), ".  Or, you can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), ".")
