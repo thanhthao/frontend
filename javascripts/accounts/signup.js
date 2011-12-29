@@ -111,7 +111,7 @@ with (Hasher('Signup','Application')) {
           div({ style: 'margin: 10px 0' },
             input({ type: 'checkbox', name: 'agree_to_terms', id: 'agree_to_terms', value: true }),
             label({ 'for': 'agree_to_terms' }, ' I agree to the Badger.com '),
-            a({ href: window.location.href.split('#')[0] + '#register_terms_of_service', target: '_blank' }, 'Terms of Service')
+            a({ href: window.location.href.split('#')[0] + '#terms_of_service', target: '_blank' }, 'Terms of Service')
           ),
 
           div(
@@ -144,6 +144,8 @@ with (Hasher('Signup','Application')) {
           callback();
         } else {
           redirect_to('#');
+          Application.reload_layout();
+
           setTimeout(function() { call_action('Modal.show', 'SiteTour.site_tour_0'); }, 250);
         }
       } else {
@@ -154,7 +156,7 @@ with (Hasher('Signup','Application')) {
 
 	define('show_reset_password_modal', function(data) {
     show_modal(
-			form({ action: action('reset_password', data) },
+			form({ action: curry(reset_password, data) },
 				h1("Reset Password"),
 				div({ id: 'reset-password-messages' }),
 				div({ id: 'reset-password-form' },
