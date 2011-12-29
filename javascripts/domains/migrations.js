@@ -27,9 +27,9 @@ with (Hasher('DomainMigrations','Application')) {
           br(),br(),
 
           "Login and Password: ",br(), 
-          input({ name: "user[login]", 'class': 'fancy', placeholder: "Username" }),
+          text({ name: "user[login]", 'class': 'fancy', placeholder: "Username" }),
           br(),
-          input({ name: "user[password]", 'class': 'fancy', placeholder: "Password" }),
+          password({ name: "user[password]", 'class': 'fancy', placeholder: "Password" }),
 
           br(),br(),
           input({ 'class': 'myButton', type: "submit", value: "Next"})
@@ -63,7 +63,7 @@ with (Hasher('DomainMigrations','Application')) {
       $.getJSON("https://anythingisbetter.heroku.com/api/v1/domains.json?callback=?", { user_token: user_token }, function(response) { 
         if (response.domains.length == 0) {
           render({ target: loader },
-            div({ 'class': 'info-message' }, "We are loading information about your domains.  This process can take 2-3 minutes so please check back here shortly.")
+            div({ 'class': 'info-message' }, "We are retrieving information about your domains.  This can take 2-3 minutes so please be patient. ", a({ href: '#migrations' }, 'Retry?'))
           );
         } else {
           render({ target: loader },
