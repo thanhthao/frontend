@@ -33,7 +33,7 @@ with (Hasher('WebForwards', 'DomainApps')) {
               tr(
                 td(
                   div(
-                    Utils.truncate_domain_name(domain), "/ ", input({ id: 'input-path', name: 'path', placeholder: 'path' })
+                    Domains.truncate_domain_name(domain), "/ ", input({ id: 'input-path', name: 'path', placeholder: 'path' })
                   )
                 ),
                 td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
@@ -96,7 +96,7 @@ with (Hasher('WebForwards', 'DomainApps')) {
     
   define('show_web_forward_table_row', function(domain, web_forward) {
     return tr({ id: 'web_forward_tr_' + web_forward.id },
-      td(Utils.truncate_domain_name(domain), "/", web_forward.path),
+      td(Domains.truncate_domain_name(domain), "/", web_forward.path),
       td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
       td(web_forward.destination),
       td({ style: 'text-align: center' }, 

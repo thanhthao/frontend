@@ -413,6 +413,10 @@ var Badger = {
 		Badger.api("/account/link_accounts", "POST", { site: site, site_access_token: site_access_token }, callback);
 	},
 
+	deleteLinkedAccount: function(site_access_token, callback) {
+		Badger.api("/account/delete_linked_account", "DELETE", { site_access_token: site_access_token }, callback);
+	},
+
   getBlogs: function(callback) {
     Badger.api("/blogs", callback);
   },

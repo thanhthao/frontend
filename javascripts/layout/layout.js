@@ -27,6 +27,7 @@ with (Hasher('Application')) {
   define('update_sidebar_with_correct_actives', function(request_uri) {
     if (!request_uri) request_uri = get_route();
     if (request_uri.indexOf("filter_domains") != -1) request_uri = request_uri.replace('grid', 'list');
+    if (request_uri.indexOf("#blogs/") == 0) request_uri = '#blogs';
 
     // select active link and expand parent
     $('#sidebar ul').removeClass('expanded');
@@ -115,7 +116,7 @@ with (Hasher('Application')) {
         div({ 'class': "col" },
           h2('COMPANY'),
           ul(
-            // li(a({ href: "#" }, 'Blog')),
+            li(a({ href: "#blogs" }, 'Blog')),
             // li(a({ href: "#" }, 'Jobs')),
             li(a({ href: "#terms_of_service" }, 'Terms of Service'))
           )
@@ -182,7 +183,7 @@ with (Hasher('Application')) {
 
   define('search_box', function(domain) {
     return form({ id: "form-search", action: action('Search.search_box_changed') },
-      input({ id: 'form-search-input', type: 'text', value: '', placeholder: 'Start typing...', events: {
+      input({ id: 'form-search-input', type: 'text', value: '', placeholder: 'Search for domains', events: {
         focus: action('Search.search_box_changed'),
         keyup: action('Search.search_box_changed'),
         keypress: function(e) {
@@ -257,16 +258,13 @@ with (Hasher('Application')) {
           a({ href: "#account" }, 'MY ACCOUNT'),
           my_account_nav()
         )
-      ] : [
-        li({ id: 'nav-my-account' },
-          a({ href: "#welcome" }, 'WELCOME')
-        )
-      ],  
+      ] : [],  
 
       li({ id: 'nav-help-and-support' },
-        a({ href: "#contact_us" }, 'HELP & SUPPORT'),
+        a({ href: "#welcome" }, 'ABOUT BADGER.COM'),
         ul(
-          li({ 'class': "website" }, a({ href: "#blogs" }, 'BLOGS'))
+          li({ 'class': "website" }, a({ href: "#blogs" }, 'OUR BLOG')),
+          li({ 'class': "website" }, a({ href: "#contact_us" }, 'CONTACT US'))
         )
         // ul(
         //   li({ 'class': "website" }, a({ href: "#knowledge-base" }, 'KNOWLEDGE BASE')),

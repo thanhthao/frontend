@@ -199,7 +199,7 @@ with (Hasher.View('Transfer','Application')) {
         )
       )),
 
-			div({ style: "text-align: center; margin-top: 10px" }, input({ 'class': 'myButton', type: 'submit', value: 'Transfer ' + Utils.truncate_domain_name(name) + ' for 1 Credit' }))
+			div({ style: "text-align: center; margin-top: 10px" }, input({ 'class': 'myButton', type: 'submit', value: 'Transfer ' + Domains.truncate_domain_name(name) + ' for 1 Credit' }))
 		);
 	})
 	

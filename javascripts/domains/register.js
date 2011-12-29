@@ -96,7 +96,7 @@ with (Hasher.View('Register', 'Application')) {
           )
         )),
         
-        div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + Utils.truncate_domain_name(domain) + ' for 1 credit' }))
+        div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + Domains.truncate_domain_name(domain) + ' for 1 credit' }))
       )
     ];
   });

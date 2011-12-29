@@ -59,9 +59,14 @@ with (Hasher('DomainMigrations','Application')) {
 	  var loader = div('Loading...');
 
 	  BadgerCache.getAccountInfo(function(response) {
-  	  var user_token = response.data.linked_accounts[0].access_token.split(':')[0];
+	    var access_token = response.data.linked_accounts[0].access_token;
+  	  var user_token = access_token.split(':')[0];
       $.getJSON("https://anythingisbetter.heroku.com/api/v1/domains.json?callback=?", { user_token: user_token }, function(response) { 
-        if (response.domains.length == 0) {
+        if (response.errors && response.errors[0] == "No user with that token") {
+          Badger.deleteLinkedAccount(access_token);
+          BadgerCache.flush('account_info');
+          set_route('#migrations');
+        } else if (response.domains.length == 0) {
           render({ target: loader },
             div({ 'class': 'info-message' }, "We are retrieving information about your domains.  This can take 2-3 minutes so please be patient. ", a({ href: '#migrations' }, 'Retry?'))
           );
