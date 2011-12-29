@@ -44,6 +44,8 @@ with (Hasher.Controller('Transfer','Application')) {
   });
 
 	create_action('get_domain_info', function(form_data) {
+	  console.log("get_domain_info");
+	  console.log(arguments)
 		$('#get-domain-form-errors').empty();
 		call_action('Modal.show', 'Transfer.processing_request');
 		
@@ -204,7 +206,7 @@ with (Hasher.View('Transfer','Application')) {
 	create_helper('get_domain_form', function(data, error) {
 		return div(
 			h1("TRANSFER IN A DOMAIN"),
-      form({ id: "get-domain-info-form", action: action('get_domain_info') },
+      form({ id: "get-domain-info-form", action: curry(Signup.require_user_modal, action('get_domain_info')) },
 			  div({ id: "get-domain-form-errors" }, error ? error : null),
 				div("Use this form if you've registered a domain at another registrar and would like to transfer the domain to Badger.  If you have lots of domains to transfer, you can use our ", a({ href: action('BulkTransfer.show') }, 'Bulk Transfer Tool'), '.'),
 				div({ style: 'text-align: center; margin: 30px 0'},

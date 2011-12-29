@@ -1,5 +1,11 @@
 with (Hasher('Application')) {
-  after_filter('update_sidebar', function() {
+
+  route('#', function() {
+    if (Badger.getAccessToken()) set_route('#filter_domains/all/list');
+    else set_route('#welcome');
+  });
+
+  define('update_sidebar', function() {
     if ($('#sidebar')) {
       var request_uri = get_route();
       check_if_domain_should_be_added_to_sidebar(request_uri);
@@ -13,7 +19,10 @@ with (Hasher('Application')) {
 
     // Fix placeholder does not work in IE
     Placeholder.fix_ie();
-  });
+  })
+
+  after_filter('update_sidebar', update_sidebar);
+
 
   define('update_sidebar_with_correct_actives', function(request_uri) {
     if (!request_uri) request_uri = get_route();
@@ -76,26 +85,17 @@ with (Hasher('Application')) {
     }
   });
 
-  create_layout('signup', function(yield) {
-    return div({ id: 'wrapper' },
-      div({ id: 'user-nav' }, a({ href: '#login' }, 'Login')),
-
-      div({ id: 'main-minimal' },
-        img({ src: 'images/badger-5.png' }),
-        div({ id: 'main-minimal-box' },
-          div({ id: 'content' }, yield)
-        ),
-        div({ style: 'clear: both'})
-      )
-    );
-  });
-
   create_layout('dashboard', function(yield) {
     return div({ id: 'wrapper' },
 
       div({ id: 'header' },
         h1({ id: 'logo' }, a({ href: '#'}, 'badger.com')),
-        user_nav()
+        Badger.getAccessToken() ? 
+          user_nav()
+        : div({ id: 'user-nav' }, 
+          span(a({ href: Signup.show_login_modal }, 'Login')),
+          a({ href: Signup.show_register_modal }, 'Create Account')
+        )
       ),
 
       div({ id: 'main' },
@@ -244,18 +244,24 @@ with (Hasher('Application')) {
 
   define('left_nav', function() {
     return ul({ id: 'menu' },
-      li({ id: 'nav-my-domains' },
-        a({ href: "#" }, span(span('MY DOMAINS'), span({ id: 'my-domains-count' }))),
-        ul(
-          li({ 'class': "website"}, a({ href: "#filter_domains/transfers/list" }, 'TRANSFERS')),
-          li({ 'class': "website"}, a({ href: "#filter_domains/expiringsoon/list" }, 'EXPIRING SOON'))
-        )
-      ),
+      Badger.getAccessToken() ? [
+        li({ id: 'nav-my-domains' },
+          a({ href: "#filter_domains/all/list" }, span(span('MY DOMAINS'), span({ id: 'my-domains-count' }))),
+          ul(
+            li({ 'class': "website"}, a({ href: "#filter_domains/transfers/list" }, 'TRANSFERS')),
+            li({ 'class': "website"}, a({ href: "#filter_domains/expiringsoon/list" }, 'EXPIRING SOON'))
+          )
+        ),
 
-      li({ id: 'nav-my-account' },
-        a({ href: "#account" }, 'MY ACCOUNT'),
-        my_account_nav()
-      ),
+        li({ id: 'nav-my-account' },
+          a({ href: "#account" }, 'MY ACCOUNT'),
+          my_account_nav()
+        )
+      ] : [
+        li({ id: 'nav-my-account' },
+          a({ href: "#welcome" }, 'WELCOME')
+        )
+      ],  
 
       li({ id: 'nav-help-and-support' },
         a({ href: "#contact_us" }, 'HELP & SUPPORT')

@@ -1,6 +1,5 @@
 with (Hasher.Controller('Domains','Application')) {
   route({
-    '#': 'index',
     '#filter_domains/:filter/:view_type': 'index'
   });
 

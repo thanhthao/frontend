@@ -1,7 +1,7 @@
 img { border-style: none; }
 a { text-decoration: none; }
 a:hover { text-decoration: underline; }
-input, textarea, select { vertical-align: middle; margin: 5px 5px 0 0;}
+input, textarea, select { vertical-align: middle; }
 form,fieldset { margin:0; padding:0; border-style:none; }
 
 html { height: 100%; background: #0085aa url(../images/bg-page.jpg) repeat top center; }

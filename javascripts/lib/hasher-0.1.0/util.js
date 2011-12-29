@@ -23,8 +23,8 @@ with (Hasher()) {
         if ((typeof(obj) == 'object') && obj.concat) {
           // array? just concat
           stack = obj.concat(stack);
-        } else if ((typeof(obj) == 'object') && obj.callee) {
-          // explicitly passed arguments object? to another function
+        } else if (((typeof(obj) == 'object') && obj.callee) || (Object.prototype.toString.call(obj).indexOf('NodeList') >= 0)) {
+          // explicitly passed arguments or childNodes object? to another function
           stack = Array.prototype.slice.call(obj).concat(stack);
         } else {
           arguments.push(obj);

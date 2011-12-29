@@ -1,6 +1,11 @@
 with (Hasher.Controller('Register','Application')) {
 
   create_action('show', function(domain) {
+    if (!Badger.getAccessToken()) {
+      Signup.require_user_modal(curry(action('Register.show', domain)));
+      return;
+    }
+    
     BadgerCache.getContacts(function(results) {
       // ensure they have at least one whois contact
       if (results.data.length == 0) {

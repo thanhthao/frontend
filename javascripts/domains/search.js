@@ -43,7 +43,6 @@ with (Hasher.Controller('Search','Application')) {
 with (Hasher.View('Search', 'Application')) {
 
   create_helper('search_result_row', function(results) {
-    console.log(results)
     return tr(
       td(results[0][0].split('.')[0]),
       results.map(function(domain) {
@@ -64,7 +63,7 @@ with (Hasher.View('Search', 'Application')) {
       table({ id: 'search-results', 'class': 'fancy-table' }, tbody()),
       div({ id: 'search-instructions' }, 
         p('Start typing to search for available domains.'),
-        p('If you would like to register many domains at once, try our ', a({ href: action('BulkRegister.show') }, 'Bulk Register Tool'), '.')
+        p('If you would like to register many domains at once, try our ', a({ href: curry(Signup.require_user_modal, action('BulkRegister.show')) }, 'Bulk Register Tool'), '.')
       )
     );
   });
