@@ -122,6 +122,7 @@ var Badger = {
   createAccount: function(data, callback) {
     Badger.api("/account", 'POST', data, function(response) {
       if (response.meta.status == 'ok') Badger.setAccessToken(response.data.access_token);
+      for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
       if (callback) callback(response);
     });
   },
