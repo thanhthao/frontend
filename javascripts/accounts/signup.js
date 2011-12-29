@@ -16,9 +16,9 @@ with (Hasher('Signup','Application')) {
   route('#welcome', function() {
     render(
       div(
-        div({ 'class': 'info-message', style: 'font-weight: bold; text-align: center; font-size: 17px' }, "Dec 29th - Domain Transfer Day Special - $8 domains!"),
-        
         h1({ style: 'margin-top: 0' }, 'Welcome to Badger.com'),
+        
+        div({ 'class': 'info-message', style: 'font-weight: bold; padding: 10px; text-align: center; font-size: 17px' }, "Dec 29th - Domain Transfer Day Special - $8 domains!"),
         
         table({ style: 'width: 100%' },
           tr(

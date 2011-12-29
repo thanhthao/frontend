@@ -90,6 +90,7 @@ with (Hasher('Application')) {
 
       div({ id: 'header' },
         h1({ id: 'logo' }, a({ href: '#'}, 'badger.com')),
+        
         Badger.getAccessToken() ? 
           user_nav()
         : div({ id: 'user-nav' }, 
