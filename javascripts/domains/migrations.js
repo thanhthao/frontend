@@ -39,7 +39,7 @@ with (Hasher('DomainMigrations','Application')) {
 	});
 
   define('process_login_form', function(form_data) {
-    form_data['user[email]'] = 'test@test.example';
+    form_data['user[email]'] = (BadgerCache.cached_account_info && BadgerCache.cached_account_info.data) ? BadgerCache.cached_account_info.data.email : 'test@example.com';
     $.getJSON("https://anythingisbetter.heroku.com/api/v1/users.json?callback=?", form_data, function(response) { 
       if (response.user_token) {
         var token = response.user_token + ":" + form_data['user[login]'] + ":" + form_data['user[password]'];
