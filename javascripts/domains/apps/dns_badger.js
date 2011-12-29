@@ -50,7 +50,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
   define('manager_view', function(domain_info, records, app_dns) {
     var domain = domain_info.name;
     return div(
-      h1('BADGER DNS FOR ' + domain),
+      h1({ 'class': 'header-with-right-btn' }, div({ 'class': 'long-domain-name' }, 'BADGER DNS FOR ' + domain)),
       change_name_servers_button(domain_info),
 
       div({ id: 'errors' }),
@@ -74,7 +74,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
                 option('TXT')
               )
             ),
-            td(input({ style: 'width: 60px', id: 'dns-add-name' }), span({ style: 'color: #888' }, '.' + domain)),
+            td(input({ id: 'dns-add-subdomain' }), div({ 'class': 'long-domain-name domain-name-label' }, '.' + domain)),
             td(
               select({ id: 'dns-add-content-priority' }, option('10'), option('20'), option('30'), option('40'), option('50')),
               input({ id: 'dns-add-content-ipv4', placeholder: 'XXX.XXX.XXX.XXX' }),
@@ -125,7 +125,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
   define('record_row', function(record, domain, editable) {
     return tr({ id: 'dns-row-' + record.id },
       td(record.record_type.toUpperCase()),
-      td(record.name.replace(domain,''), span({ style: 'color: #888' }, domain)),
+      td(div({ 'class': 'long-domain-name', style: 'width: 300px;' }, record.subdomain.replace(domain,''), span({ style: 'color: #888' }, domain))),
       td(record.priority, ' ', record.content),
       td(parse_readable_ttl(record.ttl)),
       editable ? td({ style: "text-align: center; min-width: 40px;"},
@@ -158,7 +158,7 @@ define('get_dns_params', function(id) {
 
     var dns_fields = {
       record_type: $('#dns' + type + 'type').val(),
-      name: $('#dns' + type + 'name').val(),
+      subdomain: $('#dns' + type + 'subdomain').val(),
       ttl: $('#dns' + type + 'ttl').val()
     };
 
@@ -226,13 +226,13 @@ define('get_dns_params', function(id) {
     return tr({ id: 'edit-dns-' + record.id },
       td(
         select({ id: 'dns-' + record.id + '-edit-type', onchange: function() { show_correct_form_fields(record.id); } },
-          option( record.record_type == 'A' ? { selected: 'selected' } : {}, 'A'),
-          option( record.record_type == 'CNAME' ? { selected: 'selected' } : {}, 'CNAME'),
-          option( record.record_type == 'MX' ? { selected: 'selected' } : {}, 'MX'),
-          option( record.record_type == 'TXT' ? { selected: 'selected' } : {}, 'TXT')
+          option( record.record_type.toUpperCase() == 'A' ? { selected: 'selected' } : {}, 'A'),
+          option( record.record_type.toUpperCase() == 'CNAME' ? { selected: 'selected' } : {}, 'CNAME'),
+          option( record.record_type.toUpperCase() == 'MX' ? { selected: 'selected' } : {}, 'MX'),
+          option( record.record_type.toUpperCase() == 'TXT' ? { selected: 'selected' } : {}, 'TXT')
         )
       ),
-      td(input({ style: 'width: 60px', id: 'dns-'+record.id+'-edit-name', value: record.name.replace('.'+domain,'') }), span({ style: 'color: #888' }, '.' + domain)),
+      td(input({ style: 'width: 60px', id: 'dns-'+record.id+'-edit-subdomain', value: record.subdomain.replace('.'+domain,'') }), span({ style: 'color: #888' }, '.' + domain)),
       td(
         select({ id: 'dns-' + record.id + '-edit-content-priority' },
           option( record.priority == 10 ? { selected: 'selected' } : {}, '10'),
@@ -282,7 +282,7 @@ define('get_dns_params', function(id) {
     var results = [];
     var count = 0;
     var tempts = records.map(function(record) {
-      return [record.record_type + (record.priority || '').toString() + record.name + record.content, count++];
+      return [record.record_type + (record.priority || '').toString() + record.subdomain + record.content, count++];
     });
 
     tempts.sort(function(x,y){

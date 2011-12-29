@@ -151,7 +151,6 @@ with (Hasher('Signup','Application')) {
         } else {
           redirect_to('#');
           Application.reload_layout();
-
           setTimeout(function() { call_action('Modal.show', 'SiteTour.site_tour_0'); }, 250);
         }
       } else {

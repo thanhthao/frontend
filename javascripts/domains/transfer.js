@@ -96,7 +96,7 @@ with (Hasher.Controller('Transfer','Application')) {
 
         if (import_setting_form.import_dns_settings_checkbox) {
           $.each(records, function() {
-            var record = { 'record_type': this.type, 'content': this.value, 'ttl': 1800, 'priority': this.priority, 'name': this.name };
+            var record = { 'record_type': this.record_type, 'content': this.value, 'ttl': 1800, 'priority': this.priority, 'subdomain': this.subdomain };
             Badger.addRecord(name, record);
           });
         }
@@ -121,7 +121,7 @@ with (Hasher.View('Transfer','Application')) {
 		
 	create_helper('domain_locked_help', function(name, info) {
 		return div(
-			h1('TRANSFER IN ' + name),
+			h1({ 'class': 'long-domain-name'}, 'TRANSFER IN ' + name),
 			div({ 'class': 'error-message' },
       div("You need to " + ( info.locked ? "unlock" : "disable privacy of") + " this domain through " + (info.registrar.name.indexOf('Unknown') == 0 ? 'the current registrar' : info.registrar.name)) ),
 			table(
@@ -175,7 +175,7 @@ with (Hasher.View('Transfer','Application')) {
 	
 	create_helper('select_whois_and_dns_settings', function(name, info, first_form_data, records, import_setting_form) {
 		return form({ action: action('transfer_domain', name, info, first_form_data, records, import_setting_form) },
-			h1("TRANSFER IN " + name),
+			h1({ 'class': 'long-domain-name'}, 'TRANSFER IN ' + name),
 			
 			input({ type: 'hidden', name: 'name', value: name }),
 			input({ type: 'hidden', name: 'auth_code', value: first_form_data.auth_code }),
@@ -199,7 +199,7 @@ with (Hasher.View('Transfer','Application')) {
         )
       )),
 
-			div({ style: "text-align: center; margin-top: 10px" }, input({ 'class': 'myButton', type: 'submit', value: 'Transfer ' + name + ' for 1 Credit' }))
+			div({ style: "text-align: center; margin-top: 10px" }, input({ 'class': 'myButton', type: 'submit', value: 'Transfer ' + Utils.truncate_domain_name(name) + ' for 1 Credit' }))
 		);
 	})
 	
@@ -271,8 +271,8 @@ with (Hasher.View('Transfer','Application')) {
   create_helper('dns_settings', function( name, info, first_form_data, records) {
     var results = records.map(function(record) {
       return tr(
-        td(record.name),
-        td(record.type),
+        td(record.subdomain),
+        td(record.record_type),
         td(record.priority ? record.priority + ' ' : '',  record.value)
       )
     });

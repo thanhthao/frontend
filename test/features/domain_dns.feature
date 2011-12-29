@@ -73,8 +73,8 @@ Feature: Badger DNS
 
   Scenario: When I want to edit a dns and click on save, the edit will be saved
     When I click on item with xpath "//tr[@id='dns-row-78']"
-    When I click on item with xpath "(//tr[@id='dns-row-78']/td/div/a)[1]"
-    And I fill in "dns-78-edit-name" with "123agile"
+    When I click on item with xpath "(//tr[@id='dns-row-78']/td/div/a)[2]"
+    And I fill in "dns-78-edit-subdomain" with "123agile"
     And I fill in "dns-78-edit-content-ipv4" with "1.2.3.4"
     And I select "1 hour" from "dns-78-edit-ttl"
     And I mock updateRecord with status "ok"
@@ -98,8 +98,8 @@ Feature: Badger DNS
 
   Scenario: When I want to edit a dns and click on cancel, the edit will not be saved
     When I click on item with xpath "//tr[@id='dns-row-78']"
-    When I click on item with xpath "(//tr[@id='dns-row-78']/td/div/a)[1]"
-    And I fill in "dns-78-edit-name" with "eastagile"
+    When I click on item with xpath "(//tr[@id='dns-row-78']/td/div/a)[2]"
+    And I fill in "dns-78-edit-subdomain" with "eastagile"
     And I fill in "dns-78-edit-content-ipv4" with "1.2.3.4"
     And I select "1 hour" from "dns-78-edit-ttl"
     When I click on item with xpath "(//tr[@id='edit-dns-78']/td/a)[2]"
@@ -112,8 +112,8 @@ Feature: Badger DNS
 
   Scenario: When I want to edit a dns but the dns is failed to update, there will be an error message
     When I click on item with xpath "//tr[@id='dns-row-78']"
-    When I click on item with xpath "(//tr[@id='dns-row-78']/td/div/a)[1]"
-    And I fill in "dns-78-edit-name" with "eastagile"
+    When I click on item with xpath "(//tr[@id='dns-row-78']/td/div/a)[2]"
+    And I fill in "dns-78-edit-subdomain" with "eastagile"
     And I fill in "dns-78-edit-content-ipv4" with "1.2.3.4"
     And I select "1 hour" from "dns-78-edit-ttl"
     And I mock updateRecord with status "unprocessable_entity"

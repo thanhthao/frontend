@@ -12,7 +12,7 @@ with (Hasher('WhoisApp','DomainApps')) {
   route('#domains/:domain/whois', function(domain_name) {
     render(
       div(
-        h1(domain_name + ' WHOIS'),
+        h1({ 'class': 'long-domain-name' }, domain_name, ' WHOIS'),
         'Loading... please wait.'
       )
     );
@@ -59,13 +59,13 @@ with (Hasher('WhoisApp','DomainApps')) {
 
   define('whois_view', function(domain) {
     return div(
-      h1(domain.name + ' WHOIS'),
+      h1({ 'class': 'long-domain-name' }, domain.name, ' WHOIS'),
 
       table({ style: 'width: 100% '}, tbody(
         tr(
           td({ style: 'vertical-align: top; padding-right: 20px'},
             h2('Public Listing'),
-            div({ style: 'border: 1px solid #ccc; width: 409px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois)
+            div({ 'class': 'long-domain-name', style: 'border: 1px solid #ccc; width: 409px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois)
           ),
           td({ style: 'vertical-align: top'},
             h2('Make Changes'),

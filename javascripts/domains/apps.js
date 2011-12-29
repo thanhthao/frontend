@@ -24,7 +24,7 @@ with (Hasher('DomainApps','Application')) {
   
   route('#domains/:domain', function(domain) {
     render(
-      h1(domain),
+      h1({ 'class': 'long-domain-name' }, domain),
       render_all_application_icons(domain)
     );
   });
@@ -95,7 +95,7 @@ with (Hasher('DomainApps','Application')) {
 
   define('show_modal_install_app', function(app, domain_obj) {  
     show_modal(
-      h1(app.name, " for ", domain_obj.name),
+      h1({ 'class': 'long-domain-name' }, app.name, " for ", domain_obj.name),
 
       table({ 'class': 'fancy-table' },
         tbody(
@@ -106,7 +106,7 @@ with (Hasher('DomainApps','Application')) {
           ),
           for_each(app.requires.dns, function(dns) { 
             return tr(
-              td({ style: 'text-align: right; padding-right: 20px' }, dns.subdomain, span({ style: 'color: #aaa' }, dns.subdomain ? '.' : '', domain_obj.name)),
+              td({ style: 'text-align: right; padding-right: 20px' }, dns.subdomain, span({ style: 'color: #aaa' }, dns.subdomain ? '.' : '', Utils.truncate_domain_name(domain_obj.name))),
               td({ style: 'padding: 0 20px' }, dns.type.toUpperCase()),
               td(dns.priority, ' ', dns.content),
               td(domain_has_record(domain_obj, dns) ? 'yes' : 'no')
@@ -234,7 +234,7 @@ with (Hasher('DomainApps','Application')) {
         var dns_fields = {
           record_type: record.type,
           priority: record.priority,
-          name: record.subdomain,
+          subdomain: record.subdomain,
           ttl: 1800,
           content: record.content
         };
@@ -263,7 +263,7 @@ with (Hasher('DomainApps','Application')) {
       }
     });
   });
-  
+
 }
 
 

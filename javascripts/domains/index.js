@@ -132,7 +132,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
 
           (domains || []).map(function(domain) {
             return tr(
-              td(a({ href: '#domains/' + domain.name }, domain.name)),
+              td(a({ href: '#domains/' + domain.name }, Utils.truncate_domain_name(domain.name))),
               td(domain.status),
               td(new Date(Date.parse(domain.expires)).toDateString()),
               td(

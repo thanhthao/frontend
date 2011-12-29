@@ -265,7 +265,10 @@ with (Hasher('Application')) {
       ],  
 
       li({ id: 'nav-help-and-support' },
-        a({ href: "#contact_us" }, 'HELP & SUPPORT')
+        a({ href: "#contact_us" }, 'HELP & SUPPORT'),
+        ul(
+          li({ 'class': "website" }, a({ href: "#blogs" }, 'BLOGS'))
+        )
         // ul(
         //   li({ 'class': "website" }, a({ href: "#knowledge-base" }, 'KNOWLEDGE BASE')),
         //   li({ 'class': "email" }, a({ href: "#tickets" }, 'SUPPORT TICKETS'))
@@ -306,7 +309,7 @@ with (Hasher('Application')) {
     });
 
     return li({ id: 'domain-menu-item-' + domain.replace('.','-'), 'class': 'domain-menu-item' },
-      a({ href: "#domains/" + domain }, domain.toUpperCase()),
+      a({ href: "#domains/" + domain }, div({ 'class': 'long-domain-name' }, domain.toUpperCase())),
       app_list
     );
   });

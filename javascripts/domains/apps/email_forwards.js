@@ -15,8 +15,7 @@ with (Hasher('EmailForwards', 'DomainApps')) {
   route('#domains/:domain/email_forwards', function(domain) {
     render(
       div({ id: 'email-forwards-wrapper' },
-        h1(domain, ' EMAIL FORWARDS'),
-        
+        h1({ 'class': 'header-with-right-btn long-domain-name' }, domain, ' EMAIL FORWARDS'),
         domain_app_settings_button('badger_email_forward', domain),
       
         div({ id: 'email-forwards-errors' }),
@@ -31,10 +30,10 @@ with (Hasher('EmailForwards', 'DomainApps')) {
                 th('')
               ),
               tr(
-                td(div(input({ id: 'input-username', name: 'username', placeholder: 'username' }), '@', domain)),
+                td(input({ id: 'input-username', name: 'username', placeholder: 'username' }), div({ 'class': 'long-domain-name domain-name-label' }, '@', domain)),
                 td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
                 td(input({ id: 'input-destination', name: 'destination', placeholder: 'test@example.com' })),
-                td({ style: 'text-align: center' }, button({ 'class': 'myButton myButton-small' }, 'Add'))
+                td({ style: 'text-align: center' }, input({ 'class': 'myButton myButton-small', type: 'submit', value: 'Add' }))
               )
             )
           )
@@ -52,7 +51,7 @@ with (Hasher('EmailForwards', 'DomainApps')) {
   
   define('show_email_forward_table_row', function(domain, email_forward) {
     return tr({ id: 'id-' + (email_forward.username == '*' ? '' : email_forward.username) },
-      td(email_forward.username, "@", domain),
+      td(div({ 'class': 'long-domain-name', style: 'width: 380px;' }, email_forward.username, "@", domain)),
       td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
       td(email_forward.destination),
       td({ style: 'text-align: center' },

@@ -22,6 +22,9 @@ Feature: Register Domain
     And I mock registerDomain api
     And I mock getDomains with 2 normal domains, 1 in transfer domain and 1 expiring soon domains
     And I should not see "MY DOMAINS (3)"
+    And I mock addRecord
+    And I mock getRecords with empty records
+    And I mock getDomain
     And I press "register-button"
     And I mock getDomain
 
