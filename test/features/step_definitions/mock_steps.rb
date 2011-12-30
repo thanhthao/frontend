@@ -90,14 +90,15 @@ end
 
 Given /^I mock createAccount$/ do
   page.execute_script("Badger.createAccount = function(data, callback){
-    Badger.setAccessToken('2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a');
-    callback({meta : {status : 'ok'}});
+    callback({ meta: {status: 'ok'}, data: { access_token: '2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a' } });
+    for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
+    if (callback) callback(response);
   };")
 end
 
 Given /^I mock sendEmail$/ do
-  page.execute_script("Badger.sendEmail = function(subject, body, callback) {
-    //return nothing
+  page.execute_script("Badger.sendEmail = function(data, callback) {
+    callback({ meta: { status: 'ok' } });
   };")
 end
 
@@ -345,7 +346,6 @@ Given /^I mock getKnowledgeCenterArticles return with:$/ do |table|
   cats.each do |key, value|
     results << "'#{key}': [#{value.join(',')}]"
   end
-  p results.join(',')
   page.execute_script("Badger.getKnowledgeCenterArticles = function(callback){
     callback({ data: { #{results.join(',')}} } );
   };")

@@ -6,16 +6,16 @@ Feature: Site Tour
   Scenario: Visit site tour after register
     Given I am on the home page
     And I mock createAccount
-    When I am on the register page
+    And I follow "Create Account"
     Then I should see "Create Your Badger.com Account"
     And I fill in "first_name" with "East Agile"
     And I fill in "last_name" with "Company"
     And I fill in "email" with "tester1@eastagile.com"
     And I fill in "password" with "pwd123"
     And I fill in "confirm_password" with "pwd123"
+    And I check "agree_to_terms"
     And I mock neccessary data to mock login with 35 domain credits and 5 invites available
-    Then I press "Submit"
-    And The home page is fully loaded
+    Then I press "Create Account"
     Then I should see "Welcome to Badger.com!"
     And I should see "We do things a little bit differently around here, so please take a moment to read the next few screens. It will be quick!"
     Then I follow "Next"

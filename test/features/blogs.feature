@@ -9,8 +9,8 @@ Feature: Blogs
       | id | title         | body                 | author       | published_at         |
       | 1  | My Blog       | This is my blog body | EastAgile    | 2011-10-30T04:21:43Z |
       | 2  | Another Blog  | An interesting new   | Stanyangroup | 2011-10-12T04:21:43Z |
-    When I follow "HELP & SUPPORT"
-    And I follow "BLOGS"
+    When I follow "ABOUT BADGER.COM"
+    And I follow "OUR BLOG"
 
   Scenario: As a logged in user I want to see all blogs
     Then I should see "My Blog"

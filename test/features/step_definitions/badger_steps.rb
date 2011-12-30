@@ -21,6 +21,7 @@ Given /^I logged in with mock data for domains and user info with ([^"]*) domain
   And 'I fill in "email" with "tester@example.com"'
   And 'I fill in "password" with "12345678"'
   And 'I press "Login"'
+  And 'I view my domains list'
   And 'The home page is fully loaded'
 end
 

@@ -28,7 +28,7 @@ with (Hasher('Application')) {
     if (!request_uri) request_uri = get_route();
     if (request_uri.indexOf("filter_domains") != -1) request_uri = request_uri.replace('grid', 'list');
     if (request_uri.indexOf("#blogs/") == 0) request_uri = '#blogs';
-    if (request_uri.indexOf("knowledge_center/") != -1) request_uri = '#knowledge_center';
+    if (request_uri.indexOf("#knowledge_center/") != -1) request_uri = '#knowledge_center';
 
     // select active link and expand parent
     $('#sidebar ul').removeClass('expanded');
