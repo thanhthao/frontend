@@ -5,6 +5,7 @@ with (Hasher()) {
 
     options.layout = typeof(options.layout) == 'undefined' ? (options.target ? false : this.default_layout) : options.layout;
     options.target = options.target || document.body;
+    if (typeof(options.target) == 'string') options.target = document.getElementById(options.target);
     if (options.layout) {
       var layout_element = options.layout(arguments);
       if (layout_element.parentNode != options.target) {
@@ -18,7 +19,7 @@ with (Hasher()) {
       }
     }
   });
-
+  
   define('layout', function(name, callback) {
     define(name, function callback_wrapper(yield) {
       // NOTE: this approach might be sketchy... we're storing state in the function object itself
@@ -35,6 +36,14 @@ with (Hasher()) {
       
       return callback_wrapper.layout_elem;
     });
+  });
+
+  define('reset_layout', function(name) {
+    if (this[name].layout_elem) {
+      if (this[name].layout_elem.parentNode) this[name].layout_elem.parentNode.removeChild(this[name].layout_elem);
+      this[name].layout_elem = null;
+      this[name].yield_parent = null;
+    }
   });
 
 }

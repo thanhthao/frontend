@@ -1,7 +1,7 @@
 img { border-style: none; }
 a { text-decoration: none; }
 a:hover { text-decoration: underline; }
-input, textarea, select { vertical-align: middle; margin: 5px 5px 0 0;}
+input, textarea, select { vertical-align: middle; }
 form,fieldset { margin:0; padding:0; border-style:none; }
 
 html { height: 100%; background: #0085aa url(../images/bg-page.jpg) repeat top center; }
@@ -143,8 +143,8 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 .contact-subject, .contact-body { width: 430px; border: 1px solid #aaa; }
 .hidden { display: none; }
 
-.edit-buttons { display: none }
-.fancy-table tr:hover > td .edit-buttons{ display: block; }
+.edit-buttons { visibility: hidden; }
+.fancy-table tr:hover > td .edit-buttons { visibility: visible; }
 
 .icon-buttons { padding-left:2px; float: left; }
 
@@ -172,6 +172,11 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
   width: 100%;
   overflow: auto;
 }
+
+
+.some_selected { opacity: 0.5; filter: alpha(opacity=50); }
+.select_one { cursor: pointer; } 
+label { cursor: pointer; }
 
 .fancy-table td.fancy-table-destination-td {
   padding-right: 30px;

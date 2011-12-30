@@ -1,57 +1,101 @@
-with (Hasher.Controller('Signup','Application')) {
-  route({
-    '#request_invite': 'request_invite',
-    '#register/:code': 'register',
-    '#register_terms_of_service': 'register_terms_of_service',
-    '#confirm_email/:code': 'confirm_email',
-    '#login': 'login'
+with (Hasher('Signup','Application')) {
+  layout('dashboard');
+
+  route('#register/:code', function(code) {
+    Badger.register_code = code;
+    redirect_to('#');
+  });
+  
+  route('#confirm_email/:code', function(code) {
+    redirect_to('#');
+		Badger.confirmEmail(code, function(response) {
+      show_confirm_email_notification_modal(response.data, response.meta.status);
+		});
   });
 
-  //skip_before_filter('redirect_to_root_unless_logged_in');
+  route('#welcome', function() {
+    render(
+      div({ 'class': 'info-message', style: 'font-weight: bold; padding: 8px 15px; font-size: 16px' }, "«---- Search for available domains using this search box.  ", i({ style: 'font-weight: normal' }, '(Hint: type your name)')),
+      
+      div(
+        //h1({ style: 'margin-top: 0' }, 'Welcome to Badger.com'),
+        
+        table({ style: 'width: 100%' },
+          tr(
+            td({ style: 'vertical-align: top' }, 
+              div({ style: "margin-top: 10px" },
+                h3({ style: "margin: 0" }, "What is badger.com?"),
+                p({ style: "margin-top: 5px" }, "We are a domain registrar.  You can register and configure domains through us."),
+            
+                h3({ style: "margin: 0" }, "What is a domain?"),
+                p({ style: "margin-top: 5px" }, "It's the \"badger.com\" in ", a({ href: '#welcome' }, 'www.badger.com'), ' or ', a({ href: 'mailto:support@badger.com' }, 'support@badger.com'), '.'),
 
-  create_action('request_invite', function() {
-    render('request_invite');
-    $('#email-address').focus();
+                h3({ style: "margin: 0" }, "What does it cost?"),
+                p({ style: "margin-top: 5px" }, 
+                  span({ style: 'color: #666; text-decoration: line-through'}, span({ style: 'color: black'}, "Usually between $10-15 per year.")), 
+                  span({ style: 'padding-right: 10px' }, ' '), 
+                  i(u(b("Special Offer - $8 per year!")))
+                ),
+                
+                h3({ style: "margin: 0" }, "What services do you offer for free?"),
+                p({ style: "margin-top: 5px" }, 'WHOIS privacy, DNS hosting, email forwarding, website forwarding and more.'),
+
+                h3({ style: "margin: 0" }, "What extensions do you support?"),
+                p({ style: "margin-top: 5px" }, u('We currently support .com and .net'), '. We will be adding .org, .me, .info, .name, .biz, .us and .co.uk in the next week or two with many more to follow.'),
+
+                h3({ style: "margin: 0" }, "Already have a domain?"),
+                //p({ style: "margin-top: 5px" }, "Read about out ", a({ href: '#faqs/how-were-different' }, "how we're different"), ".  Or, you can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), ".")
+                p({ style: "margin-top: 5px" }, "You can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), "."),
+                
+                h3({ style: "margin: 0" }, "Are you a developer?"),
+                p({ style: "margin-top: 5px" }, "You might like to know that our ", a({ href: 'https://github.com/badger/frontend', target: '_blank' }, 'frontend javascript website'), ' is open source and hosted on GitHub and is built on top of our ', a({ href: 'http://badger.github.com', target: '_blank' }, 'JSON API'), '.')
+                
+              )
+            ),
+            td({ style: 'vertical-align: top' }, img({ src: 'images/badger-5.png', style: 'padding: 20px 30px' }))
+          )
+        )
+      )
+    );
+  });
+  
+  define('require_user_modal', function(callback) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    var that = this;
+    var callback_with_args = function() { callback.apply(that, args); }
+    Badger.getAccessToken() ? callback_with_args() : show_register_modal(callback_with_args);
   });
 
-  create_action('submit_invite_request', function() {
-    Badger.requestInvite($('#email-address').val(), function(response) {
-      console.log(response)
-      if (response.meta.status == 'ok') {
-        render('request_invite_extra_info', response.data.invite_request_id);
-      } else {
-        render('request_invite');
-        $('#signup-errors').empty().append(helper('Application.error_message', response));
-      }
-    });
-    render('request_invite_processing');
+  define('show_login_modal', function(callback) {
+    show_modal(
+      div({ id: 'signup-box' },
+        h1('Login'),
+        div({ id: 'signup-errors' }),
+        form({ action: curry(process_login, callback) },
+          input({ name: 'email', placeholder: 'Email Address' }),
+
+          input({ name: 'password', type: 'password', placeholder: 'Password' }),
+
+          input({ 'class': 'myButton', type: 'submit', value: 'Login' })
+        ),
+        div({ style: 'margin-top: 20px' },
+  				a({ href: curry(show_forgot_password_modal, callback) }, "Forgot your password?"), br(),
+          a({ href: curry(show_register_modal, callback) }, "Don't have an account?")
+        )
+      )
+    );
   });
 
-  create_action('submit_invite_request_extra_info', function(data) {
-    if (data.full_name == "" || data.total_domains_registered == "")
-      return $('#extra-information-errors').empty().append(helper('Application.error_message', { data: { message: "Full name or number of domains registered can not be empty" }}));
-
-    Badger.requestInviteExtraInfo(data, function(response) {
-      console.log(response)
-      if (response.meta.status == 'ok') {
-        render('request_invite_thanks');
-      } else {
-        render('request_invite_extra_info', data.invite_request_id);
-        $('#extra-information-errors').empty().append(helper('Application.error_message', response));
-      }
-    });
-    render('request_invite_processing');
-  });
-
-  create_action('process_login', function(form) {
+  define('process_login', function(callback, form) {
     $('#signup-errors').empty();
     Badger.login(form.email, form.password, function(response) {
+      console.log(response)
       if (response.meta.status == 'ok') {
-        if (Badger.back_url != "") {
+        if (callback) {
+          callback();
+        } else if (Badger.back_url != "") {
           redirect_to(Badger.back_url);
           Badger.back_url = "";
-        } else {
-          redirect_to('#');
         }
       } else {
         $('#signup-errors').empty().append(helper('Application.error_message', response));
@@ -59,47 +103,119 @@ with (Hasher.Controller('Signup','Application')) {
     });
   });
 
-  create_action('register', function(code) {
-    render('register', code);
+  define('show_register_modal', function(callback) {
+    show_modal(
+      div({ id: 'signup-box' },
+        h1('Create Your Badger.com Account'),
+        div({ id: 'signup-errors' }),
+        form({ action: curry(create_person, callback) },
+          input({ type: 'hidden', name: 'invite_code' }),
 
-    Badger.createAccount({ invite_code: code }, function(response) {
-      if (response.data.message == 'Invite code not available') {
-        alert('Sorry, this invite code is no longer available!');
-        redirect_to('#');
-      }
-    });
+          div(
+            input({ name: 'first_name', placeholder: 'First Name' }),
+            input({ name: 'last_name', placeholder: 'Last Name' })
+          ),
+
+          div(
+            input({ name: 'email', size: 35, placeholder: 'Email Address' })
+          ),
+
+  				div(
+  					input({ name: 'password', placeholder: 'Desired Password', type: 'password' }),
+  					input({ name: 'confirm_password', placeholder: 'Confirm Password', type: 'password' })
+  				),
+        
+          div({ style: 'margin: 10px 0' },
+            input({ type: 'checkbox', name: 'agree_to_terms', id: 'agree_to_terms', value: true }),
+            label({ 'for': 'agree_to_terms' }, ' I agree to the Badger.com '),
+            a({ href: window.location.href.split('#')[0] + '#terms_of_service', target: '_blank' }, 'Terms of Service')
+          ),
+
+          div(
+            input({ 'class': 'myButton', type: 'submit', value: 'Create Account' })
+          ),
+          
+          div({ style: 'margin-top: 20px' }, 
+            a({ href: curry(show_login_modal, callback) }, "Already have an account?")
+          )
+        )        
+      )
+    );
   });
 
-  create_action('create_person', function(data) {
+  define('create_person', function(callback, data) {
 		if(data.password != data.confirm_password) {
 			$('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "Passwords do not match" } }));
       return;
 		}
-    if (!data.agree_to_terms) {
-      $('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "You must accept terms of service to use our site" } }));
-      return;
-    }
+    // if (!data.agree_to_terms) {
+    //   $('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "You must accept terms of service to use our site" } }));
+    //   return;
+    // }
+    
+    if (Badger.register_code) data.invite_code = Badger.register_code;
+    
     Badger.createAccount(data, function(response) {
       if (response.meta.status == 'ok') {
-        redirect_to('#');
-        setTimeout(function() { call_action('Modal.show', 'SiteTour.site_tour_0'); }, 250);
+        if (callback) {
+          callback();
+        } else {
+          redirect_to('#');
+          Application.reload_layout();
+          setTimeout(function() { call_action('Modal.show', 'SiteTour.site_tour_0'); }, 250);
+        }
       } else {
         $('#signup-errors').empty().append(helper('Application.error_message', response));
       }
     });
   });
 
-	create_action('send_password_reset_email', function(callback, form_data) {
+	define('show_reset_password_modal', function(data) {
+    show_modal(
+			form({ action: curry(reset_password, data) },
+				h1("Reset Password"),
+				div({ id: 'reset-password-messages' }),
+				div({ id: 'reset-password-form' },
+					div({ style: 'margin: 20px 0; text-align: center' },
+					  input({ name: "email", type: 'hidden', value: data.email }),
+						input({ name: "code", placeholder: "Reset Code", value: data.code || '' }),
+						input({ name: "new_password", type: 'password', placeholder: "New Password", value: data.new_password || '' }),
+						input({ name: "confirm_password", type: 'password', placeholder: "Confirm New Password", value: data.confirm_password || '' }),
+						input({ 'class': 'myButton myButton-small', type: 'submit', value: 'Update' })
+					)
+				)
+			)
+		);
+	});
+
+	define('show_forgot_password_modal', function(callback) {
+    show_modal(
+			form({ action: curry(send_password_reset_email, callback) },
+				h1("Forgot Password"),
+				div({ id: 'forgot-password-messages' }),
+				div({ id: 'forgot-password-form', style: 'margin: 20px 0; text-align: center' },
+					input({ name: "email", type: "text", 'class': 'fancy', size: 30, placeholder: "Email" }),
+					input({ 'class': 'myButton', type: 'submit', value: 'Send Reset Code' })
+				),
+        div({ style: 'margin-top: 20px' },
+  				a({ href: curry(show_login_modal, callback) }, "Remember your password?"), br(),
+          a({ href: curry(show_register_modal, callback) }, "Don't have an account?")
+        )
+			)
+		);
+	});
+
+	define('send_password_reset_email', function(callback, form_data) {
 		Badger.sendPasswordResetEmail(form_data, function(response) {
 			if (response.meta.status == 'ok') {
-        call_action('Modal.show', 'Signup.reset_password_modal', form_data);
+        show_reset_password_modal(form_data);
 			} else {
 				$('#forgot-password-messages').empty().append(helper('Application.error_message', response));
 			}
 		});
 	});
 
-	create_action('reset_password', function(callback, form_data) {
+	define('reset_password', function(callback, form_data) {
 		if(form_data.new_password != form_data.confirm_password)
 			return $('#reset-password-messages').empty().append( helper('Application.error_message', { data: { message: "Passwords do not match" } }) );
 
@@ -116,190 +232,12 @@ with (Hasher.Controller('Signup','Application')) {
 		});
 	});
 
-	create_action('confirm_email', function(code) {
-		Badger.confirmEmail(code, function(response) {
-       call_action('Modal.show', 'Signup.confirm_email_notification', response.data, response.meta.status);
-		});
-    redirect_to('#');
-	});
-
-  create_action('register_terms_of_service', function() {
-    render(helper('TermsOfService.terms_of_service'));
-  });
-
-  layout('signup');
-}
-
-with (Hasher.View('Signup', 'Application')) { (function() {
-
-  create_view('request_invite', function() {
-    return div({ id: 'signup-box' },
-      h1('Badger.com'),
-      h2("Thanks for visiting!  We're not quite ready yet but if you'd like an invite when we are, please enter your email address:"),
-
-      div({ id: 'signup-errors' }),
-
-      form({ style: 'text-align: center', action: action('submit_invite_request') },
-        input({ type: 'text', id: 'email-address', placeholder: 'Your Email Address' }),
-        input({ type: 'submit', value: 'Request Invite', 'class': "myButton" })
-      )
-    );
-  });
-
-  create_view('login', function() {
-    return div({ id: 'signup-box' },
-      h1('Login'),
-      div({ id: 'signup-errors' }),
-      form({ action: action('process_login') },
-        input({ name: 'email', placeholder: 'Email Address' }),
-
-        input({ name: 'password', type: 'password', placeholder: 'Password' }),
-
-        input({ 'class': 'myButton', type: 'submit', value: 'Login' })
-      ),
-      div({ style: 'margin-top: 20px' },
-				a({ href: action('Modal.show', 'Signup.forgot_password_modal') }, "Forgot your password?"), br(),
-        a({ href: '#request_invite' }, "Don't have an account?")
-      )
-    );
-  });
-
-  create_view('request_invite_processing', function() {
-    return div({ id: 'signup-box' },
-      h3('Processing... please wait.')
-    );
-  });
-
-  create_view('request_invite_extra_info', function(invite_request_id) {
-    return div(
-      h1('Extra Infomation'),
-      div({ id: 'extra-information-errors' }),
-      form({ action: action('submit_invite_request_extra_info') },
-        input({ type: 'hidden', name: 'invite_request_id', value: invite_request_id }),
-
-        div("What's your name?"),
-        div(
-          input({ name: 'full_name', 'class': 'invite-extra-info' })
-        ),
-
-        div("How many domains do you currently registered?"),
-        div({ 'class': 'invite-extra-info' },
-          div(
-            input({ id: 'total_domains_0', type: 'radio', name: 'total_domains_registered', value: "0" }),
-            label({ 'for': 'total_domains_0' }, "0")
-          ),
-          div(
-            input({ id: 'total_domains_1_10', type: 'radio', name: 'total_domains_registered', value: "1-10" }),
-            label({ 'for': 'total_domains_1_10' }, "1-10")
-          ),
-          div(
-            input({ id: 'total_domains_11_50', type: 'radio', name: 'total_domains_registered', value: "11-50" }),
-            label({ 'for': 'total_domains_11_50' }, "11-50")
-          ),
-          div(
-            input({ id: 'total_domains_51_100', type: 'radio', name: 'total_domains_registered', value: "51-100" }),
-            label({ 'for': 'total_domains_51_100' }, "51-100")
-          ),
-          div(
-            input({ id: 'total_domains_101_250', type: 'radio', name: 'total_domains_registered', value: "101-250" }),
-            label({ 'for': 'total_domains_101_250' }, "101-250")
-          ),
-          div(
-            input({ id: 'total_domains_250_1000', type: 'radio', name: 'total_domains_registered', value: "250-1000" }),
-            label({ 'for': 'total_domains_250_1000' }, "250-1000")
-          ),
-          div(
-            input({ id: 'total_domains_1000', type: 'radio', name: 'total_domains_registered', value: "1000+" }),
-            label({ 'for': 'total_domains_1000' }, "1000+")
-          )
-        ),
-
-        div("Have any suggestion for us? (optional)"),
-				div(
-					textarea({ name: 'suggestions', 'class': 'invite-extra-info' })
-				),
-
-        div({ style: 'margin-top: 20px' }, input({ 'class': 'myButton', type: 'submit', value: 'Submit' }))
-      )
-    );
-  });
-
-  create_view('request_invite_thanks', function() {
-    return div({ id: 'signup-box' },
-      h3('Thanks!  We\'ll get back to you shortly!')
-    );
-  });
-
-  create_view('register', function(code) {
-    return div({ id: 'signup-box' },
-      h1('Create Your Badger.com Account'),
-      div({ id: 'signup-errors' }),
-      form({ action: action('create_person') },
-        input({ type: 'hidden', name: 'invite_code', value: code }),
-
-        div(
-          input({ name: 'first_name', placeholder: 'First Name' }),
-          input({ name: 'last_name', placeholder: 'Last Name' })
-        ),
-
-        div(
-          input({ name: 'email', size: 35, placeholder: 'Email Address' })
-        ),
-
-				div(
-					input({ name: 'password', placeholder: 'Desired Password', type: 'password' }),
-					input({ name: 'confirm_password', placeholder: 'Confirm Password', type: 'password' })
-				),
-
-        div({ 'class': 'terms_of_service' },
-          input({ type: 'checkbox', name: 'agree_to_terms', id: 'agree_to_terms', checked: 'checked', value: true }),
-          label({ 'for': 'agree_to_terms' }, ' I agree to ',
-            a({ href: window.location.href.split('#')[0] + '#register_terms_of_service', target: '_blank' }, 'Terms of Service'))
-        ),
-        div( input({ 'class': 'myButton', type: 'submit', value: 'Submit' }))
-      )
-    );
-  });
-
-	create_helper('reset_password_modal', function(data) {
-		return div(
-			form({ action: action('reset_password', data) },
-				h1("Reset Password"),
-				div({ id: 'reset-password-messages' }),
-				div({ id: 'reset-password-form' },
-					div({ style: 'margin: 20px 0; text-align: center' },
-					  input({ name: "email", type: 'hidden', value: data.email }),
-						input({ name: "code", placeholder: "Reset Code", value: data.code || '' }),
-						input({ name: "new_password", type: 'password', placeholder: "New Password", value: data.new_password || '' }),
-						input({ name: "confirm_password", type: 'password', placeholder: "Confirm New Password", value: data.confirm_password || '' }),
-						input({ 'class': 'myButton myButton-small', type: 'submit', value: 'Update' })
-					)
-				)
-			)
-		);
-	});
-
-	create_helper('forgot_password_modal', function(data) {
-		data = data || {};
-
-		return div(
-			form({ action: action('send_password_reset_email', data) },
-				h1("Forgot Password"),
-				div({ id: 'forgot-password-messages' }),
-				div({ id: 'forgot-password-form', style: 'margin: 20px 0; text-align: center' },
-					input({ name: "email", type: "text", 'class': 'fancy', size: 30, placeholder: "Email", value: data.email || '' }),
-					input({ 'class': 'myButton', type: 'submit', value: 'Send Reset Code' })
-				)
-			)
-		);
-	});
-
-  create_helper('confirm_email_notification', function(data, status) {
-    return div(
+  define('show_confirm_email_notification_modal', function(data, status) {
+    show_modal(
       h1("Confirm Email Message"),
       status == 'ok' ? p(data.message + ". You can close this window now.") : p({ 'class':  'error-message'}, data.message),
       a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close")
-		);
+    );
 	});
 
-})(); }
+}

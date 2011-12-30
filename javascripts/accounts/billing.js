@@ -98,43 +98,43 @@ with (Hasher.View('Billing', 'Application')) { (function() {
             option(1), option(2), option(3), option(4), option(5), option(6), option(7), option(8), option(9)
           )
         ),
-        td('$15'),
-        td('$', span({ id: 'variable-credits' }, '15'))
+        td(span({ style: 'text-decoration: line-through; color: #888' }, '$15'), ' $8'),
+        td('$', span({ id: 'variable-credits' }, '8'))
       ),
       tr(
         td(input({ type: 'radio', name: 'credits', value: 10 })),
         td(10),
-        td('$14'),
-        td('$', 10*14)
+        td(span({ style: 'text-decoration: line-through; color: #888' }, '$14'), ' $8'),
+        td('$', 10*8)
       ),
       tr(
         td(input({ type: 'radio', name: 'credits', value: 25 })),
         td(25),
-        td('$13'),
-        td('$', 25*13)
+        td(span({ style: 'text-decoration: line-through; color: #888' }, '$13'), ' $8'),
+        td('$', 25*8)
       ),
       tr(
         td(input({ type: 'radio', name: 'credits', value: 50 })),
         td(50),
-        td('$12'),
-        td('$', 50*12)
+        td(span({ style: 'text-decoration: line-through; color: #888' }, '$12'), ' $8'),
+        td('$', 50*8)
       ),
       tr(
         td(input({ type: 'radio', name: 'credits', value: 100 })),
         td(100),
-        td('$11'),
-        td('$', 100*11)
+        td(span({ style: 'text-decoration: line-through; color: #888' }, '$11'), ' $8'),
+        td('$', 100*8)
       ),
       tr(
         td(input({ type: 'radio', name: 'credits', value: 250 })),
         td(250),
-        td('$10'),
-        td('$', 250*10)
+        td(span({ style: 'text-decoration: line-through; color: #888' }, '$10'), ' $8'),
+        td('$', 250*8)
       )
     ));
 
     $(tmp_table).find('select').change(function(e) {
-      $('#variable-credits').html($(e.target).val()*15);
+      $('#variable-credits').html($(e.target).val()*8);
       $(tmp_table).find('input[value=1]').click();
     });
 
@@ -146,12 +146,14 @@ with (Hasher.View('Billing', 'Application')) { (function() {
           num_credits = parseInt($(tmp_table).find('select').val());
         }
         var price = 0;
-        if (num_credits < 10) price = num_credits*15;
-        else if (num_credits == 10) price = 10*14;
-        else if (num_credits == 25) price = 25*13;
-        else if (num_credits == 50) price = 50*12;
-        else if (num_credits == 100) price = 100*11;
-        else if (num_credits == 250) price = 250*10;
+        // TEMP PROMO
+        price = num_credits * 8;
+        // if (num_credits < 10) price = num_credits*15;
+        // else if (num_credits == 10) price = 10*14;
+        // else if (num_credits == 25) price = 25*13;
+        // else if (num_credits == 50) price = 50*12;
+        // else if (num_credits == 100) price = 100*11;
+        // else if (num_credits == 250) price = 250*10;
         $('#purchase-button').val('Purchase ' + num_credits + (num_credits == 1 ? ' Credit' : ' Credits') + " for $" + price);
       });
 
@@ -161,13 +163,17 @@ with (Hasher.View('Billing', 'Application')) { (function() {
     return tmp_table;
   });
 
-  create_helper('purchase_modal', function(callback) {
+  create_helper('purchase_modal', function(callback, necessary_credits) {
     var payment_methods = ((BadgerCache.cached_payment_methods && BadgerCache.cached_payment_methods.data) || []);
 
     return form({ action: action('purchase_credits', callback) },
       h1('Purchase Credits'),
       //div({ style: 'margin-bottom: 15px' }, 'Use credits to buy new domains, transfer in existing domains, or renew expiring domain.'),
-      div({ id: 'modal-errors' }),
+      div({ id: 'modal-errors' },
+        (necessary_credits ?
+          div({ 'class': 'error-message' }, "You need at least ", necessary_credits, " to continue.")
+        : [])
+      ),
       table({ style: 'width: 100%' }, tbody(
         tr(
           td({ style: 'vertical-align: top; width: 300px; padding-right: 30px' },
@@ -254,7 +260,8 @@ with (Hasher.View('Billing', 'Application')) { (function() {
         )
       )),
 
-      div({ style: 'text-align: right; margin-top: 10px' }, input({ 'class': 'myButton', id: 'purchase-button', type: 'submit', value: 'Purchase 1 Credit for $15' }))
+      // TEMP PROMO
+      div({ style: 'text-align: right; margin-top: 10px' }, input({ 'class': 'myButton', id: 'purchase-button', type: 'submit', value: 'Purchase 1 Credit for $8' }))
     );
   });
 })(); }

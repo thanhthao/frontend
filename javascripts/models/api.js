@@ -90,17 +90,19 @@ var Badger = {
   // given email+password, returns an access token
   login: function(email, password, callback) {
     Badger.api("/account/access_token", { email: email, password: password }, function(response) {
-      if (response.meta.status == 'ok') Badger.setAccessToken(response.data.access_token);
+      if (response.meta.status == 'ok') {
+        Badger.setAccessToken(response.data.access_token);
+        for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
+      }
       if (callback) callback(response);
-      for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
     });
   },
   
   // erases local cookie
   logout: function(callback) {
     Badger.setAccessToken(null);
-    if (callback) callback();
     for (var i=0; i < Badger.logout_callbacks.length; i++) Badger.logout_callbacks[i].call(null);
+    if (callback) callback();
   },
   
   accountInfo: function(callback) {
@@ -120,6 +122,7 @@ var Badger = {
   createAccount: function(data, callback) {
     Badger.api("/account", 'POST', data, function(response) {
       if (response.meta.status == 'ok') Badger.setAccessToken(response.data.access_token);
+      for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
       if (callback) callback(response);
     });
   },
@@ -241,8 +244,8 @@ var Badger = {
 		Badger.api("/domains/" + data.name + "/info", data, callback);
 	},
   
-  sendEmail: function(subject, body, callback) {
-		Badger.api("account/contact_us", "POST", { subject: subject, body: body }, callback);
+  sendEmail: function(data, callback) {
+		Badger.api("account/contact_us", "POST", data, callback);
   },
 
 
@@ -405,6 +408,14 @@ var Badger = {
   remoteWhois: function(domain, callback) {
     Badger.api("/domains/remote_whois", "POST", { domain: domain }, callback);
   },
+
+	linkAccounts: function(site, site_access_token, callback) {
+		Badger.api("/account/link_accounts", "POST", { site: site, site_access_token: site_access_token }, callback);
+	},
+
+	deleteLinkedAccount: function(site_access_token, callback) {
+		Badger.api("/account/delete_linked_account", "DELETE", { site_access_token: site_access_token }, callback);
+	},
 
   getBlogs: function(callback) {
     Badger.api("/blogs", callback);

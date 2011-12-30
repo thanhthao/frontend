@@ -1,32 +1,24 @@
 with (Hasher.Controller('Application')) {
   initializer(function() {
-    // local cache
-    Badger.onLogin(BadgerCache.load);
-    Badger.onLogout(BadgerCache.flush);
     BadgerCache.load();
 
+    Badger.onLogin(function() {
+      BadgerCache.load();
+
+      // this is a bit ghetto but it works... we save the existing content in the frame, reload the layout, then render the content back in
+      var old_yield_parent = Hasher.instance.dashboard.yield_parent;
+      window.foobar = Hasher.instance.dashboard.yield_parent
+      reset_layout('dashboard');
+      render({ layout: dashboard }, old_yield_parent.childNodes);
+      update_sidebar();
+    });
+
     Badger.onLogout(function() {
-      var path = document.location.href.split('#')[0];
-      if (document.location.href == path) document.location.reload();
-      else document.location.href = path;
+      BadgerCache.flush();
+      reset_layout('dashboard');
+      set_route('#');
     });
   });
-
-  before_filter('redirect_to_root_unless_logged_in', function() {
-    // if they have an access token (logged in), skip everything
-    if (Badger.getAccessToken()) return;
-
-    // hack until skip_before_filters works
-    if (Hasher.Routes.getHash().match(/^#(rhinonames|request_invite|login|register_terms_of_service|register\/.*)$/)) return;
-    if (Hasher.Routes.getHash().match(/^#confirm_email\/.*$/)) {
-      Badger.back_url = Hasher.Routes.getHash();
-      redirect_to('#login');
-    } else {
-      // got this far? send 'em away
-      redirect_to('#request_invite');
-    }
-  });
-
 }
 
 with (Hasher.View('Application')) {

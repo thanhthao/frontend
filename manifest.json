@@ -26,9 +26,9 @@
     "/javascripts/layout/layout.js",
     "/javascripts/layout/modal.js",
 
-    "/javascripts/domains/utils.js",
     "/javascripts/domains/search.js",
     "/javascripts/domains/transfer.js",
+    "/javascripts/domains/migrations.js",
     "/javascripts/domains/bulk_transfer.js",
     "/javascripts/domains/register.js",
     "/javascripts/domains/bulk_register.js",
@@ -85,6 +85,7 @@
     "/images/add.gif",
     "/images/save.png",
     "/images/cancel.png",
+    "/images/trash.gif",
     
     "/images/apps/aboutme.png",
     "/images/apps/appengine.png",

@@ -2,11 +2,24 @@ with (Hasher('Registration ','DomainApps')) {
 
   register_domain_app({
     id: 'badger_registration',
-    name: 'Registration',
+    icon: function(domain_obj) {
+      switch (domain_obj.current_registrar) {
+        case 'godaddy': return "images/apps/godaddy.png";
+        case 'enom': return "images/apps/enom.png";
+        case '1and1': return "images/apps/1and1.png";
+        default: return;
+      }
+    },
+    name: function(domain_obj) {
+      switch (domain_obj.current_registrar) {
+        case 'godaddy': return "GoDaddy Registration";
+        case 'enom': return "eNom Registration";
+        case '1and1': return "1&1 Registration";
+        default: return 'Registration';
+      }
+    },
     menu_item: { text: 'REGISTRATION', href: '#domains/:domain/registration' },
-    requires: {
-      registrar: 'badger'
-    }
+    requires: {}
   });
 
   route('#domains/:domain/registration', function(domain) {

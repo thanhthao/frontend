@@ -1,7 +1,13 @@
 with (Hasher.Controller('Domains','Application')) {
   route({
-    '#': 'index',
     '#filter_domains/:filter/:view_type': 'index'
+  });
+
+  define('truncate_domain_name', function(domain_name, length) {
+    length = (length || 25)
+    name = domain_name.substring(0, length)
+    if (domain_name.length > length) name = name + "..."
+    return name;
   });
 
   create_action('index', function(filter, view_type) {
@@ -133,7 +139,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
 
           (domains || []).map(function(domain) {
             return tr(
-              td(a({ href: '#domains/' + domain.name }, Utils.truncate_domain_name(domain.name))),
+              td(a({ href: '#domains/' + domain.name }, Domains.truncate_domain_name(domain.name))),
               td(domain.status),
               td(new Date(Date.parse(domain.expires)).toDateString()),
               td(

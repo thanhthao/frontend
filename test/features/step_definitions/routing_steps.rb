@@ -29,7 +29,7 @@ When /^I visit Email Forwarding for domain "([^"]*)"$/ do |domain|
 end
 
 Given /^I view terms of service when registering$/ do
-  visit('/index.html#register_terms_of_service')
+  visit('/index.html#terms_of_service')
 end
 
 Given /^I am on the view blog page with blog_id "([^"]*)"$/ do |blog_id|

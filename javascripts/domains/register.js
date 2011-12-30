@@ -1,6 +1,11 @@
 with (Hasher.Controller('Register','Application')) {
 
   create_action('show', function(domain) {
+    if (!Badger.getAccessToken()) {
+      Signup.require_user_modal(curry(action('Register.show', domain)));
+      return;
+    }
+    
     BadgerCache.getContacts(function(results) {
       // ensure they have at least one whois contact
       if (results.data.length == 0) {
@@ -91,7 +96,7 @@ with (Hasher.View('Register', 'Application')) {
           )
         )),
         
-        div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + Utils.truncate_domain_name(domain) + ' for 1 credit' }))
+        div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + Domains.truncate_domain_name(domain) + ' for 1 credit' }))
       )
     ];
   });

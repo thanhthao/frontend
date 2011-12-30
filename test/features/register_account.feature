@@ -26,7 +26,7 @@ Feature: Register
     And I mock createAccount
     When I am on the register page
     Then I should see "Create Your Badger.com Account"
-    And I should see "I agree to Terms of Service"
+    And I should see "I agree to the Badger.com Terms of Service"
 
   Scenario: I should be able to see terms of service even if I am not logged in
     Given I am on the home page
@@ -35,17 +35,18 @@ Feature: Register
     Then I should see "Domain Name Registration Agreement"
     Then I should see "1. Introduction"
 
-  Scenario: I see error when registering new user without checking terms of service
-    Given I am on the home page
-    And I am not logged in
-    And I mock createAccount
-    When I am on the register page
-    And I fill in "first_name" with "East Agile"
-    And I fill in "last_name" with "Company"
-    And I fill in "email" with "tester1@eastagile.com"
-    And I fill in "password" with "pwd123"
-    And I fill in "confirm_password" with "pwd123"
-    And I uncheck "agree_to_terms"
-    Then I press "Submit"
-    Then I should see "You must accept terms of service to use our site"
+  # NOTE: this is now a server side message, not done in client side JS
+  # Scenario: I see error when registering new user without checking terms of service
+  #   Given I am on the home page
+  #   And I am not logged in
+  #   And I mock createAccount
+  #   When I am on the register page
+  #   And I fill in "first_name" with "East Agile"
+  #   And I fill in "last_name" with "Company"
+  #   And I fill in "email" with "tester1@eastagile.com"
+  #   And I fill in "password" with "pwd123"
+  #   And I fill in "confirm_password" with "pwd123"
+  #   And I uncheck "agree_to_terms"
+  #   Then I press "Submit"
+  #   Then I should see "You must accept terms of service to use our site"
     

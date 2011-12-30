@@ -34,11 +34,27 @@ with (Hasher('WhoisApp','DomainApps')) {
   });
 
   define('profile_options_for_select', function(selected_id) {
-    return BadgerCache.cached_contacts.data.map(function(profile) { 
-      var opts = { value: profile.id };
-      if (''+profile.id == ''+selected_id) opts['selected'] = 'selected';
-      return option(opts, profile.first_name + ' ' + profile.last_name + (profile.organization ? ", " + profile.organization : '') + " (" + profile.address + (profile.address2 ? ', ' + profile.address2 : '') + ")");
-    });
+    if (BadgerCache.cached_contacts) {
+      return BadgerCache.cached_contacts.data.map(function(profile) { 
+        var opts = { value: profile.id };
+        if (''+profile.id == ''+selected_id) opts['selected'] = 'selected';
+        return option(opts, profile.first_name + ' ' + profile.last_name + (profile.organization ? ", " + profile.organization : '') + " (" + profile.address + (profile.address2 ? ', ' + profile.address2 : '') + ")");
+      });
+    } else {
+      var dummy_opt = option({ disabled: 'disabled' }, 'Loading...');
+
+      BadgerCache.getContacts(function(contacts) { 
+        contacts.data.map(function(profile) { 
+          var opts = { value: profile.id };
+          if (''+profile.id == ''+selected_id) opts['selected'] = 'selected';
+          var node = option(opts, profile.first_name + ' ' + profile.last_name + (profile.organization ? ", " + profile.organization : '') + " (" + profile.address + (profile.address2 ? ', ' + profile.address2 : '') + ")");
+          dummy_opt.parentNode.insertBefore(node,null);
+        });
+        dummy_opt.parentNode.removeChild(dummy_opt);
+      });
+
+      return dummy_opt;
+    }
   });
 
   define('whois_view', function(domain) {
