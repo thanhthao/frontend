@@ -332,3 +332,39 @@ When /^I mock getFaqs return with:$/ do |table|
     callback({ data: [ #{faqs.join(',')}] } );
   };")
 end
+
+Given /^I mock getKnowledgeCenterArticles return with:$/ do |table|
+  cats = {}
+  table.hashes.map { |article| { article['category']=> [] } }.uniq.map{ |category| cats.merge!(category) }
+
+  table.hashes.each do |attributes|
+    cats[attributes['category']] << "{ id: #{attributes['id']}, title: '#{attributes['title']}', body: '#{attributes['body']}', category: '#{attributes['category']}' }"
+  end
+
+  results = []
+  cats.each do |key, value|
+    results << "'#{key}': [#{value.join(',')}]"
+  end
+  p results.join(',')
+  page.execute_script("Badger.getKnowledgeCenterArticles = function(callback){
+    callback({ data: { #{results.join(',')}} } );
+  };")
+end
+
+When /^I mock getKnowledgeCenterArticle return with:$/ do |table|
+  attributes = table.hashes.first
+  article = "{ id: #{attributes['id']}, title: '#{attributes['title']}', body: '#{attributes['body']}',
+               category: '#{attributes['category']}' }"
+
+  page.execute_script("Badger.getKnowledgeCenterArticle = function(id, callback){
+    callback({ meta: { status: 'ok' }, data: #{article} }
+    );
+  };")
+end
+
+When /^I mock getKnowledgeCenterArticle return false$/ do
+  page.execute_script("Badger.getKnowledgeCenterArticle = function(id, callback){
+    callback({ meta: { status: 'not_found' }, data: { message: 'Cannot find article' } }
+    );
+  };")
+end
