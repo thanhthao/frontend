@@ -30,6 +30,5 @@ Feature: Knowledge center
 
   Scenario: As a logged in user I should see an alert if cannot find knowledge center article
     And I mock getKnowledgeCenterArticle return false
-    And I click Ok on the next confirmation
-    When I am on the view blog page with blog_id "23-invalid-kc-article"
+    When I am on the view knowledge center with id "23-invalid-kc-article"
     Then I should see "KNOWLEDGE CENTER" within "#content h1"

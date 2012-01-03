@@ -91,6 +91,7 @@ end
 Given /^I mock createAccount$/ do
   page.execute_script("Badger.createAccount = function(data, callback){
     callback({ meta: {status: 'ok'}, data: { access_token: '2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a' } });
+    Badger.setAccessToken('2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a');
     for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
     if (callback) callback(response);
   };")

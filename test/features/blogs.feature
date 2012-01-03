@@ -31,6 +31,5 @@ Feature: Blogs
 
   Scenario: As a logged in user I should see an alert if cannot find blog
     And I mock getBlog return false
-    And I click Ok on the next confirmation
     When I am on the view blog page with blog_id "23-invalid-blog"
     And I should see "My Blog"
