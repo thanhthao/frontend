@@ -2,11 +2,15 @@ with (Hasher('Signup','Application')) {
   layout('dashboard');
 
   route('#register/:code', function(code) {
-    Badger.register_code = code;
-    redirect_to('#');
-    show_register_modal();
+    if (Badger.getAccessToken()) {
+      redirect_to('#');
+    } else {
+      Badger.register_code = code;
+      redirect_to('#');
+      show_register_modal();
+    }
   });
-  
+
   route('#confirm_email/:code', function(code) {
     redirect_to('#');
     if (Badger.getAccessToken()) {
