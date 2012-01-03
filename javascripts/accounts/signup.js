@@ -11,6 +11,11 @@ with (Hasher('Signup','Application')) {
     }
   });
 
+  route('#reset_password/:email/:code', function(email, code) {
+    redirect_to('#');
+    show_reset_password_modal(email, code);
+  });
+
   route('#confirm_email/:code', function(code) {
     redirect_to('#');
     if (Badger.getAccessToken()) {
@@ -182,17 +187,17 @@ with (Hasher('Signup','Application')) {
     });
   });
 
-	define('show_reset_password_modal', function(data) {
+	define('show_reset_password_modal', function(email, code) {
     show_modal(
-			form({ action: curry(reset_password, data) },
-				h1("Reset Password"),
+			form({ action: curry(reset_password, null) },
+				h1("Enter your new password"),
 				div({ id: 'reset-password-messages' }),
 				div({ id: 'reset-password-form' },
 					div({ style: 'margin: 20px 0; text-align: center' },
-					  input({ name: "email", type: 'hidden', value: data.email }),
-						input({ name: "code", placeholder: "Reset Code", value: data.code || '' }),
-						input({ name: "new_password", type: 'password', placeholder: "New Password", value: data.new_password || '' }),
-						input({ name: "confirm_password", type: 'password', placeholder: "Confirm New Password", value: data.confirm_password || '' }),
+					  input({ name: "email", type: 'hidden', value: email }),
+						input({ name: "code", type: 'hidden', value: code  }),
+						input({ name: "new_password", type: 'password', placeholder: "New Password" }),
+						input({ name: "confirm_password", type: 'password', placeholder: "Confirm New Password" }),
 						input({ 'class': 'myButton myButton-small', type: 'submit', value: 'Update' })
 					)
 				)
@@ -220,7 +225,8 @@ with (Hasher('Signup','Application')) {
 	define('send_password_reset_email', function(callback, form_data) {
 		Badger.sendPasswordResetEmail(form_data, function(response) {
 			if (response.meta.status == 'ok') {
-        show_reset_password_modal(form_data);
+        $('#forgot-password-messages').empty().append(helper('Application.success_message', response));
+				$('#forgot-password-form').empty();
 			} else {
 				$('#forgot-password-messages').empty().append(helper('Application.error_message', response));
 			}
@@ -234,8 +240,13 @@ with (Hasher('Signup','Application')) {
 		Badger.resetPasswordWithCode(form_data, function(response) {
 			if (response.meta.status == 'ok')
 			{
-				$('#reset-password-messages').empty().append(helper('Application.success_message', response));
-				$('#reset-password-form').empty();
+        setTimeout(function() {
+          show_modal(
+            h1("Reset Password"),
+            helper('Application.success_message', response),
+            a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close")
+          );
+        }, 250);
 			}
 			else
 			{

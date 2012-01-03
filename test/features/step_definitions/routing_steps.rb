@@ -39,3 +39,7 @@ end
 Given /^I view my domains list$/ do
   visit("/index.html#filter_domains/all/list")
 end
+
+Given /^I follow the reset password link for email "([^"]*)" with code "([^"]*)"$/ do |email, code|
+  visit("/index.html#reset_password/#{email}/#{code}")
+end

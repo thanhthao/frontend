@@ -368,3 +368,23 @@ When /^I mock getKnowledgeCenterArticle return false$/ do
     );
   };")
 end
+
+When /^I mock sendPasswordResetEmail$/ do
+  page.execute_script("Badger.sendPasswordResetEmail = function(data, callback){
+    if (data.email == '')
+      callback({ meta: { status: 'unprocessable_entity' }, data: { message: 'Email missing' } });
+    else if (data.email == 'non-user@example.com')
+      callback({ meta: { status: 'unprocessable_entity' }, data: { message: 'No account registered with this email' } });
+    else
+      callback({ meta: { status: 'ok' }, data: { message: 'An email has been sent to ' + data.email + ' with a password reset code.' } });
+  };")
+end
+
+When /^I mock resetPasswordWithCode/ do
+  page.execute_script("Badger.resetPasswordWithCode = function(data, callback){
+    if (data.code == 'invalid')
+      callback({ meta: { status: 'unprocessable_entity' }, data: { message: 'Invalid Code' } });
+    else
+      callback({ meta: { status: 'ok' }, data: { message: 'Password reset' } });
+  };")
+end
