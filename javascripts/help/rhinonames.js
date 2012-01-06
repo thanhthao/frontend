@@ -9,5 +9,5 @@ with (Hasher.Controller('RhinoNames', 'Application')) {
     );
   });
 
-  layout('signup');
+  layout('dashboard');
 }

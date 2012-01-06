@@ -25,30 +25,30 @@ with (Hasher('Signup','Application')) {
             td({ style: 'vertical-align: top' }, 
               div({ style: "margin-top: 10px" },
                 h3({ style: "margin: 0" }, "What is badger.com?"),
-                p({ style: "margin-top: 5px" }, "We are a domain registrar.  You can register and configure domains through us."),
+                p({ style: "margin-top: 5px; margin-bottom: 18px" }, "We are a domain registrar.  You can register and configure domains through us."),
             
                 h3({ style: "margin: 0" }, "What is a domain?"),
-                p({ style: "margin-top: 5px" }, "It's the \"badger.com\" in ", a({ href: '#welcome' }, 'www.badger.com'), ' or ', a({ href: 'mailto:support@badger.com' }, 'support@badger.com'), '.'),
+                p({ style: "margin-top: 5px; margin-bottom: 18px" }, "It's the \"badger.com\" in ", a({ href: '#welcome' }, 'www.badger.com'), ' or ', a({ href: 'mailto:support@badger.com' }, 'support@badger.com'), '.'),
 
                 h3({ style: "margin: 0" }, "What does it cost?"),
-                p({ style: "margin-top: 5px" }, 
+                p({ style: "margin-top: 5px; margin-bottom: 18px" }, 
                   span({ style: 'color: #666; text-decoration: line-through'}, span({ style: 'color: black'}, "Usually between $10-15 per year.")), 
                   span({ style: 'padding-right: 10px' }, ' '), 
                   i(u(b("Special Offer - $8 per year!")))
                 ),
                 
                 h3({ style: "margin: 0" }, "What services do you offer for free?"),
-                p({ style: "margin-top: 5px" }, 'WHOIS privacy, DNS hosting, email forwarding, website forwarding and more.'),
+                p({ style: "margin-top: 5px; margin-bottom: 18px" }, 'WHOIS privacy, DNS hosting, email/url forwarding and more.'),
 
                 h3({ style: "margin: 0" }, "What extensions do you support?"),
-                p({ style: "margin-top: 5px" }, u('We currently support .com and .net'), '. We will be adding .org, .me, .info, .name, .biz, .us and .co.uk in the next week or two with many more to follow.'),
+                p({ style: "margin-top: 5px; margin-bottom: 18px" }, u('We currently support .com and .net'), '. We will be adding .org, .me, .info, .name, .biz, .us and .co.uk in the next week or two with many more to follow.'),
 
                 h3({ style: "margin: 0" }, "Already have a domain?"),
-                //p({ style: "margin-top: 5px" }, "Read about out ", a({ href: '#faqs/how-were-different' }, "how we're different"), ".  Or, you can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), ".")
-                p({ style: "margin-top: 5px" }, "You can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), "."),
+                //p({ style: "margin-top: 5px; margin-bottom: 18px" }, "Read about out ", a({ href: '#faqs/how-were-different' }, "how we're different"), ".  Or, you can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), ".")
+                p({ style: "margin-top: 5px; margin-bottom: 18px" }, "You can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), "."),
                 
                 h3({ style: "margin: 0" }, "Are you a developer?"),
-                p({ style: "margin-top: 5px" }, "You might like to know that our ", a({ href: 'https://github.com/badger/frontend', target: '_blank' }, 'frontend javascript website'), ' is open source and hosted on GitHub and is built on top of our ', a({ href: 'http://badger.github.com', target: '_blank' }, 'JSON API'), '.')
+                p({ style: "margin-top: 5px; margin-bottom: 18px" }, "You might like to know that our ", a({ href: 'https://github.com/badger/frontend', target: '_blank' }, 'frontend javascript website'), ' is open source and hosted on GitHub and is built on top of our ', a({ href: 'http://badger.github.com', target: '_blank' }, 'JSON API'), '.')
                 
               )
             ),
