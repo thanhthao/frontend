@@ -7,8 +7,9 @@ Feature: Confirm Email
     Given I am on the home page
     And I mock neccessary data to mock login with 35 domain credits and 5 invites available
     And I mock confirmEmail with status "ok"
-    And I visit the confirm email path
-    Then I should see "Forgot your password?"
+    When I visit the confirm email path
+    Then I should see "Login"
+    And I should see "Forgot your password?"
     And I fill in "email" with "tester@example.com"
     And I fill in "password" with "12345678"
     And I press "Login"
@@ -21,8 +22,9 @@ Feature: Confirm Email
     Given I am on the home page
     And I mock neccessary data to mock login with 35 domain credits and 5 invites available
     And I mock confirmEmail with status "bad_request"
-    And I visit the confirm email path
-    Then I should see "Forgot your password?"
+    When I visit the confirm email path
+    Then I should see "Login"
+    And I should see "Forgot your password?"
     And I fill in "email" with "tester@example.com"
     And I fill in "password" with "12345678"
     And I press "Login"

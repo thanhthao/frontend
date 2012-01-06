@@ -31,3 +31,19 @@ end
 Given /^I view terms of service when registering$/ do
   visit('/index.html#terms_of_service')
 end
+
+Given /^I am on the view blog page with blog_id "([^"]*)"$/ do |blog_id|
+  visit("/index.html#blogs/#{blog_id}")
+end
+
+Given /^I am on the view knowledge center with id "([^"]*)"$/ do |kc_id|
+  visit("/index.html#knowledge_center/#{kc_id}")
+end
+
+Given /^I view my domains list$/ do
+  visit("/index.html#filter_domains/all/list")
+end
+
+Given /^I follow the reset password link for email "([^"]*)" with code "([^"]*)"$/ do |email, code|
+  visit("/index.html#reset_password/#{email}/#{code}")
+end

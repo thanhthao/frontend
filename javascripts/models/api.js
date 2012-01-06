@@ -121,8 +121,10 @@ var Badger = {
 
   createAccount: function(data, callback) {
     Badger.api("/account", 'POST', data, function(response) {
-      if (response.meta.status == 'ok') Badger.setAccessToken(response.data.access_token);
-      for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
+      if (response.meta.status == 'ok') {
+        Badger.setAccessToken(response.data.access_token);
+        for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
+      }
       if (callback) callback(response);
     });
   },
@@ -233,7 +235,13 @@ var Badger = {
   },
 
 	resetPasswordWithCode: function(data, callback) {
-		Badger.api("/account/reset_password", 'POST', data, callback);
+		Badger.api("/account/reset_password", 'POST', data, function(response) {
+      if (response.meta.status == 'ok') {
+        Badger.setAccessToken(response.data.access_token);
+        for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
+      }
+      if (callback) callback(response);
+    });
   },
 
 	changePassword: function(data, callback) {
@@ -333,6 +341,18 @@ var Badger = {
 
   getBlog: function(id, callback) {
     Badger.api("/blogs/" + id , callback);
+  },
+
+  getFaqs: function(callback) {
+    Badger.api("/faqs", callback);
+  },
+
+  getKnowledgeCenterArticles: function(callback) {
+    Badger.api("/knowledge_center_articles/", callback);
+  },
+
+  getKnowledgeCenterArticle: function(id, callback) {
+    Badger.api("/knowledge_center_articles/" + id, callback);
   }
 
 
