@@ -56,7 +56,7 @@ with (Hasher('ContactUs','Application')) {
     render({ target: 'send-contact-us-form-errors' }, '');
 
     Badger.sendEmail(form_data, function(response) {
-      console.log(response)
+      console.log(response);
       if (response.meta.status == 'ok') {
         render({ target: 'send-contact-us-form' },
           div({ style: 'font-weight: bold; text-align: center' }, "Your email has been sent!")

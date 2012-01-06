@@ -7,7 +7,7 @@ Feature: Register
     Given I am on the home page
     And I am not logged in
     And I mock createAccount
-    When I am on the register page
+    And I follow "Create Account"
     Then I should see "Create Your Badger.com Account"
     And I fill in "first_name" with "East Agile"
     And I fill in "last_name" with "Company"
@@ -16,7 +16,7 @@ Feature: Register
     And I fill in "confirm_password" with "pwd123"
     And I check "agree_to_terms"
     And I mock neccessary data to mock login with 35 domain credits and 5 invites available
-    Then I press "Submit"
+    Then I press "Create Account"
     And The home page is fully loaded
     Then I should see "Welcome to Badger.com!"
 
@@ -24,7 +24,7 @@ Feature: Register
     Given I am on the home page
     And I am not logged in
     And I mock createAccount
-    When I am on the register page
+    And I follow "Create Account"
     Then I should see "Create Your Badger.com Account"
     And I should see "I agree to the Badger.com Terms of Service"
 

@@ -90,14 +90,16 @@ end
 
 Given /^I mock createAccount$/ do
   page.execute_script("Badger.createAccount = function(data, callback){
+    callback({ meta: {status: 'ok'}, data: { access_token: '2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a' } });
     Badger.setAccessToken('2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a');
-    callback({meta : {status : 'ok'}});
+    for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
+    if (callback) callback(response);
   };")
 end
 
 Given /^I mock sendEmail$/ do
-  page.execute_script("Badger.sendEmail = function(subject, body, callback) {
-    //return nothing
+  page.execute_script("Badger.sendEmail = function(data, callback) {
+    callback({ meta: { status: 'ok' } });
   };")
 end
 
@@ -313,5 +315,77 @@ When /^I mock getBlog return with:$/ do |table|
   page.execute_script("Badger.getBlog = function(id, callback){
     callback({ meta: { status: 'ok' }, data: #{blogs} }
     );
+  };")
+end
+
+When /^I mock getBlog return false$/ do
+  page.execute_script("Badger.getBlog = function(id, callback){
+    callback({ meta: { status: 'not_found' }, data: { message: 'Cannot find blog' } }
+    );
+  };")
+end
+
+When /^I mock getFaqs return with:$/ do |table|
+  faqs = []
+  table.hashes.each do |attributes|
+    faqs << "{ id: #{attributes['id']}, question: '#{attributes['question']}', answer: '#{attributes['answer']}' }"
+  end
+  page.execute_script("Badger.getFaqs = function(callback){
+    callback({ data: [ #{faqs.join(',')}] } );
+  };")
+end
+
+Given /^I mock getKnowledgeCenterArticles return with:$/ do |table|
+  cats = {}
+  table.hashes.map { |article| { article['category']=> [] } }.uniq.map{ |category| cats.merge!(category) }
+
+  table.hashes.each do |attributes|
+    cats[attributes['category']] << "{ id: #{attributes['id']}, title: '#{attributes['title']}', body: '#{attributes['body']}', category: '#{attributes['category']}' }"
+  end
+
+  results = []
+  cats.each do |key, value|
+    results << "'#{key}': [#{value.join(',')}]"
+  end
+  page.execute_script("Badger.getKnowledgeCenterArticles = function(callback){
+    callback({ data: { #{results.join(',')}} } );
+  };")
+end
+
+When /^I mock getKnowledgeCenterArticle return with:$/ do |table|
+  attributes = table.hashes.first
+  article = "{ id: #{attributes['id']}, title: '#{attributes['title']}', body: '#{attributes['body']}',
+               category: '#{attributes['category']}' }"
+
+  page.execute_script("Badger.getKnowledgeCenterArticle = function(id, callback){
+    callback({ meta: { status: 'ok' }, data: #{article} }
+    );
+  };")
+end
+
+When /^I mock getKnowledgeCenterArticle return false$/ do
+  page.execute_script("Badger.getKnowledgeCenterArticle = function(id, callback){
+    callback({ meta: { status: 'not_found' }, data: { message: 'Cannot find article' } }
+    );
+  };")
+end
+
+When /^I mock sendPasswordResetEmail$/ do
+  page.execute_script("Badger.sendPasswordResetEmail = function(data, callback){
+    if (data.email == '')
+      callback({ meta: { status: 'unprocessable_entity' }, data: { message: 'Email missing' } });
+    else if (data.email == 'non-user@example.com')
+      callback({ meta: { status: 'unprocessable_entity' }, data: { message: 'No account registered with this email' } });
+    else
+      callback({ meta: { status: 'ok' }, data: { message: 'An email has been sent to ' + data.email + ' with a password reset code.' } });
+  };")
+end
+
+When /^I mock resetPasswordWithCode/ do
+  page.execute_script("Badger.resetPasswordWithCode = function(data, callback){
+    if (data.code == 'invalid')
+      callback({ meta: { status: 'unprocessable_entity' }, data: { message: 'Invalid Code' } });
+    else
+      callback({ meta: { status: 'ok' }, data: { message: 'Password reset' } });
   };")
 end
