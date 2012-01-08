@@ -262,9 +262,10 @@ with (Hasher('Application')) {
       ],  
 
       li({ id: 'nav-help-and-support' },
-        a({ href: "#welcome" }, 'ABOUT BADGER.COM'),
+        a({ href: "#welcome" }, 'BADGER.COM'),
         ul(
           li({ 'class': "website" }, a({ href: "#blogs" }, 'OUR BLOG')),
+          li({ 'class': "website" }, a({ href: "#chatroom" }, 'CHATROOM')),
           li({ 'class': "website" }, a({ href: "#faqs" }, 'FAQS')),
           li({ 'class': "website" }, a({ href: "#knowledge_center" }, 'KNOWLEDGE CENTER')),
           li({ 'class': "website" }, a({ href: "#contact_us" }, 'CONTACT US'))
