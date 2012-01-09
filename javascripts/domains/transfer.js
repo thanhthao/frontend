@@ -51,33 +51,29 @@ with (Hasher.Controller('Transfer','Application')) {
 		
 		// make sure it's a valid domain name before making api call
 		form_data.name = form_data.name.toLowerCase();
-		if ( /^([a-z0-9\-]+\.)+(com|net)$/.test(form_data.name) ) {
-			Badger.getDomainInfo(form_data, function(response) {
-				if (response.data.code == 2303)//the domain object does not exist, render the proper error message
-					call_action('Modal.show', 'Transfer.get_domain_form', form_data, helper('Application.error_message', { data: { message: "Domain not found" } }));
-				else if(response.data.code != 1000)
-					call_action('Modal.show', 'Transfer.get_domain_form', form_data, helper('Application.error_message', { data: { message: "Internal server error" } }));
-				else if(response.data.pending_transfer)
-					call_action('Modal.show', 'Transfer.get_domain_form', form_data, helper('Application.error_message', { data: { message: "Domain already pending transfer" } }));
-				else {
-					if(response.data.locked) {
-						call_action('Modal.show', 'Transfer.domain_locked_help', form_data.name, response.data);
-					} else {
-            if (response.data.registrar.name.toLowerCase().indexOf('godaddy') != -1)
-              Badger.remoteWhois(form_data.name, function(whois_response) {
-                if (whois_response.data.privacy) {
-                  call_action('Modal.show', 'Transfer.domain_locked_help', form_data.name, response.data);
-                } else
-                  call_action('Modal.show', 'Transfer.get_auth_code', form_data.name, response.data);
-              });
-            else
-              call_action('Modal.show', 'Transfer.get_auth_code', form_data.name, response.data);
-					}
+		Badger.getDomainInfo(form_data, function(response) {
+			if (response.data.code == 2303)//the domain object does not exist, render the proper error message
+				call_action('Modal.show', 'Transfer.get_domain_form', form_data, helper('Application.error_message', { data: { message: "Domain not found" } }));
+			else if(response.data.code != 1000)
+				call_action('Modal.show', 'Transfer.get_domain_form', form_data, helper('Application.error_message', { data: { message: "Internal server error" } }));
+			else if(response.data.pending_transfer)
+				call_action('Modal.show', 'Transfer.get_domain_form', form_data, helper('Application.error_message', { data: { message: "Domain already pending transfer" } }));
+			else {
+				if(response.data.locked) {
+					call_action('Modal.show', 'Transfer.domain_locked_help', form_data.name, response.data);
+				} else {
+          if (response.data.registrar.name.toLowerCase().indexOf('godaddy') != -1)
+            Badger.remoteWhois(form_data.name, function(whois_response) {
+              if (whois_response.data.privacy) {
+                call_action('Modal.show', 'Transfer.domain_locked_help', form_data.name, response.data);
+              } else
+                call_action('Modal.show', 'Transfer.get_auth_code', form_data.name, response.data);
+            });
+          else
+            call_action('Modal.show', 'Transfer.get_auth_code', form_data.name, response.data);
 				}
-			});
-		} else {
-			call_action('Modal.show', 'Transfer.get_domain_form', form_data, helper('Application.error_message', { data: { message: "Domain name invalid" } }));
-		}
+			}
+		});
 	});
 	
 	create_action('transfer_domain', function(name, info, first_form_data, records, import_setting_form, form_data) {
