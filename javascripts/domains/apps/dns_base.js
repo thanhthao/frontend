@@ -122,6 +122,7 @@ with (Hasher.Controller('BaseDnsApp','DomainApps')) {
         option({ value: 'ns1.dsredirection.com,ns2.dsredirection.com' }, 'DomainSponsor'),
         option({ value: 'ns1.fabulous.com,ns2.fabulous.com' }, 'Fabulous'),
         option({ value: 'ns1.fastpark.net,ns2.fastpark.net' }, 'FastPark.net'),
+        option({ value: 'ns1.googleghs.com,ns2.googleghs.com,ns3.googleghs.com,ns4.googleghs.com' }, 'Google AdSense'),
         option({ value: 'ns1.hitfarm.com,ns2.hitfarm.com' }, 'Hit Farm'),
         option({ value: 'ns1.parked.com,ns2.parked.com' }, 'Parked'),
         option({ value: 'ns1.parkingpanel.com,ns2.parkingpanel.com' }, 'Parking Panel'),
