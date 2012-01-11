@@ -194,7 +194,7 @@ with (Hasher('Application')) {
             code = e.keyCode
           // Hack to make it work on Firefox
           // In Firefox, charCode of Arrow and Delete key is 0, keyCode is 37, 38, 39, 40, 8
-          if (!([37, 38, 39, 40, 8].indexOf(parseInt(e.keyCode)) != -1 && e.charCode == 0) && /[^a-zA-Z0-9\-]/.test(String.fromCharCode(code))) Hasher.Event.stop(e);
+          if (!([37, 38, 39, 40, 8].indexOf(parseInt(e.keyCode)) != -1 && e.charCode == 0) && /[^a-zA-Z0-9\-\.]/.test(String.fromCharCode(code))) Hasher.Event.stop(e);
         }
       }})
     );
