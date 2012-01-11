@@ -44,6 +44,7 @@
     "/javascripts/domains/apps/google_mail.js",
     "/javascripts/domains/apps/google_docs.js",
     "/javascripts/domains/apps/google_calendar.js",
+    "/javascripts/domains/apps/heroku.js",
 
     "/javascripts/accounts/signup.js",
     "/javascripts/accounts/account.js",

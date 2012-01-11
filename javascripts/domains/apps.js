@@ -86,8 +86,8 @@ with (Hasher('DomainApps','Application')) {
     ];
   });
 
-  define('install_app_button_clicked', function(app, domain_obj) {
-    install_app_on_domain(app, domain_obj);
+  define('install_app_button_clicked', function(app, domain_obj, form_data) {
+    install_app_on_domain(app, domain_obj, form_data);
     hide_modal();
     $('#domain-menu-item-' + domain_obj.name.replace('.','-')).remove();
     redirect_to(app.menu_item.href.replace(':domain', domain_obj.name));
@@ -97,37 +97,37 @@ with (Hasher('DomainApps','Application')) {
     show_modal(
       h1({ 'class': 'long-domain-name' }, app.name, " for ", domain_obj.name),
 
-      table({ 'class': 'fancy-table' },
-        tbody(
-          tr({ 'class': 'table-header' },
-            th({ style: 'text-align: right; padding-right: 20px' }, 'Subdomain'),
-            th({ style: 'padding: 0 20px' }, 'Type'),
-            th({ style: 'width: 100%' }, 'Target')
-          ),
-          for_each(app.requires.dns, function(dns) { 
-            return tr(
-              td({ style: 'text-align: right; padding-right: 20px' }, dns.subdomain, span({ style: 'color: #aaa' }, dns.subdomain ? '.' : '', Domains.truncate_domain_name(domain_obj.name))),
-              td({ style: 'padding: 0 20px' }, dns.type.toUpperCase()),
-              td(dns.priority, ' ', dns.content),
-              td(domain_has_record(domain_obj, dns) ? 'yes' : 'no')
-            );
-          })
-        )
-      ),
-
       ((app.requires && app.requires.dns && domain_obj.name_servers.join(',') != 'ns1.badger.com,ns2.badger.com') ? 
         div({ 'class': 'error-message', style: 'margin-top: 20px' }, 
           "Please install Badger DNS and try again.", 
           span({ style: 'padding-right: 20px'}, ' '), 
           div({ style: 'float: right' }, a({ 'class': 'myButton myButton-small', href: curry(BaseDnsApp.change_name_servers_modal, domain_obj) }, 'Install Badger DNS'))
         )
-      :
+      : app.install_screen ? app.install_screen(app, domain_obj) : [
+        table({ 'class': 'fancy-table' },
+          tbody(
+            tr({ 'class': 'table-header' },
+              th({ style: 'text-align: right; padding-right: 20px' }, 'Subdomain'),
+              th({ style: 'padding: 0 20px' }, 'Type'),
+              th({ style: 'width: 100%' }, 'Target')
+            ),
+            for_each(app.requires.dns, function(dns) { 
+              return tr(
+                td({ style: 'text-align: right; padding-right: 20px' }, dns.subdomain, span({ style: 'color: #aaa' }, dns.subdomain ? '.' : '', Domains.truncate_domain_name(domain_obj.name))),
+                td({ style: 'padding: 0 20px' }, dns.type.toUpperCase()),
+                td(dns.priority, ' ', dns.content),
+                td(domain_has_record(domain_obj, dns) ? 'yes' : 'no')
+              );
+            })
+          )
+        ),
+
         div({ style: 'padding-top: 20px; text-align: right' }, 
           a({ 'class': 'myButton', href: curry(install_app_button_clicked, app, domain_obj) }, 'Install ', app.name)
         )
-      )
+      ])
 
-    )
+    );
   });
 
   define('show_needs_badger_nameservers_modal', function(app, domain_obj) {  
@@ -217,18 +217,24 @@ with (Hasher('DomainApps','Application')) {
         return (host || '').replace(regex,'').toLowerCase();
       };
 
-      var content_matches = !!((tmp_record.content||'').toLowerCase() == (record.content||'').toLowerCase());
+      var content_matches;
+      if (record.content && record.content.test) {//regexp
+        content_matches = record.content.test((tmp_record.content||'').toLowerCase());
+      } else {
+        content_matches = !!((tmp_record.content||'').toLowerCase() == (record.content||'').toLowerCase());
+      }
+      
       var type_matches = !!((tmp_record.type||tmp_record.record_type||'').toLowerCase() == (record.type||record.record_type||'').toLowerCase());
-      var name_matches = !!(sanitize_domain(tmp_record.name||tmp_record.subdomain) == sanitize_domain(record.name||record.subdomain));
+      var subdomain_matches = !!(sanitize_domain(tmp_record.subdomain) == sanitize_domain(record.subdomain));
       var priority_matches = !!(parseInt(tmp_record.priority||'0') == parseInt(record.priority||'0'));
       
-      if (content_matches && type_matches && name_matches && priority_matches) return tmp_record;
+      if (content_matches && type_matches && subdomain_matches && priority_matches) return tmp_record;
     }
     
     return false;
   });
 
-  define('install_app_on_domain', function(app, domain_obj) {  
+  define('install_app_on_domain', function(app, domain_obj, form_data) {
     for_each(app.requires.dns, function(record) {
       if (!domain_has_record(domain_obj, record)) {
         var dns_fields = {
@@ -236,7 +242,7 @@ with (Hasher('DomainApps','Application')) {
           priority: record.priority,
           subdomain: record.subdomain,
           ttl: 1800,
-          content: record.content
+          content: record.name ? (form_data||{})[record.name] : record.content
         };
 
         Badger.addRecord(domain_obj.name, dns_fields, function(response) {
