@@ -62,7 +62,7 @@ with (Hasher.View('Register', 'Application')) {
     return [
       h1({ 'class': 'long-domain-name'}, 'Register ', domain),
       div({ id: 'errors' }),
-      p({ style: "margin-bottom: 0" }, "You'll be able to configure ", strong(domain), " on the next screen."),
+      p({ style: "margin-bottom: 0" }, "You'll be able to configure ", strong(Domains.truncate_domain_name(domain, 50)), " on the next screen."),
       form({ action: action('buy_domain', domain) },
         input({ type: 'hidden', name: 'name', value: domain }),
         input({ type: 'hidden', name: 'auto_renew', value: 'true'}),
