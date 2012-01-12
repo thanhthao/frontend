@@ -160,7 +160,7 @@ with (Hasher.View('Domains', 'Application')) { (function() {
 
   create_helper('add_grid_view', function(domains, results) {
     return tr( {'key': results[0][0].split('.')[0]},
-      td(results[0][0].split('.')[0]),
+      td(Domains.truncate_domain_name(results[0][0].split('.')[0], 40)),
 
       results.map(function(domain) {
         var tld = domain[0].split('.')[1];
