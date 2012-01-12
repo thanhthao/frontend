@@ -126,7 +126,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
     return tr({ id: 'dns-row-' + record.id },
       td(record.record_type.toUpperCase()),
       td(div({ 'class': 'long-domain-name', style: 'width: 300px;' }, record.subdomain.replace(domain,''), span({ style: 'color: #888' }, domain))),
-      td(record.priority, ' ', record.content),
+      td(record.priority, ' ', Domains.truncate_domain_name(record.content)),
       td(parse_readable_ttl(record.ttl)),
       editable ? td({ style: "text-align: center; min-width: 40px;"},
         div({ 'class': 'edit-buttons' },
