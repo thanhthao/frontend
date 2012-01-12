@@ -9,7 +9,7 @@ Feature: Blogs
       | id | title         | body                 | author       | published_at         |
       | 1  | My Blog       | This is my blog body | EastAgile    | 2011-10-30T04:21:43Z |
       | 2  | Another Blog  | An interesting new   | Stanyangroup | 2011-10-12T04:21:43Z |
-    When I follow "ABOUT BADGER.COM"
+    When I follow "BADGER.COM"
     And I follow "OUR BLOG"
 
   Scenario: As a logged in user I want to see all blogs
@@ -23,7 +23,7 @@ Feature: Blogs
   Scenario: As a logged in user I want to see details of a blog
     And I mock getBlog return with:
       | id | title         | body                 | author       | published_at         |
-      | 1  | My Blog       | This is my blog body | EastAgile    | 2011-10-30T04:21:43Z |
+      | 1  | My Blog       | This is my blog body | EastAgile    | 2011-10-30T14:21:43Z |
     When I follow "My Blog"
     Then I should see "My Blog" within "#content h1"
     And I should see "This is my blog body"

@@ -9,7 +9,7 @@ Feature: Knowledge center
       | id | title                       | body                                                                     | category                          |
       | 1  | Setup your Gmail            | Ensure that you have correctly set up e-mail forwarding on your website. | How To Send Email From RhinoNames |
       | 2  | How to Reset your Password  | Forgot your password? Not to worry. Resetting it is very easy.           | General                           |
-    When I follow "ABOUT BADGER.COM"
+    When I follow "BADGER.COM"
     And I follow "KNOWLEDGE CENTER"
 
   Scenario: As a logged in user I want to see knowledge center articles list
