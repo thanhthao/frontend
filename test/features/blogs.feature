@@ -7,8 +7,8 @@ Feature: Blogs
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
     And I mock getBlogs return with:
       | id | title         | body                 | author       | published_at         |
-      | 1  | My Blog       | This is my blog body | EastAgile    | 2011-10-30T04:21:43Z |
-      | 2  | Another Blog  | An interesting new   | Stanyangroup | 2011-10-12T04:21:43Z |
+      | 1  | My Blog       | This is my blog body | EastAgile    | 2011-10-30T14:21:43Z |
+      | 2  | Another Blog  | An interesting new   | Stanyangroup | 2011-10-12T14:21:43Z |
     When I follow "BADGER.COM"
     And I follow "OUR BLOG"
 

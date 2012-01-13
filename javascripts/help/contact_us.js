@@ -5,7 +5,7 @@ with (Hasher('ContactUs','Application')) {
   route('#chatroom', function() {
     render(
       h1('Badger Chatroom'),
-      p("Fill out the form below to join our chatroom where you can find other users and staf.."),
+      p("Fill out the form below to join our chatroom where you can find other users and staff."),
       iframe({ style: 'width: 100%; height: 400px; border: 0; margin: 0; padding: 0', 'src': 'http://webchat.freenode.net?randomnick=1&channels=badger&prompt=1&uio=MT1mYWxzZSYxMT0xOTU3b' })
     );
   });
