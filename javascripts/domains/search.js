@@ -18,7 +18,7 @@ with (Hasher('Search','Application')) {
         if (resp.data.domains[0][0].indexOf(most_recent_result) == 0) {
           $('#search-results tbody tr:first').remove();
         }
-        $('#search-results tbody').prepend(helper('search_result_row', resp.data.domains));
+        $('#search-results tbody').prepend(search_result_row(resp.data.domains));
       });
     };
 
@@ -47,7 +47,7 @@ with (Hasher('Search', 'Application')) {
       td(results[0][0].split('.')[0]),
       results.map(function(domain) {
         var tld = domain[0].split('.')[1];
-        return domain[1] ? td({ 'class': 'tld' }, a({ href: action('Register.show', domain[0]) }, tld))
+        return domain[1] ? td({ 'class': 'tld' }, a({ href: curry(Register.show, domain[0]) }, tld))
                          : td({ 'class': 'tld' }, span({ style: 'text-decoration: line-through' }, tld));
       })
     );
@@ -58,12 +58,12 @@ with (Hasher('Search', 'Application')) {
     return div(
       h1('Search Results'),
       div({ style: 'float: right; margin-top: -44px' }, 
-        a({ 'class': 'myButton myButton-small', href: action('Transfer.show') }, 'Transfer in a Domain')
+        a({ 'class': 'myButton myButton-small', href: Transfer.show }, 'Transfer in a Domain')
       ),
       table({ id: 'search-results', 'class': 'fancy-table' }, tbody()),
       div({ id: 'search-instructions' }, 
         p('Start typing to search for available domains.'),
-        p('If you would like to register many domains at once, try our ', a({ href: curry(Signup.require_user_modal, action('BulkRegister.show')) }, 'Bulk Register Tool'), '.')
+        p('If you would like to register many domains at once, try our ', a({ href: curry(Signup.require_user_modal, BulkRegister.show) }, 'Bulk Register Tool'), '.')
       )
     );
   });

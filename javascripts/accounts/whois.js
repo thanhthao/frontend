@@ -20,12 +20,12 @@ with (Hasher('Whois','Application')) {
           if (callback) {
             callback();
           } else {
-            call_action('Modal.hide');
-            call_action('index');
+            hide_modal();
+            index();
           }
         });
       } else {
-        $('#errors').empty().append(helper('Application.error_message', response));
+        $('#errors').empty().append(Application.error_message(response));
       }
     }
 
@@ -45,7 +45,7 @@ with (Hasher('Whois', 'Application')) { (function() {
     return div(
       h1('Profiles'),
       div({ style: 'float: right; margin-top: -44px' }, 
-        a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Whois.edit_whois_modal') }, 'Create New Profile')
+        a({ 'class': 'myButton myButton-small', href: curry(show_modal, 'Whois.edit_whois_modal') }, 'Create New Profile')
       ),
 
       table({ 'class': 'fancy-table' },
@@ -68,7 +68,7 @@ with (Hasher('Whois', 'Application')) { (function() {
                 div(contact.country)
               ),
               td({ style: "text-align: right" },
-                a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Whois.edit_whois_modal', contact) }, 'Edit')
+                a({ 'class': 'myButton myButton-small', href: curry(show_modal, 'Whois.edit_whois_modal', contact) }, 'Edit')
               )
             );
           })
@@ -92,7 +92,7 @@ with (Hasher('Whois', 'Application')) { (function() {
   
   define('edit_whois_modal', function(data, callback, custom_message) {
     data = data || {};
-    return form({ action: action('create_or_update_whois', data.id, callback) },
+    return form({ action: curry(create_or_update_whois, data.id, callback) },
       h1(data.id ? 'Edit Profile' : 'Create Profile'),
       div({ style: 'color: green;' }, custom_message),
       div({ id: 'errors' }),
@@ -128,7 +128,7 @@ with (Hasher('Whois', 'Application')) { (function() {
               input({ style: 'width: 70px', name: 'zip', placeholder: 'Zip', value: data.zip || '' })
             ),
             div(
-              select({ style: 'width: 150px', name: 'country' }, option({ disabled: 'disabled' }, 'Country:'), helper("Application.country_options", data.country))
+              select({ style: 'width: 150px', name: 'country' }, option({ disabled: 'disabled' }, 'Country:'), Application.country_options(data.country))
             )
           )
         )

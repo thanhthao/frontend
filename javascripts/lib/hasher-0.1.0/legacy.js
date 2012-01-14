@@ -1,44 +1,6 @@
 // this file should be avoided if possible... this is a backwards compatibilty layer with 0.0.5
 with (Hasher()) {
-  define('set_route', set_route);
-
-  define('define', function(name,callback) { 
-    this.define("action_" + name, callback);
-  });
   
-  
-  define('action', function() {
-    var that_arguments = arguments;
-    var that = this;
-    return function() { 
-      if (that_arguments[0].indexOf('.') >= 0) {
-        var parts = that_arguments[0].split('.');
-        return that[parts[0]]['action_' + parts[1]].apply(that[parts[0]], Array.prototype.slice.call(that_arguments,1).concat(Array.prototype.slice.call(arguments,0)));
-      } else {
-        return that['action_' + that_arguments[0]].apply(that, Array.prototype.slice.call(that_arguments,1).concat(Array.prototype.slice.call(arguments,0)));
-      }
-    }
-  });
-  define('call_action', function() {
-    return action.apply(this,Array.prototype.slice.call(arguments))();
-  });
-
-
-  define('define', function(name,callback) { this.define("helper_" + name, callback); });
-  define('helper', function() {
-    var that_arguments = arguments;
-    var that = this;
-
-    if (that_arguments[0].indexOf('.') >= 0) {
-      var parts = that_arguments[0].split('.');
-      return that[parts[0]]['helper_' + parts[1]].apply(that[parts[0]], Array.prototype.slice.call(that_arguments,1));
-    } else {
-      return that['helper_' + that_arguments[0]].apply(that, Array.prototype.slice.call(that_arguments,1));
-    }
-  });
-
-  define('define', function(name,callback) { this.define("view_" + name, callback); }); 
-
   define('input', function() { 
     var arguments = flatten_to_array(arguments);
     var options = shift_options_from_args(arguments);

@@ -70,7 +70,7 @@ with (Hasher('ContactUs','Application')) {
           div({ style: 'font-weight: bold; text-align: center' }, "Your email has been sent!")
         );
       } else {
-        render({ target: 'send-contact-us-form-errors' }, helper('error_message', response));
+        render({ target: 'send-contact-us-form-errors' }, error_message(response));
       }
     });
   });

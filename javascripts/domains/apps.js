@@ -248,9 +248,9 @@ with (Hasher('DomainApps','Application')) {
         Badger.addRecord(domain_obj.name, dns_fields, function(response) {
           // TODO: notify the user if error
           // if (response.meta.status == 'ok') {
-          //   call_action('index', domain);
+          //   index(domain);
           // } else {
-          //   $('#errors').empty().append(helper('Application.error_message', response));
+          //   $('#errors').empty().append(Application.error_message(response));
           // }
         });
       }
@@ -371,7 +371,7 @@ with (Hasher('DomainApps','Application')) {
 // 
 //  define('show_app_dialog', function(domain, app) {
 //    var normalized_name = app.name.toLowerCase().replace(/[^a-z]/g,'_');
-//     call_action('Modal.show', 'DomainApps.' + normalized_name + '_install_modal', domain, app);
+//     show_modal('DomainApps.' + normalized_name + '_install_modal', domain, app);
 //  });
 // 
 //   layout('dashboard');
@@ -473,11 +473,11 @@ with (Hasher('DomainApps','Application')) {
 
 
 // define('hide_modal', function() {
-//   call_action('Modal.hide');
+//   hide_modal();
 // });
 // 
 // define('modal', function(callback) {
-//   action('Modal.show', 'DNS.change_name_servers_modal', domain_info);
+//   curry(show_modal, 'DNS.change_name_servers_modal', domain_info);
 //   callback()
 // });
 

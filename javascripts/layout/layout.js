@@ -158,7 +158,7 @@ with (Hasher('Application')) {
       $(user_nav).prepend(span(response.data.name));
       $(user_nav).prepend(span({ id: 'user_nav_invites_available', 'class': response.data.invites_available <= 0 ? 'hidden' : '' }, a({ href: '#invites' }, response.data.invites_available + ' Invites')));
       $(user_nav).prepend(span(a({ href: '#account/billing', id: 'user_nav_credits' }, 'Credits')));
-      helper('update_credits');
+      update_credits();
     });
 
     return user_nav;
@@ -183,10 +183,10 @@ with (Hasher('Application')) {
   });
 
   define('search_box', function(domain) {
-    return form({ id: "form-search", action: action('Search.search_box_changed') },
+    return form({ id: "form-search", action: Search.search_box_changed },
       input({ id: 'form-search-input', type: 'text', value: '', placeholder: 'Search for domains', events: {
-        focus: action('Search.search_box_changed'),
-        keyup: action('Search.search_box_changed'),
+        focus: Search.search_box_changed,
+        keyup: Search.search_box_changed,
         keypress: function(e) {
           if (e.charCode)
             code = e.charCode

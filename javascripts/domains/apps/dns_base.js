@@ -69,7 +69,7 @@ with (Hasher('BaseDnsApp','DomainApps')) {
         $('#domain-menu-item-' + domain_info.name.replace('.','-')).remove();
         set_route('#domains/' + domain_info.name);
       } else {
-        $('#errors_modal').empty().append(helper('Application.error_message', response));
+        $('#errors_modal').empty().append(Application.error_message(response));
       }
     });
   });

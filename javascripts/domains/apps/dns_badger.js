@@ -130,7 +130,7 @@ with (Hasher('BadgerDnsApp','BaseDnsApp')) {
       td(parse_readable_ttl(record.ttl)),
       editable ? td({ style: "text-align: center; min-width: 40px;"},
         div({ 'class': 'edit-buttons' },
-          //button({ events: { 'click': action('dns_edit', domain, record.id) }}, 'Edit'),
+          //button({ events: { 'click': curry(dns_edit, domain, record.id) }}, 'Edit'),
           a({ 'class': 'hover-buttons icon-buttons', href: curry(edit_dns, domain, record) }, img({ src: 'images/edit.gif'})),
           a({ 'class': 'hover-buttons icon-buttons', href: curry(dns_delete, domain, record.id) }, img({ src: 'images/trash.gif'}))
       )) : td()
@@ -185,7 +185,7 @@ define('get_dns_params', function(id) {
       if (response.meta.status == 'ok') {
         set_route(get_route());
       } else {
-        $('#errors').empty().append(helper('Application.error_message', response));
+        $('#errors').empty().append(Application.error_message(response));
       }
     })
   });
@@ -206,7 +206,7 @@ define('get_dns_params', function(id) {
       if (results.meta.status == 'ok') {
         set_route(get_route());
       } else {
-        $('#errors').empty().append(helper('Application.error_message', results));
+        $('#errors').empty().append(Application.error_message(results));
       }
     })
   });

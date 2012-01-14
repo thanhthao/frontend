@@ -4,7 +4,7 @@ with (Hasher('TermsOfService','Application')) {
   });
 
   define('terms_of_service', function() {
-    render(helper('terms_of_service'));
+    render(terms_of_service());
   });
 
   layout('dashboard');

@@ -64,14 +64,14 @@ with (Hasher('WebForwards', 'DomainApps')) {
     
     Badger.createWebForward(domain, form_data, function(response) {
       if(response.meta.status == 'ok') {
-        call_action('Modal.hide');
+        hide_modal();
         $('#input-path').val('').blur();
         $('#input-destination').val('').blur();
         
         $('#web-forwards-table').append( show_web_forward_table_row(domain, response.data) );
       } else {
         $('#web-forwards-errors').empty().append(
-          helper('Application.error_message', response)
+          Application.error_message(response)
         );
       }
       
@@ -85,7 +85,7 @@ with (Hasher('WebForwards', 'DomainApps')) {
       Badger.deleteWebForward(domain, web_forward.id, function(response) {
         if(response.meta.status != 'ok') {
           $('#web-forwards-errors').empty().append(
-            helper('Application.error_message', response)
+            Application.error_message(response)
           )
         } else {
           $('#web_forward_tr_' + web_forward.id).remove(); //remove the row

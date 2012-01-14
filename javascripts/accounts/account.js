@@ -6,15 +6,15 @@ with (Hasher('Account','Application')) {
 
 	define('change_password', function(data) {
 		if(data.new_password != data.confirm_password)
-			return $('#change-password-messages').empty().append( helper('Application.error_message', { data: { message: "Passwords do not match" } }) );
+			return $('#change-password-messages').empty().append( Application.error_message({ data: { message: "Passwords do not match" } }) );
 		
 		Badger.changePassword(data, function(response) {
 			if (response.meta.status == 'ok') {
 				Badger.logout();
-				$('#change-password-messages').empty().append( helper('Application.success_message', response) );
+				$('#change-password-messages').empty().append( Application.success_message(response) );
 				$('#change-password-form').empty();
 			} else {
-				$('#change-password-messages').empty().append( helper('Application.error_message', response) );	
+				$('#change-password-messages').empty().append( Application.error_message(response) );	
 			}
 		});
 	});
@@ -39,7 +39,7 @@ with (Hasher('Account', 'Application')) { (function() {
 		return div(
 			h1("ACCOUNT SETTINGS"),
 			ul(
-				li( a({ href: action('Modal.show', 'Account.change_password_modal') }, "Change Password") )
+				li( a({ href: curry(show_modal, 'Account.change_password_modal') }, "Change Password") )
 			)
 		);
   });
@@ -53,7 +53,7 @@ with (Hasher('Account', 'Application')) { (function() {
 
 	define('change_password_modal', function(data) {
 		data = data || {};
-		return form({ action: action('change_password') },
+		return form({ action: change_password },
 			h1("CHANGE PASSWORD"),
 			div({ id: 'change-password-messages' }),
 			div({ id: 'change-password-form', style: 'text-align: center; margin: 20px 0' },

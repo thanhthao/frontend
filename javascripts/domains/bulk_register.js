@@ -4,9 +4,9 @@ with (Hasher('BulkRegister','Application')) {
     BadgerCache.getContacts(function(contacts) {
       if (contacts.data.length == 0) {
         var custom_message = "You must have at least one contact profile to bulk-register domain.";
-        call_action('Modal.show', 'Whois.edit_whois_modal', null, action('BulkRegister.show'), custom_message);
+        show_modal('Whois.edit_whois_modal', null, BulkRegister.show, custom_message);
       } else {
-        call_action('Modal.show', 'BulkRegister.get_bulk_domain_form');
+        show_modal('BulkRegister.get_bulk_domain_form');
       }
     });
   });
@@ -20,7 +20,7 @@ with (Hasher('BulkRegister','Application')) {
         results.push(value);
     });
     if (results.length > 0)
-      call_action('BulkRegister.verify_bulk_register', results, form_data.contacts_id);
+      BulkRegister.verify_bulk_register(results, form_data.contacts_id);
     else {
       $('#bulk-register-form-error').html('Invalid Domains Input');
       $('#bulk-register-form-error').removeClass('hidden');
@@ -28,19 +28,19 @@ with (Hasher('BulkRegister','Application')) {
   });
 
   define('verify_bulk_register', function(domains_list, contacts_id) {
-//    call_action('Modal.show', 'Register.processing_request');
+//    show_modal('Register.processing_request');
     BadgerCache.getAccountInfo(function(account_info) {
       // ensure they have at least one domain_credit
       if (account_info.data.domain_credits < domains_list.length) {
-        Billing.purchase_modal(action('BulkRegister.verify_bulk_register', domains_list));
+        Billing.purchase_modal(curry(BulkRegister.verify_bulk_register, domains_list));
       } else {
-        call_action('Modal.show', 'BulkRegister.confirm_register', domains_list, contacts_id);
+        show_modal('BulkRegister.confirm_register', domains_list, contacts_id);
       }
     });
   });
 
   define('proceed_bulk_register', function(domains_list, contacts_id) {
-    call_action('Modal.show', 'BulkRegister.bulk_register_result', domains_list);
+    show_modal('BulkRegister.bulk_register_result', domains_list);
     var count = 0;
     $.each(domains_list, function() {
       var local_count = ++count;
@@ -61,8 +61,8 @@ with (Hasher('BulkRegister','Application')) {
   define('close_bulk_modal', function() {
     BadgerCache.flush('domains');
     BadgerCache.getDomains(function() { update_my_domains_count(); });
-    helper('Application.update_credits', true);
-    call_action('Modal.hide');
+    Application.update_credits(true);
+    hide_modal();
     set_route('#');
   });
 
@@ -74,7 +74,7 @@ with (Hasher('BulkRegister','Application')) {
     return div(
       h1('BULK REGISTER (EXPERIMENTAL)'),
       div({ 'class': 'error-message hidden', id: 'bulk-register-form-error' }),
-      form({ action: action('get_register_domain_lists') },
+      form({ action: get_register_domain_lists },
         p('Type in domains you want to register, one per line:'),
         textarea({ name: 'register_domains_list', style: 'width: 80%; height: 180px;' }),
         div(span('Registrant:'),
@@ -90,7 +90,7 @@ with (Hasher('BulkRegister','Application')) {
     return div(
       h1('CONFIRM REGISTER'),
       p('You are about to register ' + domains_list.length + (domains_list.length > 1 ? ' domains.' : ' domain.')),
-      a({ href: action('BulkRegister.proceed_bulk_register', domains_list, contacts_id), 'class': 'myButton'}, 'Register All Domains for ' + domains_list.length + (domains_list.length > 1 ? ' Credits' : ' Credit'))
+      a({ href: curry(BulkRegister.proceed_bulk_register, domains_list, contacts_id), 'class': 'myButton'}, 'Register All Domains for ' + domains_list.length + (domains_list.length > 1 ? ' Credits' : ' Credit'))
     )
   });
 
@@ -118,7 +118,7 @@ with (Hasher('BulkRegister','Application')) {
           )
         )
       ),
-      div({ style: 'text-align: right; margin-top: 10px;' }, a({ href: action('close_bulk_modal'), 'class': 'myButton', value: "submit" }, "Close"))
+      div({ style: 'text-align: right; margin-top: 10px;' }, a({ href: close_bulk_modal, 'class': 'myButton', value: "submit" }, "Close"))
     ];
   });
 }

@@ -2,21 +2,21 @@ with (Hasher('Register','Application')) {
 
   define('show', function(domain) {
     if (!Badger.getAccessToken()) {
-      Signup.require_user_modal(curry(action('Register.show', domain)));
+      Signup.require_user_modal(curry(curry(Register.show, domain)));
       return;
     }
     
     BadgerCache.getContacts(function(results) {
       // ensure they have at least one whois contact
       if (results.data.length == 0) {
-        call_action('Modal.show', 'Whois.edit_whois_modal', null, action('Register.show', domain));
+        show_modal('Whois.edit_whois_modal', null, curry(Register.show, domain));
       } else {
         BadgerCache.getAccountInfo(function(results) {
           // ensure they have at least one domain_credit
           if (results.data.domain_credits > 0) {
             buy_domain_modal(domain);
           } else {
-            Billing.purchase_modal(action('Register.show', domain))
+            Billing.purchase_modal(curry(Register.show, domain))
           }
         });
       }
@@ -30,7 +30,7 @@ with (Hasher('Register','Application')) {
       if (response.meta.status == 'created') {
         Application.load_domain(response.data.name, function(domain_object) {
           DomainApps.install_app_on_domain(Hasher.domain_apps["badger_web_forward"], domain_object);
-          helper('Application.update_credits', true);
+          Application.update_credits(true);
           hide_modal();
           set_route('#domains/' + domain);
 
@@ -38,13 +38,13 @@ with (Hasher('Register','Application')) {
           BadgerCache.getDomains(function() { update_my_domains_count(); });
         })
       } else {
-        $('#errors').empty().append(helper('Application.error_message', response));
+        $('#errors').empty().append(Application.error_message(response));
       }
     }))
   });
 
   define('open_link', function(url) {
-    call_action('Modal.hide');
+    hide_modal();
     set_route(url);
   });
 }
@@ -57,7 +57,7 @@ with (Hasher('Register', 'Application')) {
       h1({ 'class': 'long-domain-name'}, 'Register ', domain),
       div({ id: 'errors' }),
       p({ style: "margin-bottom: 0" }, "You'll be able to configure ", strong(Domains.truncate_domain_name(domain, 50)), " on the next screen."),
-      form({ action: action('buy_domain', domain) },
+      form({ action: curry(buy_domain, domain) },
         input({ type: 'hidden', name: 'name', value: domain }),
         input({ type: 'hidden', name: 'auto_renew', value: 'true'}),
         input({ type: 'hidden', name: 'privacy', value: 'true'}),
@@ -100,10 +100,10 @@ with (Hasher('Register', 'Application')) {
   //     h1("Congratulations!"),
   //     p("You've just registered ", strong(domain), ". Here are some things you can do:"),
   //     ul(
-  //       li(a({ href: action('Register.open_link', "#domains/" + domain) }, "View domain details")),
-  //       li(a({ href: action('Register.open_link', "#domains/" + domain + "/dns") }, "Modify DNS Settings")),
-  //       li(a({ href: action('Register.open_link', "#domains/" + domain + "/whois") }, "Modify WHOIS Settings")),
-  //       li(a({ href: action('Register.open_link', "#") }, "View all Domains"))
+  //       li(a({ href: curry(Register.open_link, "#domains/" + domain) }, "View domain details")),
+  //       li(a({ href: curry(Register.open_link, "#domains/" + domain + "/dns") }, "Modify DNS Settings")),
+  //       li(a({ href: curry(Register.open_link, "#domains/" + domain + "/whois") }, "Modify WHOIS Settings")),
+  //       li(a({ href: curry(Register.open_link, "#") }, "View all Domains"))
   //     )
   //   ];
   // });

@@ -22,18 +22,18 @@ with (Hasher('Billing','Application')) {
         BadgerCache.reload('payment_methods');
 
         BadgerCache.getAccountInfo(function(response) {
-          helper('Application.update_credits');
+          Application.update_credits();
 
           if (callback) {
             callback();
           } else {
-            call_action('Modal.hide');
-            call_action('index');
+            hide_modal();
+            index();
           }
 
         });
       } else {
-        $('#modal-errors').empty().append(helper('Application.error_message', response));
+        $('#modal-errors').empty().append(Application.error_message(response));
       }
     }));
   });
@@ -60,7 +60,7 @@ with (Hasher('Billing', 'Application')) { (function() {
               td(credit_history.num_credits)
 
               // td({ style: "text-align: right" },
-              //   a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Billing.purchase_modal', payment_method) }, 'Edit')
+              //   a({ 'class': 'myButton myButton-small', href: curry(show_modal, 'Billing.purchase_modal', payment_method) }, 'Edit')
               // )
               // td(
               //   div(contact.first_name, ' ', contact.last_name)
@@ -160,7 +160,7 @@ with (Hasher('Billing', 'Application')) { (function() {
     var payment_methods = ((BadgerCache.cached_payment_methods && BadgerCache.cached_payment_methods.data) || []);
 
     show_modal(
-      form({ action: action('purchase_credits', callback) },
+      form({ action: curry(purchase_credits, callback) },
         h1('Purchase Credits'),
         //div({ style: 'margin-bottom: 15px' }, 'Use credits to buy new domains, transfer in existing domains, or renew expiring domain.'),
         div({ id: 'modal-errors' },
@@ -173,7 +173,7 @@ with (Hasher('Billing', 'Application')) { (function() {
             td({ style: 'vertical-align: top; width: 300px; padding-right: 30px' },
               div({ 'class': 'info-message' },
                 div({ style: 'margin-bottom: 27px; font-weight: bold; text-align: center; font-size: 18px' }, '1 credit = 1 domain for 1 year'),
-                helper('credits_table'),
+                credits_table(),
                 div({ style: 'margin-top: 5px; font-style: italic; text-align: center' }, 'Transfers are 1 credit and extend the current registration by a year.')
               )
             ),
@@ -205,7 +205,7 @@ with (Hasher('Billing', 'Application')) { (function() {
                   input({ name: 'zip', placeholder: 'Zip', style: 'width: 50px; margin: 2px' })
                 ),
                 div(
-                  select({ name: 'country_name', style: "width: 170px; margin: 2px" }, option({ disabled: 'disabled' }, 'Country:'), helper("Application.country_options"))
+                  select({ name: 'country_name', style: "width: 170px; margin: 2px" }, option({ disabled: 'disabled' }, 'Country:'), Application.country_options())
                 ),
 
 

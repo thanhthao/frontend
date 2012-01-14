@@ -7,21 +7,21 @@ with (Hasher('Invite','Application')) {
     BadgerCache.getAccountInfo(function(response) {
       BadgerCache.getInviteStatus(function(invite_status) {
         render('invites', response.data.invites_available, response.data.domain_credits, invite_status.data.length);
-        $("#invite-status-holder").html(helper("invite_status", invite_status.data))
+        $("#invite-status-holder").html(invite_status(invite_status.data))
       });
     });
 	});
 
 	define('send_invite', function(data) {
 		if(data.first_name == "" || data.last_name == "" || data.invitation_email == "") {
-			return $('#send-invite-messages').empty().append( helper('Application.error_message', { data: { message: "First Name, Last Name and Email can not be blank" } }) );
+			return $('#send-invite-messages').empty().append( Application.error_message({ data: { message: "First Name, Last Name and Email can not be blank" } }) );
     }
 		Badger.sendInvite(data, function(response) {
       BadgerCache.flush('account_info');
       BadgerCache.flush('invite_status');
-			call_action('Modal.show', 'Invite.send_invite_result', response.data, response.meta.status);
-      helper('Application.update_credits');
-      helper('Application.update_invites_available');
+			show_modal('Invite.send_invite_result', response.data, response.meta.status);
+      Application.update_credits();
+      Application.update_invites_available();
       set_route("#invites");
 		});
 	});
@@ -31,9 +31,9 @@ with (Hasher('Invite','Application')) {
       BadgerCache.flush('account_info');
       BadgerCache.flush('invite_status');
       set_route('#invites');
-      helper('Application.update_credits');
-      helper('Application.update_invites_available');
-      call_action('Modal.show', 'Invite.revoke_message', response.data, response.meta.status);
+      Application.update_credits();
+      Application.update_invites_available();
+      show_modal('Invite.revoke_message', response.data, response.meta.status);
     });
   });
 
@@ -50,7 +50,7 @@ with (Hasher('Invite', 'Application')) { (function() {
         sent_invites_count <= 0 ? span('Sorry, you don\'t have any invites available right now... check back soon!') : ''
       :
         div({ style: 'float: right; margin-top: -44px' },
-          a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Invite.send_invite', domain_credits) }, 'Send Invite')
+          a({ 'class': 'myButton myButton-small', href: curry(show_modal, 'Invite.send_invite', domain_credits) }, 'Send Invite')
         )
       ),
       div({ id: "invite-status-holder" })
@@ -76,7 +76,7 @@ with (Hasher('Invite', 'Application')) { (function() {
             td({'class': 'center' }, invite.domain_credits),
             invite.accepted ? td({ 'class': 'center' }, 'Yes')
             : invite.revoked_at ? td({ 'class': 'center' }, 'Revoked')
-            : td({ 'class': 'center' }, 'No - ', a({ href: action('Invite.revoke_invite', invite.id) }, "Revoke?"))
+            : td({ 'class': 'center' }, 'No - ', a({ href: curry(Invite.revoke_invite, invite.id) }, "Revoke?"))
           )
         })
       )
@@ -90,7 +90,7 @@ with (Hasher('Invite', 'Application')) { (function() {
       options.push(option(i.toString()))
     }
 
-		return form({ action: action('send_invite') },
+		return form({ action: send_invite },
       h1('SEND INVITE'),
 			div({ id: 'send-invite-messages' }),
         table({ id: 'invitee-information' },
@@ -126,7 +126,7 @@ with (Hasher('Invite', 'Application')) { (function() {
     return div(
       h1("Invitation Message"),
       p( { 'class': status == 'ok' ? '': 'error-message'}, data.message),
-      a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close")
+      a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
 		);
 	});
 
@@ -134,7 +134,7 @@ with (Hasher('Invite', 'Application')) { (function() {
     return div (
       h1("Revoke Result Message"),
       p( {'class': status == 'ok' ? '' : 'error-message'}, data.message),
-      a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close")
+      a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
     );
   });
 })(); }

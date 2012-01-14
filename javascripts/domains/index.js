@@ -37,7 +37,7 @@ with (Hasher('Domains','Application')) {
       }
       render('index', results, filter, view_type);
       if (view_type == 'grid')
-        call_action('create_grid_view', results);
+        create_grid_view(results);
     });
   });
 
@@ -53,9 +53,9 @@ with (Hasher('Domains','Application')) {
 
     $.each(search_keys, function(){
       var key = this.toString();
-      $('#grid tbody').append(helper('add_grid_view', domain_names, [[key, null], [key, null]]));
+      $('#grid tbody').append(add_grid_view(domain_names, [[key, null], [key, null]]));
       Badger.domainSearch(this, false, function(resp) {
-        $("#grid tbody tr[key='" + key + "']").replaceWith(helper('add_grid_view', domain_names, resp.data.domains));
+        $("#grid tbody tr[key='" + key + "']").replaceWith(add_grid_view(domain_names, resp.data.domains));
       });
     });
 
@@ -68,9 +68,9 @@ with (Hasher('Domains','Application')) {
     suggest_keys.push(name.replace(/ /g, "-"));
     $.each(suggest_keys, function(){
       var key = this.toString();
-      $('#suggest-grid tbody').append(helper('add_grid_view', domain_names, [[key, null], [key, null]]));
+      $('#suggest-grid tbody').append(add_grid_view(domain_names, [[key, null], [key, null]]));
       Badger.domainSearch(this, false, function(resp) {
-        $("#suggest-grid tbody tr[key='" + key + "']").replaceWith(helper('add_grid_view', domain_names, resp.data.domains));
+        $("#suggest-grid tbody tr[key='" + key + "']").replaceWith(add_grid_view(domain_names, resp.data.domains));
       });
     });
   });
@@ -97,7 +97,7 @@ with (Hasher('Domains', 'Application')) { (function() {
         div("It looks like you don't have any domains registered with us yet. You should probably:"),
         ul(
           li(a({ href: function() { $('#form-search-input').focus(); } }, "Search for a new domain")),
-          li(a({ href: action('Transfer.show') }, "Transfer a domain from another registrar"))
+          li(a({ href: Transfer.show }, "Transfer a domain from another registrar"))
         ),
         div("Then this page will be a lot more fun.")
       ];
@@ -113,7 +113,7 @@ with (Hasher('Domains', 'Application')) { (function() {
 				)
 			),
       div({ style: 'float: right; margin-top: -44px' },
-        a({ 'class': 'myButton myButton-small', href: action('Transfer.show') }, 'Transfer in a Domain')
+        a({ 'class': 'myButton myButton-small', href: Transfer.show }, 'Transfer in a Domain')
       ),
 
       (typeof domains == 'undefined') ? [
@@ -168,7 +168,7 @@ with (Hasher('Domains', 'Application')) { (function() {
           return td({ 'class': 'tld'}, a({ href: '#domains/' + domain[0], style: 'color: #0a0' }, img({ src: "images/check.png" }), ' ', tld));
         else {
 					if (!tld) return span();
-					else if (domain[1]) return td({ 'class': 'tld' }, a({ href: action('Register.show', domain[0]) }, img({ src: "images/icon-plus.png" }), ' ', tld));
+					else if (domain[1]) return td({ 'class': 'tld' }, a({ href: curry(Register.show, domain[0]) }, img({ src: "images/icon-plus.png" }), ' ', tld));
 					else return td({ 'class': 'tld' }, span(img({ src: "images/icon-no-light.gif" }), ' ', span({ style: 'text-decoration: line-through' }, tld)));
         }
       })

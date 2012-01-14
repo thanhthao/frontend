@@ -62,8 +62,8 @@ with (Hasher('Signup','Application')) {
                 p({ style: "margin-top: 5px; margin-bottom: 18px" }, u('We currently support .com and .net'), '. We will be adding .org, .me, .info, .name, .biz, .us and .co.uk in the next week or two with many more to follow.'),
 
                 h3({ style: "margin: 0" }, "Already have a domain?"),
-                //p({ style: "margin-top: 5px; margin-bottom: 18px" }, "Read about out ", a({ href: '#faqs/how-were-different' }, "how we're different"), ".  Or, you can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), ".")
-                p({ style: "margin-top: 5px; margin-bottom: 18px" }, "You can jump right in and ", a({ href: action('Transfer.show') }, "transfer a domain"), "."),
+                //p({ style: "margin-top: 5px; margin-bottom: 18px" }, "Read about out ", a({ href: '#faqs/how-were-different' }, "how we're different"), ".  Or, you can jump right in and ", a({ href: Transfer.show }, "transfer a domain"), ".")
+                p({ style: "margin-top: 5px; margin-bottom: 18px" }, "You can jump right in and ", a({ href: Transfer.show }, "transfer a domain"), "."),
                 
                 h3({ style: "margin: 0" }, "Are you a developer?"),
                 p({ style: "margin-top: 5px; margin-bottom: 18px" }, "You might like to know that our ", a({ href: 'https://github.com/badger/frontend', target: '_blank' }, 'frontend javascript website'), ' is open source and hosted on GitHub and is built on top of our ', a({ href: 'http://badger.github.com', target: '_blank' }, 'JSON API'), '.')
@@ -115,7 +115,7 @@ with (Hasher('Signup','Application')) {
           Badger.back_url = "";
         }
       } else {
-        $('#signup-errors').empty().append(helper('Application.error_message', response));
+        $('#signup-errors').empty().append(Application.error_message(response));
       }
     }));
   });
@@ -162,11 +162,11 @@ with (Hasher('Signup','Application')) {
 
   define('create_person', function(callback, data) {
 		if(data.password != data.confirm_password) {
-			$('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "Passwords do not match" } }));
+			$('#signup-errors').empty().append(Application.error_message({ data: { message: "Passwords do not match" } }));
       return;
 		}
     // if (!data.agree_to_terms) {
-    //   $('#signup-errors').empty().append(helper('Application.error_message', { data: { message: "You must accept terms of service to use our site" } }));
+    //   $('#signup-errors').empty().append(Application.error_message({ data: { message: "You must accept terms of service to use our site" } }));
     //   return;
     // }
     
@@ -178,10 +178,10 @@ with (Hasher('Signup','Application')) {
           callback();
         } else {
           set_route('#');
-          setTimeout(function() { call_action('Modal.show', 'SiteTour.site_tour_0'); }, 250);
+          setTimeout(function() { show_modal('SiteTour.site_tour_0'); }, 250);
         }
       } else {
-        $('#signup-errors').empty().append(helper('Application.error_message', response));
+        $('#signup-errors').empty().append(Application.error_message(response));
       }
     }));
   });
@@ -224,17 +224,17 @@ with (Hasher('Signup','Application')) {
 	define('send_password_reset_email', function(callback, form_data) {
 		Badger.sendPasswordResetEmail(form_data, function(response) {
 			if (response.meta.status == 'ok') {
-        $('#forgot-password-messages').empty().append(helper('Application.success_message', response));
+        $('#forgot-password-messages').empty().append(Application.success_message(response));
 				$('#forgot-password-form').empty();
 			} else {
-				$('#forgot-password-messages').empty().append(helper('Application.error_message', response));
+				$('#forgot-password-messages').empty().append(Application.error_message(response));
 			}
 		});
 	});
 
 	define('reset_password', function(callback, form_data) {
 		if(form_data.new_password != form_data.confirm_password)
-			return $('#reset-password-messages').empty().append( helper('Application.error_message', { data: { message: "Passwords do not match" } }) );
+			return $('#reset-password-messages').empty().append( Application.error_message({ data: { message: "Passwords do not match" } }) );
 
 		Badger.resetPasswordWithCode(form_data, function(response) {
 			if (response.meta.status == 'ok')
@@ -242,14 +242,14 @@ with (Hasher('Signup','Application')) {
         setTimeout(function() {
           show_modal(
             h1("Reset Password"),
-            helper('Application.success_message', response),
-            a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close")
+            Application.success_message(response),
+            a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
           );
         }, 250);
 			}
 			else
 			{
-				$('#reset-password-messages').empty().append(helper('Application.error_message', response));
+				$('#reset-password-messages').empty().append(Application.error_message(response));
 			}
 		});
 	});
@@ -258,7 +258,7 @@ with (Hasher('Signup','Application')) {
     show_modal(
       h1("Confirm Email Message"),
       status == 'ok' ? p(data.message + ". You can close this window now.") : p({ 'class':  'error-message'}, data.message),
-      a({ href: action('Modal.hide'), 'class': 'myButton', value: "submit" }, "Close")
+      a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
     );
 	});
 

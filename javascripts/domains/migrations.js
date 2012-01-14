@@ -50,7 +50,7 @@ with (Hasher('DomainMigrations','Application')) {
           });
         });
       } else {
-        $('#migrate-login-form-errors').empty().append(helper('Application.error_message', { data: { message: response.errors ? response.errors[0] : "Unknown error." } }));
+        $('#migrate-login-form-errors').empty().append(Application.error_message({ data: { message: response.errors ? response.errors[0] : "Unknown error." } }));
       }
     });
   });
@@ -136,7 +136,7 @@ with (Hasher('DomainMigrations','Application')) {
     BadgerCache.getContacts(function(results) {
       // ensure they have at least one whois contact
       if (results.data.length == 0) {
-        call_action('Modal.show', 'Whois.edit_whois_modal', null, curry(initiate_domain_transfers, form_data));
+        show_modal('Whois.edit_whois_modal', null, curry(initiate_domain_transfers, form_data));
       } else {
         BadgerCache.getAccountInfo(function(results) {
           // ensure they have at least one domain_credit
