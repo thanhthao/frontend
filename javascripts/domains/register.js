@@ -1,4 +1,4 @@
-with (Hasher.Controller('Register','Application')) {
+with (Hasher('Register','Application')) {
 
   create_action('show', function(domain) {
     if (!Badger.getAccessToken()) {
@@ -50,7 +50,7 @@ with (Hasher.Controller('Register','Application')) {
 }
 
 
-with (Hasher.View('Register', 'Application')) {
+with (Hasher('Register', 'Application')) {
 
   define('buy_domain_modal', function(domain) {
     show_modal(

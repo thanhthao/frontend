@@ -1,4 +1,4 @@
-with (Hasher.Controller('Invite','Application')) {
+with (Hasher('Invite','Application')) {
   route({
     '#invites': 'invites'
   });
@@ -40,7 +40,7 @@ with (Hasher.Controller('Invite','Application')) {
   layout('dashboard');
 }
 
-with (Hasher.View('Invite', 'Application')) { (function() {
+with (Hasher('Invite', 'Application')) { (function() {
   create_view('invites', function(invites_available, domain_credits, sent_invites_count) {
     if (invites_available == null)
       return h1('SEND INVITES');

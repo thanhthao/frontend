@@ -1,4 +1,4 @@
-with (Hasher.Controller('Transfer','Application')) {
+with (Hasher('Transfer','Application')) {
 
   create_action('show', function() {
 		call_action('Modal.show', 'Transfer.get_domain_form');
@@ -113,7 +113,7 @@ with (Hasher.Controller('Transfer','Application')) {
 	layout('dashboard');
 };
 
-with (Hasher.View('Transfer','Application')) {
+with (Hasher('Transfer','Application')) {
 		
 	create_helper('domain_locked_help', function(name, info) {
 		return div(

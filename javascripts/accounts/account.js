@@ -1,4 +1,4 @@
-with (Hasher.Controller('Account','Application')) {
+with (Hasher('Account','Application')) {
   route({
     '#account': 'account',
     '#account/settings': 'settings'
@@ -22,7 +22,7 @@ with (Hasher.Controller('Account','Application')) {
   layout('dashboard');
 }
 
-with (Hasher.View('Account', 'Application')) { (function() {
+with (Hasher('Account', 'Application')) { (function() {
 
   create_view('account', function() {
     return div(

@@ -1,4 +1,4 @@
-with (Hasher.View('GoogleDocs', 'DomainApps')) { 
+with (Hasher('GoogleDocs', 'DomainApps')) { 
 
   register_domain_app({
     id: 'google_docs',

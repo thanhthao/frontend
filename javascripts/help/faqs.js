@@ -1,4 +1,4 @@
-with (Hasher.Controller('Faqs', 'Application')) {
+with (Hasher('Faqs', 'Application')) {
   route({
     '#faqs': 'faqs'
   });
@@ -12,7 +12,7 @@ with (Hasher.Controller('Faqs', 'Application')) {
   layout('dashboard');
 }
 
-with (Hasher.View('Faqs', 'Application')) {
+with (Hasher('Faqs', 'Application')) {
   create_view('faqs', function(faqs) {
     faqs = (faqs || [])
     var result = faqs.map(function(faq) {

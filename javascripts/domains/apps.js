@@ -301,7 +301,7 @@ with (Hasher('DomainApps','Application')) {
 //   console.log(domain_obj)
 
 
-// with (Hasher.Controller('DomainApps','Application')) {
+// with (Hasher('DomainApps','Application')) {
 //   route({
 //     '#domains/:domain/applications': 'show'
 //   });
@@ -377,7 +377,7 @@ with (Hasher('DomainApps','Application')) {
 //   layout('dashboard');
 // }
 // 
-// with (Hasher.View('DomainApps', 'Application')) { 
+// with (Hasher('DomainApps', 'Application')) { 
 // 
 // 
 //  // create_view('show', function(domain) {

@@ -1,4 +1,4 @@
-with (Hasher.Controller('Domains','Application')) {
+with (Hasher('Domains','Application')) {
   route({
     '#filter_domains/:filter/:view_type': 'index'
   });
@@ -78,7 +78,7 @@ with (Hasher.Controller('Domains','Application')) {
   layout('dashboard');
 }
 
-with (Hasher.View('Domains', 'Application')) { (function() {
+with (Hasher('Domains', 'Application')) { (function() {
 
   create_view('index', function(domains, filter, view_type) {
     var empty_domain_message = [];

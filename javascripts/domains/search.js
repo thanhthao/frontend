@@ -1,11 +1,11 @@
-with (Hasher.Controller('Search','Application')) {
+with (Hasher('Search','Application')) {
   route({
     '#search': 'search'
   });
 
   create_action('search_box_changed', function() {
-    if (Hasher.Routes.getHash() != '#search') {
-      Hasher.Routes.setHash('#search');
+    if (get_route() != '#search') {
+      set_route('#search');
       this.last_search_value = null;
     }
     
@@ -40,7 +40,7 @@ with (Hasher.Controller('Search','Application')) {
   layout('dashboard');
 }
 
-with (Hasher.View('Search', 'Application')) {
+with (Hasher('Search', 'Application')) {
 
   create_helper('search_result_row', function(results) {
     return tr(

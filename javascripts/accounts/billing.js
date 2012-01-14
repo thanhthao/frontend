@@ -1,4 +1,4 @@
-with (Hasher.Controller('Billing','Application')) {
+with (Hasher('Billing','Application')) {
   route({
     '#account/billing': 'index'
   });
@@ -41,7 +41,7 @@ with (Hasher.Controller('Billing','Application')) {
   layout('dashboard');
 }
 
-with (Hasher.View('Billing', 'Application')) { (function() {
+with (Hasher('Billing', 'Application')) { (function() {
 
   create_view('index', function(credit_historys) {
     return div(

@@ -1,4 +1,4 @@
-with (Hasher.Controller('Application')) {
+with (Hasher('Application')) {
   initializer(function() {
     BadgerCache.load();
 
@@ -21,7 +21,7 @@ with (Hasher.Controller('Application')) {
   });
 }
 
-with (Hasher.View('Application')) {
+with (Hasher('Application')) {
 
 }
 

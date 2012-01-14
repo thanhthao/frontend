@@ -1,4 +1,4 @@
-with (Hasher.Controller('BulkRegister','Application')) {
+with (Hasher('BulkRegister','Application')) {
 
   create_action('show', function() {
     BadgerCache.getContacts(function(contacts) {
@@ -68,7 +68,7 @@ with (Hasher.Controller('BulkRegister','Application')) {
 
 }
 
-with (Hasher.View('BulkRegister','Application')) {
+with (Hasher('BulkRegister','Application')) {
 
 	create_helper('get_bulk_domain_form', function() {
     return div(

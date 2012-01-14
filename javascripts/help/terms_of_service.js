@@ -1,4 +1,4 @@
-with (Hasher.Controller('TermsOfService','Application')) {
+with (Hasher('TermsOfService','Application')) {
   route({
     '#terms_of_service': 'terms_of_service'
   });
@@ -10,7 +10,7 @@ with (Hasher.Controller('TermsOfService','Application')) {
   layout('dashboard');
 }
 
-with (Hasher.View('TermsOfService', 'Application')) {
+with (Hasher('TermsOfService', 'Application')) {
   create_helper('terms_of_service', function() {
     return div(
       h1('Domain Name Registration Agreement'),

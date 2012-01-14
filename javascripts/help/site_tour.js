@@ -1,4 +1,4 @@
-with (Hasher.View('SiteTour', 'Application')) { (function() {
+with (Hasher('SiteTour', 'Application')) { (function() {
 	create_helper('site_tour_0', function() {
 		return div(
       h1("Welcome to Badger.com!"),

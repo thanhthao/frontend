@@ -1,4 +1,4 @@
-with (Hasher.Controller('BaseDnsApp','DomainApps')) {
+with (Hasher('BaseDnsApp','DomainApps')) {
 
   define('change_name_servers_modal', function(domain_info) {
     show_modal(

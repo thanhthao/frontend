@@ -1,4 +1,4 @@
-with (Hasher.Controller('RemoteDnsApp','BaseDnsApp')) {
+with (Hasher('RemoteDnsApp','BaseDnsApp')) {
 
   register_domain_app({
     id: 'remote_dns',

@@ -1,4 +1,4 @@
-with (Hasher.Controller('RhinoNames', 'Application')) {
+with (Hasher('RhinoNames', 'Application')) {
   route('#rhinonames', function() {
     render(
       h1('RhinoNames is now a part of Badger.com!'),

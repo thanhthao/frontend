@@ -1,4 +1,4 @@
-with (Hasher.Controller('KnowledgeCenter', 'Application')) {
+with (Hasher('KnowledgeCenter', 'Application')) {
   layout('dashboard');
 
   route('#knowledge_center', function() {

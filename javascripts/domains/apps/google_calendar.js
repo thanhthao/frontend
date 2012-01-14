@@ -1,4 +1,4 @@
-with (Hasher.View('GoogleCalendar', 'DomainApps')) { 
+with (Hasher('GoogleCalendar', 'DomainApps')) { 
 
   register_domain_app({
     id: 'google_calendar',

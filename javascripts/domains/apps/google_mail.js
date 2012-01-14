@@ -1,4 +1,4 @@
-with (Hasher.View('GoogleMail', 'DomainApps')) { 
+with (Hasher('GoogleMail', 'DomainApps')) { 
 
   register_domain_app({
     id: 'google_mail',

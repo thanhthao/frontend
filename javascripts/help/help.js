@@ -1,4 +1,4 @@
-with (Hasher.Controller('Help','Application')) {
+with (Hasher('Help','Application')) {
   route({
     '#knowledge-base': 'knowledge_base',
     '#tickets': 'tickets'
@@ -7,7 +7,7 @@ with (Hasher.Controller('Help','Application')) {
   layout('dashboard');
 }
 
-with (Hasher.View('Help', 'Application')) { (function() {
+with (Hasher('Help', 'Application')) { (function() {
 
   create_view('knowledge_base', function() {
     return div(

@@ -1,10 +1,5 @@
 // this file should be avoided if possible... this is a backwards compatibilty layer with 0.0.5
 with (Hasher()) {
-  Hasher.Controller = Hasher;
-  Hasher.View = Hasher;
-  Hasher.Routes = { getHash: get_route, setHash: set_route };
-  Hasher.Event = { stop: stop_event };
-
   define('create_layout', layout);
   define('redirect_to', set_route);
 

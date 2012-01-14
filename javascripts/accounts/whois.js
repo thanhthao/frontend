@@ -1,4 +1,4 @@
-with (Hasher.Controller('Whois','Application')) {
+with (Hasher('Whois','Application')) {
 
   route({
     '#account/profiles': 'index'
@@ -39,7 +39,7 @@ with (Hasher.Controller('Whois','Application')) {
   layout('dashboard');
 }
 
-with (Hasher.View('Whois', 'Application')) { (function() {
+with (Hasher('Whois', 'Application')) { (function() {
 
   create_view('index', function(contacts) {
     return div(
