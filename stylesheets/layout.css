@@ -110,6 +110,8 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 .modal-dialog .close-button:hover { text-decoration: none; }
 .modal-dialog h1 { font: 28px "Oswald", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
 
+#modal-content.spinner { background: white url(../images/spinner.gif) no-repeat center center; }
+#modal-content.spinner #modal-wrapper { visibility: hidden; }
 
 
 .h1-action { float: right; margin-top: -40px; font-size: 50px; color: green; font-weight: bold; }

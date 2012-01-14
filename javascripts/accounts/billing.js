@@ -11,19 +11,12 @@ with (Hasher.Controller('Billing','Application')) {
   });
 
   create_action('purchase_credits', function(callback, form_data) {
-    // prevent double submits
-    if ($('#purchase-button').attr('disabled')) return;
-    else $('#purchase-button').attr('disabled', true);
-
     if (form_data.credits == '1' && form_data.credits_variable) form_data.credits = form_data.credits_variable;
     delete form_data.credits_variable;
 
     $('#modal-errors').empty();
 
-    Badger.purchaseCredits(form_data, function(response) {
-      $('#purchase-button').attr('disabled', false);
-      console.log(response);
-
+    Badger.purchaseCredits(form_data, spin_modal_until(function(response) {
       if (response.meta.status == 'ok') {
         BadgerCache.reload('account_info');
         BadgerCache.reload('payment_methods');
@@ -42,7 +35,7 @@ with (Hasher.Controller('Billing','Application')) {
       } else {
         $('#modal-errors').empty().append(helper('Application.error_message', response));
       }
-    });
+    }));
   });
 
   layout('dashboard');
@@ -54,7 +47,7 @@ with (Hasher.View('Billing', 'Application')) { (function() {
     return div(
       h1('Billing Settings'),
       div({ style: 'float: right; margin-top: -44px' },
-        a({ 'class': 'myButton myButton-small', href: action('Modal.show', 'Billing.purchase_modal') }, 'Purchase Credits')
+        a({ 'class': 'myButton myButton-small', href: purchase_modal }, 'Purchase Credits')
       ),
 
       table({ 'class': 'fancy-table' },
@@ -163,105 +156,107 @@ with (Hasher.View('Billing', 'Application')) { (function() {
     return tmp_table;
   });
 
-  create_helper('purchase_modal', function(callback, necessary_credits) {
+  define('purchase_modal', function(callback, necessary_credits) {
     var payment_methods = ((BadgerCache.cached_payment_methods && BadgerCache.cached_payment_methods.data) || []);
 
-    return form({ action: action('purchase_credits', callback) },
-      h1('Purchase Credits'),
-      //div({ style: 'margin-bottom: 15px' }, 'Use credits to buy new domains, transfer in existing domains, or renew expiring domain.'),
-      div({ id: 'modal-errors' },
-        (necessary_credits ?
-          div({ 'class': 'error-message' }, "You need at least ", necessary_credits, " to continue.")
-        : [])
-      ),
-      table({ style: 'width: 100%' }, tbody(
-        tr(
-          td({ style: 'vertical-align: top; width: 300px; padding-right: 30px' },
-            div({ 'class': 'info-message' },
-              div({ style: 'margin-bottom: 27px; font-weight: bold; text-align: center; font-size: 18px' }, '1 credit = 1 domain for 1 year'),
-              helper('credits_table'),
-              div({ style: 'margin-top: 5px; font-style: italic; text-align: center' }, 'Transfers are 1 credit and extend the current registration by a year.')
-            )
-          ),
-
-          td({ style: 'vertical-align: top' },
-            div({ style: 'font-weight: bold' }, 'Cards on File'),
-            select({ id: 'payment_method_id', name: 'payment_method_id', events: { change: function() { $('#new-card-fields')[($('#payment_method_id').val() == '0') ? 'show' : 'hide']();  }}},
-              payment_methods.map(function(payment_method) {
-                return option({ value: payment_method.id }, payment_method.name)
-              }),
-              option({ value: '0' }, 'New card')
+    show_modal(
+      form({ action: action('purchase_credits', callback) },
+        h1('Purchase Credits'),
+        //div({ style: 'margin-bottom: 15px' }, 'Use credits to buy new domains, transfer in existing domains, or renew expiring domain.'),
+        div({ id: 'modal-errors' },
+          (necessary_credits ?
+            div({ 'class': 'error-message' }, "You need at least ", necessary_credits, " to continue.")
+          : [])
+        ),
+        table({ style: 'width: 100%' }, tbody(
+          tr(
+            td({ style: 'vertical-align: top; width: 300px; padding-right: 30px' },
+              div({ 'class': 'info-message' },
+                div({ style: 'margin-bottom: 27px; font-weight: bold; text-align: center; font-size: 18px' }, '1 credit = 1 domain for 1 year'),
+                helper('credits_table'),
+                div({ style: 'margin-top: 5px; font-style: italic; text-align: center' }, 'Transfers are 1 credit and extend the current registration by a year.')
+              )
             ),
 
-            div({ id: 'new-card-fields', style: (payment_methods.length > 0 ? 'display: none' : '') },
-              div({ style: 'font-weight: bold; margin-top: 10px' }, 'Billing Address'),
-              div(
-                input({ name: 'first_name', placeholder: 'First Name', style: "width: 110px; margin: 2px" }),
-                input({ name: 'last_name', placeholder: 'Last Name', style: "width: 110px; margin: 2px" })
-              ),
-              div(
-                input({ name: 'street_address', placeholder: 'Address', style: "width: 240px; margin: 2px" })
-              ),
-                //             div(
-                // input({ name: 'extended_address', placeholder: 'Address Line 2 (Optional)', style: "width: 240px; margin: 2px"  })
-                //             ),
-              div(
-                input({ name: 'city', placeholder: 'City', style: 'width: 100px; margin: 2px' }),
-                input({ name: 'state', placeholder: 'State', style: 'width: 40px; margin: 2px' }),
-                input({ name: 'zip', placeholder: 'Zip', style: 'width: 50px; margin: 2px' })
-              ),
-              div(
-                select({ name: 'country_name', style: "width: 170px; margin: 2px" }, option({ disabled: 'disabled' }, 'Country:'), helper("Application.country_options"))
+            td({ style: 'vertical-align: top' },
+              div({ style: 'font-weight: bold' }, 'Cards on File'),
+              select({ id: 'payment_method_id', name: 'payment_method_id', events: { change: function() { $('#new-card-fields')[($('#payment_method_id').val() == '0') ? 'show' : 'hide']();  }}},
+                payment_methods.map(function(payment_method) {
+                  return option({ value: payment_method.id }, payment_method.name)
+                }),
+                option({ value: '0' }, 'New card')
               ),
 
-
-              div({ style: 'font-weight: bold; margin-top: 12px' }, 'Credit Card'),
-              div(
-                'Number: ', input({ name: 'cc_number', placeholder: 'XXXX-XXXX-XXXX-XXXX', style: "width: 160px" })
-              ),
-              div(
-                'Expiration: ',
-                select({ name: 'cc_expiration_date_month', style: 'width: 46px' },
-                  option({ value: '01' }, '01 - January'),
-                  option({ value: '02' }, '02 - February'),
-                  option({ value: '03' }, '03 - March'),
-                  option({ value: '04' }, '04 - April'),
-                  option({ value: '05' }, '05 - May'),
-                  option({ value: '06' }, '06 - June'),
-                  option({ value: '07' }, '07 - July'),
-                  option({ value: '08' }, '08 - August'),
-                  option({ value: '09' }, '09 - September'),
-                  option({ value: '10' }, '10 - October'),
-                  option({ value: '11' }, '11 - November'),
-                  option({ value: '12' }, '12 - December')
+              div({ id: 'new-card-fields', style: (payment_methods.length > 0 ? 'display: none' : '') },
+                div({ style: 'font-weight: bold; margin-top: 10px' }, 'Billing Address'),
+                div(
+                  input({ name: 'first_name', placeholder: 'First Name', style: "width: 110px; margin: 2px" }),
+                  input({ name: 'last_name', placeholder: 'Last Name', style: "width: 110px; margin: 2px" })
                 ),
-                '/',
-                select({ name: 'cc_expiration_date_year' },
-                  option('2011'),
-                  option('2012'),
-                  option('2013'),
-                  option('2014'),
-                  option('2015'),
-                  option('2016'),
-                  option('2017'),
-                  option('2018'),
-                  option('2019'),
-                  option('2020')
-                )
-              ),
-              div(
-                'Security Code: ',
-                input({ name: 'cc_cvv', placeholder: '123', style: 'width: 40px' })
-              ),
-              input({ type: 'checkbox', name: 'save_card', checked: 'checked' }), ' Keep this card on file'
+                div(
+                  input({ name: 'street_address', placeholder: 'Address', style: "width: 240px; margin: 2px" })
+                ),
+                  //             div(
+                  // input({ name: 'extended_address', placeholder: 'Address Line 2 (Optional)', style: "width: 240px; margin: 2px"  })
+                  //             ),
+                div(
+                  input({ name: 'city', placeholder: 'City', style: 'width: 100px; margin: 2px' }),
+                  input({ name: 'state', placeholder: 'State', style: 'width: 40px; margin: 2px' }),
+                  input({ name: 'zip', placeholder: 'Zip', style: 'width: 50px; margin: 2px' })
+                ),
+                div(
+                  select({ name: 'country_name', style: "width: 170px; margin: 2px" }, option({ disabled: 'disabled' }, 'Country:'), helper("Application.country_options"))
+                ),
+
+
+                div({ style: 'font-weight: bold; margin-top: 12px' }, 'Credit Card'),
+                div(
+                  'Number: ', input({ name: 'cc_number', placeholder: 'XXXX-XXXX-XXXX-XXXX', style: "width: 160px" })
+                ),
+                div(
+                  'Expiration: ',
+                  select({ name: 'cc_expiration_date_month', style: 'width: 46px' },
+                    option({ value: '01' }, '01 - January'),
+                    option({ value: '02' }, '02 - February'),
+                    option({ value: '03' }, '03 - March'),
+                    option({ value: '04' }, '04 - April'),
+                    option({ value: '05' }, '05 - May'),
+                    option({ value: '06' }, '06 - June'),
+                    option({ value: '07' }, '07 - July'),
+                    option({ value: '08' }, '08 - August'),
+                    option({ value: '09' }, '09 - September'),
+                    option({ value: '10' }, '10 - October'),
+                    option({ value: '11' }, '11 - November'),
+                    option({ value: '12' }, '12 - December')
+                  ),
+                  '/',
+                  select({ name: 'cc_expiration_date_year' },
+                    option('2011'),
+                    option('2012'),
+                    option('2013'),
+                    option('2014'),
+                    option('2015'),
+                    option('2016'),
+                    option('2017'),
+                    option('2018'),
+                    option('2019'),
+                    option('2020')
+                  )
+                ),
+                div(
+                  'Security Code: ',
+                  input({ name: 'cc_cvv', placeholder: '123', style: 'width: 40px' })
+                ),
+                input({ type: 'checkbox', name: 'save_card', checked: 'checked' }), ' Keep this card on file'
+              )
+
             )
-
           )
-        )
-      )),
+        )),
 
-      // TEMP PROMO
-      div({ style: 'text-align: right; margin-top: 10px' }, input({ 'class': 'myButton', id: 'purchase-button', type: 'submit', value: 'Purchase 1 Credit for $8' }))
+        // TEMP PROMO
+        div({ style: 'text-align: right; margin-top: 10px' }, input({ 'class': 'myButton', id: 'purchase-button', type: 'submit', value: 'Purchase 1 Credit for $8' }))
+      )
     );
   });
 })(); }

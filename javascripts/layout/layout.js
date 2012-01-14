@@ -126,7 +126,7 @@ with (Hasher('Application')) {
           h2('HELP AND SUPPORT'),
           ul(
             li(a({ href: "#contact_us" }, 'Contact Us')),
-            li(a({ href: "https://twitter.com/BadgerDotCom", target: "_blank" }, 'Twitter'), ' / ', a({ href: "https://www.facebook.com/BadgerDotCom", target: "_blank" }, 'Facebook'))
+            li(a({ href: "https://twitter.com/badger", target: "_blank" }, 'Twitter'), ' / ', a({ href: "https://www.facebook.com/BadgerDotCom", target: "_blank" }, 'Facebook'))
             // li(a({ href: "#" }, 'Frequently Asked Questions')),
             // li(a({ href: "#" }, 'Knowledge Center'))
           )

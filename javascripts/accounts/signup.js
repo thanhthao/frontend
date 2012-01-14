@@ -106,8 +106,7 @@ with (Hasher('Signup','Application')) {
 
   define('process_login', function(callback, form) {
     $('#signup-errors').empty();
-    Badger.login(form.email, form.password, function(response) {
-      console.log(response)
+    Badger.login(form.email, form.password, spin_modal_until(function(response) {
       if (response.meta.status == 'ok') {
         if (callback) {
           callback();
@@ -118,7 +117,7 @@ with (Hasher('Signup','Application')) {
       } else {
         $('#signup-errors').empty().append(helper('Application.error_message', response));
       }
-    });
+    }));
   });
 
   define('show_register_modal', function(callback) {
@@ -172,8 +171,8 @@ with (Hasher('Signup','Application')) {
     // }
     
     if (Badger.register_code) data.invite_code = Badger.register_code;
-    
-    Badger.createAccount(data, function(response) {
+
+    Badger.createAccount(data, spin_modal_until(function(response) {
       if (response.meta.status == 'ok') {
         if (callback) {
           callback();
@@ -184,7 +183,7 @@ with (Hasher('Signup','Application')) {
       } else {
         $('#signup-errors').empty().append(helper('Application.error_message', response));
       }
-    });
+    }));
   });
 
 	define('show_reset_password_modal', function(email, code) {

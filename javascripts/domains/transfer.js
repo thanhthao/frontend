@@ -14,7 +14,7 @@ with (Hasher.Controller('Transfer','Application')) {
 				BadgerCache.getAccountInfo(function(account_info) {
 		      // ensure they have at least one domain_credit
 		      if (account_info.data.domain_credits <= 0) {
-						call_action('Modal.show', 'Billing.purchase_modal', action('Transfer.check_auth_code', name, info, form_data));
+						Billing.purchase_modal(action('Transfer.check_auth_code', name, info, form_data));
 		      } else {
             call_action('Modal.show', 'Transfer.processing_request');
 

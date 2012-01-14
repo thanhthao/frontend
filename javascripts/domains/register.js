@@ -14,9 +14,9 @@ with (Hasher.Controller('Register','Application')) {
         BadgerCache.getAccountInfo(function(results) {
           // ensure they have at least one domain_credit
           if (results.data.domain_credits > 0) {
-            call_action('Modal.show', 'Register.buy_domain_modal', domain);
+            buy_domain_modal(domain);
           } else {
-            call_action('Modal.show', 'Billing.purchase_modal', action('Register.show', domain))
+            Billing.purchase_modal(action('Register.show', domain))
           }
         });
       }
@@ -25,14 +25,8 @@ with (Hasher.Controller('Register','Application')) {
 
 
   create_action('buy_domain', function(domain, form) {
-    // prevent double submits
-    if ($('#register-button').attr('disabled')) return;
-    else $('#register-button').attr('disabled', true);
-
     $('#errors').empty();
-    Badger.registerDomain(form, function(response) {
-      $('#register-button').attr('disabled', false);
-
+    Badger.registerDomain(form, spin_modal_until(function(response) {
       if (response.meta.status == 'created') {
         Application.load_domain(response.data.name, function(domain_object) {
           DomainApps.install_app_on_domain(Hasher.domain_apps["badger_web_forward"], domain_object);
@@ -46,7 +40,7 @@ with (Hasher.Controller('Register','Application')) {
       } else {
         $('#errors').empty().append(helper('Application.error_message', response));
       }
-    })
+    }))
   });
 
   create_action('open_link', function(url) {
@@ -58,8 +52,8 @@ with (Hasher.Controller('Register','Application')) {
 
 with (Hasher.View('Register', 'Application')) {
 
-  create_helper('buy_domain_modal', function(domain) {
-    return [
+  define('buy_domain_modal', function(domain) {
+    show_modal(
       h1({ 'class': 'long-domain-name'}, 'Register ', domain),
       div({ id: 'errors' }),
       p({ style: "margin-bottom: 0" }, "You'll be able to configure ", strong(Domains.truncate_domain_name(domain, 50)), " on the next screen."),
@@ -98,7 +92,7 @@ with (Hasher.View('Register', 'Application')) {
         
         div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + Domains.truncate_domain_name(domain) + ' for 1 credit' }))
       )
-    ];
+    );
   });
 
   // create_helper('successful_register_confirmation', function(domain) {

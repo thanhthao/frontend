@@ -38,7 +38,7 @@ with (Hasher.Controller('BulkTransfer','Application')) {
     BadgerCache.getAccountInfo(function(account_info) {
       // ensure they have at least one domain_credit
       if (account_info.data.domain_credits < domains_list.length) {
-        call_action('Modal.show', 'Billing.purchase_modal', action('BulkTransfer.verify_bulk_transfer', domains_list, use_badger_dns));
+        Billing.purchase_modal(action('BulkTransfer.verify_bulk_transfer', domains_list, use_badger_dns));
       } else {
         call_action('Modal.show', 'BulkTransfer.confirm_transfer', domains_list, use_badger_dns, contacts_id);
       }

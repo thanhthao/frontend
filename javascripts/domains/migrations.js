@@ -143,7 +143,7 @@ with (Hasher('DomainMigrations','Application')) {
           if (results.data.domain_credits >= form_data.domains.length) {
             complete_domain_migration_modal(form_data);
           } else {
-            call_action('Modal.show', 'Billing.purchase_modal', curry(initiate_domain_transfers, form_data), form_data.domains.length - results.data.domain_credits);
+            Billing.purchase_modal(curry(initiate_domain_transfers, form_data), form_data.domains.length - results.data.domain_credits);
           }
         });
       }
