@@ -1,9 +1,8 @@
 // this file should be avoided if possible... this is a backwards compatibilty layer with 0.0.5
 with (Hasher()) {
-  define('create_layout', layout);
-  define('redirect_to', set_route);
+  define('set_route', set_route);
 
-  define('create_action', function(name,callback) { 
+  define('define', function(name,callback) { 
     this.define("action_" + name, callback);
   });
   
@@ -25,7 +24,7 @@ with (Hasher()) {
   });
 
 
-  define('create_helper', function(name,callback) { this.define("helper_" + name, callback); });
+  define('define', function(name,callback) { this.define("helper_" + name, callback); });
   define('helper', function() {
     var that_arguments = arguments;
     var that = this;
@@ -38,7 +37,7 @@ with (Hasher()) {
     }
   });
 
-  define('create_view', function(name,callback) { this.define("view_" + name, callback); }); 
+  define('define', function(name,callback) { this.define("view_" + name, callback); }); 
 
   define('input', function() { 
     var arguments = flatten_to_array(arguments);
@@ -48,7 +47,7 @@ with (Hasher()) {
   
   
   
-  // performed_action is used for the legacy "render default view if no render/redirect_to"
+  // performed_action is used for the legacy "render default view if no render/set_route"
   redefine('render', function(callback) {
     Hasher.performed_action = true;
     callback.apply(this, Array.prototype.slice.call(arguments,1));

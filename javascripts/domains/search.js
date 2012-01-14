@@ -3,7 +3,7 @@ with (Hasher('Search','Application')) {
     '#search': 'search'
   });
 
-  create_action('search_box_changed', function() {
+  define('search_box_changed', function() {
     if (get_route() != '#search') {
       set_route('#search');
       this.last_search_value = null;
@@ -34,7 +34,7 @@ with (Hasher('Search','Application')) {
     this.last_search_value = current_value;
   });
   
-  create_action('search', function() {
+  define('search', function() {
   });
   
   layout('dashboard');
@@ -42,7 +42,7 @@ with (Hasher('Search','Application')) {
 
 with (Hasher('Search', 'Application')) {
 
-  create_helper('search_result_row', function(results) {
+  define('search_result_row', function(results) {
     return tr(
       td(results[0][0].split('.')[0]),
       results.map(function(domain) {
@@ -54,7 +54,7 @@ with (Hasher('Search', 'Application')) {
   });
 
 
-  create_view('search', function(domains) {
+  define('search', function(domains) {
     return div(
       h1('Search Results'),
       div({ style: 'float: right; margin-top: -44px' }, 

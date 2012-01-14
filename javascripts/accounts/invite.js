@@ -3,7 +3,7 @@ with (Hasher('Invite','Application')) {
     '#invites': 'invites'
   });
 
-	create_action('invites', function() {
+	define('invites', function() {
     BadgerCache.getAccountInfo(function(response) {
       BadgerCache.getInviteStatus(function(invite_status) {
         render('invites', response.data.invites_available, response.data.domain_credits, invite_status.data.length);
@@ -12,7 +12,7 @@ with (Hasher('Invite','Application')) {
     });
 	});
 
-	create_action('send_invite', function(data) {
+	define('send_invite', function(data) {
 		if(data.first_name == "" || data.last_name == "" || data.invitation_email == "") {
 			return $('#send-invite-messages').empty().append( helper('Application.error_message', { data: { message: "First Name, Last Name and Email can not be blank" } }) );
     }
@@ -22,15 +22,15 @@ with (Hasher('Invite','Application')) {
 			call_action('Modal.show', 'Invite.send_invite_result', response.data, response.meta.status);
       helper('Application.update_credits');
       helper('Application.update_invites_available');
-      redirect_to("#invites");
+      set_route("#invites");
 		});
 	});
 
-  create_action('revoke_invite', function(invite_id) {
+  define('revoke_invite', function(invite_id) {
     Badger.revokeInvite(invite_id, function(response) {
       BadgerCache.flush('account_info');
       BadgerCache.flush('invite_status');
-      redirect_to('#invites');
+      set_route('#invites');
       helper('Application.update_credits');
       helper('Application.update_invites_available');
       call_action('Modal.show', 'Invite.revoke_message', response.data, response.meta.status);
@@ -41,7 +41,7 @@ with (Hasher('Invite','Application')) {
 }
 
 with (Hasher('Invite', 'Application')) { (function() {
-  create_view('invites', function(invites_available, domain_credits, sent_invites_count) {
+  define('invites', function(invites_available, domain_credits, sent_invites_count) {
     if (invites_available == null)
       return h1('SEND INVITES');
 		return div(
@@ -57,7 +57,7 @@ with (Hasher('Invite', 'Application')) { (function() {
 		);
   });
 
-  create_helper('invite_status', function(invites) {
+  define('invite_status', function(invites) {
     return table({ 'class': 'fancy-table invite-status-table' },
       tbody(
         tr(
@@ -83,7 +83,7 @@ with (Hasher('Invite', 'Application')) { (function() {
     )
 	});
 
-  create_helper('send_invite', function(domain_credits) {
+  define('send_invite', function(domain_credits) {
     options = [];
     var credits_to_gift = domain_credits > 3 ? 3 : domain_credits
     for(i = 0; i <= credits_to_gift; i++) {
@@ -122,7 +122,7 @@ with (Hasher('Invite', 'Application')) { (function() {
 		);
 	});
 
-  create_helper('send_invite_result', function(data, status) {
+  define('send_invite_result', function(data, status) {
     return div(
       h1("Invitation Message"),
       p( { 'class': status == 'ok' ? '': 'error-message'}, data.message),
@@ -130,7 +130,7 @@ with (Hasher('Invite', 'Application')) { (function() {
 		);
 	});
 
-  create_helper('revoke_message', function(data, status) {
+  define('revoke_message', function(data, status) {
     return div (
       h1("Revoke Result Message"),
       p( {'class': status == 'ok' ? '' : 'error-message'}, data.message),

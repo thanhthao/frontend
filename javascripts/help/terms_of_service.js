@@ -3,7 +3,7 @@ with (Hasher('TermsOfService','Application')) {
     '#terms_of_service': 'terms_of_service'
   });
 
-  create_action('terms_of_service', function() {
+  define('terms_of_service', function() {
     render(helper('terms_of_service'));
   });
 
@@ -11,7 +11,7 @@ with (Hasher('TermsOfService','Application')) {
 }
 
 with (Hasher('TermsOfService', 'Application')) {
-  create_helper('terms_of_service', function() {
+  define('terms_of_service', function() {
     return div(
       h1('Domain Name Registration Agreement'),
       h2('Domain Name Registration Agreement'),

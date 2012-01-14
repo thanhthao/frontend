@@ -1,5 +1,5 @@
 with (Hasher('SiteTour', 'Application')) { (function() {
-	create_helper('site_tour_0', function() {
+	define('site_tour_0', function() {
 		return div(
       h1("Welcome to Badger.com!"),
       p("We do things a little bit differently around here, so please take a moment to read the next few screens. It will be quick!"),
@@ -7,7 +7,7 @@ with (Hasher('SiteTour', 'Application')) { (function() {
 		);
 	});
 
-	create_helper('site_tour_1', function() {
+	define('site_tour_1', function() {
 		return div(
       h1("Credits, not a Shopping Cart."),
       p(
@@ -30,7 +30,7 @@ with (Hasher('SiteTour', 'Application')) { (function() {
 		);
 	});
 
-  create_helper('site_tour_2', function() {
+  define('site_tour_2', function() {
 		return div(
       h1("To search, just start typing."),
       p("If you want to search for a new domain, just start typing in the search box and results will appear as you type:"),
@@ -40,7 +40,7 @@ with (Hasher('SiteTour', 'Application')) { (function() {
 		);
 	});
 
-  create_helper('site_tour_3', function() {
+  define('site_tour_3', function() {
 		return div(
       h1("Already have a domain? Transfer it!"),
       p(span("If you have a domain registered at another registrar, you can easily transfer it to "), a({href: "http://www.badger.com"}, "Badger.com"), span(".")),
@@ -50,7 +50,7 @@ with (Hasher('SiteTour', 'Application')) { (function() {
 		);
 	});
 
-  create_helper('site_tour_4', function() {
+  define('site_tour_4', function() {
 		return div(
       h1("Please give us feedback!"),
       p(span("Feedback from people like you will make "), a({href: "http://www.badger.com"},"Badger.com"), span(" a better place, so please don't hold back!")),

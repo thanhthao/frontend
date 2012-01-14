@@ -4,7 +4,7 @@ with (Hasher('Account','Application')) {
     '#account/settings': 'settings'
   });
 
-	create_action('change_password', function(data) {
+	define('change_password', function(data) {
 		if(data.new_password != data.confirm_password)
 			return $('#change-password-messages').empty().append( helper('Application.error_message', { data: { message: "Passwords do not match" } }) );
 		
@@ -24,7 +24,7 @@ with (Hasher('Account','Application')) {
 
 with (Hasher('Account', 'Application')) { (function() {
 
-  create_view('account', function() {
+  define('account', function() {
     return div(
       h1('My Account'),
       "There's not much to do here yet... maybe give these links a try:",
@@ -35,7 +35,7 @@ with (Hasher('Account', 'Application')) { (function() {
     );
   });
 
-  create_view('settings', function() {
+  define('settings', function() {
 		return div(
 			h1("ACCOUNT SETTINGS"),
 			ul(
@@ -44,14 +44,14 @@ with (Hasher('Account', 'Application')) { (function() {
 		);
   });
 
-  create_view('billing', function() {
+  define('billing', function() {
     return div(
       h1('Billing'),
       'Welcome!'
     );
   });
 
-	create_helper('change_password_modal', function(data) {
+	define('change_password_modal', function(data) {
 		data = data || {};
 		return form({ action: action('change_password') },
 			h1("CHANGE PASSWORD"),

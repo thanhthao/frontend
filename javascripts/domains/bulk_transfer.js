@@ -1,6 +1,6 @@
 with (Hasher('BulkTransfer','Application')) {
 
-  create_action('show', function() {
+  define('show', function() {
     BadgerCache.getContacts(function(contacts) {
       if (contacts.data.length == 0) {
         var custom_message = "You must have at least one contact profile to bulk-transfer domain.";
@@ -11,7 +11,7 @@ with (Hasher('BulkTransfer','Application')) {
     });
   });
 
-  create_action('get_transfer_domain_lists', function(form_data) {
+  define('get_transfer_domain_lists', function(form_data) {
     var domains_list = form_data.transfer_domains_list.split('\n').map(function(item) { return item.trim(); });
     var results = [];
     for(i = 0; i < domains_list.length; i++) {
@@ -33,7 +33,7 @@ with (Hasher('BulkTransfer','Application')) {
     }
   });
 
-  create_action('verify_bulk_transfer', function(domains_list, use_badger_dns, contacts_id) {
+  define('verify_bulk_transfer', function(domains_list, use_badger_dns, contacts_id) {
     call_action('Modal.show', 'Transfer.processing_request');
     BadgerCache.getAccountInfo(function(account_info) {
       // ensure they have at least one domain_credit
@@ -45,7 +45,7 @@ with (Hasher('BulkTransfer','Application')) {
     });
   });
 
-  create_action('proceed_bulk_transfer', function(domains_list, use_badger_dns, contacts_id) {
+  define('proceed_bulk_transfer', function(domains_list, use_badger_dns, contacts_id) {
     call_action('Modal.show', 'BulkTransfer.bulk_transfer_result', domains_list);
 
     var count = 0;
@@ -73,19 +73,19 @@ with (Hasher('BulkTransfer','Application')) {
 
   });
 
-  create_action('close_bulk_modal', function() {
+  define('close_bulk_modal', function() {
     BadgerCache.flush('domains');
     BadgerCache.getDomains(function() { update_my_domains_count(); });
     helper('Application.update_credits', true);
     call_action('Modal.hide');
-    redirect_to('#');
+    set_route('#');
   });
 
 };
 
 with (Hasher('BulkTransfer','Application')) {
 
-	create_helper('get_bulk_domain_form', function() {
+	define('get_bulk_domain_form', function() {
     return div(
       h1('BULK TRANSFER (EXPERIMENTAL)'),
       div({ 'class': 'error-message hidden', id: 'bulk-transfer-form-error' }),
@@ -103,7 +103,7 @@ with (Hasher('BulkTransfer','Application')) {
 		);
 	});
 
-  create_helper('confirm_transfer', function(domains_list, use_badger_dns, contacts_id) {
+  define('confirm_transfer', function(domains_list, use_badger_dns, contacts_id) {
     return div(
       h1('CONFIRM TRANSFER'),
       p('You are about to transfer ' + domains_list.length + (domains_list.length > 1 ? ' domains.' : ' domain.')),
@@ -111,7 +111,7 @@ with (Hasher('BulkTransfer','Application')) {
     )
   });
 
-  create_helper('bulk_transfer_result', function(domains_list) {
+  define('bulk_transfer_result', function(domains_list) {
     var count = 0;
     var list = domains_list.map(function(domain) {
       return tr(

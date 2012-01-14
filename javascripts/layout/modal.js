@@ -48,7 +48,7 @@ with (Hasher('Application')) {
 
 
 with (Hasher('Modal')) {
-  create_action('show', function() {
+  define('show', function() {
     if ($('#modal-dialog').length > 0) call_action('hide');
     document.body.appendChild(helper('modal', helper.apply(this, Array.prototype.slice.call(arguments))));
 
@@ -56,13 +56,13 @@ with (Hasher('Modal')) {
     Placeholder.fix_ie();
   });
   
-  create_action('hide', function() {
+  define('hide', function() {
     $('#modal-dialog').remove();
   });
 }
 
 with (Hasher('Modal')) {
-  create_helper('modal', function() {
+  define('modal', function() {
     var ie_browser = (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
     return div({ 'id': 'modal-dialog', 'class': (ie_browser? 'ie-modal-dialog ' : '') + 'modal-dialog', events: { click: function(e) { if (e.target && e.target.id == 'modal-dialog') action('hide').call(); } } },
       div({ id: 'modal-content' },

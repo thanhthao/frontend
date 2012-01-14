@@ -3,7 +3,7 @@ with (Hasher('Faqs', 'Application')) {
     '#faqs': 'faqs'
   });
 
-  create_action('faqs', function() {
+  define('faqs', function() {
     Badger.getFaqs(function(response) {
       render('faqs', response.data);
     });
@@ -13,7 +13,7 @@ with (Hasher('Faqs', 'Application')) {
 }
 
 with (Hasher('Faqs', 'Application')) {
-  create_view('faqs', function(faqs) {
+  define('faqs', function(faqs) {
     faqs = (faqs || [])
     var result = faqs.map(function(faq) {
       return [

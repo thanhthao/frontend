@@ -1,6 +1,6 @@
 with (Hasher('Register','Application')) {
 
-  create_action('show', function(domain) {
+  define('show', function(domain) {
     if (!Badger.getAccessToken()) {
       Signup.require_user_modal(curry(action('Register.show', domain)));
       return;
@@ -24,7 +24,7 @@ with (Hasher('Register','Application')) {
   });
 
 
-  create_action('buy_domain', function(domain, form) {
+  define('buy_domain', function(domain, form) {
     $('#errors').empty();
     Badger.registerDomain(form, spin_modal_until(function(response) {
       if (response.meta.status == 'created') {
@@ -43,9 +43,9 @@ with (Hasher('Register','Application')) {
     }))
   });
 
-  create_action('open_link', function(url) {
+  define('open_link', function(url) {
     call_action('Modal.hide');
-    redirect_to(url);
+    set_route(url);
   });
 }
 
@@ -95,7 +95,7 @@ with (Hasher('Register', 'Application')) {
     );
   });
 
-  // create_helper('successful_register_confirmation', function(domain) {
+  // define('successful_register_confirmation', function(domain) {
   //   return [
   //     h1("Congratulations!"),
   //     p("You've just registered ", strong(domain), ". Here are some things you can do:"),

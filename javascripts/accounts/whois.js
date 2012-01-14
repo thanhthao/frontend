@@ -4,13 +4,13 @@ with (Hasher('Whois','Application')) {
     '#account/profiles': 'index'
   });
   
-  create_action('index', function() {
+  define('index', function() {
     BadgerCache.getContacts(function(results) {
       render('index', results.data);
     });
   });
   
-  create_action('create_or_update_whois', function(contact_id, callback, form_data) {
+  define('create_or_update_whois', function(contact_id, callback, form_data) {
     $('#errors').empty();
 
     var tmp_callback = function(response) {
@@ -41,7 +41,7 @@ with (Hasher('Whois','Application')) {
 
 with (Hasher('Whois', 'Application')) { (function() {
 
-  create_view('index', function(contacts) {
+  define('index', function(contacts) {
     return div(
       h1('Profiles'),
       div({ style: 'float: right; margin-top: -44px' }, 
@@ -77,7 +77,7 @@ with (Hasher('Whois', 'Application')) { (function() {
     );
   });
 
-  create_helper('whois_contact', function(whois) {
+  define('whois_contact', function(whois) {
     return div(
       div(whois.first_name, ' ', whois.last_name),
       (whois.organization && div(whois.organization)),
@@ -90,7 +90,7 @@ with (Hasher('Whois', 'Application')) { (function() {
     );
   });
   
-  create_helper('edit_whois_modal', function(data, callback, custom_message) {
+  define('edit_whois_modal', function(data, callback, custom_message) {
     data = data || {};
     return form({ action: action('create_or_update_whois', data.id, callback) },
       h1(data.id ? 'Edit Profile' : 'Create Profile'),

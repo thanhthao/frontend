@@ -90,7 +90,7 @@ with (Hasher('DomainApps','Application')) {
     install_app_on_domain(app, domain_obj, form_data);
     hide_modal();
     $('#domain-menu-item-' + domain_obj.name.replace('.','-')).remove();
-    redirect_to(app.menu_item.href.replace(':domain', domain_obj.name));
+    set_route(app.menu_item.href.replace(':domain', domain_obj.name));
   });
 
   define('show_modal_install_app', function(app, domain_obj) {  
@@ -152,7 +152,7 @@ with (Hasher('DomainApps','Application')) {
               remove_app_from_domain(app, domain_obj);
               hide_modal();
               $('#domain-menu-item-' + domain_obj.name.replace('.','-')).remove();
-              redirect_to('#domains/' + domain_obj.name);
+              set_route('#domains/' + domain_obj.name);
             });
           }
         }, 'Uninstall ', app.name)
@@ -306,7 +306,7 @@ with (Hasher('DomainApps','Application')) {
 //     '#domains/:domain/applications': 'show'
 //   });
 // 
-//   create_action('show', function(domain) {
+//   define('show', function(domain) {
 //    var apps = [
 //      { 
 //        name: 'Installed Applications',
@@ -369,7 +369,7 @@ with (Hasher('DomainApps','Application')) {
 //     // });
 //   });
 // 
-//  create_action('show_app_dialog', function(domain, app) {
+//  define('show_app_dialog', function(domain, app) {
 //    var normalized_name = app.name.toLowerCase().replace(/[^a-z]/g,'_');
 //     call_action('Modal.show', 'DomainApps.' + normalized_name + '_install_modal', domain, app);
 //  });
@@ -380,14 +380,14 @@ with (Hasher('DomainApps','Application')) {
 // with (Hasher('DomainApps', 'Application')) { 
 // 
 // 
-//  // create_view('show', function(domain) {
+//  // define('show', function(domain) {
 //  //   return div(
 //  //     h1(domain),
 //  //     p('Loading data for ' + domain + '...')
 //  //   );
 //  // });
 //  // 
-//  // create_view('show_with_data', function(domain, data) {
+//  // define('show_with_data', function(domain, data) {
 //  //   return div(
 //  //     h1(domain),
 //  //     dl({ 'class': 'fancy-dl' },
@@ -506,7 +506,7 @@ with (Hasher('DomainApps','Application')) {
 // }
 
 
- // create_helper('gmail_install_modal', function(domain, app) {
+ // define('gmail_install_modal', function(domain, app) {
  //   return [
  //     h1('Gmail for Domains'),
  //     div("By installing this application, you'll be able to login to Gmail via mail." + domain + " and create whatever@" + domain + " email addresses!"),

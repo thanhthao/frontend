@@ -10,7 +10,7 @@ with (Hasher('Domains','Application')) {
     return name;
   });
 
-  create_action('index', function(filter, view_type) {
+  define('index', function(filter, view_type) {
     BadgerCache.getDomains(function(domains) {
       var results = [];
       if (view_type == null)
@@ -41,7 +41,7 @@ with (Hasher('Domains','Application')) {
     });
   });
 
-  create_action('create_grid_view', function(domains) {
+  define('create_grid_view', function(domains) {
     var domain_names = [];
     var search_keys = [];
     $.each(domains, function() {
@@ -80,7 +80,7 @@ with (Hasher('Domains','Application')) {
 
 with (Hasher('Domains', 'Application')) { (function() {
 
-  create_view('index', function(domains, filter, view_type) {
+  define('index', function(domains, filter, view_type) {
     var empty_domain_message = [];
     var title = "MY DOMAINS";
     switch (filter) {
@@ -126,7 +126,7 @@ with (Hasher('Domains', 'Application')) { (function() {
     );
   });
 
-  create_helper('list_view', function(domains) {
+  define('list_view', function(domains) {
     return [
       table({ 'class': 'fancy-table' },
         tbody(
@@ -158,7 +158,7 @@ with (Hasher('Domains', 'Application')) { (function() {
     ];
   });
 
-  create_helper('add_grid_view', function(domains, results) {
+  define('add_grid_view', function(domains, results) {
     return tr( {'key': results[0][0].split('.')[0]},
       td(Domains.truncate_domain_name(results[0][0].split('.')[0], 40)),
 
@@ -175,7 +175,7 @@ with (Hasher('Domains', 'Application')) { (function() {
     );
   })
 
-  create_helper('grid_view', function(domains) {
+  define('grid_view', function(domains) {
     return [
       table({ id: 'grid', 'class': 'fancy-table' }, tbody()),
       table({ id: 'suggest-grid', 'class': 'fancy-table' }, tbody())

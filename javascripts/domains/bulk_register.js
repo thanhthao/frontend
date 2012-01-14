@@ -1,6 +1,6 @@
 with (Hasher('BulkRegister','Application')) {
 
-  create_action('show', function() {
+  define('show', function() {
     BadgerCache.getContacts(function(contacts) {
       if (contacts.data.length == 0) {
         var custom_message = "You must have at least one contact profile to bulk-register domain.";
@@ -11,7 +11,7 @@ with (Hasher('BulkRegister','Application')) {
     });
   });
 
-  create_action('get_register_domain_lists', function(form_data) {
+  define('get_register_domain_lists', function(form_data) {
     var results = [];
     var domains_list = form_data.register_domains_list.split('\n');
     $.each(domains_list, function() {
@@ -27,7 +27,7 @@ with (Hasher('BulkRegister','Application')) {
     }
   });
 
-  create_action('verify_bulk_register', function(domains_list, contacts_id) {
+  define('verify_bulk_register', function(domains_list, contacts_id) {
 //    call_action('Modal.show', 'Register.processing_request');
     BadgerCache.getAccountInfo(function(account_info) {
       // ensure they have at least one domain_credit
@@ -39,7 +39,7 @@ with (Hasher('BulkRegister','Application')) {
     });
   });
 
-  create_action('proceed_bulk_register', function(domains_list, contacts_id) {
+  define('proceed_bulk_register', function(domains_list, contacts_id) {
     call_action('Modal.show', 'BulkRegister.bulk_register_result', domains_list);
     var count = 0;
     $.each(domains_list, function() {
@@ -58,19 +58,19 @@ with (Hasher('BulkRegister','Application')) {
     });
   });
   
-  create_action('close_bulk_modal', function() {
+  define('close_bulk_modal', function() {
     BadgerCache.flush('domains');
     BadgerCache.getDomains(function() { update_my_domains_count(); });
     helper('Application.update_credits', true);
     call_action('Modal.hide');
-    redirect_to('#');
+    set_route('#');
   });
 
 }
 
 with (Hasher('BulkRegister','Application')) {
 
-	create_helper('get_bulk_domain_form', function() {
+	define('get_bulk_domain_form', function() {
     return div(
       h1('BULK REGISTER (EXPERIMENTAL)'),
       div({ 'class': 'error-message hidden', id: 'bulk-register-form-error' }),
@@ -86,7 +86,7 @@ with (Hasher('BulkRegister','Application')) {
 		);
 	});
 
-  create_helper('confirm_register', function(domains_list, contacts_id) {
+  define('confirm_register', function(domains_list, contacts_id) {
     return div(
       h1('CONFIRM REGISTER'),
       p('You are about to register ' + domains_list.length + (domains_list.length > 1 ? ' domains.' : ' domain.')),
@@ -94,7 +94,7 @@ with (Hasher('BulkRegister','Application')) {
     )
   });
 
-  create_helper('bulk_register_result', function(domains_list) {
+  define('bulk_register_result', function(domains_list) {
     var count = 0;
     var list = domains_list.map(function(domain) {
       count++;

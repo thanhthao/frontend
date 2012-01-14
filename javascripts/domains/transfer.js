@@ -1,10 +1,10 @@
 with (Hasher('Transfer','Application')) {
 
-  create_action('show', function() {
+  define('show', function() {
 		call_action('Modal.show', 'Transfer.get_domain_form');
   });
 
-	create_action('check_auth_code', function(name, info, form_data) {
+	define('check_auth_code', function(name, info, form_data) {
 		call_action('Modal.show', 'Transfer.processing_request');
 
 		Badger.getDomainInfo(form_data, function(response) {
@@ -31,7 +31,7 @@ with (Hasher('Transfer','Application')) {
 		});		
 	});
 
-  create_action('import_dns_settings', function(name, info, form_data) {
+  define('import_dns_settings', function(name, info, form_data) {
     call_action('Modal.show', 'Transfer.loading_dns_settings');
 
     Badger.remoteDNS(name, function(response) {
@@ -39,11 +39,11 @@ with (Hasher('Transfer','Application')) {
     });
   });
 
-  create_action('select_whois_and_dns_settings', function(name, info, first_form_data, records, import_setting_form) {
+  define('select_whois_and_dns_settings', function(name, info, first_form_data, records, import_setting_form) {
     call_action('Modal.show', 'Transfer.select_whois_and_dns_settings', name, info, first_form_data, records, import_setting_form);
   });
 
-	create_action('get_domain_info', function(form_data) {
+	define('get_domain_info', function(form_data) {
 	  console.log("get_domain_info");
 	  console.log(arguments)
 		$('#get-domain-form-errors').empty();
@@ -76,7 +76,7 @@ with (Hasher('Transfer','Application')) {
 		});
 	});
 	
-	create_action('transfer_domain', function(name, info, first_form_data, records, import_setting_form, form_data) {
+	define('transfer_domain', function(name, info, first_form_data, records, import_setting_form, form_data) {
 		call_action('Modal.show', 'Transfer.processing_request');
 
 		Badger.registerDomain(form_data, function(response) {
@@ -104,9 +104,9 @@ with (Hasher('Transfer','Application')) {
 		
 	});
 
-	create_action('transfer_complete', function() {
+	define('transfer_complete', function() {
     call_action('Modal.hide');
-    redirect_to('#filter_domains/transfers/list');
+    set_route('#filter_domains/transfers/list');
   });
 
 
@@ -115,7 +115,7 @@ with (Hasher('Transfer','Application')) {
 
 with (Hasher('Transfer','Application')) {
 		
-	create_helper('domain_locked_help', function(name, info) {
+	define('domain_locked_help', function(name, info) {
 		return div(
 			h1({ 'class': 'long-domain-name'}, 'TRANSFER IN ' + name),
 			div({ 'class': 'error-message' },
@@ -152,7 +152,7 @@ with (Hasher('Transfer','Application')) {
 		);
 	});
 	
-	create_helper('get_auth_code', function(name, info, error) {
+	define('get_auth_code', function(name, info, error) {
 		return form({ action: action('check_auth_code', name, info) },
 			h1('Auth Code'),
 
@@ -169,7 +169,7 @@ with (Hasher('Transfer','Application')) {
 		);
 	});
 	
-	create_helper('select_whois_and_dns_settings', function(name, info, first_form_data, records, import_setting_form) {
+	define('select_whois_and_dns_settings', function(name, info, first_form_data, records, import_setting_form) {
 		return form({ action: action('transfer_domain', name, info, first_form_data, records, import_setting_form) },
 			h1({ 'class': 'long-domain-name'}, 'TRANSFER IN ' + name),
 			
@@ -199,7 +199,7 @@ with (Hasher('Transfer','Application')) {
 		);
 	})
 	
-	create_helper('get_domain_form', function(data, error) {
+	define('get_domain_form', function(data, error) {
 		return div(
 			h1("TRANSFER IN A DOMAIN"),
       form({ id: "get-domain-info-form", action: curry(Signup.require_user_modal, action('get_domain_info')) },
@@ -214,22 +214,22 @@ with (Hasher('Transfer','Application')) {
 	});
 	
 	// implement different instructions for certain registrars at some point
-  // create_helper('unlock_instructions_for_registrar', function(registrar) {
+  // define('unlock_instructions_for_registrar', function(registrar) {
   //  return div("You need to unlock this domain through " + (registrar.indexOf('Unknown') == 0 ? 'the current registrar' : registrar) + '.');
   // });
 	
 	//todo add more help
-  // create_helper('get_auth_code_instructions_for_registrar', function(registrar) {
+  // define('get_auth_code_instructions_for_registrar', function(registrar) {
   //  return div("Please refer to the currently owning registrar for instructions on how to find the authorization code.");
   // });
 	
-	create_helper('processing_request', function() {
+	define('processing_request', function() {
 		return div({ style: 'text-align: center; padding: 100px 0' },
 			strong('Processing, please wait...')
     );
 	});
 
-  create_helper('transfer_confirm', function(registrar_name) {
+  define('transfer_confirm', function(registrar_name) {
     return [
       h1('Transfer Request Submitted'),
       div("We have submitted your transfer request and will email you when it is complete."),
@@ -245,7 +245,7 @@ with (Hasher('Transfer','Application')) {
     ];
   });
 
-  create_helper('godaddy_transfer_confirm', function() {
+  define('godaddy_transfer_confirm', function() {
     return[
       h1('Transfer Request Submitted'),
       div("This request will be ", strong("automatically approved in 5 days"), ".  If you'd like to manually approve this domain transfer, visit ", a({ href: "https://dcc.godaddy.com/default.aspx?activeview=transfer&filtertype=3&sa=#", target: "_blank" }, "GoDaddy's Pending Transfers"), ' page.'),
@@ -256,7 +256,7 @@ with (Hasher('Transfer','Application')) {
     ];
   });
 
-  create_helper('loading_dns_settings', function() {
+  define('loading_dns_settings', function() {
     return [
       div({ style: 'text-align: center; padding: 100px 0' },
 			  strong('Reading your current DNS settings, please wait...')
@@ -264,7 +264,7 @@ with (Hasher('Transfer','Application')) {
     ];
   });
 
-  create_helper('dns_settings', function( name, info, first_form_data, records) {
+  define('dns_settings', function( name, info, first_form_data, records) {
     var results = records.map(function(record) {
       return tr(
         td(record.subdomain),

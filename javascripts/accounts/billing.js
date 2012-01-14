@@ -3,14 +3,14 @@ with (Hasher('Billing','Application')) {
     '#account/billing': 'index'
   });
 
-  create_action('index', function() {
+  define('index', function() {
     Badger.getCreditHistory(function(results) {
       console.log(results)
       render('index', results.data.message ? [] : results.data);
     });
   });
 
-  create_action('purchase_credits', function(callback, form_data) {
+  define('purchase_credits', function(callback, form_data) {
     if (form_data.credits == '1' && form_data.credits_variable) form_data.credits = form_data.credits_variable;
     delete form_data.credits_variable;
 
@@ -43,7 +43,7 @@ with (Hasher('Billing','Application')) {
 
 with (Hasher('Billing', 'Application')) { (function() {
 
-  create_view('index', function(credit_historys) {
+  define('index', function(credit_historys) {
     return div(
       h1('Billing Settings'),
       div({ style: 'float: right; margin-top: -44px' },
@@ -76,7 +76,7 @@ with (Hasher('Billing', 'Application')) { (function() {
     );
   });
 
-  create_helper('credits_table', function() {
+  define('credits_table', function() {
     var tmp_table = table({ 'class': 'fancy-table purchase-credits' }, tbody(
       tr({ 'class': 'table-header' },
         th({ style: 'width: 25%' }, 'Package'),

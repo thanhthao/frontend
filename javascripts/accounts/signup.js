@@ -3,21 +3,21 @@ with (Hasher('Signup','Application')) {
 
   route('#register/:code', function(code) {
     if (Badger.getAccessToken()) {
-      redirect_to('#');
+      set_route('#');
     } else {
       Badger.register_code = code;
-      redirect_to('#');
+      set_route('#');
       show_register_modal();
     }
   });
 
   route('#reset_password/:email/:code', function(email, code) {
-    redirect_to('#');
+    set_route('#');
     show_reset_password_modal(email, code);
   });
 
   route('#confirm_email/:code', function(code) {
-    redirect_to('#');
+    set_route('#');
     if (Badger.getAccessToken()) {
       Badger.confirmEmail(code, function(response) {
         show_confirm_email_notification_modal(response.data, response.meta.status);
@@ -111,7 +111,7 @@ with (Hasher('Signup','Application')) {
         if (callback) {
           callback();
         } else if (Badger.back_url != "") {
-          redirect_to(Badger.back_url);
+          set_route(Badger.back_url);
           Badger.back_url = "";
         }
       } else {
@@ -177,7 +177,7 @@ with (Hasher('Signup','Application')) {
         if (callback) {
           callback();
         } else {
-          redirect_to('#');
+          set_route('#');
           setTimeout(function() { call_action('Modal.show', 'SiteTour.site_tour_0'); }, 250);
         }
       } else {
