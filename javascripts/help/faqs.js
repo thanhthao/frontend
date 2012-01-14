@@ -9,8 +9,7 @@ with (Hasher('Faqs', 'Application')) {
     });
   });
 
-  layout('dashboard');
-}
+ }
 
 with (Hasher('Faqs', 'Application')) {
   define('faqs', function(faqs) {

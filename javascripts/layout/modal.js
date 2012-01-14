@@ -42,31 +42,3 @@ with (Hasher('Application')) {
     $('#modal-dialog').remove();
   });
 }
-
-
-
-
-
-with (Hasher('Modal')) {
-  define('show', function() {
-    if ($('#modal-dialog').length > 0) hide();
-    document.body.appendChild(modal(helper.apply(this, Array.prototype.slice.call(arguments))));
-
-    // Fix placeholder does not work in IE
-    Placeholder.fix_ie();
-  });
-  
-  define('hide', function() {
-    $('#modal-dialog').remove();
-  });
-
-  define('modal', function() {
-    var ie_browser = (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
-    return div({ 'id': 'modal-dialog', 'class': (ie_browser? 'ie-modal-dialog ' : '') + 'modal-dialog', events: { click: function(e) { if (e.target && e.target.id == 'modal-dialog') hide.call(); } } },
-      div({ id: 'modal-content' },
-        a({ href: hide, 'class': 'close-button' }, 'X'),
-        Array.prototype.slice.call(arguments)
-      )
-    );
-  });
-}

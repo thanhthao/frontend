@@ -75,8 +75,7 @@ with (Hasher('Domains','Application')) {
     });
   });
 
-  layout('dashboard');
-}
+ }
 
 with (Hasher('Domains', 'Application')) { (function() {
 

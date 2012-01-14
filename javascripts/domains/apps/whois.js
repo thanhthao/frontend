@@ -116,5 +116,4 @@ with (Hasher('WhoisApp','DomainApps')) {
     );
   });
 
-  layout('dashboard');
-}
+ }

@@ -36,8 +36,7 @@ with (Hasher('Whois','Application')) {
     }
   });
   
-  layout('dashboard');
-}
+ }
 
 with (Hasher('Whois', 'Application')) { (function() {
 

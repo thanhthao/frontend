@@ -9,5 +9,4 @@ with (Hasher('RhinoNames', 'Application')) {
     );
   });
 
-  layout('dashboard');
-}
+ }

@@ -53,6 +53,5 @@ with (Hasher('Heroku', 'DomainApps')) {
     );
   });
   
-  layout('dashboard');
-  
+   
 };

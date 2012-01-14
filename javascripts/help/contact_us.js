@@ -1,7 +1,6 @@
 with (Hasher('ContactUs','Application')) {
 
-  layout('dashboard');
-
+ 
   route('#chatroom', function() {
     render(
       h1('Badger Chatroom'),

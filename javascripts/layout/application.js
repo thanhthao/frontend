@@ -21,10 +21,6 @@ with (Hasher('Application')) {
   });
 }
 
-with (Hasher('Application')) {
-
-}
-
 String.prototype.capitalize_all = function() {
 	var words = [];
 	this.split(' ').forEach(function(word) {

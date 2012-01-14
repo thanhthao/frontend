@@ -1,6 +1,5 @@
 with (Hasher('DomainMigrations','Application')) {
-  layout('dashboard');
-  
+   
   route('#migrations', function(domain) {
     var loader = div('Loading...');
     BadgerCache.getAccountInfo(function(response) {

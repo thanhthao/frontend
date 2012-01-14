@@ -24,5 +24,4 @@ with (Hasher('GoogleDocs', 'DomainApps')) {
   });
   
 
-  layout('dashboard');
-}
+ }

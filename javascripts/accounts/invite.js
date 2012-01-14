@@ -37,8 +37,7 @@ with (Hasher('Invite','Application')) {
     });
   });
 
-  layout('dashboard');
-}
+ }
 
 with (Hasher('Invite', 'Application')) { (function() {
   define('invites', function(invites_available, domain_credits, sent_invites_count) {

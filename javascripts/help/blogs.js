@@ -1,6 +1,5 @@
 with (Hasher('Blogs', 'Application')) {
-  layout('dashboard');
-
+ 
   route('#blogs', function() {
     render(
       h1('BADGER BLOG'),

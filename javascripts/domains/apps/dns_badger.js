@@ -1,7 +1,6 @@
 with (Hasher('BadgerDnsApp','BaseDnsApp')) {
 
-  layout('dashboard');
-
+ 
   register_domain_app({
     id: 'badger_dns',
     name: 'Badger DNS',

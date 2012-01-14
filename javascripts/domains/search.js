@@ -37,8 +37,7 @@ with (Hasher('Search','Application')) {
   define('search', function() {
   });
   
-  layout('dashboard');
-}
+ }
 
 with (Hasher('Search', 'Application')) {
 

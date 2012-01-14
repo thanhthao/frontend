@@ -97,5 +97,4 @@ with (Hasher('EmailForwards', 'DomainApps')) {
   });
   
     
-  layout('dashboard');
-};
+ };

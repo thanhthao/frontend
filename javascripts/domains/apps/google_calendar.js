@@ -24,5 +24,4 @@ with (Hasher('GoogleCalendar', 'DomainApps')) {
   });
   
 
-  layout('dashboard');
-}
+ }

@@ -1,6 +1,5 @@
 with (Hasher('KnowledgeCenter', 'Application')) {
-  layout('dashboard');
-
+ 
   route('#knowledge_center', function() {
     render(
       h1('KNOWLEDGE CENTER'),

@@ -1,6 +1,5 @@
 with (Hasher('Signup','Application')) {
-  layout('dashboard');
-
+ 
   route('#register/:code', function(code) {
     if (Badger.getAccessToken()) {
       set_route('#');

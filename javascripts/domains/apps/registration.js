@@ -48,5 +48,4 @@ with (Hasher('Registration ','DomainApps')) {
     return elem;
   });
   
-  layout('dashboard');
-}
+ }

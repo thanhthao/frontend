@@ -1,18 +1,14 @@
 // this file should be avoided if possible... this is a backwards compatibilty layer with 0.0.5
 with (Hasher()) {
   
-  define('input', function() { 
-    var arguments = flatten_to_array(arguments);
-    var options = shift_options_from_args(arguments);
-    return this[options.type || 'text'](options, arguments);
-  });
-  
-  
-  
   // performed_action is used for the legacy "render default view if no render/set_route"
-  redefine('render', function(callback) {
+  redefine('render', function(real_render, view_name) {
     Hasher.performed_action = true;
-    callback.apply(this, Array.prototype.slice.call(arguments,1));
+    if ((typeof(view_name) == 'string') && this['view_' + view_name]) { 
+      real_render.call(this, this['view_' + view_name].apply(this, Array.prototype.slice.call(arguments,2)));
+    } else {
+      real_render.apply(this, Array.prototype.slice.call(arguments,1));
+    }
   });
 
   redefine('set_route', function(callback) {
@@ -43,13 +39,6 @@ with (Hasher()) {
     }
   });
   
-  redefine('render', function(real_render, view_name) {
-    if ((typeof(view_name) == 'string') && this['view_' + view_name]) { 
-      real_render.call(this, this['view_' + view_name].apply(this, Array.prototype.slice.call(arguments,2)));
-    } else {
-      real_render.apply(this, Array.prototype.slice.call(arguments,1));
-    }
-  });
 
   // add in legacy events hash
   redefine('element', function(callback) {
@@ -64,6 +53,12 @@ with (Hasher()) {
       }
     }
     return callback.call(this, tag, options, arguments);
+  });
+
+  define('input', function() { 
+    var arguments = flatten_to_array(arguments);
+    var options = shift_options_from_args(arguments);
+    return this[options.type || 'text'](options, arguments);
   });
 
   redefine('layout', function(real_layout, name, callback) {

@@ -32,5 +32,4 @@ with (Hasher('GoogleMail', 'DomainApps')) {
   });
   
 
-  layout('dashboard');
-}
+ }

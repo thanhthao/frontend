@@ -20,8 +20,7 @@ with (Hasher('Application')) {
 
 
 with (Hasher('DomainApps','Application')) {
-  layout('dashboard');
-  
+   
   route('#domains/:domain', function(domain) {
     render(
       h1({ 'class': 'long-domain-name' }, domain),
@@ -374,8 +373,7 @@ with (Hasher('DomainApps','Application')) {
 //     show_modal('DomainApps.' + normalized_name + '_install_modal', domain, app);
 //  });
 // 
-//   layout('dashboard');
-// }
+//  // }
 // 
 // with (Hasher('DomainApps', 'Application')) { 
 // 
@@ -502,8 +500,7 @@ with (Hasher('DomainApps','Application')) {
 //     console.log('hi')
 //   });
 //   
-//   layout('dashboard');
-// }
+//  // }
 
 
  // define('gmail_install_modal', function(domain, app) {

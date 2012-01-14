@@ -38,8 +38,7 @@ with (Hasher('Billing','Application')) {
     }));
   });
 
-  layout('dashboard');
-}
+ }
 
 with (Hasher('Billing', 'Application')) { (function() {
 

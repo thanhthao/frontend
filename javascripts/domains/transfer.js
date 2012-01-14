@@ -110,7 +110,6 @@ with (Hasher('Transfer','Application')) {
   });
 
 
-	layout('dashboard');
 };
 
 with (Hasher('Transfer','Application')) {

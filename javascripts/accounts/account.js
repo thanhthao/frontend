@@ -18,8 +18,6 @@ with (Hasher('Account','Application')) {
 			}
 		});
 	});
-  
-  layout('dashboard');
 }
 
 with (Hasher('Account', 'Application')) { (function() {

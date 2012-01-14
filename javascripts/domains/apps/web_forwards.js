@@ -105,6 +105,5 @@ with (Hasher('WebForwards', 'DomainApps')) {
     );
   });
 
-  layout('dashboard');
-  
+   
 };

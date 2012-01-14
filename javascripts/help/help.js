@@ -4,8 +4,7 @@ with (Hasher('Help','Application')) {
     '#tickets': 'tickets'
   });
   
-  layout('dashboard');
-}
+ }
 
 with (Hasher('Help', 'Application')) { (function() {
 
