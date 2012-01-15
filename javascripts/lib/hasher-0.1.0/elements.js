@@ -11,6 +11,15 @@ with (Hasher()) {
       element = document.createElement("<input type='" + options.type + "' " + (options['name'] ? "name='" + options['name'] + "'" : "") + (options['checked'] != null ? "CHECKED":" ") + "/>");
     }
 
+    // DEPRECATED... events: { click: asd, mousedown: fds }
+    if (options.events) {
+      var events = options.events;
+      delete options.events;
+      for (var k in events) {
+        options['on' + k] = events[k];
+      }
+    }
+
     // process attributes
     for (var k in options) {
       if (k.indexOf('on') == 0) {
@@ -111,6 +120,12 @@ with (Hasher()) {
     }
     
     return element('form', options, arguments);
+  });
+
+  define('input', function() { 
+    var arguments = flatten_to_array(arguments);
+    var options = shift_options_from_args(arguments);
+    return this[options.type || 'text'](options, arguments);
   });
 
   // input types

@@ -73,7 +73,7 @@ with (Hasher('EmailForwards', 'DomainApps')) {
         $('#email-forwards-table').append( show_email_forward_table_row(domain, response.data) );
       } else {
         $('#email-forwards-errors').empty().append(
-          Application.error_message(response)
+          error_message(response)
         );
       }
       
@@ -87,7 +87,7 @@ with (Hasher('EmailForwards', 'DomainApps')) {
       Badger.deleteEmailForward(domain, email_forward.id, function(response) {
         if(response.meta.status != 'ok') {
           $('#email-forwards-errors').empty().append(
-            Application.error_message(response)
+            error_message(response)
           )
         } else {
           $('#email-forwards-table tr#id-' + (email_forward.username == '*' ? '' : email_forward.username)).remove(); //remove the row

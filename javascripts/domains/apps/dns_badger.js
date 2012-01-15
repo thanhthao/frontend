@@ -184,7 +184,7 @@ define('get_dns_params', function(id) {
       if (response.meta.status == 'ok') {
         set_route(get_route());
       } else {
-        $('#errors').empty().append(Application.error_message(response));
+        $('#errors').empty().append(error_message(response));
       }
     })
   });
@@ -205,7 +205,7 @@ define('get_dns_params', function(id) {
       if (results.meta.status == 'ok') {
         set_route(get_route());
       } else {
-        $('#errors').empty().append(Application.error_message(results));
+        $('#errors').empty().append(error_message(results));
       }
     })
   });

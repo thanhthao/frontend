@@ -49,7 +49,8 @@
     "/javascripts/accounts/signup.js",
     "/javascripts/accounts/account.js",
     "/javascripts/accounts/whois.js",
-    "/javascripts/accounts/billing.js",
+    "/javascripts/accounts/billing_history.js",
+    "/javascripts/accounts/purchase_credits_modal.js",
     "/javascripts/accounts/invite.js",
 
     "/javascripts/help/help.js",

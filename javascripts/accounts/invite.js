@@ -14,14 +14,14 @@ with (Hasher('Invite','Application')) {
 
 	define('send_invite', function(data) {
 		if(data.first_name == "" || data.last_name == "" || data.invitation_email == "") {
-			return $('#send-invite-messages').empty().append( Application.error_message({ data: { message: "First Name, Last Name and Email can not be blank" } }) );
+			return $('#send-invite-messages').empty().append( error_message({ data: { message: "First Name, Last Name and Email can not be blank" } }) );
     }
 		Badger.sendInvite(data, function(response) {
       BadgerCache.flush('account_info');
       BadgerCache.flush('invite_status');
 			show_modal('Invite.send_invite_result', response.data, response.meta.status);
-      Application.update_credits();
-      Application.update_invites_available();
+      update_credits();
+      update_invites_available();
       set_route("#invites");
 		});
 	});
@@ -31,8 +31,8 @@ with (Hasher('Invite','Application')) {
       BadgerCache.flush('account_info');
       BadgerCache.flush('invite_status');
       set_route('#invites');
-      Application.update_credits();
-      Application.update_invites_available();
+      update_credits();
+      update_invites_available();
       show_modal('Invite.revoke_message', response.data, response.meta.status);
     });
   });

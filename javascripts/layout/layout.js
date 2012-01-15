@@ -86,7 +86,7 @@ with (Hasher('Application')) {
     }
   });
 
-  layout('dashboard', function(yield) {
+  layout('default_layout', function(yield) {
     return div({ id: 'wrapper' },
 
       div({ id: 'header' },

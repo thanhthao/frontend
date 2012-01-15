@@ -61,7 +61,7 @@ with (Hasher('BulkRegister','Application')) {
   define('close_bulk_modal', function() {
     BadgerCache.flush('domains');
     BadgerCache.getDomains(function() { update_my_domains_count(); });
-    Application.update_credits(true);
+    update_credits(true);
     hide_modal();
     set_route('#');
   });

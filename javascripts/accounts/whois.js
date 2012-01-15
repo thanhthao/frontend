@@ -25,7 +25,7 @@ with (Hasher('Whois','Application')) {
           }
         });
       } else {
-        $('#errors').empty().append(Application.error_message(response));
+        $('#errors').empty().append(error_message(response));
       }
     }
 
@@ -127,7 +127,7 @@ with (Hasher('Whois', 'Application')) { (function() {
               input({ style: 'width: 70px', name: 'zip', placeholder: 'Zip', value: data.zip || '' })
             ),
             div(
-              select({ style: 'width: 150px', name: 'country' }, option({ disabled: 'disabled' }, 'Country:'), Application.country_options(data.country))
+              select({ style: 'width: 150px', name: 'country' }, option({ disabled: 'disabled' }, 'Country:'), country_options(data.country))
             )
           )
         )

@@ -1,6 +1,18 @@
 with (Hasher('Search','Application')) {
-  route({
-    '#search': 'search'
+  route('#search', function() {
+    render(
+      div(
+        h1('Search Results'),
+        div({ style: 'float: right; margin-top: -44px' }, 
+          a({ 'class': 'myButton myButton-small', href: Transfer.show }, 'Transfer in a Domain')
+        ),
+        table({ id: 'search-results', 'class': 'fancy-table' }, tbody()),
+        div({ id: 'search-instructions' }, 
+          p('Start typing to search for available domains.'),
+          p('If you would like to register many domains at once, try our ', a({ href: curry(Signup.require_user_modal, BulkRegister.show) }, 'Bulk Register Tool'), '.')
+        )
+      )
+    );
   });
 
   define('search_box_changed', function() {
@@ -34,13 +46,6 @@ with (Hasher('Search','Application')) {
     this.last_search_value = current_value;
   });
   
-  define('search', function() {
-  });
-  
- }
-
-with (Hasher('Search', 'Application')) {
-
   define('search_result_row', function(results) {
     return tr(
       td(results[0][0].split('.')[0]),
@@ -49,21 +54,6 @@ with (Hasher('Search', 'Application')) {
         return domain[1] ? td({ 'class': 'tld' }, a({ href: curry(Register.show, domain[0]) }, tld))
                          : td({ 'class': 'tld' }, span({ style: 'text-decoration: line-through' }, tld));
       })
-    );
-  });
-
-
-  define('search', function(domains) {
-    return div(
-      h1('Search Results'),
-      div({ style: 'float: right; margin-top: -44px' }, 
-        a({ 'class': 'myButton myButton-small', href: Transfer.show }, 'Transfer in a Domain')
-      ),
-      table({ id: 'search-results', 'class': 'fancy-table' }, tbody()),
-      div({ id: 'search-instructions' }, 
-        p('Start typing to search for available domains.'),
-        p('If you would like to register many domains at once, try our ', a({ href: curry(Signup.require_user_modal, BulkRegister.show) }, 'Bulk Register Tool'), '.')
-      )
     );
   });
 

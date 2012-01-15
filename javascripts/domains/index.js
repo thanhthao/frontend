@@ -1,16 +1,6 @@
 with (Hasher('Domains','Application')) {
-  route({
-    '#filter_domains/:filter/:view_type': 'index'
-  });
-
-  define('truncate_domain_name', function(domain_name, length) {
-    length = (length || 25)
-    name = domain_name.substring(0, length)
-    if (domain_name.length > length) name = name + "..."
-    return name;
-  });
-
-  define('index', function(filter, view_type) {
+  route('#filter_domains/:filter/:view_type', function(filter, view_type) {
+    render('');
     BadgerCache.getDomains(function(domains) {
       var results = [];
       if (view_type == null)
@@ -35,10 +25,17 @@ with (Hasher('Domains','Application')) {
           filter = 'all';
           results = domains
       }
-      render('index', results, filter, view_type);
+      render(index_view(results, filter, view_type));
       if (view_type == 'grid')
         create_grid_view(results);
     });
+  });
+
+  define('truncate_domain_name', function(domain_name, length) {
+    length = (length || 25)
+    name = domain_name.substring(0, length)
+    if (domain_name.length > length) name = name + "..."
+    return name;
   });
 
   define('create_grid_view', function(domains) {
@@ -75,11 +72,8 @@ with (Hasher('Domains','Application')) {
     });
   });
 
- }
 
-with (Hasher('Domains', 'Application')) { (function() {
-
-  define('index', function(domains, filter, view_type) {
+  define('index_view', function(domains, filter, view_type) {
     var empty_domain_message = [];
     var title = "MY DOMAINS";
     switch (filter) {
@@ -120,7 +114,7 @@ with (Hasher('Domains', 'Application')) { (function() {
       ]:((domains.length == 0) ? 
 				empty_domain_message
       : [ 
-        helper(view_type + '_view', domains)
+        this[view_type + '_view'](domains)
 			])
     );
   });
@@ -181,4 +175,4 @@ with (Hasher('Domains', 'Application')) { (function() {
     ];
   });
 
-})(); }
+}

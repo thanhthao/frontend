@@ -49,7 +49,7 @@ with (Hasher('DomainMigrations','Application')) {
           });
         });
       } else {
-        $('#migrate-login-form-errors').empty().append(Application.error_message({ data: { message: response.errors ? response.errors[0] : "Unknown error." } }));
+        $('#migrate-login-form-errors').empty().append(error_message({ data: { message: response.errors ? response.errors[0] : "Unknown error." } }));
       }
     });
   });

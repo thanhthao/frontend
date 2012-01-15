@@ -114,7 +114,7 @@ with (Hasher('Signup','Application')) {
           Badger.back_url = "";
         }
       } else {
-        $('#signup-errors').empty().append(Application.error_message(response));
+        $('#signup-errors').empty().append(error_message(response));
       }
     }));
   });
@@ -161,11 +161,11 @@ with (Hasher('Signup','Application')) {
 
   define('create_person', function(callback, data) {
 		if(data.password != data.confirm_password) {
-			$('#signup-errors').empty().append(Application.error_message({ data: { message: "Passwords do not match" } }));
+			$('#signup-errors').empty().append(error_message({ data: { message: "Passwords do not match" } }));
       return;
 		}
     // if (!data.agree_to_terms) {
-    //   $('#signup-errors').empty().append(Application.error_message({ data: { message: "You must accept terms of service to use our site" } }));
+    //   $('#signup-errors').empty().append(error_message({ data: { message: "You must accept terms of service to use our site" } }));
     //   return;
     // }
     
@@ -180,7 +180,7 @@ with (Hasher('Signup','Application')) {
           setTimeout(function() { show_modal('SiteTour.site_tour_0'); }, 250);
         }
       } else {
-        $('#signup-errors').empty().append(Application.error_message(response));
+        $('#signup-errors').empty().append(error_message(response));
       }
     }));
   });
@@ -223,17 +223,17 @@ with (Hasher('Signup','Application')) {
 	define('send_password_reset_email', function(callback, form_data) {
 		Badger.sendPasswordResetEmail(form_data, function(response) {
 			if (response.meta.status == 'ok') {
-        $('#forgot-password-messages').empty().append(Application.success_message(response));
+        $('#forgot-password-messages').empty().append(success_message(response));
 				$('#forgot-password-form').empty();
 			} else {
-				$('#forgot-password-messages').empty().append(Application.error_message(response));
+				$('#forgot-password-messages').empty().append(error_message(response));
 			}
 		});
 	});
 
 	define('reset_password', function(callback, form_data) {
 		if(form_data.new_password != form_data.confirm_password)
-			return $('#reset-password-messages').empty().append( Application.error_message({ data: { message: "Passwords do not match" } }) );
+			return $('#reset-password-messages').empty().append( error_message({ data: { message: "Passwords do not match" } }) );
 
 		Badger.resetPasswordWithCode(form_data, function(response) {
 			if (response.meta.status == 'ok')
@@ -241,14 +241,14 @@ with (Hasher('Signup','Application')) {
         setTimeout(function() {
           show_modal(
             h1("Reset Password"),
-            Application.success_message(response),
+            success_message(response),
             a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
           );
         }, 250);
 			}
 			else
 			{
-				$('#reset-password-messages').empty().append(Application.error_message(response));
+				$('#reset-password-messages').empty().append(error_message(response));
 			}
 		});
 	});

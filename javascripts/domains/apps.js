@@ -249,7 +249,7 @@ with (Hasher('DomainApps','Application')) {
           // if (response.meta.status == 'ok') {
           //   index(domain);
           // } else {
-          //   $('#errors').empty().append(Application.error_message(response));
+          //   $('#errors').empty().append(error_message(response));
           // }
         });
       }

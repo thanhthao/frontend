@@ -9,7 +9,7 @@ with (Hasher('Transfer','Application')) {
 
 		Badger.getDomainInfo(form_data, function(response) {
 			if (response.data.code == 2202 || response.meta.status != 'ok') {
-				show_modal('Transfer.get_auth_code', name, info, Application.error_message(response));
+				show_modal('Transfer.get_auth_code', name, info, error_message(response));
 			} else {
 				BadgerCache.getAccountInfo(function(account_info) {
 		      // ensure they have at least one domain_credit
@@ -53,11 +53,11 @@ with (Hasher('Transfer','Application')) {
 		form_data.name = form_data.name.toLowerCase();
 		Badger.getDomainInfo(form_data, function(response) {
 			if (response.data.code == 2303)//the domain object does not exist, render the proper error message
-				show_modal('Transfer.get_domain_form', form_data, Application.error_message({ data: { message: "Domain not found" } }));
+				show_modal('Transfer.get_domain_form', form_data, error_message({ data: { message: "Domain not found" } }));
 			else if(response.data.code != 1000)
-				show_modal('Transfer.get_domain_form', form_data, Application.error_message({ data: { message: "Internal server error" } }));
+				show_modal('Transfer.get_domain_form', form_data, error_message({ data: { message: "Internal server error" } }));
 			else if(response.data.pending_transfer)
-				show_modal('Transfer.get_domain_form', form_data, Application.error_message({ data: { message: "Domain already pending transfer" } }));
+				show_modal('Transfer.get_domain_form', form_data, error_message({ data: { message: "Domain already pending transfer" } }));
 			else {
 				if(response.data.locked) {
 					show_modal('Transfer.domain_locked_help', form_data.name, response.data);
@@ -81,7 +81,7 @@ with (Hasher('Transfer','Application')) {
 
 		Badger.registerDomain(form_data, function(response) {
 			if (response.meta.status == 'created') {
-				Application.update_credits(true);
+				update_credits(true);
 				BadgerCache.flush('domains');
 
         if (info.registrar.name.toLowerCase().indexOf('godaddy') != -1) {
@@ -98,7 +98,7 @@ with (Hasher('Transfer','Application')) {
         }
         
 			} else {
-				show_modal('Transfer.get_auth_code', name, info, Application.error_message(response));
+				show_modal('Transfer.get_auth_code', name, info, error_message(response));
 			}
 		});
 		

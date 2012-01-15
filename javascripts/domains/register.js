@@ -28,9 +28,9 @@ with (Hasher('Register','Application')) {
     $('#errors').empty();
     Badger.registerDomain(form, spin_modal_until(function(response) {
       if (response.meta.status == 'created') {
-        Application.load_domain(response.data.name, function(domain_object) {
+        load_domain(response.data.name, function(domain_object) {
           DomainApps.install_app_on_domain(Hasher.domain_apps["badger_web_forward"], domain_object);
-          Application.update_credits(true);
+          update_credits(true);
           hide_modal();
           set_route('#domains/' + domain);
 
@@ -38,7 +38,7 @@ with (Hasher('Register','Application')) {
           BadgerCache.getDomains(function() { update_my_domains_count(); });
         })
       } else {
-        $('#errors').empty().append(Application.error_message(response));
+        $('#errors').empty().append(error_message(response));
       }
     }))
   });
