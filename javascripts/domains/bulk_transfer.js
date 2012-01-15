@@ -4,9 +4,9 @@ with (Hasher('BulkTransfer','Application')) {
     BadgerCache.getContacts(function(contacts) {
       if (contacts.data.length == 0) {
         var custom_message = "You must have at least one contact profile to bulk-transfer domain.";
-        show_modal('Whois.edit_whois_modal', null, BulkTransfer.show, custom_message);
+        show_modal(Whois.edit_whois_modal(), null, BulkTransfer.show, custom_message);
       } else {
-        show_modal('BulkTransfer.get_bulk_domain_form');
+        show_modal(BulkTransfer.get_bulk_domain_form());
       }
     });
   });
@@ -34,19 +34,19 @@ with (Hasher('BulkTransfer','Application')) {
   });
 
   define('verify_bulk_transfer', function(domains_list, use_badger_dns, contacts_id) {
-    show_modal('Transfer.processing_request');
+    show_modal(Transfer.processing_request());
     BadgerCache.getAccountInfo(function(account_info) {
       // ensure they have at least one domain_credit
       if (account_info.data.domain_credits < domains_list.length) {
         Billing.purchase_modal(curry(BulkTransfer.verify_bulk_transfer, domains_list, use_badger_dns));
       } else {
-        show_modal('BulkTransfer.confirm_transfer', domains_list, use_badger_dns, contacts_id);
+        show_modal(BulkTransfer.confirm_transfer(), domains_list, use_badger_dns, contacts_id);
       }
     });
   });
 
   define('proceed_bulk_transfer', function(domains_list, use_badger_dns, contacts_id) {
-    show_modal('BulkTransfer.bulk_transfer_result', domains_list);
+    show_modal(BulkTransfer.bulk_transfer_result(), domains_list);
 
     var count = 0;
     $.each(domains_list, function() {

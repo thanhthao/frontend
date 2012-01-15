@@ -1,19 +1,7 @@
 with (Hasher('TermsOfService','Application')) {
-  route({
-    '#terms_of_service': 'terms_of_service'
-  });
-
-  define('terms_of_service', function() {
-    render(terms_of_service());
-  });
-
- }
-
-with (Hasher('TermsOfService', 'Application')) {
-  define('terms_of_service', function() {
-    return div(
+  route('#terms_of_service', function() {
+    render(
       h1('Domain Name Registration Agreement'),
-      h2('Domain Name Registration Agreement'),
       h3('1. Introduction'),
       p('1.1. This domain name registration agreement ("Registration Agreement") governs the terms and conditions upon which Rhino Names, Inc (DBA "Badger.com") agrees to provide you ("Registered Name Holder") with the domain name registration service and associated services as described on the website located at www.Badger.com ("Website") and as otherwise described in this Registration Agreement ("Services").'),
       p('1.2. By using the Services, you acknowledge that you have read, understood, and agree to be bound by the terms and conditions of this Registration Agreement, as well as our Privacy Policy and Anti-Spam Policy.'),

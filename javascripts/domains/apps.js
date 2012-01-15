@@ -370,7 +370,7 @@ with (Hasher('DomainApps','Application')) {
 // 
 //  define('show_app_dialog', function(domain, app) {
 //    var normalized_name = app.name.toLowerCase().replace(/[^a-z]/g,'_');
-//     show_modal('DomainApps.' + normalized_name + '_install_modal', domain, app);
+//     show_modal(DomainApps.() + normalized_name + '_install_modal', domain, app);
 //  });
 // 
 //  // }

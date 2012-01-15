@@ -1,26 +1,26 @@
 with (Hasher('Transfer','Application')) {
 
   define('show', function() {
-		show_modal('Transfer.get_domain_form');
+		show_modal(Transfer.get_domain_form());
   });
 
 	define('check_auth_code', function(name, info, form_data) {
-		show_modal('Transfer.processing_request');
+		show_modal(Transfer.processing_request());
 
 		Badger.getDomainInfo(form_data, function(response) {
 			if (response.data.code == 2202 || response.meta.status != 'ok') {
-				show_modal('Transfer.get_auth_code', name, info, error_message(response));
+				show_modal(Transfer.get_auth_code(), name, info, error_message(response));
 			} else {
 				BadgerCache.getAccountInfo(function(account_info) {
 		      // ensure they have at least one domain_credit
 		      if (account_info.data.domain_credits <= 0) {
 						Billing.purchase_modal(curry(Transfer.check_auth_code, name, info, form_data));
 		      } else {
-            show_modal('Transfer.processing_request');
+            show_modal(Transfer.processing_request());
 
             BadgerCache.getContacts(function(contacts) {
               if (contacts.data.length == 0) {
-                show_modal('Whois.edit_whois_modal', null, curry(Transfer.check_auth_code, name, info, form_data));
+                show_modal(Whois.edit_whois_modal(), null, curry(Transfer.check_auth_code, name, info, form_data));
               } else {
                 import_dns_settings(name, info, form_data);
               }
@@ -32,52 +32,52 @@ with (Hasher('Transfer','Application')) {
 	});
 
   define('import_dns_settings', function(name, info, form_data) {
-    show_modal('Transfer.loading_dns_settings');
+    show_modal(Transfer.loading_dns_settings());
 
     Badger.remoteDNS(name, function(response) {
-      show_modal('Transfer.dns_settings', name, info, form_data, response.data);
+      show_modal(Transfer.dns_settings(), name, info, form_data, response.data);
     });
   });
 
   define('select_whois_and_dns_settings', function(name, info, first_form_data, records, import_setting_form) {
-    show_modal('Transfer.select_whois_and_dns_settings', name, info, first_form_data, records, import_setting_form);
+    show_modal(Transfer.select_whois_and_dns_settings(), name, info, first_form_data, records, import_setting_form);
   });
 
 	define('get_domain_info', function(form_data) {
 	  console.log("get_domain_info");
 	  console.log(arguments)
 		$('#get-domain-form-errors').empty();
-		show_modal('Transfer.processing_request');
+		show_modal(Transfer.processing_request());
 		
 		// make sure it's a valid domain name before making api call
 		form_data.name = form_data.name.toLowerCase();
 		Badger.getDomainInfo(form_data, function(response) {
 			if (response.data.code == 2303)//the domain object does not exist, render the proper error message
-				show_modal('Transfer.get_domain_form', form_data, error_message({ data: { message: "Domain not found" } }));
+				show_modal(Transfer.get_domain_form(), form_data, error_message({ data: { message: "Domain not found" } }));
 			else if(response.data.code != 1000)
-				show_modal('Transfer.get_domain_form', form_data, error_message({ data: { message: "Internal server error" } }));
+				show_modal(Transfer.get_domain_form(), form_data, error_message({ data: { message: "Internal server error" } }));
 			else if(response.data.pending_transfer)
-				show_modal('Transfer.get_domain_form', form_data, error_message({ data: { message: "Domain already pending transfer" } }));
+				show_modal(Transfer.get_domain_form(), form_data, error_message({ data: { message: "Domain already pending transfer" } }));
 			else {
 				if(response.data.locked) {
-					show_modal('Transfer.domain_locked_help', form_data.name, response.data);
+					show_modal(Transfer.domain_locked_help(), form_data.name, response.data);
 				} else {
           if (response.data.registrar.name.toLowerCase().indexOf('godaddy') != -1)
             Badger.remoteWhois(form_data.name, function(whois_response) {
               if (whois_response.data.privacy) {
-                show_modal('Transfer.domain_locked_help', form_data.name, response.data);
+                show_modal(Transfer.domain_locked_help(), form_data.name, response.data);
               } else
-                show_modal('Transfer.get_auth_code', form_data.name, response.data);
+                show_modal(Transfer.get_auth_code(), form_data.name, response.data);
             });
           else
-            show_modal('Transfer.get_auth_code', form_data.name, response.data);
+            show_modal(Transfer.get_auth_code(), form_data.name, response.data);
 				}
 			}
 		});
 	});
 	
 	define('transfer_domain', function(name, info, first_form_data, records, import_setting_form, form_data) {
-		show_modal('Transfer.processing_request');
+		show_modal(Transfer.processing_request());
 
 		Badger.registerDomain(form_data, function(response) {
 			if (response.meta.status == 'created') {
@@ -85,9 +85,9 @@ with (Hasher('Transfer','Application')) {
 				BadgerCache.flush('domains');
 
         if (info.registrar.name.toLowerCase().indexOf('godaddy') != -1) {
-          show_modal('Transfer.godaddy_transfer_confirm', info.registrar.name);
+          show_modal(Transfer.godaddy_transfer_confirm(), info.registrar.name);
         } else {
-          show_modal('Transfer.transfer_confirm', info.registrar.name);
+          show_modal(Transfer.transfer_confirm(), info.registrar.name);
         }
 
         if (import_setting_form.import_dns_settings_checkbox) {
@@ -98,7 +98,7 @@ with (Hasher('Transfer','Application')) {
         }
         
 			} else {
-				show_modal('Transfer.get_auth_code', name, info, error_message(response));
+				show_modal(Transfer.get_auth_code(), name, info, error_message(response));
 			}
 		});
 		

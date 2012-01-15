@@ -116,7 +116,6 @@ with (Hasher('Billing','Application')) {
         BadgerCache.reload('payment_methods');
 
         BadgerCache.getAccountInfo(function(response) {
-          console.log(response)
           update_credits();
           hide_modal();
           if (callback) callback();

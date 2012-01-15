@@ -34,8 +34,9 @@
 	cursor: pointer;
 }
 .myButton:active {
-	position:relative;
-	top:1px;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8cb82b), color-stop(1, #8cb82b) );
+	background:-moz-linear-gradient( center top, #8cb82b 5%, #8cb82b 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#8cb82b', endColorstr='#8cb82b');
 }
 
 .myButton-small { font-size: 15px; padding: 3px 10px; }

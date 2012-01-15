@@ -135,7 +135,7 @@ with (Hasher('DomainMigrations','Application')) {
     BadgerCache.getContacts(function(results) {
       // ensure they have at least one whois contact
       if (results.data.length == 0) {
-        show_modal('Whois.edit_whois_modal', null, curry(initiate_domain_transfers, form_data));
+        show_modal(Whois.edit_whois_modal(), null, curry(initiate_domain_transfers, form_data));
       } else {
         BadgerCache.getAccountInfo(function(results) {
           // ensure they have at least one domain_credit

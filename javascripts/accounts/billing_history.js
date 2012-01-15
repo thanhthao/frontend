@@ -19,7 +19,7 @@ with (Hasher('Billing','Application')) {
               th('Date'),
               th('Description'),
               th('Domain'),
-              th('Credits')
+              th({ style: "text-align: right" }, 'Credits')
             ),
             
             results.data.map(function(credit_history) {
@@ -27,7 +27,7 @@ with (Hasher('Billing','Application')) {
                 td(new Date(Date.parse(credit_history.created_at)).toDateString()),
                 td(credit_history.details),
                 td(credit_history.domain ? a({ href: '#domains/' + credit_history.domain.name }, Domains.truncate_domain_name(credit_history.domain.name, 30)) : ''),
-                td(credit_history.num_credits)
+                td({ style: "text-align: right" }, credit_history.num_credits)
 
                 // td({ style: "text-align: right" },
                 //   a({ 'class': 'myButton myButton-small', href: curry(show_modal, 'Billing.purchase_modal', payment_method) }, 'Edit')

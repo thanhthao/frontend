@@ -1,15 +1,16 @@
 with (Hasher('Register','Application')) {
 
+
   define('show', function(domain) {
     if (!Badger.getAccessToken()) {
-      Signup.require_user_modal(curry(curry(Register.show, domain)));
+      Signup.require_user_modal(curry(Register.show, domain));
       return;
     }
     
     BadgerCache.getContacts(function(results) {
       // ensure they have at least one whois contact
       if (results.data.length == 0) {
-        show_modal('Whois.edit_whois_modal', null, curry(Register.show, domain));
+        Whois.edit_whois_modal(null, curry(Register.show, domain));
       } else {
         BadgerCache.getAccountInfo(function(results) {
           // ensure they have at least one domain_credit
@@ -22,7 +23,6 @@ with (Hasher('Register','Application')) {
       }
     });
   });
-
 
   define('buy_domain', function(domain, form) {
     $('#errors').empty();

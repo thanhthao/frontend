@@ -1,31 +1,64 @@
 with (Hasher('Whois','Application')) {
 
-  route({
-    '#account/profiles': 'index'
-  });
-  
-  define('index', function() {
+  route('#account/profiles', function() {
+    var target_div = div('Loading...');
+    
+    render(
+      h1('Profiles'),
+      div({ style: 'float: right; margin-top: -44px' }, 
+        a({ 'class': 'myButton myButton-small', href: curry(Whois.edit_whois_modal, null, curry(set_route, '#account/profiles')) }, 'Create New Profile')
+      ),
+      target_div
+    );
+
     BadgerCache.getContacts(function(results) {
-      render('index', results.data);
+      render({ target: target_div }, 
+        ((results.data||[]).length == 0) ? 'No whois profiles found.' : table({ 'class': 'fancy-table' },
+          tbody(
+            results.data.map(function(contact) {
+              return tr(
+                td(
+                  div(contact.first_name, ' ', contact.last_name),
+                  div(contact.organization)
+                ),
+                td(
+                  div(contact.email),
+                  div(contact.phone),
+                  div(contact.fax)
+                ),
+                td(
+                  div(contact.address),
+                  div(contact.address2),
+                  div(contact.city, ', ', contact.state, ', ', contact.zip),
+                  div(contact.country)
+                ),
+                td({ style: "text-align: right" },
+                  a({ 'class': 'myButton myButton-small', href: curry(Whois.edit_whois_modal, contact, curry(set_route, '#account/profiles')) }, 'Edit')
+                )
+              );
+            })
+          )
+        )
+      );
+      
     });
   });
   
   define('create_or_update_whois', function(contact_id, callback, form_data) {
-    $('#errors').empty();
+    start_modal_spin();
 
+    $('#errors').empty();
+    
     var tmp_callback = function(response) {
       if (response.meta.status == 'ok') {
         BadgerCache.flush('contacts');
         BadgerCache.getContacts(function() {
-          if (callback) {
-            callback();
-          } else {
-            hide_modal();
-            index();
-          }
+          hide_modal();
+          if (callback) callback();
         });
       } else {
         $('#errors').empty().append(error_message(response));
+        stop_modal_spin();
       }
     }
 
@@ -36,46 +69,6 @@ with (Hasher('Whois','Application')) {
     }
   });
   
- }
-
-with (Hasher('Whois', 'Application')) { (function() {
-
-  define('index', function(contacts) {
-    return div(
-      h1('Profiles'),
-      div({ style: 'float: right; margin-top: -44px' }, 
-        a({ 'class': 'myButton myButton-small', href: curry(show_modal, 'Whois.edit_whois_modal') }, 'Create New Profile')
-      ),
-
-      table({ 'class': 'fancy-table' },
-        tbody(
-          (contacts || []).map(function(contact) {
-            return tr(
-              td(
-                div(contact.first_name, ' ', contact.last_name),
-                div(contact.organization)
-              ),
-              td(
-                div(contact.email),
-                div(contact.phone),
-                div(contact.fax)
-              ),
-              td(
-                div(contact.address),
-                div(contact.address2),
-                div(contact.city, ', ', contact.state, ', ', contact.zip),
-                div(contact.country)
-              ),
-              td({ style: "text-align: right" },
-                a({ 'class': 'myButton myButton-small', href: curry(show_modal, 'Whois.edit_whois_modal', contact) }, 'Edit')
-              )
-            );
-          })
-        )
-      )
-    );
-  });
-
   define('whois_contact', function(whois) {
     return div(
       div(whois.first_name, ' ', whois.last_name),
@@ -91,49 +84,51 @@ with (Hasher('Whois', 'Application')) { (function() {
   
   define('edit_whois_modal', function(data, callback, custom_message) {
     data = data || {};
-    return form({ action: curry(create_or_update_whois, data.id, callback) },
-      h1(data.id ? 'Edit Profile' : 'Create Profile'),
-      div({ style: 'color: green;' }, custom_message),
-      div({ id: 'errors' }),
+    show_modal(
+      form({ action: curry(create_or_update_whois, data.id, callback) },
+        h1(data.id ? 'Edit Profile' : 'Create Profile'),
+        div({ style: 'color: green;' }, custom_message),
+        div({ id: 'errors' }),
 
-      p("This information will ", strong('automatically be private'), " unless you install ", i('Public Whois'), " on a domain."),
+        p("This information will ", strong('automatically be private'), " unless you install ", i('Public Whois'), " on a domain."),
       
-      table({ style: 'width: 100%' }, tbody(
-        tr(
-          td({ style: 'width: 50%; vertical-align: top' },
-            h3({ style: 'margin: 0' }, 'Contact Information'),
-            div(
-              input({ style: 'width: 120px', name: 'first_name', placeholder: 'First Name', value: data.first_name || '' }),
-              input({ style: 'width: 120px', name: 'last_name', placeholder: 'Last Name', value: data.last_name || '' })
+        table({ style: 'width: 100%' }, tbody(
+          tr(
+            td({ style: 'width: 50%; vertical-align: top' },
+              h3({ style: 'margin: 0' }, 'Contact Information'),
+              div(
+                input({ style: 'width: 120px', name: 'first_name', placeholder: 'First Name', value: data.first_name || '' }),
+                input({ style: 'width: 120px', name: 'last_name', placeholder: 'Last Name', value: data.last_name || '' })
+              ),
+              div(input({ style: 'width: 250px', name: 'organization', placeholder: 'Organization (optional)', value: data.organization || '' })),
+              div(input({ style: 'width: 250px', name: 'email', placeholder: 'Email', value: data.email || '' })),
+              div(
+                input({ style: 'width: 120px', name: 'phone', placeholder: 'Phone', value: data.phone || '' }),
+                input({ style: 'width: 120px', name: 'fax', placeholder: 'Fax (optional)', value: data.fax || '' })
+              )
             ),
-            div(input({ style: 'width: 250px', name: 'organization', placeholder: 'Organization (optional)', value: data.organization || '' })),
-            div(input({ style: 'width: 250px', name: 'email', placeholder: 'Email', value: data.email || '' })),
-            div(
-              input({ style: 'width: 120px', name: 'phone', placeholder: 'Phone', value: data.phone || '' }),
-              input({ style: 'width: 120px', name: 'fax', placeholder: 'Fax (optional)', value: data.fax || '' })
-            )
-          ),
-          td({ style: 'width: 50%; vertical-align: top' },
-            h3({ style: 'margin: 0' }, 'Mailing Address'),
-            div(
-              input({ style: 'width: 250px', name: 'address', placeholder: 'Address Line 1', value: data.address || '' })
-            ),
-            div(
-              input({ style: 'width: 250px', name: 'address2', placeholder: 'Address Line 2 (Optional)', value: data.address2 || '' })
-            ),
-            div(
-              input({ style: 'width: 118px', name: 'city', placeholder: 'City', value: data.city || '' }),
-              input({ style: 'width: 40px', name: 'state', placeholder: 'State', value: data.state || '' }),
-              input({ style: 'width: 70px', name: 'zip', placeholder: 'Zip', value: data.zip || '' })
-            ),
-            div(
-              select({ style: 'width: 150px', name: 'country' }, option({ disabled: 'disabled' }, 'Country:'), country_options(data.country))
+            td({ style: 'width: 50%; vertical-align: top' },
+              h3({ style: 'margin: 0' }, 'Mailing Address'),
+              div(
+                input({ style: 'width: 250px', name: 'address', placeholder: 'Address Line 1', value: data.address || '' })
+              ),
+              div(
+                input({ style: 'width: 250px', name: 'address2', placeholder: 'Address Line 2 (Optional)', value: data.address2 || '' })
+              ),
+              div(
+                input({ style: 'width: 118px', name: 'city', placeholder: 'City', value: data.city || '' }),
+                input({ style: 'width: 40px', name: 'state', placeholder: 'State', value: data.state || '' }),
+                input({ style: 'width: 70px', name: 'zip', placeholder: 'Zip', value: data.zip || '' })
+              ),
+              div(
+                select({ style: 'width: 150px', name: 'country' }, option({ disabled: 'disabled' }, 'Country:'), country_options(data.country))
+              )
             )
           )
-        )
-      )),
+        )),
 
-      div({ style: 'text-align: center; margin-top: 10px' }, input({ 'class': 'myButton', type: 'submit', value: data.id ? 'Save Profile' : 'Create Profile' }))
+        div({ style: 'text-align: center; margin-top: 10px' }, input({ 'class': 'myButton', type: 'submit', value: data.id ? 'Save Profile' : 'Create Profile' }))
+      )
     );
   });
-})(); }
+}

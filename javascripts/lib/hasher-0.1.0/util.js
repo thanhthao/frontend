@@ -43,6 +43,16 @@ with (Hasher()) {
       return {};
     }
   });
+
+  define('shift_callback_from_args', function(args) {
+    if (typeof(args[0]) == 'function') {
+      return args.shift();
+    } else if (typeof(args[args.length-1]) == 'function') {
+      return args.pop();
+    } else {
+      return (function(){});
+    }
+  });
   
   define('for_each', function() {
     var objs = flatten_to_array(arguments);
