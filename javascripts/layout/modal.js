@@ -24,7 +24,6 @@ with (Hasher('Application')) {
   });
   
   define('start_modal_spin', function(message) {
-    console.log(message)
     $('#modal-message').html(message || '');
     $('#modal-content').addClass('spinner');
   });

@@ -177,7 +177,7 @@ with (Hasher('Signup','Application')) {
           callback();
         } else {
           set_route('#');
-          setTimeout(function() { show_modal(SiteTour.site_tour_0()); }, 250);
+          setTimeout(SiteTour.site_tour_0, 250);
         }
       } else {
         $('#signup-errors').empty().append(error_message(response));

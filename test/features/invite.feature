@@ -51,7 +51,7 @@ Feature: Invite
     And I mock getInviteStatus with 0 accepted and 0 pending and 0 revoked
     And I am on the invites page
     Then I should see item with xpath "//span[@id='user_nav_invites_available' and @class='hidden']"
-    And I should see "Sorry, you don't have any invites available right now... check back soon!"
+    And I should see "You haven't sent any invites yet!"
 
   Scenario: As I have invites available and domain credits, I should be able to send out invitation with credits to gift when I input correct information
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
