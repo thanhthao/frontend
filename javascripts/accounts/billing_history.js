@@ -15,7 +15,7 @@ with (Hasher('Billing','Application')) {
       render({ target: target_div }, 
         ((results.data||[]).length == 0) ? 'No history found.' : table({ 'class': 'fancy-table' },
           tbody(
-            tr(
+            tr({ 'class': 'table-header' },
               th('Date'),
               th('Description'),
               th('Domain'),
