@@ -62,7 +62,7 @@ with (Hasher('Invite','Application')) {
 		Badger.sendInvite(data, function(response) {
       BadgerCache.flush('account_info');
       BadgerCache.flush('invite_status');
-			show_modal(Invite.send_invite_result(), response.data, response.meta.status);
+			send_invite_result(response.data, response.meta.status);
       update_credits();
       update_invites_available();
       set_route("#invites");
@@ -76,7 +76,7 @@ with (Hasher('Invite','Application')) {
       set_route('#invites');
       update_credits();
       update_invites_available();
-      show_modal(Invite.revoke_message(), response.data, response.meta.status);
+      revoke_message(response.data, response.meta.status);
     });
   });
 
@@ -123,18 +123,22 @@ with (Hasher('Invite','Application')) {
 	});
 
   define('send_invite_result', function(data, status) {
-    return div(
-      h1("Invitation Message"),
-      p( { 'class': status == 'ok' ? '': 'error-message'}, data.message),
-      a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
+    show_modal(
+      div(
+        h1("Invitation Message"),
+        p( { 'class': status == 'ok' ? '': 'error-message'}, data.message),
+        a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
+      )
 		);
 	});
 
   define('revoke_message', function(data, status) {
-    return div (
-      h1("Revoke Result Message"),
-      p( {'class': status == 'ok' ? '' : 'error-message'}, data.message),
-      a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
+    show_modal(
+      div (
+        h1("Revoke Result Message"),
+        p( {'class': status == 'ok' ? '' : 'error-message'}, data.message),
+        a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
+      )
     );
   });
 
