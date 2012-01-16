@@ -227,8 +227,10 @@ with (Hasher('Application')) {
   define('error_message', function(response) {
     return div({ 'class': 'error-message' },
 			div(
-				response.data.message,
-				!response.data.errors ? "" : ": " + response.data.errors.map(function(error) { return error.reason ? error.reason : error.field.replace(/_/g, ' ').capitalize_first() + " " + error.code.replace(/_/g, ' ');}).join(', ')
+			  response.data ? [
+  				response.data.message,
+  				!response.data.errors ? "" : ": " + response.data.errors.map(function(error) { return error.reason ? error.reason : error.field.replace(/_/g, ' ').capitalize_first() + " " + error.code.replace(/_/g, ' ');}).join(', ')
+			  ] : response
 			)
     )
   });

@@ -38,13 +38,6 @@ with (Hasher('Account','Application')) {
 		});
 	});
 
-  define('billing', function() {
-    return div(
-      h1('Billing'),
-      'Welcome!'
-    );
-  });
-
 	define('change_password_modal', function(data) {
 		data = data || {};
 		return form({ action: change_password },
