@@ -112,7 +112,8 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 
 #modal-content.spinner { background: white url(../images/spinner.gif) no-repeat center center; }
 #modal-content.spinner #modal-wrapper { visibility: hidden; }
-
+#modal-content #modal-message { display: none; position: absolute; top: 50%; left: 0; width: 100%; text-align: center; margin-top: 11px; color: #888; font-style: italic; }
+#modal-content.spinner #modal-message { display: block; }
 
 .h1-action { float: right; margin-top: -40px; font-size: 50px; color: green; font-weight: bold; }
 

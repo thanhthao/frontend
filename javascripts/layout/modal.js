@@ -11,6 +11,7 @@ with (Hasher('Application')) {
       },
         div({ id: 'modal-content' },
           a({ href: hide_modal, 'class': 'close-button' }, 'X'),
+          div({ id: 'modal-message' }),
           div({ id: 'modal-wrapper'},
             Array.prototype.slice.call(arguments)
           )
@@ -22,7 +23,9 @@ with (Hasher('Application')) {
     Placeholder.fix_ie();
   });
   
-  define('start_modal_spin', function() {
+  define('start_modal_spin', function(message) {
+    console.log(message)
+    $('#modal-message').html(message || '');
     $('#modal-content').addClass('spinner');
   });
 
