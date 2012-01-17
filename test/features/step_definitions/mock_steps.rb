@@ -5,11 +5,9 @@ Given /^I mock domain search result for keys:$/ do |table|
       callback({ data: { domains : [['#{attributes['key']}.com', #{attributes['com']}],['#{attributes['key']}.net', #{attributes['net']}]] } });
       break;"
   end
-  domain = "acb"
   page.execute_script("Badger.domainSearch = function(query, use_serial, callback) {
     query = query.toString();
     switch (query) {
-      //callback({ data: { domains : [['#{domain}.com', true],['#{domain}.net', true]] } });
       #{search_results.join("\n")}
     }
   };")
@@ -25,6 +23,25 @@ Given /^I mock getDomainInfo api for (locked |)domain with registrar name "([^"]
   page.execute_script("Badger.getDomainInfo = function(data, callback) {
        callback({data : {code: 1000, locked: #{locked == 'locked '}, pending_transfer: false, registrar: {name: '#{registrar_name}' }}, meta : {status: 'ok'}});
     };")
+end
+
+Given /^I mock getDomainInfo api for domains:$/ do |table|
+  domains_info = []
+  table.hashes.each do |attributes|
+    domains_info << "case '#{attributes['name']}':
+      if(data.auth_code != null)
+        callback({data : {code: #{attributes['auth_code_response']} }, meta: { status: '#{attributes['auth_code_status']}' } });
+      else
+        callback({data : {code: 1000, locked: #{attributes['locked']}, pending_transfer: false, expires_on: '#{attributes['expires']}', registrar: {name: '#{attributes['registrar_name']}' }}, meta : {status: 'ok'}});
+      break;"
+  end
+
+  page.execute_script("Badger.getDomainInfo = function(data, callback) {
+    name = data.name.toString();
+    switch (name) {
+      #{domains_info.join("\n")}
+    }
+  };")
 end
 
 Given /^I mock getAccessToken return with "([^"]*)"$/ do |token|
