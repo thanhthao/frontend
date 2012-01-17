@@ -28,10 +28,13 @@ with (Hasher('KnowledgeCenter', 'Application')) {
     Badger.getKnowledgeCenterArticle(id, function(response) {
       if (response.meta.status == 'ok') {
         var article = response.data;
+        var body = div();
+        body.innerHTML = article.body;
+        
         render(
           h1("Knowledge Center: " + article.category),
           h2(article.title),
-          p(article.body)
+          body
         );
       } else {
         set_route('#knowledge_center');
