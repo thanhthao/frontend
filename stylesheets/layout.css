@@ -233,3 +233,23 @@ label { cursor: pointer; }
   color: #999;
   font-style: italic;
 }
+
+#transfer-domains-table .success-row {
+  background-color: #E6F8D8
+}
+
+#transfer-domains-table .error-row {
+  background-color: #ffebe8
+}
+
+#transfer-domains-table .auth-code-input {
+  border: 1px solid #ccc;
+  width: 100px;
+  border-radius: 2px;
+  margin: 0;
+}
+
+#transfer-domains-table .error {
+  font-weight: bold;
+  color: red;
+}

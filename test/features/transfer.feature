@@ -5,82 +5,108 @@ Feature: Transfer
 
   Background:
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
-    Then I follow "Transfer in a Domain"
-    And I fill in "name" with "abc.com"
+    When I follow "Transfer in 1 or more Domains"
+    Then I should see "TRANSFER DOMAINS INTO BADGER.COM"
+    And I should see "Enter the domains(s) you'd like to transfer in bellow, one per line. If you already have auth codes, include them next to each domain (i.e."
+    And I should see "badger.com abc123def"
+    And I fill multiple lines in "transfer_domains_list" with:
+      """
+      abc.com
+      abc123.com authen,2
+      xyz.com validAuhthenCode
+      xyzdomain.com validAuhthenCode
+      """
 
-  Scenario: Transfer in a domain not from GoDaddy
-    And I mock getDomainInfo api for domain with registrar name "Registrar Name"
-    And I press "Next"
-    And I fill in "auth_code" with "123456"
-    And I mock remoteDNS for domain "abc.com"
+    And I mock getDomainInfo api for domains:
+      | name            | registrar_name | locked  | auth_code_response | auth_code_status     | expires              |
+      | abc.com         | Talk.com       | true    | 1000               | failed               | 2012-10-30T04:21:43Z |
+      | abc123.com      | Talk.com       | false   | 1000               | failed               | 2012-10-30T04:21:43Z |
+      | xyz.com         | GoDaddy Inc.   | false   | 1000               | ok                   | 2011-08-12T04:21:43Z |
+      | xyzdomain.com   | eNom Inc       | false   | 1000               | ok                   | 2011-02-16T04:21:43Z |
+    And I mock remoteWhois with privacy enabled with registrar name "GoDaddy Inc."
+    Then I press "Next"
+
+  Scenario: Transfer in domains
+    Then I should see "TRANSFER IN DOMAINS"
+    And I should see "Name"
+    And I should see "Registrar"
+    And I should see "Expires"
+    And I should see "Auth Code"
+    And I should see "Locked"
+    And I should see "Privacy"
+    And I should see "abc.com" within "table#transfer-domains-table tr:eq(2) td:eq(1)"
+    And I should see "Talk.com" within "table#transfer-domains-table tr:eq(2) td:eq(2)"
+    And I should see "2012-10-30" within "table#transfer-domains-table tr:eq(2) td:eq(3)"
+    And I should see "Yes" within "table#transfer-domains-table tr:eq(2) td:eq(5)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(2) td:eq(6)"
+    And I should see "abc123.com" within "table#transfer-domains-table tr:eq(3) td:eq(1)"
+    And I should see "Talk.com" within "table#transfer-domains-table tr:eq(3) td:eq(2)"
+    And I should see "2012-10-30" within "table#transfer-domains-table tr:eq(3) td:eq(3)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(3) td:eq(5)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(3) td:eq(6)"
+    And I should see "xyz.com" within "table#transfer-domains-table tr:eq(4) td:eq(1)"
+    And I should see "GoDaddy Inc." within "table#transfer-domains-table tr:eq(4) td:eq(2)"
+    And I should see "2011-08-12" within "table#transfer-domains-table tr:eq(4) td:eq(3)"
+    And I should see "Ok" within "table#transfer-domains-table tr:eq(4) td:eq(4)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(4) td:eq(5)"
+    And I should see "Yes" within "table#transfer-domains-table tr:eq(4) td:eq(6)"
+    And I should see "xyzdomain.com" within "table#transfer-domains-table tr:eq(5) td:eq(1)"
+    And I should see "eNom Inc" within "table#transfer-domains-table tr:eq(5) td:eq(2)"
+    And I should see "2011-02-16" within "table#transfer-domains-table tr:eq(5) td:eq(3)"
+    And I should see "Ok" within "table#transfer-domains-table tr:eq(5) td:eq(4)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(5) td:eq(5)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(5) td:eq(6)"
+    And I should see "Registrant:"
+    And I should see "Import into Badger DNS"
+    And I check "use_badger_dns"
+    When I follow "Continue with 1 Domain"
+    And I should see "CONFIRM TRANSFER"
+    And I should see "You are about to transfer 1 domain."
     And I mock registerDomain api
-    And I press "Next"
-    And I press "Next"
-    And I press "Transfer abc.com for 1 Credit"
-    Then I should see "Transfer Request Submitted"
-    And I should see "We have submitted your transfer request and will email you when it is complete."
+    When I follow "Complete Transfer"
+    And I should see "TRANSFER RESULT"
+    And I should see "In processing, please wait..."
+    And I should see "xyzdomain.com" within "#transfer-result-table"
+    And I should see "Succeed" within "#transfer-result-table"
 
-  Scenario: Transfer in a domain from GoDaddy
-    And I mock getDomainInfo api for domain with registrar name "GoDaddy"
-    And I mock remoteWhois with registrar name "ABC.com, Inc."
-    And I press "Next"
-    And I fill in "auth_code" with "123456"
-    And I mock remoteDNS for domain "abc.com"
-    And I mock registerDomain api
-    And I press "Next"
-    And I press "Next"
-    And I press "Transfer abc.com for 1 Credit"
-    Then I should see "Transfer Request Submitted"
-    And I should see "If you'd like to manually approve this domain transfer, visit GoDaddy's Pending Transfers"
-    And I should see a link with href "https://dcc.godaddy.com/default.aspx?activeview=transfer&filtertype=3&sa=#" with new window
+  Scenario: Transfer in domains: automatically update auth code status after user input
+    And I mock getDomainInfo api for domains:
+      | name            | registrar_name | locked  | auth_code_response | auth_code_status     | expires              |
+      | abc123.com      | Talk.com       | false   | 1000               | ok               | 2012-10-30T04:21:43Z |
+    And I fill in item "#abc123-com-1-domain .auth-code-input" with "ValidAuthcode"
+    When I press key "enter" on "#abc123-com-1-domain .auth-code-input"
+    Then I should see "Ok" within "table#transfer-domains-table  tr:eq(3) td:eq(4)"
+    And I should see "Continue with 2 Domains"
 
-  Scenario: Transfer in a domain with importing DNS settings steps
-    And I mock getDomainInfo api for domain with registrar name "Registrar Name"
-    And I press "Next"
-    And I fill in "auth_code" with "123456"
-    And I mock remoteDNS for domain "abc.com"
-    And I press "Next"
-    Then I should see "Reading your current DNS settings, please wait"
-    And I should see "Import these records into Badger DNS"
-    And I should see "Type" within "#dns-settings tr"
-    And I should see "Destination" within "#dns-settings tr"
-    And I should see "Host" within "#dns-settings tr"
-    And I should see "A" within "#dns-settings"
-    And I should see "74.125.71.99" within "#dns-settings"
-    And I should see "abc.com." within "#dns-settings"
-    And I should see "CNAME" within "#dns-settings"
-    And I should see "www.l.abc.com." within "#dns-settings"
-    And I should see "www.abc.com." within "#dns-settings"
-    And I should see "TXT" within "#dns-settings"
-    And I should see "v=spf1 include:_netblocks.abc.com ip4:216.73.93.70/31 ip4:216.73.93.72/31 ~all " within "#dns-settings"
-    And I should see "abc.com." within "#dns-settings"
-    And I should see "MX" within "#dns-settings"
-    And I should see "aspmx.l.abc.com." within "#dns-settings"
-    And I should see "abc.com." within "#dns-settings"
-    And I mock registerDomain api
-    And I press "Next"
-    And I press "Transfer abc.com for 1 Credit"
-    Then I should see "Transfer Request Submitted"
-    And I should see "We have submitted your transfer request and will email you when it is complete."
-
-  Scenario: If request to transfer a domain from GoDaddy which has privacy enabled, an error message should be displayed
-    And I mock getDomainInfo api for domain with registrar name "GoDaddy.com, Inc."
-    And I mock remoteWhois with privacy enabled with registrar name "GoDaddy.com, Inc."
-    And I press "Next"
-    Then I should see "You need to disable privacy of this domain through GoDaddy.com, Inc."
-    And I should see "Current Registrar"
-    And I should see "Retry"
-
-  Scenario: If request to transfer a domain not from GoDaddy which has privacy enabled, the flow still continue
-    And I mock getDomainInfo api for domain with registrar name "ABC.com, Inc."
-    And I mock remoteWhois with privacy enabled with registrar name "ABC.com, Inc."
-    And I press "Next"
-    Then I should see "Auth Code"
-    And I should see "Please obtain the auth code "
-
-  Scenario: If request to transfer a locked domain, an error message should be displayed
-    And I mock getDomainInfo api for locked domain with registrar name "ABC.com, Inc."
-    And I press "Next"
-    Then I should see "You need to unlock this domain through ABC.com, Inc."
-    And I should see "Current Registrar"
-    And I should see "Retry"
+  Scenario: Transfer in domains: refesh to update domains info
+    And I mock getDomainInfo api for domains:
+      | name            | registrar_name | locked  | auth_code_response | auth_code_status     | expires              |
+      | abc.com         | Talk.com       | false   | 1000               | failed               | 2012-10-30T04:21:43Z |
+      | abc123.com      | Talk.com       | false   | 1000               | failed               | 2012-10-30T04:21:43Z |
+      | xyz.com         | GoDaddy Inc.   | false   | 1000               | ok                   | 2011-08-12T04:21:43Z |
+      | xyzdomain.com   | eNom Inc       | false   | 1000               | ok                   | 2011-02-16T04:21:43Z |
+    And I mock remoteWhois with registrar name "GoDaddy Inc."
+    When I follow "Refresh"
+    And I should see "abc.com" within "table#transfer-domains-table tr:eq(2) td:eq(1)"
+    And I should see "Talk.com" within "table#transfer-domains-table tr:eq(2) td:eq(2)"
+    And I should see "2012-10-30" within "table#transfer-domains-table tr:eq(2) td:eq(3)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(2) td:eq(5)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(2) td:eq(6)"
+    And I should see "abc123.com" within "table#transfer-domains-table tr:eq(3) td:eq(1)"
+    And I should see "Talk.com" within "table#transfer-domains-table tr:eq(3) td:eq(2)"
+    And I should see "2012-10-30" within "table#transfer-domains-table tr:eq(3) td:eq(3)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(3) td:eq(5)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(3) td:eq(6)"
+    And I should see "xyz.com" within "table#transfer-domains-table tr:eq(4) td:eq(1)"
+    And I should see "GoDaddy Inc." within "table#transfer-domains-table tr:eq(4) td:eq(2)"
+    And I should see "2011-08-12" within "table#transfer-domains-table tr:eq(4) td:eq(3)"
+    And I should see "Ok" within "table#transfer-domains-table tr:eq(4) td:eq(4)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(4) td:eq(5)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(4) td:eq(6)"
+    And I should see "xyzdomain.com" within "table#transfer-domains-table tr:eq(5) td:eq(1)"
+    And I should see "eNom Inc" within "table#transfer-domains-table tr:eq(5) td:eq(2)"
+    And I should see "2011-02-16" within "table#transfer-domains-table tr:eq(5) td:eq(3)"
+    And I should see "Ok" within "table#transfer-domains-table tr:eq(5) td:eq(4)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(5) td:eq(5)"
+    And I should see "No" within "table#transfer-domains-table tr:eq(5) td:eq(6)"
+    And I should see "Continue with 2 Domain"

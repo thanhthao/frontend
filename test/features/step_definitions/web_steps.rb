@@ -60,6 +60,10 @@ When /^(?:|I )fill in "([^"]*)" with "([^"]*)"$/ do |field, value|
   fill_in(field, :with => value)
 end
 
+When /^(?:|I )fill in item "([^"]*)" with "([^"]*)"$/ do |xpath, value|
+  page.execute_script("$('#{xpath}').val('#{value}')")
+end
+
 When /^I fill multiple lines in "([^"]*)" with:$/ do |field, value|
   fill_in(field, :with => value)
 end
@@ -130,4 +134,8 @@ end
 
 When /^I switch to new window$/ do
   page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
+end
+
+And /^I press key "(.*)" on "([^"]*)"$/ do |key, element|
+  find("#{element}").native.send_keys(key.to_sym)
 end

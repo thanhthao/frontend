@@ -29,7 +29,6 @@
     "/javascripts/domains/search.js",
     "/javascripts/domains/transfer.js",
     "/javascripts/domains/migrations.js",
-    "/javascripts/domains/bulk_transfer.js",
     "/javascripts/domains/register.js",
     "/javascripts/domains/bulk_register.js",
     "/javascripts/domains/index.js",
@@ -63,6 +62,7 @@
   ],
 
   "images": [
+    "/images/ajax-loader.gif",
     "/images/background.png",
     "/images/badger-4.png",
     "/images/badger-5.png",
