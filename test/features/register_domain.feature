@@ -52,4 +52,4 @@ Feature: Register Domain
 	#
   # Scenario: I successfully register a domain and follow the link to show all domains
   #   And I follow "View all Domains"
-  #   Then I should see "Transfer in 1 or more Domains"
+  #   Then I should see "Transfer in a Domain"

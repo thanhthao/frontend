@@ -106,7 +106,7 @@ with (Hasher('Domains','Application')) {
 				)
 			),
       div({ style: 'float: right; margin-top: -44px' },
-        a({ 'class': 'myButton myButton-small', href: Transfer.show }, 'Transfer in 1 or more Domains')
+        a({ 'class': 'myButton myButton-small', href: Transfer.show }, 'Transfer in a Domain')
       ),
 
       (typeof domains == 'undefined') ? [

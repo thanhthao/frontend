@@ -171,7 +171,7 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 }
 
 .y-scrollbar-div {
-  max-height: 300px;
+  max-height: 250px;
   width: 100%;
   overflow: auto;
 }
@@ -243,7 +243,7 @@ label { cursor: pointer; }
 }
 
 #transfer-domains-table .auth-code-input {
-  border: 1px solid #ccc;
+  border: 1px solid #dd3c10;
   width: 100px;
   border-radius: 2px;
   margin: 0;
@@ -253,3 +253,6 @@ label { cursor: pointer; }
   font-weight: bold;
   color: red;
 }
+
+#transfer-domains-table .retry-link { display: none; }
+#transfer-domains-table .error-row .retry-link { display: block; }
