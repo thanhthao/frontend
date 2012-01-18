@@ -49,7 +49,7 @@ Feature: Bulk Register
     And I mock getPaymentMethods
     And I press "Next"
     Then I should see "Purchase Credits"
-    And I mock accountInfo with 11 domain credits and 5 invites available
+    And I mock accountInfo with name "East Agile Company" and 11 domain credits and 5 invites available
     And I mock purchaseCredits
     And I press "purchase-button"
     Then I should see "CONFIRM REGISTER"
@@ -140,7 +140,7 @@ Feature: Bulk Register
     And I mock getPaymentMethods
     And I press "Next"
     Then I should see "Purchase Credits"
-    And I mock accountInfo with 11 domain credits and 5 invites available
+    And I mock accountInfo with name "East Agile Company" and 11 domain credits and 5 invites available
     And I mock purchaseCredits
     And I press "purchase-button"
     Then I should see "CONFIRM REGISTER"

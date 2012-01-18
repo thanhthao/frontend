@@ -96,7 +96,7 @@ Feature: Register Domain
     And I check "extension_org"
     When I press "register-button"
     Then I should see "Purchase Credits"
-    And I mock accountInfo with 11 domain credits and 5 invites available
+    And I mock accountInfo with name "East Agile Company" and 11 domain credits and 5 invites available
     And I mock purchaseCredits
     When I press "purchase-button"
     Then I should see "BULK REGISTER RESULT"

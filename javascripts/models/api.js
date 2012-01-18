@@ -247,6 +247,14 @@ var Badger = {
 	changePassword: function(data, callback) {
 		Badger.api("/account/change_password", 'POST', data, callback);
 	},
+
+	changeEmail: function(data, callback) {
+		Badger.api("/account/change_email", 'POST', data, callback);
+	},
+
+	changeName: function(data, callback) {
+		Badger.api("/account/change_name", 'POST', data, callback);
+	},
 	
 	getDomainInfo: function(data, callback) {
 		Badger.api("/domains/" + data.name + "/info", data, callback);
@@ -255,8 +263,6 @@ var Badger = {
   sendEmail: function(data, callback) {
 		Badger.api("account/contact_us", "POST", data, callback);
   },
-
-
 
 	getEmailForwards: function(domain, callback) {
 		Badger.api("domains/" + domain + "/email_forwards", callback);
@@ -274,8 +280,6 @@ var Badger = {
 		Badger.api("domains/" + domain + "/email_forwards/" + id, "DELETE", callback);
 	},
 
-
-	
 	getWebForwards: function(domain, callback) {
 		Badger.api("domains/" + domain + "/web_forwards", callback);
 	},

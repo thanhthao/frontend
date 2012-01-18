@@ -82,9 +82,9 @@ Given /^I mock getDomains with ([^"]*) normal domains, ([^"]*) in transfer domai
   page.execute_script(" BadgerCache.cached_domains = null;");
 end
 
-Given /^I mock accountInfo with ([^"]*) domain credits and ([^"]*) invites available$/ do |domain_credits, invites_available|
+Given /^I mock accountInfo with name "([^"]*)" and ([^"]*) domain credits and ([^"]*) invites available$/ do |name, domain_credits, invites_available|
   page.execute_script("Badger.accountInfo = function(callback) {
-    callback({data : {domain_credits: #{domain_credits}, name: 'East Agile Company', invites_available: #{invites_available}}, meta : {status: 'ok'}});
+    callback({data : {domain_credits: #{domain_credits}, name: '#{name}', invites_available: #{invites_available}}, meta : {status: 'ok'}});
   };")
    page.execute_script("BadgerCache.flush('account_info');");
 end
@@ -401,11 +401,26 @@ When /^I mock sendPasswordResetEmail$/ do
   };")
 end
 
-When /^I mock resetPasswordWithCode/ do
+When /^I mock resetPasswordWithCode$/ do
   page.execute_script("Badger.resetPasswordWithCode = function(data, callback){
     if (data.code == 'invalid')
       callback({ meta: { status: 'unprocessable_entity' }, data: { message: 'Invalid Code' } });
     else
       callback({ meta: { status: 'ok' }, data: { message: 'Password reset' } });
+  };")
+end
+
+When /^I mock changeEmail (successfully|unsuccessfully)$/ do |result|
+  page.execute_script("Badger.changeEmail = function(data, callback){
+    if ('#{result}' == 'successfully')
+      callback({ meta: { status: 'ok' }, data: { message: 'Email Changed' } });
+    else
+      callback({ meta: { status: 'unprocessable_entity' }, data: { message: 'Unable to change email' } });
+  };")
+end
+
+When /^I mock changeName$/ do
+  page.execute_script("Badger.changeName = function(data, callback){
+    callback({ meta: { status: 'ok' }, data: { message: 'Name Changed' } });
   };")
 end
