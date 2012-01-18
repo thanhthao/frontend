@@ -2,7 +2,10 @@ Given /^I mock domain search result for keys:$/ do |table|
   search_results = []
   table.hashes.each do |attributes|
     search_results << "case '#{attributes['key']}':
-      callback({ data: { domains : [['#{attributes['key']}.com', #{attributes['com']}],['#{attributes['key']}.net', #{attributes['net']}]] } });
+      callback({ data: { domains : [['#{attributes['key']}.com', #{attributes['com']}], 
+                                    ['#{attributes['key']}.net', #{attributes['net']}],
+                                    ['#{attributes['key']}.org', #{attributes['org']}]
+                                   ] } });
       break;"
   end
   page.execute_script("Badger.domainSearch = function(query, use_serial, callback) {
@@ -94,7 +97,7 @@ Given /^I mock getContacts returns ([^"]*) contacts$/ do |n|
                       phone: '123456789', state: '1', zip: '084'}"
   end
   page.execute_script("Badger.getContacts = function(callback) {
-    callback({data : [ #{contacts.join(',')} ]});
+    setTimeout(callback({data : [ #{contacts.join(',')} ]}), 250);
   };")
   page.execute_script("BadgerCache.flush('contacts');")
 end
@@ -107,10 +110,10 @@ end
 
 Given /^I mock createAccount$/ do
   page.execute_script("Badger.createAccount = function(data, callback){
-    callback({ meta: {status: 'ok'}, data: { access_token: '2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a' } });
+    callback({ meta: { status: 'ok' }, data: { access_token: '2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a' } });
     Badger.setAccessToken('2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a');
     for (var i=0; i < Badger.login_callbacks.length; i++) Badger.login_callbacks[i].call(null);
-    if (callback) callback(response);
+    if (callback) callback({ meta: { status: 'ok' }, data: { access_token: '2.1321519972.2e2cf079401b1c46cf748b80637610719a8ab693a' } });
   };")
 end
 
