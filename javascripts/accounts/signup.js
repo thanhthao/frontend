@@ -69,7 +69,7 @@ with (Hasher('Signup','Application')) {
                 
               )
             ),
-            td({ style: 'vertical-align: top' }, img({ src: 'images/badger-5.png', style: 'padding: 20px 30px' }))
+            td({ style: 'vertical-align: top' }, img({ src: 'images/badger-6.png', style: 'padding: 20px 30px' }))
           )
         )
       )
