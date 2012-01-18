@@ -39,7 +39,7 @@ with (Hasher('BulkRegister','Application')) {
     });
   });
 
-  define('proceed_bulk_register', function(domains_list, contacts_id) {
+  define('proceed_bulk_register', function(domains_list, contacts_id, years) {
     bulk_register_result(domains_list);
     var count = 0;
     $.each(domains_list, function() {
@@ -47,11 +47,14 @@ with (Hasher('BulkRegister','Application')) {
       var domain = this;
       var domain_info = { name: domain.toString(), auto_renew: 'true', privacy: 'true',
                           name_servers: 'ns1.badger.com,ns2.badger.com',
-                          registrant_contact_id: contacts_id, years: 1 };
+                          registrant_contact_id: contacts_id, years: years != null ? years : 1 };
       Badger.registerDomain(domain_info, function(response) {
         if (response.meta.status != 'created') {
           $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html('Failed');
         } else {
+          load_domain(response.data.name, function(domain_object) {
+            DomainApps.install_app_on_domain(Hasher.domain_apps["badger_web_forward"], domain_object);
+          })
           $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html('Succeed');
         }
       });

@@ -152,6 +152,10 @@ with (Hasher('Domains','Application')) {
   });
 
   define('add_grid_view', function(domains, results) {
+    var available_extensions = $.grep(results, function(ext) {
+      return ext[1];
+    });
+
     return tr( {'key': results[0][0].split('.')[0]},
       td(Domains.truncate_domain_name(results[0][0].split('.')[0], 40)),
 
@@ -161,7 +165,7 @@ with (Hasher('Domains','Application')) {
           return td({ 'class': 'tld'}, a({ href: '#domains/' + domain[0], style: 'color: #0a0' }, img({ src: "images/check.png" }), ' ', tld));
         else {
 					if (!tld) return span();
-					else if (domain[1]) return td({ 'class': 'tld' }, a({ href: curry(Register.show, domain[0]) }, img({ src: "images/icon-plus.png" }), ' ', tld));
+					else if (domain[1]) return td({ 'class': 'tld' }, a({ href: curry(Register.show, domain[0], $.grep(available_extensions, function(ext) { return ext != domain })) }, img({ src: "images/icon-plus.png" }), ' ', tld));
 					else return td({ 'class': 'tld' }, span(img({ src: "images/icon-no-light.gif" }), ' ', span({ style: 'text-decoration: line-through' }, tld)));
         }
       })

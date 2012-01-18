@@ -1,38 +1,56 @@
 with (Hasher('Register','Application')) {
 
 
-  define('show', function(domain) {
+  define('show', function(domain, available_extensions) {
     if (!Badger.getAccessToken()) {
-      Signup.require_user_modal(curry(Register.show, domain));
+      Signup.require_user_modal(curry(Register.show, domain, available_extensions));
       return;
     }
-    
+
     BadgerCache.getContacts(function(results) {
       // ensure they have at least one whois contact
       if (results.data.length == 0) {
-        Whois.edit_whois_modal(null, curry(Register.show, domain));
+        Whois.edit_whois_modal(null, curry(Register.show, domain, available_extensions));
       } else {
-        BadgerCache.getAccountInfo(function(results) {
-          // ensure they have at least one domain_credit
-          if (results.data.domain_credits > 0) {
-            buy_domain_modal(domain);
-          } else {
-            Billing.purchase_modal(curry(Register.show, domain))
-          }
-        });
+        buy_domain_modal(domain, available_extensions);
       }
     });
   });
 
-  define('buy_domain', function(domain, form) {
+  define('buy_domain', function(domain, available_extensions, form_data) {
+    var checked_extensions = $.grep(available_extensions, function(ext) {
+      return form_data["extension_" + ext[0].split('.')[1]] != null;
+    })
+    checked_extensions = [domain].concat(checked_extensions.map(function(ext) { return ext[0]; }));
+
+    BadgerCache.getAccountInfo(function(results) {
+      if (results.data.domain_credits >= (checked_extensions.length * form_data.years)) {
+        if (checked_extensions.length > 1) {
+          BulkRegister.proceed_bulk_register(checked_extensions, form_data.registrant_contact_id, form_data.years);
+        }
+        else {
+          register_domain(domain, form_data);
+        }
+      } else {
+        Billing.purchase_modal(curry(buy_domain, domain, available_extensions, form_data));
+      }
+    });
+  });
+
+  define('open_link', function(url) {
+    hide_modal();
+    set_route(url);
+  });
+
+  define('register_domain', function(domain, form_data) {
     $('#errors').empty();
-    Badger.registerDomain(form, spin_modal_until(function(response) {
+    Badger.registerDomain(form_data, spin_modal_until(function(response) {
       if (response.meta.status == 'created') {
         load_domain(response.data.name, function(domain_object) {
           DomainApps.install_app_on_domain(Hasher.domain_apps["badger_web_forward"], domain_object);
           update_credits(true);
-          hide_modal();
           set_route('#domains/' + domain);
+          hide_modal();
 
           BadgerCache.flush('domains');
           BadgerCache.getDomains(function() { update_my_domains_count(); });
@@ -42,22 +60,17 @@ with (Hasher('Register','Application')) {
       }
     }))
   });
-
-  define('open_link', function(url) {
-    hide_modal();
-    set_route(url);
-  });
 }
 
 
 with (Hasher('Register', 'Application')) {
 
-  define('buy_domain_modal', function(domain) {
+  define('buy_domain_modal', function(domain, available_extensions) {
     show_modal(
       h1({ 'class': 'long-domain-name'}, 'Register ', domain),
       div({ id: 'errors' }),
       p({ style: "margin-bottom: 0" }, "You'll be able to configure ", strong(Domains.truncate_domain_name(domain, 50)), " on the next screen."),
-      form({ action: curry(buy_domain, domain) },
+      form({ action: curry(buy_domain, domain, available_extensions) },
         input({ type: 'hidden', name: 'name', value: domain }),
         input({ type: 'hidden', name: 'auto_renew', value: 'true'}),
         input({ type: 'hidden', name: 'privacy', value: 'true'}),
@@ -76,7 +89,12 @@ with (Hasher('Register', 'Application')) {
             td({ style: "width: 50%" },
               h3({ style: 'margin-bottom: 0' }, 'Length:'),
               div(
-                select({ name: 'years', onchange: function(e) { var years = $(e.target).val(); $('#register-button').val('Register ' + domain + ' for ' + years + (years == 1 ? ' credit' : ' credits')) } },
+                select({ name: 'years', id: 'years', onchange: function(e) {
+                                          var years = parseInt($(e.target).val());
+                                          var num_domains = 1 + $('.extensions:checked').length;
+                                          var credits = num_domains * years;
+                                          $('#register-button').val('Register ' + (num_domains > 1 ? (num_domains + ' domains') : domain) + ' for ' + credits + (credits == 1 ? ' credit' : ' credits'))
+                                        } },
                   option({ value: 1 }, '1 Year'),
                   option({ value: 2 }, '2 Years'),
                   option({ value: 3 }, '3 Years'),
@@ -87,7 +105,24 @@ with (Hasher('Register', 'Application')) {
                 ' @ 1 credit per year'
               )
             )
-          )
+          ),
+          available_extensions.length > 0 ?
+            tr(
+              td({ style: "width: 50%" },
+                h3('Other Extensions'),
+                available_extensions.map(function(ext) {
+                  return div(checkbox({ name: "extension_" + ext[0].split('.')[1], value: ext[0], id: ext[0].split('.')[1], 'class': 'extensions',
+                                        onchange: function(e) {
+                                          var years = parseInt($('#years').val());
+                                          var num_domains = 1 + $('.extensions:checked').length;
+                                          var credits = num_domains * years;
+                                          $('#register-button').val('Register ' + (num_domains > 1 ? (num_domains + ' domains') : domain) + ' for ' + credits + (credits == 1 ? ' credit' : ' credits'))
+                                        } }),
+                             label({ 'for': ext[0].split('.')[1] }, ' ' + ext[0]))
+                })
+              )
+            )
+            : ''
         )),
         
         div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + Domains.truncate_domain_name(domain) + ' for 1 credit' }))

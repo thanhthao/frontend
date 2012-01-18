@@ -47,11 +47,14 @@ with (Hasher('Search','Application')) {
   });
   
   define('search_result_row', function(results) {
+    var available_extensions = $.grep(results, function(ext) {
+      return ext[1];
+    });
     return tr(
       td(results[0][0].split('.')[0]),
       results.map(function(domain) {
         var tld = domain[0].split('.')[1];
-        return domain[1] ? td({ 'class': 'tld' }, a({ href: curry(Register.show, domain[0]) }, tld))
+        return domain[1] ? td({ 'class': 'tld' }, a({ href: curry(Register.show, domain[0], $.grep(available_extensions, function(ext) { return ext != domain })) }, tld))
                          : td({ 'class': 'tld' }, span({ style: 'text-decoration: line-through' }, tld));
       })
     );
