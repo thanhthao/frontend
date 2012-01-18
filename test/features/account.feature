@@ -31,3 +31,34 @@ Feature: Account
     Then I follow "SETTINGS"
     And I should see "ACCOUNT SETTINGS"
     And I should see "Change Password"
+    And I should see "Change First/Last Name"
+    And I should see "Change Email Address"
+
+  Scenario: As a logged in user I want to change my First/Last name
+    And I follow "SETTINGS"
+    When I follow "Change First/Last Name"
+    Then I should see "CHANGE FIRST/LAST NAME"
+    And I fill in "first_name" with "John"
+    And I fill in "last_name" with "Doe"
+    And I mock changeName
+    And I mock accountInfo with name "John Doe" and 11 domain credits and 5 invites available
+    When I press "Update"
+    Then I should see "John Doe" within "#user-nav"
+
+  Scenario: As a logged in user I update my email address successfully
+    And I follow "SETTINGS"
+    When I follow "Change Email Address"
+    Then I should see "CHANGE EMAIL ADDRESS"
+    And I fill in "email" with "john@doe.com"
+    And I mock changeEmail successfully
+    When I press "Update"
+    Then I should see "Login"
+
+  Scenario: As a logged in user I fail to update my email address
+    And I follow "SETTINGS"
+    When I follow "Change Email Address"
+    Then I should see "CHANGE EMAIL ADDRESS"
+    And I fill in "email" with "john@doe.com"
+    And I mock changeEmail unsuccessfully
+    When I press "Update"
+    Then I should see "Unable to change email"

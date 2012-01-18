@@ -27,7 +27,7 @@ end
 
 Given /^I mock neccessary data to mock login with ([^"]*) domain credits and ([^"]*) invites available$/ do |domain_credits, invites_available|
   Given 'I mock getDomains with 1 normal domains, 1 in transfer domain and 1 expiring soon domains'
-  And "I mock accountInfo with #{domain_credits} domain credits and #{invites_available} invites available"
+  And 'I mock accountInfo with name "East Agile Company" and ' + "#{domain_credits} domain credits and #{invites_available} invites available"
   And 'I mock getContacts returns 1 contacts'
   And 'I mock getPaymentMethods'
   And 'I mock getInviteStatus with 0 accepted and 0 pending and 0 revoked'

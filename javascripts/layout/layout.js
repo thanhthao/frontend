@@ -155,7 +155,7 @@ with (Hasher('Application')) {
 
     BadgerCache.getAccountInfo(function(response) {
       //$(user_nav).prepend(span(a({ href: '#account/settings'}, response.data.name)));
-      $(user_nav).prepend(span(response.data.name));
+      $(user_nav).prepend(span({ id: 'use_nav_name' }, response.data.name));
       $(user_nav).prepend(span({ id: 'user_nav_invites_available', 'class': response.data.invites_available <= 0 ? 'hidden' : '' }, a({ href: '#invites' }, response.data.invites_available + ' Invites')));
       $(user_nav).prepend(span(a({ href: '#account/billing', id: 'user_nav_credits' }, 'Credits')));
       update_credits();
@@ -168,6 +168,13 @@ with (Hasher('Application')) {
     if (refresh) BadgerCache.flush('account_info');
     BadgerCache.getAccountInfo(function(response) {
       $('#user_nav_credits').html(response.data.domain_credits == 1 ? '1 Credit' : response.data.domain_credits + ' Credits');
+    });
+  });
+
+  define('update_account_name', function() {
+    BadgerCache.flush('account_info');
+    BadgerCache.getAccountInfo(function(response) {
+      $('#use_nav_name').html(response.data.name);
     });
   });
 
