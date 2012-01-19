@@ -5,7 +5,7 @@ Feature: Transfer
 
   Background:
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
-    When I follow "Transfer in 1 or more Domains"
+    When I follow "Transfer in a Domain"
     Then I should see "TRANSFER DOMAINS INTO BADGER.COM"
     And I should see "Enter the domains(s) you'd like to transfer in bellow, one per line. If you already have auth codes, include them next to each domain (i.e."
     And I should see "badger.com abc123def"
@@ -57,7 +57,7 @@ Feature: Transfer
     And I should see "No" within "table#transfer-domains-table tr:eq(5) td:eq(5)"
     And I should see "No" within "table#transfer-domains-table tr:eq(5) td:eq(6)"
     And I should see "Registrant:"
-    And I should see "Import into Badger DNS"
+    And I should see "Import existing DNS into Badger DNS"
     And I check "use_badger_dns"
     When I follow "Continue with 1 Domain"
     And I should see "CONFIRM TRANSFER"
@@ -65,7 +65,6 @@ Feature: Transfer
     And I mock registerDomain api
     When I follow "Complete Transfer"
     And I should see "TRANSFER RESULT"
-    And I should see "In processing, please wait..."
     And I should see "xyzdomain.com" within "#transfer-result-table"
     And I should see "Succeed" within "#transfer-result-table"
 
@@ -73,8 +72,8 @@ Feature: Transfer
     And I mock getDomainInfo api for domains:
       | name            | registrar_name | locked  | auth_code_response | auth_code_status     | expires              |
       | abc123.com      | Talk.com       | false   | 1000               | ok               | 2012-10-30T04:21:43Z |
-    And I fill in item "#abc123-com-1-domain .auth-code-input" with "ValidAuthcode"
-    When I press key "enter" on "#abc123-com-1-domain .auth-code-input"
+    And I fill in item "#abc123-com-domain .auth-code-input" with "ValidAuthcode"
+    When I press key "enter" on "#abc123-com-domain .auth-code-input"
     Then I should see "Ok" within "table#transfer-domains-table  tr:eq(3) td:eq(4)"
     And I should see "Continue with 2 Domains"
 
@@ -86,7 +85,7 @@ Feature: Transfer
       | xyz.com         | GoDaddy Inc.   | false   | 1000               | ok                   | 2011-08-12T04:21:43Z |
       | xyzdomain.com   | eNom Inc       | false   | 1000               | ok                   | 2011-02-16T04:21:43Z |
     And I mock remoteWhois with registrar name "GoDaddy Inc."
-    When I follow "Refresh"
+    When I follow "Retry All"
     And I should see "abc.com" within "table#transfer-domains-table tr:eq(2) td:eq(1)"
     And I should see "Talk.com" within "table#transfer-domains-table tr:eq(2) td:eq(2)"
     And I should see "2012-10-30" within "table#transfer-domains-table tr:eq(2) td:eq(3)"

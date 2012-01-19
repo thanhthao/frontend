@@ -100,7 +100,6 @@ Feature: Register Domain
     And I mock purchaseCredits
     When I press "purchase-button"
     Then I should see "BULK REGISTER RESULT"
-    And I should see "In processing, please wait..."
     And I should see "mydomain.com" within "table#bulk-register-result-table tr:eq(2)"
     And I should see "Succeed" within "table#bulk-register-result-table tr:eq(2)"
     And I should see "mydomain.org" within "table#bulk-register-result-table tr:eq(3)"
