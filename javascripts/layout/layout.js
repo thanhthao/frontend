@@ -118,24 +118,30 @@ with (Hasher('Application')) {
           h2('COMPANY'),
           ul(
             li(a({ href: "#blogs" }, 'Blog')),
-            // li(a({ href: "#" }, 'Jobs')),
-            li(a({ href: "#terms_of_service" }, 'Terms of Service'))
+            li(a({ href: "#terms_of_service" }, 'Terms of Service')),
+            li(a({ href: "https://whois.badger.com/", target: '_blank' }, 'Whois Lookup'))
           )
         ),
         div({ 'class': "col" },
           h2('HELP AND SUPPORT'),
           ul(
             li(a({ href: "#contact_us" }, 'Contact Us')),
-            li(a({ href: "https://twitter.com/badger", target: "_blank" }, 'Twitter'), ' / ', a({ href: "https://www.facebook.com/BadgerDotCom", target: "_blank" }, 'Facebook'))
-            // li(a({ href: "#" }, 'Frequently Asked Questions')),
-            // li(a({ href: "#" }, 'Knowledge Center'))
+            li(a({ href: "#faqs" }, 'Frequently Asked Questions')),
+            li(a({ href: "#knowledge_center" }, 'Knowledge Center'))
           )
         ),
         div({ 'class': "col" },
-          h2('CONTACT US'),
+          h2('CONNECT WITH US'),
           ul(
             li(a({ href: "mailto:support@badger.com" }, 'support@badger.com')),
-            li(a({ href: 'tel:+1-415-787-5050' }, '+1-415-787-5050' ))
+            li(a({ href: 'tel:+1-415-787-5050' }, '+1-415-787-5050' )),
+            li(
+              a({ href: "https://twitter.com/badger", target: "_blank" }, 'Twitter'),
+              ' / ',
+              a({ href: "https://www.facebook.com/BadgerDotCom", target: "_blank" }, 'Facebook'),
+              ' / ',
+              a({ href: "irc://irc.freenode.net/badger", target: "_blank" }, 'IRC')
+            )
           )
         ),
         div({ 'class': "col" },
