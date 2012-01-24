@@ -76,10 +76,10 @@ a { color: #1E31F5; }
 #menu ul.expanded { display: block; }
 #menu ul li { background: #212632 url(../images/sprite.png) no-repeat; }
 #menu ul li a { color:#fff; padding:9px 10px 10px 48px; font-size: 16px; }
-#menu .website {background-position:17px 13px;}
-#menu .email {background-position:17px -28px;}
-#menu .dns {background-position:17px -69px;}
-#menu .analytics {background-position:17px -110px;}
+#menu ul .website {background-position:17px 13px;}
+#menu ul .email {background-position:17px -28px;}
+#menu ul .dns {background-position:17px -69px;}
+#menu ul .analytics {background-position:17px -110px;}
 
 
 

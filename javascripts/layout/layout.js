@@ -260,8 +260,16 @@ with (Hasher('Application')) {
   //////////////
 
   define('left_nav', function() {
+    var badger_menu_items = [
+      li({ 'class': "website" }, a({ href: "#blogs" }, 'OUR BLOG')),
+      li({ 'class': "website" }, a({ href: "#chatroom" }, 'CHATROOM')),
+      li({ 'class': "website" }, a({ href: "#faqs" }, 'FAQS')),
+      li({ 'class': "website" }, a({ href: "#knowledge_center" }, 'KNOWLEDGE CENTER')),
+      li({ 'class': "website" }, a({ href: "#contact_us" }, 'CONTACT US'))
+    ];
+    
     return ul({ id: 'menu' },
-      Badger.getAccessToken() && [
+      Badger.getAccessToken() ? [
         li({ id: 'nav-my-domains' },
           a({ href: "#filter_domains/all/list" }, span(span('MY DOMAINS'), span({ id: 'my-domains-count' }))),
           ul(
@@ -273,24 +281,22 @@ with (Hasher('Application')) {
         li({ id: 'nav-my-account' },
           a({ href: "#account" }, 'MY ACCOUNT'),
           my_account_nav()
-        )
-      ],  
+        ),
 
-      li({ id: 'nav-help-and-support' },
-        a({ href: "#welcome" }, 'BADGER.COM'),
-        ul(
-          li({ 'class': "website" }, a({ href: "#blogs" }, 'OUR BLOG')),
-          li({ 'class': "website" }, a({ href: "#chatroom" }, 'CHATROOM')),
-          li({ 'class': "website" }, a({ href: "#faqs" }, 'FAQS')),
-          li({ 'class': "website" }, a({ href: "#knowledge_center" }, 'KNOWLEDGE CENTER')),
-          li({ 'class': "website" }, a({ href: "#contact_us" }, 'CONTACT US'))
+        li({ id: 'nav-help-and-support' },
+          a({ href: "#welcome" }, 'BADGER.COM'),
+          ul(badger_menu_items)
         )
-        // ul(
-        //   li({ 'class': "website" }, a({ href: "#knowledge-base" }, 'KNOWLEDGE BASE')),
-        //   li({ 'class': "email" }, a({ href: "#tickets" }, 'SUPPORT TICKETS'))
-        // )
-      )
+      ] : [
+        li(a({ href: "#welcome" }, 'BADGER.COM')),
+        badger_menu_items
+      ]
+
     );
+  });
+  
+  define('badger_menu_items', function() {
+    return ;
   });
 
   define('my_account_nav', function() {
