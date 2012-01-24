@@ -9,7 +9,7 @@ with (Hasher('Billing','Application')) {
         //div({ style: 'margin-bottom: 15px' }, 'Use credits to buy new domains, transfer in existing domains, or renew expiring domain.'),
         div({ id: 'modal-errors' },
           (necessary_credits ?
-            div({ 'class': 'error-message' }, "You need at least ", necessary_credits, " to continue.")
+            div({ 'class': 'error-message' }, "You need at least ", necessary_credits, " Credits to continue.")
           : [])
         ),
         table({ style: 'width: 100%; border-collapse: collapse' }, tbody(
@@ -45,7 +45,7 @@ with (Hasher('Billing','Application')) {
             ),
 
 						div({ id: 'new-card-fields', style: (payment_methods.length > 0 ? 'display: none' : '') },
-            	table({ 'class': 'fancy-table' }, tbody(
+            	table({ 'style': 'width: 100%' }, tbody(
 								tr({ 'class': "table-header" },
 									td(
 										div({ style: 'font-weight: bold; margin-top: 10px' }, 'Billing Address'),

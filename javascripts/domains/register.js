@@ -24,7 +24,10 @@ with (Hasher('Register','Application')) {
     checked_extensions = [domain].concat(checked_extensions.map(function(ext) { return ext[0]; }));
 
     BadgerCache.getAccountInfo(function(results) {
-      if (results.data.domain_credits >= (checked_extensions.length * form_data.years)) {
+      var needed_credits = checked_extensions.length * form_data.years;
+      var current_credits = results.data.domain_credits;
+      
+      if (current_credits >= needed_credits) {
         if (checked_extensions.length > 1) {
           BulkRegister.proceed_bulk_register(checked_extensions, form_data.registrant_contact_id, form_data.years);
         }
@@ -32,7 +35,7 @@ with (Hasher('Register','Application')) {
           register_domain(domain, form_data);
         }
       } else {
-        Billing.purchase_modal(curry(buy_domain, domain, available_extensions, form_data));
+        Billing.purchase_modal(curry(buy_domain, domain, available_extensions, form_data), needed_credits-current_credits);
       }
     });
   });
@@ -109,7 +112,7 @@ with (Hasher('Register', 'Application')) {
           available_extensions.length > 0 ?
             tr(
               td({ style: "width: 50%" },
-                h3('Other Extensions'),
+                h3({ style: 'margin-bottom: 3px' }, 'Also Register:'),
                 available_extensions.map(function(ext) {
                   return div(checkbox({ name: "extension_" + ext[0].split('.')[1], value: ext[0], id: ext[0].split('.')[1], 'class': 'extensions',
                                         onchange: function(e) {
