@@ -165,7 +165,7 @@ with (Hasher('Billing','Application')) {
 		
 		var credit_selector = div({ 'class': 'info-message', id: "credits-selector", style: "padding: 10px 5px 10px 5px; height: 100px; text-align: center" },
 			div({ style: "font-size: 20px; font-weight: bold; padding-top: 5px; padding-bottom: 10px" }, "How many credits? "),
-			input({ style: "font-size: 30px", name: "credits", maxlength: 3, value: necessary_credits > 0 ? necessary_credits : 1, size: "2" }),
+			input({ style: "font-size: 30px; text-align: center", name: "credits", maxlength: 3, value: necessary_credits > 0 ? necessary_credits : 1, size: "2" }),
 			
 			div({ id: "savings", style: "display: none; font-size: 16px; color: red; text-align: center; padding-top: 5px" }, 'You save: ', span({ id: "price-savings", style: "font-weight: bold; font-size: 18px" }))
 		);
