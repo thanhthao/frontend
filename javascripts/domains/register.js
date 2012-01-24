@@ -23,6 +23,9 @@ with (Hasher('Register','Application')) {
     })
     checked_extensions = [domain].concat(checked_extensions.map(function(ext) { return ext[0]; }));
 
+    $('#errors').empty();
+    start_modal_spin('Checking available credits...');
+
     BadgerCache.getAccountInfo(function(results) {
       var needed_credits = checked_extensions.length * form_data.years;
       var current_credits = results.data.domain_credits;
@@ -30,43 +33,46 @@ with (Hasher('Register','Application')) {
       if (current_credits >= needed_credits) {
         if (checked_extensions.length > 1) {
           BulkRegister.proceed_bulk_register(checked_extensions, form_data.registrant_contact_id, form_data.years);
-        }
-        else {
-          register_domain(domain, form_data);
+        } else {
+          register_domain(domain, available_extensions, form_data);
         }
       } else {
-        Billing.purchase_modal(curry(buy_domain, domain, available_extensions, form_data), needed_credits-current_credits);
+        Billing.purchase_modal(curry(buy_domain, domain, available_extensions, form_data), needed_credits - current_credits);
       }
     });
   });
 
-  define('open_link', function(url) {
-    hide_modal();
-    set_route(url);
-  });
 
-  define('register_domain', function(domain, form_data) {
-    $('#errors').empty();
-    Badger.registerDomain(form_data, spin_modal_until(function(response) {
+  // NOTE: this function has a few race conditions...
+  //  - "install_app_on_domain" isn't chained so the getDomains() could finish first
+  //    and redirect you to the domain page before the dns entries are installed.
+  define('register_domain', function(domain, available_extensions, form_data) {
+    start_modal_spin('Registering ' + domain + '...');
+    Badger.registerDomain(form_data, function(response) {
       if (response.meta.status == 'created') {
+        start_modal_spin('Configuring ' + domain + '...');
+        update_credits(true);
+
         load_domain(response.data.name, function(domain_object) {
           DomainApps.install_app_on_domain(Hasher.domain_apps["badger_web_forward"], domain_object);
-          update_credits(true);
-          set_route('#domains/' + domain);
-          hide_modal();
-
           BadgerCache.flush('domains');
-          BadgerCache.getDomains(function() { update_my_domains_count(); });
+          BadgerCache.getDomains(function() { 
+            update_my_domains_count(); 
+            
+            set_route('#domains/' + domain);
+            hide_modal();
+          });
         })
       } else {
+        // if the registration failed, we actually need to re-render the registration modal because if the user
+        // had to buy credits in the previous step, the underlying modal is the purcahse modal and not the
+        // registration modal.
+        buy_domain_modal(domain, available_extensions);
         $('#errors').empty().append(error_message(response));
       }
-    }))
+    })
   });
-}
 
-
-with (Hasher('Register', 'Application')) {
 
   define('buy_domain_modal', function(domain, available_extensions) {
     show_modal(
@@ -133,6 +139,11 @@ with (Hasher('Register', 'Application')) {
     );
   });
 
+
+  // define('open_link', function(url) {
+  //   hide_modal();
+  //   set_route(url);
+  // });
   // define('successful_register_confirmation', function(domain) {
   //   return [
   //     h1("Congratulations!"),

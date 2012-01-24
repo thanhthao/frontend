@@ -141,8 +141,8 @@ with (Hasher('Billing','Application')) {
     delete form_data.credits_variable;
 
     $('#modal-errors').empty();
+    start_modal_spin('Processing payment...');
 
-    start_modal_spin();
     Badger.purchaseCredits(form_data, function(response) {
       if (response.meta.status == 'ok') {
         BadgerCache.reload('account_info');
@@ -150,7 +150,6 @@ with (Hasher('Billing','Application')) {
 
         BadgerCache.getAccountInfo(function(response) {
           update_credits();
-          hide_modal();
           if (callback) callback();
         });
       } else {
