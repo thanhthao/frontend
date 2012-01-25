@@ -1,8 +1,12 @@
 with (Hasher('Chat', 'Application')) {
 
   define('show_chat', function(callback) {
-    $('#chatbar div.content').html(iframe({ 'src': '/chat/qui.html' }));
-    $('#chatbar').addClass('active');
+    if ($('#chatbar div.content iframe').length == 0) {
+      $('#chatbar div.content').html(iframe({ 'src': '/chat/qui.html' }));
+      $('#chatbar').addClass('active');
+    } else if ($('#chatbar').hasClass('minimized')) {
+      maximize_chat();
+    }
     $('#footer').addClass('chatbar');
   });
 
@@ -11,4 +15,15 @@ with (Hasher('Chat', 'Application')) {
     $('#footer').removeClass('chatbar');
     $('#chatbar div.content').html('');
   });
+
+  define('minimize_chat', function(callback) {
+    $('#chatbar').addClass('minimized');
+    $('#footer').removeClass('chatbar');
+  });
+
+  define('maximize_chat', function(callback) {
+    $('#chatbar').removeClass('minimized');
+    $('#footer').addClass('chatbar');
+  });
+
 }

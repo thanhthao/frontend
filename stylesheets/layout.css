@@ -33,8 +33,8 @@ a { color: #1E31F5; }
 
 #main #content h1 { font: 28px "Oswald", Arial, sans-serif; margin: 5px 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
 
-#footer { background: rgba(0,0,0,0.2); border-radius: 6px; color: #f0f0f0; padding: 10px 0; margin-top: 10px; }
-#footer.chatbar { margin-bottom: 200px; }
+#footer { background: rgba(0,0,0,0.2); border-radius: 6px; color: #f0f0f0; padding: 10px 0; margin-top: 10px; margin-bottom: 40px;}
+#footer.chatbar { margin-bottom: 270px; }
 #footer .footer-holder { height:1%; display:table-row; }
 #footer .footer-frame{display:table-cell;}
 #footer .box { padding:5px 0 0; margin:0 0 30px; }
@@ -50,11 +50,16 @@ a { color: #1E31F5; }
 #chatbar { position: fixed; bottom: 0px; width: 150px; height: 36px; background: #8cb82b; border-radius: 6px 6px 0 0; color: #f0f0f0; padding: 0 5px; margin: 0 410px; }
 #chatbar.active { height: 250px; width: 980px; margin: 0 0 0 -10px; }
 #chatbar .close-button { display: none; }
-#chatbar.active .close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
-#chatbar.active .close-button:hover { text-decoration: none; }
+#chatbar.active .close-button { display: block; }
+#chatbar .min-button { display: none; }
+#chatbar.active .min-button { display: block; right: 23px; }
 #chatbar h1 { font: 20px "Oswald", Arial, sans-serif; margin: 5px 5px 7px; padding: 0; text-transform: uppercase; color: #fff; cursor: pointer; text-align: center; }
 #chatbar.active h1 { text-align: left; cursor: auto; }
 #chatbar iframe { width: 100%; height: 210px; border: 0; border-radius: 4px 4px 0 0; margin: 0; }
+#chatbar.minimized { bottom: -214px; }
+#chatbar.minimized .close-button { display: none; }
+
+
 
 .social-network{ margin:0; padding:0; list-style:none; }
 #footer .col .social-network li{padding-bottom:5px;}
@@ -114,10 +119,11 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 #suggest-grid { border-top: 1px solid #333; }
 
 
+.close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
+.close-button:hover { text-decoration: none; }
+
 .modal-dialog { position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); }
 #modal-content { margin: 100px auto 0 auto; width: 600px; padding: 20px; border-radius: 5px; background: white; position: relative; }
-.modal-dialog .close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
-.modal-dialog .close-button:hover { text-decoration: none; }
 .modal-dialog h1 { font: 28px "Oswald", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
 
 #modal-content.spinner { background: white url(../images/spinner.gif) no-repeat center center; }

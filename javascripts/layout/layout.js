@@ -154,6 +154,7 @@ with (Hasher('Application')) {
 
       div({ id: 'chatbar' },
         a({ href: Chat.hide_chat, 'class': 'close-button' }, 'X'),
+        a({ href: Chat.minimize_chat, 'class': 'close-button min-button' }, '–'),
         h1({ onclick: Chat.show_chat }, 'Badger Chat'),
         div({ "class": "content" })
       )
@@ -268,7 +269,6 @@ with (Hasher('Application')) {
   define('left_nav', function() {
     var badger_menu_items = [
       li({ 'class': "website" }, a({ href: "#blogs" }, 'OUR BLOG')),
-      li({ 'class': "website" }, a({ href: "#chatroom" }, 'CHATROOM')),
       li({ 'class': "website" }, a({ href: "#faqs" }, 'FAQS')),
       li({ 'class': "website" }, a({ href: "#knowledge_center" }, 'KNOWLEDGE CENTER')),
       li({ 'class': "website" }, a({ href: "#contact_us" }, 'CONTACT US'))
