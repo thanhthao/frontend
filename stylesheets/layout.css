@@ -47,8 +47,9 @@ a { color: #1E31F5; }
 #footer .col a{color:#fff;}
 #footer .col address{font-style:normal;}
 
-#chatbar { position: fixed; bottom: 0px; width: 150px; height: 36px; background: #8cb82b; border-radius: 6px 6px 0 0; color: #f0f0f0; padding: 0 5px; margin: 0 410px; }
-#chatbar.active { height: 250px; width: 980px; margin: 0 0 0 -10px; }
+#chatbar { position: fixed; background: #8cb82b; border-radius: 6px 6px 0 0; color: #f0f0f0; padding: 0 5px; }
+#chatbar.closed { top: 300px; left: -62px; width: 150px; height: 36px; -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -ms-transform: rotate(-90deg); -o-transform: rotate(-90deg); filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); }
+#chatbar.active { height: 250px; width: 980px; margin: 0 0 0 -10px; bottom: 0px; }
 #chatbar .close-button { display: none; }
 #chatbar.active .close-button { display: block; }
 #chatbar .min-button { display: none; }
