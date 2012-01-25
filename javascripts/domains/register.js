@@ -1,6 +1,5 @@
 with (Hasher('Register','Application')) {
 
-
   define('show', function(domain, available_extensions) {
     if (!Badger.getAccessToken()) {
       Signup.require_user_modal(curry(Register.show, domain, available_extensions));
@@ -42,7 +41,34 @@ with (Hasher('Register','Application')) {
     });
   });
 
+	define('renew_domain', function(form_data) {
+		// console.log("renew domain!!!!", arguments);
+		
+		$('#errors').empty();
+    start_modal_spin('Checking available credits...');
 
+    BadgerCache.getAccountInfo(function(results) {
+      var needed_credits = form_data.years
+      var current_credits = results.data.domain_credits;
+      
+      if (current_credits >= needed_credits) {
+				start_modal_spin('Renewing domain...');
+				Badger.renewDomain(form_data.domain, form_data.years, function(response) {
+					if (response.meta.status == "ok") {
+						hide_modal();
+						set_route("#domains/" + form_data.domain + "/registration");
+						update_credits(true);
+					} else {
+						stop_modal_spin();
+						$("#errors").append(div({ 'class': "error-message" }, response.data.message));
+					}
+				});
+      } else {
+        Billing.purchase_modal(curry(renew_domain, form_data), needed_credits - current_credits);
+      }
+    });
+	});
+	
   // NOTE: this function has a few race conditions...
   //  - "install_app_on_domain" isn't chained so the getDomains() could finish first
   //    and redirect you to the domain page before the dns entries are installed.
@@ -139,6 +165,40 @@ with (Hasher('Register','Application')) {
     );
   });
 
+	define('renew_domain_modal', function(domain) {
+		show_modal(
+      h1({ 'class': 'long-domain-name'}, 'Extend Registration'),
+      div({ id: 'errors' }),
+			p("The domain, " + domain +", will automatically renew on its expiration date.  If you'd prefer, you can extend this registration immediately by using the form below."),
+			form({ action: curry(renew_domain), style: "margin-bottom: -15px" },
+				div({ 'class': "info-message", style: "width: 220px", align: "center" },
+					p({ style: "font-weight: bold; font-size: 16px; font-style: italic; margin: 0 auto 10px auto" }, "1 year = 1 domain credit"),
+					div({ style: "font-size: 16px" }, "Years:", select({ style: "font-size: 16px; margin-left: 15px", name: "years" },
+						option({ value: 1 }, "1"),
+						option({ value: 2 }, "2"),
+						option({ value: 3 }, "3"),
+						option({ value: 4 }, "4"),
+						option({ value: 5 }, "5"),
+						option({ value: 6 }, "6"),
+						option({ value: 7 }, "7"),
+						option({ value: 8 }, "8"),
+						option({ value: 9 }, "9"),
+						option({ value: 10 }, "10")
+					))
+				),
+				input({ type: "hidden", value: domain, name: "domain" }),
+				button({ id: "renew-button", 'class': "myButton", style: "float: right; margin-top: -45px"}, "Renew domain")
+			)
+		);
+		
+		// update the button according to, then call the trigger the change event to initially update the button 
+		$("select[name=years]").change(function(e) {
+			$("#renew-button").html("Renew for " + e.target.value + " years (" + e.target.value + " credits)");
+		});
+		
+		$("select[name=years]").change();
+	});
+	
 
   // define('open_link', function(url) {
   //   hide_modal();

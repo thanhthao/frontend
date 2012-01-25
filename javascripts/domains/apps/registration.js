@@ -25,6 +25,14 @@ with (Hasher('Registration ','DomainApps')) {
   route('#domains/:domain/registration', function(domain) {
     render(
       h1({ 'class': 'long-domain-name' }, domain, ' Registration'),
+			(function() {
+				// console.log(domain);
+				// if (domain_registrar == "RhinoNames") {
+				// 	div({ style: "float: right; margin-top: -44px" }, a({ 'class': "myButton myButton-small", href: null }, "Transfer To Badger.com")),
+				// } else {
+					return div({ style: "float: right; margin-top: -44px" }, a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration (Renew)"))
+				// }
+			})(),
       domain_data_block(domain)
     );
   });
