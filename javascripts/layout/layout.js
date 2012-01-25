@@ -150,6 +150,12 @@ with (Hasher('Application')) {
         ),
 
         div({ style: 'clear: both'})
+      ),
+
+      div({ id: 'chatbar' },
+        a({ href: Chat.hide_chat, 'class': 'close-button' }, 'X'),
+        h1({ onclick: Chat.show_chat }, 'Badger Chat'),
+        div({ "class": "content" })
       )
     );
   });

@@ -34,6 +34,7 @@ a { color: #1E31F5; }
 #main #content h1 { font: 28px "Oswald", Arial, sans-serif; margin: 5px 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
 
 #footer { background: rgba(0,0,0,0.2); border-radius: 6px; color: #f0f0f0; padding: 10px 0; margin-top: 10px; }
+#footer.chatbar { margin-bottom: 200px; }
 #footer .footer-holder { height:1%; display:table-row; }
 #footer .footer-frame{display:table-cell;}
 #footer .box { padding:5px 0 0; margin:0 0 30px; }
@@ -45,6 +46,15 @@ a { color: #1E31F5; }
 #footer .col ul li{padding:5px 0 0;}
 #footer .col a{color:#fff;}
 #footer .col address{font-style:normal;}
+
+#chatbar { position: fixed; bottom: 0px; width: 150px; height: 36px; background: #8cb82b; border-radius: 6px 6px 0 0; color: #f0f0f0; padding: 0 5px; margin: 0 410px; }
+#chatbar.active { height: 250px; width: 980px; margin: 0 0 0 -10px; }
+#chatbar .close-button { display: none; }
+#chatbar.active .close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
+#chatbar.active .close-button:hover { text-decoration: none; }
+#chatbar h1 { font: 20px "Oswald", Arial, sans-serif; margin: 5px 5px 7px; padding: 0; text-transform: uppercase; color: #fff; cursor: pointer; text-align: center; }
+#chatbar.active h1 { text-align: left; cursor: auto; }
+#chatbar iframe { width: 100%; height: 210px; border: 0; border-radius: 4px 4px 0 0; margin: 0; }
 
 .social-network{ margin:0; padding:0; list-style:none; }
 #footer .col .social-network li{padding-bottom:5px;}
