@@ -155,7 +155,7 @@ with (Hasher('Application')) {
       div({ 'class': 'closed', id: 'chatbar' },
         a({ href: Chat.hide_chat, 'class': 'close-button' }, 'X'),
         a({ href: Chat.minimize_chat, 'class': 'close-button min-button' }, '–'),
-        h1({ onclick: Chat.show_chat }, 'Badger Chat'),
+        h1({ onclick: Chat.show_chat }, 'Badger Chatroom'),
         div({ "class": "content" })
       )
     );
