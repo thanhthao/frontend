@@ -48,10 +48,10 @@ with (Hasher('Signup','Application')) {
                 p({ style: "margin-top: 5px; margin-bottom: 18px" }, "It's the \"badger.com\" in ", a({ href: '#welcome' }, 'www.badger.com'), ' or ', a({ href: 'mailto:support@badger.com' }, 'support@badger.com'), '.'),
 
                 h3({ style: "margin: 0" }, "What does it cost?"),
-                p({ style: "margin-top: 5px; margin-bottom: 18px" }, 
-                  span({ style: 'color: #666; text-decoration: line-through'}, span({ style: 'color: black'}, "Usually between $10-15 per year.")), 
-                  span({ style: 'padding-right: 10px' }, ' '), 
-                  i(u(b("Special Offer - $8 per year!")))
+                p({ style: "margin-top: 5px; margin-bottom: 18px" },
+                  span({ style: 'color: #666'}, span({ style: 'color: black'}, "Usually between $12-15 per year."))
+                  // span({ style: 'padding-right: 10px' }, ' '), 
+                  // i(u(b("Special Offer - $8 per year!")))
                 ),
                 
                 h3({ style: "margin: 0" }, "What services do you offer for free?"),
