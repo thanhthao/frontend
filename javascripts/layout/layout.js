@@ -119,6 +119,7 @@ with (Hasher('Application')) {
           ul(
             li(a({ href: "#blogs" }, 'Blog')),
             li(a({ href: "#terms_of_service" }, 'Terms of Service')),
+						li(a({ href: "http://www.icann.org/en/registrars/registrant-rights-responsibilities-en.htm", target: "_blank" }, 'ICANN Registrant Rights')),
             li(a({ href: "https://whois.badger.com/", target: '_blank' }, 'Whois Lookup'))
           )
         ),

@@ -4,6 +4,12 @@ with (Hasher('ContactUs','Application')) {
     render(
       h1('Contact Us'),
       p("Use this form if you'd like to ask us questions or give us suggestions.  You can also email us directly at ", a({ href: 'mailto:support@badger.com' }, 'support@badger.com'), " or call us at ", a({ href: 'tel:+14157875050' }, '415-787-5050' ), "."),
+			p("You can also write us a nice letter and mail it to"),
+			div({ style: "margin-left: 15px" },
+				"720 Market Street",
+				br(),
+				"San Francisco, CA 94102"
+			),
 			
 			br(),
 
