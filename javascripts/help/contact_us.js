@@ -2,20 +2,11 @@ with (Hasher('ContactUs','Application')) {
  
   route('#contact_us', function() {
     render(
-      h1('Contact Us'),
-      p("Use this form if you'd like to ask us questions or give us suggestions.  You can also email us directly at ", a({ href: 'mailto:support@badger.com' }, 'support@badger.com'), " or call us at ", a({ href: 'tel:+14157875050' }, '415-787-5050' ), "."),
-			p("You can also write us a nice letter and mail it to"),
-			div({ style: "margin-left: 15px" },
-				"720 Market Street",
-				br(),
-				"San Francisco, CA 94102"
-			),
-			
-			br(),
+			h1('Contact Us'),
 
 			div({ id: 'send-contact-us-form-errors', style: 'width: 490px; margin: 0 auto' }),
 
-			div({ 'class': 'info-message', style: 'width: 450px; margin: 0 auto', id: 'send-contact-us-form' },
+			div({ 'class': 'info-message', style: 'width: 450px; margin: 20px auto 50px auto', id: 'send-contact-us-form' },
 				h2({ style: 'margin: 0 0 15px 0' }, 'Send Us an Email'),
 	      form({ action: submit_email },
 	        table({ style: 'width: 100%' }, tbody(
@@ -52,7 +43,17 @@ with (Hasher('ContactUs','Application')) {
 	        	input({ type: 'submit', value: 'Send', 'class': "myButton" })
 					)
 	      )
+			),
+			
+      p("Use this form if you'd like to ask us questions or give us suggestions.  You can also email us directly at ", a({ href: 'mailto:support@badger.com' }, 'support@badger.com'), " or call us at ", a({ href: 'tel:+14157875050' }, '415-787-5050' ), "."),
+			p("Or you can send us mail at:"),
+			div({ style: "margin-left: 25px" },
+			  "Badger.com", br(),
+				"720 Market St.", br(),
+				"Suite 300", br(),
+				"San Francisco, CA 94102"
 			)
+			
     );
   });
   
