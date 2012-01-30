@@ -7,7 +7,7 @@ Feature: Transfer
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
     When I follow "Transfer in a Domain"
     Then I should see "TRANSFER DOMAINS INTO BADGER.COM"
-    And I should see "Enter the domains(s) you'd like to transfer in bellow, one per line. If you already have auth codes, include them next to each domain (i.e."
+    And I should see "Enter the domain(s) you'd like to transfer in bellow, one per line. If you already have auth codes, include them next to each domain (i.e."
     And I should see "badger.com abc123def"
     And I fill multiple lines in "transfer_domains_list" with:
       """
