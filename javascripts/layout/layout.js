@@ -118,24 +118,31 @@ with (Hasher('Application')) {
           h2('COMPANY'),
           ul(
             li(a({ href: "#blogs" }, 'Blog')),
-            // li(a({ href: "#" }, 'Jobs')),
-            li(a({ href: "#terms_of_service" }, 'Terms of Service'))
+            li(a({ href: "#terms_of_service" }, 'Terms of Service')),
+						li(a({ href: "http://www.icann.org/en/registrars/registrant-rights-responsibilities-en.htm", target: "_blank" }, 'ICANN Registrant Rights')),
+            li(a({ href: "https://whois.badger.com/", target: '_blank' }, 'Whois Lookup'))
           )
         ),
         div({ 'class': "col" },
           h2('HELP AND SUPPORT'),
           ul(
             li(a({ href: "#contact_us" }, 'Contact Us')),
-            li(a({ href: "https://twitter.com/badger", target: "_blank" }, 'Twitter'), ' / ', a({ href: "https://www.facebook.com/BadgerDotCom", target: "_blank" }, 'Facebook'))
-            // li(a({ href: "#" }, 'Frequently Asked Questions')),
-            // li(a({ href: "#" }, 'Knowledge Center'))
+            li(a({ href: "#faqs" }, 'Frequently Asked Questions')),
+            li(a({ href: "#knowledge_center" }, 'Knowledge Center'))
           )
         ),
         div({ 'class': "col" },
-          h2('CONTACT US'),
+          h2('CONNECT WITH US'),
           ul(
             li(a({ href: "mailto:support@badger.com" }, 'support@badger.com')),
-            li(a({ href: 'tel:+1-415-787-5050' }, '+1-415-787-5050' ))
+            li(a({ href: 'tel:+1-415-787-5050' }, '+1-415-787-5050' )),
+            li(
+              a({ href: "https://twitter.com/badger", target: "_blank" }, 'Twitter'),
+              ' / ',
+              a({ href: "https://www.facebook.com/BadgerDotCom", target: "_blank" }, 'Facebook'),
+              ' / ',
+              a({ href: "irc://irc.freenode.net/badger", target: "_blank" }, 'IRC')
+            )
           )
         ),
         div({ 'class': "col" },
@@ -144,6 +151,13 @@ with (Hasher('Application')) {
         ),
 
         div({ style: 'clear: both'})
+      ),
+      
+      div({ 'class': 'closed', id: 'chatbar' },
+        a({ href: Chat.hide_chat, 'class': 'close-button' }, 'X'),
+        a({ href: Chat.minimize_chat, 'class': 'close-button min-button' }, '–'),
+        h1({ onclick: Chat.show_chat }, 'Badger Chatroom'),
+        div({ "class": "content" })
       )
     );
   });
@@ -254,8 +268,15 @@ with (Hasher('Application')) {
   //////////////
 
   define('left_nav', function() {
+    var badger_menu_items = [
+      li({ 'class': "website" }, a({ href: "#blogs" }, 'OUR BLOG')),
+      li({ 'class': "website" }, a({ href: "#faqs" }, 'FAQS')),
+      li({ 'class': "website" }, a({ href: "#knowledge_center" }, 'KNOWLEDGE CENTER')),
+      li({ 'class': "website" }, a({ href: "#contact_us" }, 'CONTACT US'))
+    ];
+    
     return ul({ id: 'menu' },
-      Badger.getAccessToken() && [
+      Badger.getAccessToken() ? [
         li({ id: 'nav-my-domains' },
           a({ href: "#filter_domains/all/list" }, span(span('MY DOMAINS'), span({ id: 'my-domains-count' }))),
           ul(
@@ -267,24 +288,22 @@ with (Hasher('Application')) {
         li({ id: 'nav-my-account' },
           a({ href: "#account" }, 'MY ACCOUNT'),
           my_account_nav()
-        )
-      ],  
+        ),
 
-      li({ id: 'nav-help-and-support' },
-        a({ href: "#welcome" }, 'BADGER.COM'),
-        ul(
-          li({ 'class': "website" }, a({ href: "#blogs" }, 'OUR BLOG')),
-          li({ 'class': "website" }, a({ href: "#chatroom" }, 'CHATROOM')),
-          li({ 'class': "website" }, a({ href: "#faqs" }, 'FAQS')),
-          li({ 'class': "website" }, a({ href: "#knowledge_center" }, 'KNOWLEDGE CENTER')),
-          li({ 'class': "website" }, a({ href: "#contact_us" }, 'CONTACT US'))
+        li({ id: 'nav-help-and-support' },
+          a({ href: "#welcome" }, 'BADGER.COM'),
+          ul(badger_menu_items)
         )
-        // ul(
-        //   li({ 'class': "website" }, a({ href: "#knowledge-base" }, 'KNOWLEDGE BASE')),
-        //   li({ 'class': "email" }, a({ href: "#tickets" }, 'SUPPORT TICKETS'))
-        // )
-      )
+      ] : [
+        li(a({ href: "#welcome" }, 'BADGER.COM')),
+        badger_menu_items
+      ]
+
     );
+  });
+  
+  define('badger_menu_items', function() {
+    return ;
   });
 
   define('my_account_nav', function() {

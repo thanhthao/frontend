@@ -62,6 +62,7 @@ with (Hasher('BaseDnsApp','DomainApps')) {
   });
 
   define('save_name_servers', function(domain_info, new_name_servers) {
+    start_modal_spin();
     $('#errors_modal').empty();
     Badger.updateDomain(domain_info.name, { name_servers: new_name_servers }, function(response) {
       if (response.meta.status == 'ok') {
@@ -69,6 +70,7 @@ with (Hasher('BaseDnsApp','DomainApps')) {
         $('#domain-menu-item-' + domain_info.name.replace('.','-')).remove();
         set_route('#domains/' + domain_info.name);
       } else {
+        stop_modal_spin();
         $('#errors_modal').empty().append(error_message(response));
       }
     });

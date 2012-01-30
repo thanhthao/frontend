@@ -33,18 +33,34 @@ a { color: #1E31F5; }
 
 #main #content h1 { font: 28px "Oswald", Arial, sans-serif; margin: 5px 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
 
-#footer { background: rgba(0,0,0,0.2); border-radius: 6px; color: #f0f0f0; padding: 10px 0; margin-top: 10px; }
+#footer { background: rgba(0,0,0,0.2); border-radius: 6px; color: #f0f0f0; padding: 10px 0; margin-top: 10px; margin-bottom: 40px;}
+#footer.chatbar { margin-bottom: 270px; }
 #footer .footer-holder { height:1%; display:table-row; }
 #footer .footer-frame{display:table-cell;}
 #footer .box { padding:5px 0 0; margin:0 0 30px; }
 #footer .box .holder { padding:0 0 5px; }
 #footer .box .frame { overflow:hidden; padding:11px 0 24px; }
-#footer .col { float:left; width:210px; margin:0 0 0 20px; }
+#footer .col { float:left; width:216px; margin:0 0 0 20px; }
 #footer h2{ font:18px "Oswald", Arial, sans-serif; margin:0 0 4px; border-bottom:1px solid #fff; padding:0 0 3px; text-shadow: 1px 0px 1px #252525; }
 #footer .col ul{ margin:0; padding:0; list-style:none; text-shadow: 1px 0px 1px #252525; }
 #footer .col ul li{padding:5px 0 0;}
 #footer .col a{color:#fff;}
 #footer .col address{font-style:normal;}
+
+#chatbar { position: fixed; background: #8cb82b; border-radius: 6px 6px 0 0; color: #f0f0f0; padding: 0 5px; }
+#chatbar.closed { top: 260px; top: 180px\9; left: -98px; left: 0\9; width: 220px; height: 36px; -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -ms-transform: rotate(-90deg); -o-transform: rotate(-90deg); filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); }
+#chatbar.active { height: 250px; width: 980px; margin: 0 0 0 -10px; bottom: 0px; }
+#chatbar .close-button { display: none; }
+#chatbar.active .close-button { display: block; }
+#chatbar .min-button { display: none; }
+#chatbar.active .min-button { display: block; right: 23px; }
+#chatbar h1 { font: 20px "Oswald", Arial, sans-serif; margin: 5px 5px 7px; padding: 0; text-transform: uppercase; color: #fff; cursor: pointer; text-align: center; }
+#chatbar.active h1 { text-align: left; cursor: auto; }
+#chatbar iframe { width: 100%; height: 210px; border: 0; border-radius: 4px 4px 0 0; margin: 0; }
+#chatbar.minimized { bottom: -214px; }
+#chatbar.minimized .close-button { display: none; }
+
+
 
 .social-network{ margin:0; padding:0; list-style:none; }
 #footer .col .social-network li{padding-bottom:5px;}
@@ -76,10 +92,10 @@ a { color: #1E31F5; }
 #menu ul.expanded { display: block; }
 #menu ul li { background: #212632 url(../images/sprite.png) no-repeat; }
 #menu ul li a { color:#fff; padding:9px 10px 10px 48px; font-size: 16px; }
-#menu .website {background-position:17px 13px;}
-#menu .email {background-position:17px -28px;}
-#menu .dns {background-position:17px -69px;}
-#menu .analytics {background-position:17px -110px;}
+#menu ul .website {background-position:17px 13px;}
+#menu ul .email {background-position:17px -28px;}
+#menu ul .dns {background-position:17px -69px;}
+#menu ul .analytics {background-position:17px -110px;}
 
 
 
@@ -104,10 +120,11 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 #suggest-grid { border-top: 1px solid #333; }
 
 
+.close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
+.close-button:hover { text-decoration: none; }
+
 .modal-dialog { position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); }
 #modal-content { margin: 100px auto 0 auto; width: 600px; padding: 20px; border-radius: 5px; background: white; position: relative; }
-.modal-dialog .close-button { background: black; border: 3px solid white; display: block; width: 20px; height: 20px; border-radius: 16px; position: absolute; right:-10px; top: -10px; text-align: center; font-weight: bold; line-height: 20px; color: white; font-size: 14px; box-shadow: 0 0 5px black; }
-.modal-dialog .close-button:hover { text-decoration: none; }
 .modal-dialog h1 { font: 28px "Oswald", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
 
 #modal-content.spinner { background: white url(../images/spinner.gif) no-repeat center center; }

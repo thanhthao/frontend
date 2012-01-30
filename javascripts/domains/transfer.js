@@ -162,15 +162,20 @@ with (Hasher('Transfer','Application')) {
       domain.not_locked = false;
       var item_id = '#' + row_id_for_domain(domain);
       set_background_color_if_valid(domain, false);
-      if (response.data.code == 2303) {
+      if (response.data.code == 2303 || response.meta.status == "not_found") {
         // domain not found
         $(item_id).html([td(domain.name), td({ colSpan: '6' }, span({ 'class': 'error'}, 'Error: Domain not found'))]);
         domain.auth_code_verified = false;
         domain.no_privacy = false;
       }
+			else if (response.data.code == 5000) {
+				$(item_id).html([td(domain.name), td({ colSpan: '6' }, span({ 'class': 'error'}, 'Error: Unsupported top level domain (' + domain.name.split(".").reverse()[0] + ')'))]);
+        domain.auth_code_verified = false;
+        domain.no_privacy = false;
+			}
       else if(response.data.code != 1000) {
         // interal server error
-        $(item_id).html([td(domain.name), td({ colSpan: '6' }, span({ 'class': 'error'}, 'Error: Internal server error'))]);
+        $(item_id).html([td(domain.name), td({ colSpan: '6' }, span({ 'class': 'error'}, response.data.message || 'Error: Internal server error'))]);
         domain.auth_code_verified = false;
         domain.no_privacy = false;
       }

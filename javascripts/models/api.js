@@ -180,6 +180,10 @@ var Badger = {
     Badger.api("/domains", 'POST', data, callback);
   },
 
+	renewDomain: function(name, years, callback) {
+		Badger.api("/domains/" + name + "/renew", "POST", { years: years }, callback);
+	},
+
   updateDomain: function(domain, options, callback) {
     Badger.api("/domains/" + domain, 'PUT', options, callback); 
   },
