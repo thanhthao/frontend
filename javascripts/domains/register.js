@@ -86,9 +86,10 @@ with (Hasher('Register','Application')) {
             update_my_domains_count(); 
             
             set_route('#domains/' + domain);
-            hide_modal();
+            // hide_modal();
+						LinkedAccounts.share_after_register_modal(domain); // share this domain registration
           });
-        })
+        });
       } else {
         // if the registration failed, we actually need to re-render the registration modal because if the user
         // had to buy credits in the previous step, the underlying modal is the purcahse modal and not the
