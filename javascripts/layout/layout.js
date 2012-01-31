@@ -28,6 +28,7 @@ with (Hasher('Application')) {
     if (!request_uri) request_uri = get_route();
     if (request_uri.indexOf("filter_domains") != -1) request_uri = request_uri.replace('grid', 'list');
     if (request_uri.indexOf("#blogs/") == 0) request_uri = '#blogs';
+    if (request_uri.indexOf("#tickets/") == 0) request_uri = '#tickets';
     if (request_uri.indexOf("#knowledge_center/") != -1) request_uri = '#knowledge_center';
 
     // select active link and expand parent
@@ -272,8 +273,7 @@ with (Hasher('Application')) {
       li({ 'class': "website" }, a({ href: "#blogs" }, 'OUR BLOG')),
       li({ 'class': "website" }, a({ href: "#faqs" }, 'FAQS')),
       li({ 'class': "website" }, a({ href: "#knowledge_center" }, 'KNOWLEDGE CENTER')),
-      li({ 'class': "website" }, a({ href: "#contact_us" }, 'CONTACT US')),
-      li({ 'class': "website" }, a({ href: "#tickets" }, 'TICKETS'))
+      li({ 'class': "website" }, a({ href: "#contact_us" }, 'CONTACT US'))
     ];
     
     return ul({ id: 'menu' },
@@ -309,6 +309,7 @@ with (Hasher('Application')) {
 
   define('my_account_nav', function() {
     var nav = ul(
+      li({ 'class': "website" }, a({ href: "#tickets" }, 'SUPPORT TICKETS')),
       li({ 'class': "email"}, a({ href: "#account/profiles" }, 'WHOIS PROFILES')),
       li({ 'class': "website"}, a({ href: "#account/billing" }, 'CREDITS & BILLING')),
       li({ 'class': "website"}, a({ href: "#account/settings" }, 'SETTINGS')),
