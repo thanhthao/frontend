@@ -273,3 +273,16 @@ label { cursor: pointer; }
 
 #transfer-domains-table .retry-link { display: none; }
 #transfer-domains-table .error-row .retry-link { display: block; }
+
+.ticket-content {
+  border: 1px solid #CCCCCC;
+  background: #eeeeee;
+  padding: 0 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.ticket-response {
+  border-bottom: 1px solid #CCCCCC;
+  padding: 10px 20px;
+}

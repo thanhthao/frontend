@@ -424,3 +424,48 @@ When /^I mock changeName$/ do
     callback({ meta: { status: 'ok' }, data: { message: 'Name Changed' } });
   };")
 end
+
+When /^I mock getTickets$/ do
+  pending_tickets = "[{  'person': { 'name': 'John Doe', 'id': 1 },
+                         'id': 1, 'created_at': '2012-01-28T07:39:29Z', status: 'open',
+                         'updated_at': '2012-01-31T07:39:29Z',
+                         'subject': 'Website Bug 0', 'category': 'Website Bug' }
+                     ]"
+
+  closed_tickets = "[{  'person': { 'name': 'John Doe', 'id': 1 },
+                         'id': 2, 'created_at': '2012-01-28T07:39:29Z', status: 'closed',
+                         'updated_at': '2012-01-31T07:39:29Z',
+                         'subject': 'Request Feature 0', 'category': 'Request Feature' }
+                     ]"
+
+  page.execute_script("Badger.getTickets = function(callback){
+    callback({ meta: { status: 'ok' }, data: { pending_tickets: #{pending_tickets}, closed_tickets: #{closed_tickets} } });
+  };")
+end
+
+When /^I mock getTicket$/ do
+  ticket = "{ 'person': { 'name': 'John Doe', 'id': 2 },
+              'id': 1, 'created_at': '2012-01-28T07:39:29Z', status: 'open',
+              'updated_at': '2012-01-31T07:39:29Z',
+              'subject': 'Website Bug 0', 'category': 'Website Bug',
+              'content': 'Some bug found on website',
+              'responses': [{ id: 2, ticket_id: 1, 'person': { 'name': 'Admin', 'id': 3 }, response: 'Website Bug response' }
+                           ]
+            }"
+
+  page.execute_script("Badger.getTicket = function(id, callback){
+    callback({ meta: { status: 'ok' }, data: #{ticket} });
+  };")
+end
+
+When /^I mock createTicket$/ do
+  page.execute_script("Badger.createTicket = function(data, callback){
+    callback({ meta: { status: 'ok' }, data: { message: 'Ticket created' } });
+  };")
+end
+
+When /^I mock addResponseTicket$/ do
+  page.execute_script("Badger.addResponseTicket = function(id, data, callback){
+    callback({ meta: { status: 'ok' }, data: { message: 'Response added' } });
+  };")
+end
