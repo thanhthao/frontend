@@ -81,7 +81,7 @@ with (Hasher('Transfer','Application')) {
         h1('TRANSFER DOMAINS INTO BADGER.COM'),
         div({ 'class': 'error-message hidden', id: 'transfer-form-error' }),
         form({ action: Transfer.get_transfer_domain_lists },
-          p('Enter the domains(s) you\'d like to transfer in bellow, one per line. If you already have auth codes, include them next to each domain (i.e. "badger.com abc123def")'),
+          p('Enter the domain(s) you\'d like to transfer in bellow, one per line. If you already have auth codes, include them next to each domain (i.e. "badger.com abc123def")'),
           
           textarea({ name: 'transfer_domains_list', placeholder: 'badger.com', style: 'width: 80%; height: 75px; float: left' }),
           div({ style: 'margin-top: 60px; text-align: right' }, input({ 'class': 'myButton', id: 'next', type: 'submit', value: 'Next' })),

@@ -361,6 +361,22 @@ var Badger = {
 
   getKnowledgeCenterArticle: function(id, callback) {
     Badger.api("/knowledge_center_articles/" + id, callback);
+  },
+
+  getTickets: function(callback) {
+    Badger.api("/tickets", callback);
+  },
+
+  getTicket: function(id, callback) {
+    Badger.api("/tickets/" + id, callback);
+  },
+
+  createTicket: function(data, callback) {
+    Badger.api("/tickets/", 'POST', data, callback);
+  },
+
+  addResponseTicket: function(id, data, callback) {
+    Badger.api("/tickets/" + id + '/add_response', 'POST', data, callback);
   }
 
 

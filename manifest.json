@@ -58,7 +58,8 @@
     "/javascripts/help/contact_us.js",
     "/javascripts/help/site_tour.js",
     "/javascripts/help/rhinonames.js",
-    "/javascripts/help/chat.js"
+    "/javascripts/help/chat.js",
+    "/javascripts/help/tickets.js"
   ],
 
   "images": [

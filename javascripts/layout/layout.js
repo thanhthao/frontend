@@ -272,7 +272,8 @@ with (Hasher('Application')) {
       li({ 'class': "website" }, a({ href: "#blogs" }, 'OUR BLOG')),
       li({ 'class': "website" }, a({ href: "#faqs" }, 'FAQS')),
       li({ 'class': "website" }, a({ href: "#knowledge_center" }, 'KNOWLEDGE CENTER')),
-      li({ 'class': "website" }, a({ href: "#contact_us" }, 'CONTACT US'))
+      li({ 'class': "website" }, a({ href: "#contact_us" }, 'CONTACT US')),
+      li({ 'class': "website" }, a({ href: "#tickets" }, 'TICKETS'))
     ];
     
     return ul({ id: 'menu' },
