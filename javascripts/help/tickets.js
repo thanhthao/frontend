@@ -2,29 +2,25 @@ with (Hasher('Ticket','Application')) {
 
   route('#tickets', function() {
     render(
-			h1('Tickets'),
+			h1('Support Tickets'),
 
       div({ style: 'float: right; margin-top: -44px' },
         a({ 'class': 'myButton myButton-small', href: ticket_form }, 'Create a New Ticket')
       ),
 
-      div(
-        h2('Your Pending Tickets'),
-        div({ id: 'pending-tickets' }, p('Loanding...'))
-      ),
-
-      div(
-        h2('Your Closed Tickets'),
-        div({ id: 'closed-tickets' }, p('Loanding...'))
-      )
+      div({ id: 'tickets' }, p('Loading...'))
     );
 
     Badger.getTickets(function(response) {
       var pending_tickets = response.data.pending_tickets;
       var closed_tickets = response.data.closed_tickets;
 
-      render_ticket_table('pending-tickets', pending_tickets);
-      render_ticket_table('closed-tickets', closed_tickets);
+      render({ target: 'tickets' },
+        (pending_tickets.length + closed_tickets.length) == 0 ? p('You have no tickets')
+        : [ render_ticket_table('Your Pending Tickets', pending_tickets),
+            render_ticket_table('Your Closed Tickets', closed_tickets)
+        ]
+      );
     });
   });
 
@@ -45,12 +41,12 @@ with (Hasher('Ticket','Application')) {
               td(ticket.status)
             ),
             tr(
-              td(strong('Created At: ')),
-              td(new Date(Date.parse(ticket.created_at)).toDateString())
+              td(strong('Created on: ')),
+              td(format_date(ticket.created_at))
             ),
             tr(
-              td(strong('Updated At: ')),
-              td(new Date(Date.parse(ticket.updated_at)).toDateString())
+              td(strong('Updated on: ')),
+              td(format_date(ticket.updated_at))
             ),
             tr(
               td(strong('Category: ')),
@@ -59,13 +55,13 @@ with (Hasher('Ticket','Application')) {
           )),
           div({ 'class': 'ticket-content' }, p(
             p(strong('Subject: '), ticket.subject),
-            p(ticket.content)
+            p(display_multiple_line(ticket.content))
           )),
           p(),
           ticket.responses.map(function(ticket_response) {
             return div({ 'class': 'ticket-response' },
               span(strong(ticket_response.person.name + ': ')),
-              span(ticket_response.response)
+              span(display_multiple_line(ticket_response.response))
             )
           }),
           ticket.status == 'closed' ? '' : response_form(id)
@@ -79,7 +75,7 @@ with (Hasher('Ticket','Application')) {
 
   define('ticket_form', function() {
     show_modal(
-      h1('Create A New Ticket'),
+      h1({ id: 'ticket-form-header' }, 'Create A New Ticket'),
       div({ id: 'send-ticket-form-errors' }),
 
       div({ id: 'send-ticket-form' },
@@ -133,8 +129,13 @@ with (Hasher('Ticket','Application')) {
     Badger.createTicket(form_data, function(response) {
       if (response.meta.status == 'ok') {
         set_route(get_route());
+        render({ target: 'ticket-form-header' }, 'Support Ticket Created')
         render({ target: 'send-ticket-form' },
-          div({ style: 'font-weight: bold; text-align: center' }, "Your ticket has been created!")
+          div('You have created a support ticket: "',
+              strong(form_data.subject),
+              '". We will review your ticket and respond to you as quickly as we can. Thank you!'
+          ),
+          div({ style: 'text-align: right; margin-top: 10px;' }, a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close"))
         );
       } else {
         render({ target: 'send-ticket-form-errors' }, error_message(response));
@@ -153,27 +154,42 @@ with (Hasher('Ticket','Application')) {
     }
   });
 
-  define('render_ticket_table', function(target_div, tickets) {
-    render({ target: target_div },
-        tickets.length == 0 ? p('You have no tickets')
-        : table({ 'class': 'fancy-table' }, tbody(
+  define('render_ticket_table', function(header, tickets) {
+    return(
+        tickets.length == 0 ? ''
+        : [
+          h2(header),
+          table({ 'class': 'fancy-table' }, tbody(
             tr(
               th('Subject'),
               th('Category'),
-              th('Created At'),
-              th('Updated At'),
+              th('Created on'),
+              th('Updated on'),
               th('Status')
             ),
             tickets.map(function(ticket) {
               return tr(
                 td(a({ href: '#tickets/' + ticket.id }, ticket.subject)),
                 td(ticket.category),
-                td(new Date(Date.parse(ticket.created_at)).toDateString()),
-                td(new Date(Date.parse(ticket.updated_at)).toDateString()),
+                td(format_date(ticket.created_at)),
+                td(format_date(ticket.updated_at)),
                 td(ticket.status)
               );
             })
-        ))
+        ))]
       );
-  })
+  });
+
+
+  define('format_date', function(day) {
+    var date = new Date(day);
+    return (date.getMonth() +  1) + '/' + date.getDate() + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
+  });
+
+  define('display_multiple_line', function(text) {
+    var lines = text.split('\n')
+    return lines.map(function(line) {
+      return [span(line), br()]
+    });
+  });
 }
