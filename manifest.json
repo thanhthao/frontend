@@ -3,7 +3,8 @@
   "stylesheets": [
     "/stylesheets/layout.css",
     "/stylesheets/fonts.css",
-    "/stylesheets/signup.css"
+    "/stylesheets/signup.css",
+    "/javascripts/lib/file_uploader/fileuploader.css"
   ],
 
   "javascripts": [
@@ -59,7 +60,8 @@
     "/javascripts/help/site_tour.js",
     "/javascripts/help/rhinonames.js",
     "/javascripts/help/chat.js",
-    "/javascripts/help/tickets.js"
+    "/javascripts/help/tickets.js",
+    "/javascripts/lib/file_uploader/fileuploader.js"
   ],
 
   "images": [
@@ -107,7 +109,8 @@
     "/images/apps/posterous.png",
     "/images/apps/tumblr.png",
     "/images/apps/twitter.png",
-    "/images/apps/wordpress.png"
+    "/images/apps/wordpress.png",
+    "/javascripts/lib/file_uploader/loading.gif"
   ],
   
   "lib": [ 

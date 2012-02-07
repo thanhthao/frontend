@@ -55,13 +55,21 @@ with (Hasher('Ticket','Application')) {
           )),
           div({ 'class': 'ticket-content' }, p(
             p(strong('Subject: '), ticket.subject),
+            ticket.attachments.length == 0 ? ''
+            : p(strong('Attachments: '), ticket.attachments.map(function (attachment) {
+              return [a({ href: attachment.url }, attachment.filename), " "]
+            })),
             p(display_multiple_line(ticket.content))
           )),
           p(),
           ticket.responses.map(function(ticket_response) {
             return div({ 'class': 'ticket-response' },
               span(strong(ticket_response.person.name + ': ')),
-              span(display_multiple_line(ticket_response.response))
+              span(display_multiple_line(ticket_response.response)),
+              ticket_response.attachments.length == 0 ? ''
+              : p(strong('Attachments: '), ticket_response.attachments.map(function (attachment) {
+                return [a({ href: attachment.url }, attachment.filename), " "]
+              }))
             )
           }),
           ticket.status == 'closed' ? '' : response_form(id)
@@ -69,6 +77,20 @@ with (Hasher('Ticket','Application')) {
       } else {
         render({ target: ticket_info }, div());
         alert(response.data.message);
+      }
+
+      if (ticket.status != 'closed') {
+        document.domain = 'badger.dev';
+        var response_attachment_uploader = new qq.FileUploader({
+          // pass the dom node (ex. $(selector)[0] for jQuery users)
+          element: $('#response-file-uploader')[0],
+          // path to server-side upload script
+          action: Badger.api_host + 'attachments',
+          params: {
+            access_token: Badger.getAccessToken(),
+            upload_inside_iframe: document.domain
+          }
+        });
       }
     })
   });
@@ -99,10 +121,12 @@ with (Hasher('Ticket','Application')) {
             tr(
               td({ style: 'vertical-align: top' }, strong('Content:')),
               td(textarea({ name: 'content', placeholder: 'Detailed description', style: 'height: 100px; width: 98%' }))
+            ),
+            tr(
+              td(),
+              td(div({ id: "file-uploader" }))
             )
-
           )),
-
           br(),
           div({ style: 'text-align: right' },
             input({ type: 'submit', value: 'Submit', 'class': "myButton" })
@@ -110,12 +134,24 @@ with (Hasher('Ticket','Application')) {
         )
       )
     )
+    document.domain = 'badger.dev';
+    var uploader = new qq.FileUploader({
+      // pass the dom node (ex. $(selector)[0] for jQuery users)
+      element: $('#file-uploader')[0],
+      // path to server-side upload script
+      action: Badger.api_host + 'attachments',
+      params: {
+        access_token: Badger.getAccessToken(),
+        upload_inside_iframe: document.domain
+      }
+    });
   });
 
   define('response_form', function(id) {
     var result = form({ id: "response-form", action: add_response },
       hidden({ name: 'id', value: id}),
       textarea({ style: 'width: 98%; height: 60px; margin: 10px 0;', name: 'response' }),
+      div({ id: "response-file-uploader" }),
       br(),
       input({'class': 'myButton', type:'submit', value: 'Reply' })
     );
