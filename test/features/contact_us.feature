@@ -10,7 +10,7 @@ Feature: Contact Us
   @javascript
   Scenario: As a logged in user I want to see Contact Us page
     Then I should see "Contact Us"
-    And I should see "Use this form if you'd like to ask us questions or give us suggestions. You can also email us directly at support@badger.com or call us at 415-787-5050."
+    And I should see "You can also email us directly at support@badger.com or call us at 415-787-5050."
     And I should see "Send Us an Email"
 
   @javascript

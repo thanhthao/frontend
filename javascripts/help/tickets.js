@@ -182,8 +182,8 @@ with (Hasher('Ticket','Application')) {
   define('add_response', function(form_data) {
     if (form_data && form_data.response.trim() != '' ) {
       Badger.addResponseTicket(form_data.id, form_data, function(response) {
-        set_route('#tickets/' + form_data.id);
         alert(response.data.message);
+        set_route('#tickets/' + form_data.id);
       });
     } else {
       alert('Response is empty')

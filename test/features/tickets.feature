@@ -4,10 +4,10 @@ Feature: Tickets
   I want to use ticket system
 
   Background:
-    Given I am on the home page
-    And I follow "BADGER.COM"
+    Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
+    And I follow "MY ACCOUNT"
     And I mock getTickets
-    When I follow "TICKETS"
+    When I follow "SUPPORT TICKETS"
 
   Scenario: View all pending and closed tickets
     Then I should see "Support Tickets"
@@ -34,7 +34,7 @@ Feature: Tickets
     And I should see "1/31/2012" within "#content div:eq(2) table:last tr:eq(2)"
     And I should see "closed" within "#content div:eq(2) table:last tr:eq(2)"
 
-  Scenario: View and response to a ticket
+  Scenario: I should view and see all the attachments of the ticket and response, and also be able to response to a ticket
     And I mock getTicket
     When I follow "Website Bug 0"
     Then I should see "Ticket Information"
@@ -47,8 +47,10 @@ Feature: Tickets
     And I should see "Category"
     And I should see "Website Bug"
     And I should see "Subject: Website Bug 0"
+    And I should see "Attachments: attachment1.pdf attachment2.pdf"
     And I should see "Some bug found on website"
     And I should see "Admin: Website Bug response"
+    And I should see "Attachments: response_attachment.jpg"
     And I fill in "response" with "you're welcome"
     And I mock addResponseTicket
     When I press "Reply"
