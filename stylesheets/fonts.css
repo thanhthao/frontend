@@ -11,8 +11,8 @@
   src: local('Droid Sans Bold'), local('DroidSans-Bold'), url('https://themes.googleusercontent.com/static/fonts/droidsans/v1/EFpQQyG9GqCrobXxL-KRMXbFhgvWbfSbdVg11QabG8w.woff') format('woff');
 }
 @font-face {
-  font-family: 'Oswald';
+  font-family: 'Yanone Kaffeesatz';
   font-style: normal;
-  font-weight: normal;
-  src: local('Oswald '), local('Oswald'), url('https://themes.googleusercontent.com/static/fonts/oswald/v1/qpy-UiLNKP-VfOdbcs6r6-vvDin1pK8aKteLpeZ5c0A.woff') format('woff');
+  font-weight: 400;
+  src: local('Yanone Kaffeesatz Regular'), local('YanoneKaffeesatz-Regular'), url('https://themes.googleusercontent.com/static/fonts/yanonekaffeesatz/v3/YDAoLskQQ5MOAgvHUQCcLQa6gm6bS00u2Qn-iPLo1Go.woff') format('woff');
 }
