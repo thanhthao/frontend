@@ -45,7 +45,7 @@ with (Hasher('ContactUs','Application')) {
 	      )
 			),
 			
-      p("Use this form if you'd like to ask us questions or give us suggestions.  You can also email us directly at ", a({ href: 'mailto:support@badger.com' }, 'support@badger.com'), " or call us at ", a({ href: 'tel:+14157875050' }, '415-787-5050' ), "."),
+      p("You can also email us directly at ", a({ href: 'mailto:support@badger.com' }, 'support@badger.com'), " or call us at ", a({ href: 'tel:+14157875050' }, '415-787-5050' ), "."),
 			p("Or you can send us mail at:"),
 			div({ style: "margin-left: 25px" },
 			  "Badger.com", br(),
