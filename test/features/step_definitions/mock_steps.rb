@@ -449,7 +449,11 @@ When /^I mock getTicket$/ do
               'updated_at': '2012-01-31T07:39:29Z',
               'subject': 'Website Bug 0', 'category': 'Website Bug',
               'content': 'Some bug found on website',
-              'responses': [{ id: 2, ticket_id: 1, 'person': { 'name': 'Admin', 'id': 3 }, response: 'Website Bug response' }
+              'attachments': [ { filename: 'attachment1.pdf', url: 'www.storage.com/attachment1.pdf' },
+                               { filename: 'attachment2.pdf', url: 'www.storage.com/attachment2.pdf' }
+                             ],
+              'responses': [ { id: 2, ticket_id: 1, 'person': { 'name': 'Admin', 'id': 3 }, response: 'Website Bug response',
+                               attachments: [{ filename: 'response_attachment.jpg', url: 'www.storage.com/response_attachment.jpg' }] }
                            ]
             }"
 

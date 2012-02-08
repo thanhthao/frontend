@@ -18,7 +18,7 @@ a { color: #1E31F5; }
 #user-nav a { color: #ccc }
 
 #logo { padding: 10px 0 10px 45px; margin: 0; background: transparent url(../images/badger-4.png) no-repeat 0 13px; }
-#logo a { font: 34px 'Oswald', Arial, sans-serif; color: #f0f0f0; text-transform: uppercase; }
+#logo a { font: 45px 'Yanone Kaffeesatz', Arial, sans-serif; color: #f0f0f0; text-transform: uppercase; }
 #logo a:hover { text-decoration: none; }
 #logo img { vertical-align: bottom; padding-right: 10px; }
 
@@ -31,7 +31,7 @@ a { color: #1E31F5; }
 #main #content { float: left; width: 100%; padding: 10px 0; }
 #main #sidebar { float: left; width: 221px; margin-left: -241px; min-height: 500px; }
 
-#main #content h1 { font: 28px "Oswald", Arial, sans-serif; margin: 5px 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
+#main #content h1 { font: 35px "Yanone Kaffeesatz", Arial, sans-serif; margin: 5px 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
 
 #footer { background: rgba(0,0,0,0.2); border-radius: 6px; color: #f0f0f0; padding: 10px 0; margin-top: 10px; margin-bottom: 40px;}
 #footer.chatbar { margin-bottom: 270px; }
@@ -41,7 +41,7 @@ a { color: #1E31F5; }
 #footer .box .holder { padding:0 0 5px; }
 #footer .box .frame { overflow:hidden; padding:11px 0 24px; }
 #footer .col { float:left; width:216px; margin:0 0 0 20px; }
-#footer h2{ font:18px "Oswald", Arial, sans-serif; margin:0 0 4px; border-bottom:1px solid #fff; padding:0 0 3px; text-shadow: 1px 0px 1px #252525; }
+#footer h2{ font:22px "Yanone Kaffeesatz", Arial, sans-serif; margin:0 0 4px; border-bottom:1px solid #fff; padding:0 0 3px; text-shadow: 1px 0px 1px #252525; }
 #footer .col ul{ margin:0; padding:0; list-style:none; text-shadow: 1px 0px 1px #252525; }
 #footer .col ul li{padding:5px 0 0;}
 #footer .col a{color:#fff;}
@@ -54,7 +54,7 @@ a { color: #1E31F5; }
 #chatbar.active .close-button { display: block; }
 #chatbar .min-button { display: none; }
 #chatbar.active .min-button { display: block; right: 23px; }
-#chatbar h1 { font: 20px "Oswald", Arial, sans-serif; margin: 5px 5px 7px; padding: 0; text-transform: uppercase; color: #fff; cursor: pointer; text-align: center; }
+#chatbar h1 { font: 25px "Yanone Kaffeesatz", Arial, sans-serif; margin: 5px 5px 7px; padding: 0; text-transform: uppercase; color: #fff; cursor: pointer; text-align: center; }
 #chatbar.active h1 { text-align: left; cursor: auto; }
 #chatbar iframe { width: 100%; height: 210px; border: 0; border-radius: 4px 4px 0 0; margin: 0; }
 #chatbar.minimized { bottom: -214px; }
@@ -84,14 +84,14 @@ a { color: #1E31F5; }
 #menu a { outline: 0 !important; }
 #menu { border-top:1px solid #14161e; margin:0; padding:0; list-style:none; }
 #menu li { border-bottom:1px solid #191c25; background:#292f3e; }
-#menu li a { color:#919ab2; display:block; padding:9px 10px 9px 17px; text-shadow: 0px 1px 1px #000; font: 17px "Oswald", Arial, sans-serif; }
+#menu li a { color:#919ab2; display:block; padding:9px 10px 9px 17px; text-shadow: 0px 1px 1px #000; font: 23px "Yanone Kaffeesatz", Arial, sans-serif; }
 #sidebar .active { background-image: url(../images/bg-menu-hover.png); background-repeat: no-repeat; background-position: 100% 50%; }
 
 /* submenu */
 #menu ul { border-top:1px solid #14161e; font-size:16px; margin:-1px 0; padding:0; list-style:none; display: none; }
 #menu ul.expanded { display: block; }
 #menu ul li { background: #212632 url(../images/sprite.png) no-repeat; }
-#menu ul li a { color:#fff; padding:9px 10px 10px 48px; font-size: 16px; }
+#menu ul li a { color:#fff; padding:9px 10px 10px 48px; font-size: 21px; }
 #menu ul .website {background-position:17px 13px;}
 #menu ul .email {background-position:17px -28px;}
 #menu ul .dns {background-position:17px -69px;}
@@ -125,7 +125,7 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 
 .modal-dialog { position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); }
 #modal-content { margin: 100px auto 0 auto; width: 600px; padding: 20px; border-radius: 5px; background: white; position: relative; }
-.modal-dialog h1 { font: 28px "Oswald", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
+.modal-dialog h1 { font: 35px "Yanone Kaffeesatz", Arial, sans-serif; margin: 0 0 7px; padding: 0; border-bottom: 1px solid #333; text-transform: uppercase; }
 
 #modal-content.spinner { background: white url(../images/spinner.gif) no-repeat center center; }
 #modal-content.spinner #modal-wrapper { visibility: hidden; }
@@ -240,7 +240,7 @@ label { cursor: pointer; }
 }
 
 .blog-title a {
-  font: 20px "Oswald", Arial, sans-serif;
+  font: 20px "Yanone Kaffeesatz", Arial, sans-serif;
   color: black;
   text-decoration: none;
 }
