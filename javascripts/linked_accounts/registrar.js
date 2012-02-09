@@ -31,7 +31,7 @@ with (Hasher('Registrar','Application')) {
           div(input({ type: 'password', name: 'password', placeholder: 'Password' })),
 					div(
 						input({ type: 'checkbox', name: 'agent_accept', id: 'agent_accept' }),
-						label({ for: 'agent_accept' }, 'I allow Badger.com to act as my agent....')
+						label({ 'for': 'agent_accept' }, 'I allow Badger.com to act as my agent....')
 					),
 					div({ style: 'text-align: right' }, input({ 'class': 'myButton', id: 'next', type: 'submit', value: 'Link Accounts' })),
 					div({ style: 'clear: both' })
