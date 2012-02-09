@@ -290,7 +290,7 @@ When /^I mock getRecords for domain "([^"]*)" with records:$/ do |domain, table|
   records = []
   table.hashes.each do |attributes|
     records << "{ id: #{attributes['id']}, domain_id: 2, record_type: '#{attributes['record_type']}', content: '#{attributes['content']}',
-                  ttl: #{attributes['ttl']}, priority: '#{attributes['priority']}', subdomain: '#{attributes['name']}.#{domain}', active: true }"
+                  ttl: #{attributes['ttl']}, priority: '#{attributes['priority']}', subdomain: '#{attributes['subdomain'].empty? ? '' : "#{attributes['subdomain']}."}#{domain}', active: true }"
   end
   page.execute_script("Badger.getRecords = function(name, callback){
     callback([ #{records.join(',')}]
@@ -427,14 +427,14 @@ end
 
 When /^I mock getTickets$/ do
   pending_tickets = "[{  'person': { 'name': 'John Doe', 'id': 1 },
-                         'id': 1, 'created_at': '2012-01-28T17:39:29Z', status: 'open',
-                         'updated_at': '2012-01-31T17:39:29Z',
+                         'id': 1, 'created_at': '2012-01-28T15:39:29Z', status: 'open',
+                         'updated_at': '2012-01-31T15:39:29Z',
                          'subject': 'Website Bug 0', 'category': 'Website Bug' }
                      ]"
 
   closed_tickets = "[{  'person': { 'name': 'John Doe', 'id': 1 },
-                         'id': 2, 'created_at': '2012-01-28T17:39:29Z', status: 'closed',
-                         'updated_at': '2012-01-31T17:39:29Z',
+                         'id': 2, 'created_at': '2012-01-28T15:39:29Z', status: 'closed',
+                         'updated_at': '2012-01-31T15:39:29Z',
                          'subject': 'Request Feature 0', 'category': 'Request Feature' }
                      ]"
 
@@ -445,8 +445,8 @@ end
 
 When /^I mock getTicket$/ do
   ticket = "{ 'person': { 'name': 'John Doe', 'id': 2 },
-              'id': 1, 'created_at': '2012-01-28T17:39:29Z', status: 'open',
-              'updated_at': '2012-01-31T17:39:29Z',
+              'id': 1, 'created_at': '2012-01-28T15:39:29Z', status: 'open',
+              'updated_at': '2012-01-31T15:39:29Z',
               'subject': 'Website Bug 0', 'category': 'Website Bug',
               'content': 'Some bug found on website',
               'attachments': [ { filename: 'attachment1.pdf', url: 'www.storage.com/attachment1.pdf' },
