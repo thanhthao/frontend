@@ -290,7 +290,7 @@ When /^I mock getRecords for domain "([^"]*)" with records:$/ do |domain, table|
   records = []
   table.hashes.each do |attributes|
     records << "{ id: #{attributes['id']}, domain_id: 2, record_type: '#{attributes['record_type']}', content: '#{attributes['content']}',
-                  ttl: #{attributes['ttl']}, priority: '#{attributes['priority']}', subdomain: '#{attributes['name']}.#{domain}', active: true }"
+                  ttl: #{attributes['ttl']}, priority: '#{attributes['priority']}', subdomain: '#{attributes['subdomain'].empty? ? '' : "#{attributes['subdomain']}."}#{domain}', active: true }"
   end
   page.execute_script("Badger.getRecords = function(name, callback){
     callback([ #{records.join(',')}]
