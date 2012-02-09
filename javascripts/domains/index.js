@@ -114,11 +114,41 @@ with (Hasher('Domains','Application')) {
       ]:((domains.length == 0) ? 
 				empty_domain_message
       : [ 
+        remote_domains_transfer(domains),
         this[view_type + '_view'](domains)
 			])
     );
   });
 
+  define('remote_domains_transfer', function(domains) {
+    var registrars = {};
+    console.log(domains);
+    $.each(domains, function(key, domain) {
+      switch (domain.current_registrar) {
+        case 'Network Solutions, LLC':
+        case 'GoDaddy Inc.':
+          if (!registrars[domain.current_registrar]) {
+            registrars[domain.current_registrar] = {
+              count: 0,
+              default_domains: ''
+            };
+          }
+          registrars[domain.current_registrar].count++;
+          registrars[domain.current_registrar].default_domains += domain.name + "\n";
+          break;
+      }
+    });
+    if ($.isEmptyObject(registrars)) {
+      return;
+    }
+    
+    return div({ 'class': 'info-message' }, $.map(registrars, function(data, name) {
+      return div('You have ' + data.count + ' domains at ' + name,
+        a({ 'class': 'myButton myButton-small', href: curry(Transfer.show, data.default_domains, true) }, 'Transfer To Badger')
+      );
+    }));
+  });
+  
   define('list_view', function(domains) {
     return [
       table({ 'class': 'fancy-table' },

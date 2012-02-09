@@ -1,6 +1,6 @@
 with (Hasher('Transfer','Application')) {
 
-  define('show', function() {
+  define('show', function(default_domains, skip) {
     if (!Badger.getAccessToken()) {
       Signup.require_user_modal(Transfer.show);
       return;
@@ -10,8 +10,11 @@ with (Hasher('Transfer','Application')) {
       if (contacts.data.length == 0) {
         var custom_message = "You must have at least one contact profile to transfer domain.";
         Whois.edit_whois_modal(null, Transfer.show, custom_message);
-      } else {
-        transfer_domains_form();
+      } else if (skip) {
+        get_transfer_domain_lists({transfer_domains_list: default_domains});
+      }
+      else {
+        transfer_domains_form(default_domains);
       }
     });
   });
@@ -75,7 +78,7 @@ with (Hasher('Transfer','Application')) {
     set_route('#');
   });
 
-	define('transfer_domains_form', function() {
+	define('transfer_domains_form', function(default_domains) {
     show_modal(
       div(
         h1('TRANSFER DOMAINS INTO BADGER.COM'),
@@ -83,7 +86,7 @@ with (Hasher('Transfer','Application')) {
         form({ action: Transfer.get_transfer_domain_lists },
           p('Enter the domain(s) you\'d like to transfer in below, one per line. If you already have auth codes, include them next to each domain (e.g. "badger.com abc123def")'),
           
-          textarea({ name: 'transfer_domains_list', placeholder: 'badger.com', style: 'width: 80%; height: 75px; float: left' }),
+          textarea({ name: 'transfer_domains_list', placeholder: 'badger.com', style: 'width: 80%; height: 75px; float: left' }, default_domains),
           div({ style: 'margin-top: 60px; text-align: right' }, input({ 'class': 'myButton', id: 'next', type: 'submit', value: 'Next' })),
           div({ style: 'clear: both' })
         )

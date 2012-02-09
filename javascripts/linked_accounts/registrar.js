@@ -70,7 +70,6 @@ with (Hasher('Registrar','Application')) {
 	});
 		
 	define('poll_link', function(ttl) {
-		console.log(ttl);
 		Badger.getLinkedAccount($('#linked-account-id').val(), function (response) {
 			if (response.meta.status == 'ok') {
 				switch (response.data.status) {

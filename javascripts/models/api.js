@@ -156,10 +156,6 @@ var Badger = {
     Badger.api("/domains/" + name, callback);
   },
   
-  
-
-  
-  
   getRecords: function(name, callback) {
     Badger.api("/domains/" + name + "/records", function(response) { callback(response.data); });   
   },
