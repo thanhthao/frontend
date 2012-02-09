@@ -52,6 +52,8 @@
     "/javascripts/accounts/purchase_credits_modal.js",
     "/javascripts/accounts/invite.js",
 
+    "/javascripts/linked_accounts/registrar.js",
+    
     "/javascripts/help/blogs.js",
     "/javascripts/help/faqs.js",
     "/javascripts/help/knowledge_center.js",
