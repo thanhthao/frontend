@@ -7,7 +7,7 @@ Feature: Badger DNS
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
     And I mock getDomain with domain "mydomain0.com"
     And I mock getRecords for domain "mydomain0.com" with records:
-      |id |record_type|name         |content                              |ttl |priority|
+      |id |record_type|subdomain    |content                              |ttl |priority|
       |78 |A          |subdomain    |244.245.123.19                       |1800|        |
       |79 |MX         |             |smtp.badger.com                      |1800|10      |
       |80 |TXT        |             |v=spf1 mx mx:rhinonamesmail.com ~all |1800|        |
@@ -79,7 +79,7 @@ Feature: Badger DNS
     And I select "1 hour" from "dns-78-edit-ttl"
     And I mock updateRecord with status "ok"
     And I mock getRecords for domain "mydomain0.com" with records:
-      |id |record_type|name         |content                              |ttl |priority|
+      |id |record_type|subdomain    |content                              |ttl |priority|
       |78 |A          |123agile     |1.2.3.4                              |3600|        |
       |79 |MX         |             |smtp.badger.com                      |1800|10      |
       |80 |TXT        |             |v=spf1 mx mx:rhinonamesmail.com ~all |1800|        |

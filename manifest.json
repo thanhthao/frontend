@@ -44,6 +44,12 @@
     "/javascripts/domains/apps/google_docs.js",
     "/javascripts/domains/apps/google_calendar.js",
     "/javascripts/domains/apps/heroku.js",
+    "/javascripts/domains/apps/shopify.js",
+    "/javascripts/domains/apps/posterous.js",
+    "/javascripts/domains/apps/tumblr.js",
+    "/javascripts/domains/apps/blogger.js",
+    "/javascripts/domains/apps/flavorsme.js",
+    "/javascripts/domains/apps/google_app_engine.js",
 
     "/javascripts/accounts/signup.js",
     "/javascripts/accounts/account.js",
