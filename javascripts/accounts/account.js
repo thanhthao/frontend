@@ -7,7 +7,9 @@ with (Hasher('Account','Application')) {
         ul(
           li(a({ href: '#account/profiles'}, 'Whois Profiles')),
           li(a({ href: '#account/billing'}, 'Credits & Billing'))
-        )
+        ),
+        a({ 'class': 'myButton myButton-small', href: curry(Registrar.show_link, 'godaddy') }, 'godaddy link RWH'),
+        a({ 'class': 'myButton myButton-small', href: curry(Registrar.show_link, 'networksolutions') }, 'networksolutions link RWH')
       )
     );
   });
