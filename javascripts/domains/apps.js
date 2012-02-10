@@ -6,7 +6,6 @@ with (Hasher('Application')) {
     Badger.getDomain(domain, function(response) {
       var domain_obj = response.data;
       if (response.meta.status == 'ok') {
-        domain_obj.current_registrar = 'godaddy';
         Badger.getRecords(domain, function(records) {
           domain_obj.records = records;
           callback.call(that, domain_obj)

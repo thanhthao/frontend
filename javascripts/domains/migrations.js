@@ -166,7 +166,7 @@ with (Hasher('DomainMigrations','Application')) {
               h3({ style: 'margin-bottom: 0' }, 'Registrant:'),
               div(
                 select({ name: 'registrant_contact_id', style: 'width: 150px' },
-                  WhoisApp.profile_options_for_select()
+                  Registration.profile_options_for_select()
                 )
               )
             ),

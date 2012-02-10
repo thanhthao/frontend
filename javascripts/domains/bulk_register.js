@@ -79,7 +79,7 @@ with (Hasher('BulkRegister','Application')) {
           textarea({ name: 'register_domains_list', style: 'width: 80%; height: 180px;' }),
           div(span('Registrant:'),
             span(select({ name: 'contacts_id', style: 'width: 150px; margin: 10px 10px; text-align: center' },
-              WhoisApp.profile_options_for_select()
+              Registration.profile_options_for_select()
           ))),
           div({ style: 'text-align: right' }, input({ 'class': 'myButton', id: 'next', type: 'submit', value: 'Next' }))
         )

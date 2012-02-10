@@ -131,7 +131,7 @@ with (Hasher('Transfer','Application')) {
       ),
       div({ style: 'float: left; margin-top: 24px'},
         'Registrant: ',
-        select({ id: 'registrant_contact_id', name: 'registrant_contact_id', style: 'width: 150px' }, WhoisApp.profile_options_for_select()),
+        select({ id: 'registrant_contact_id', name: 'registrant_contact_id', style: 'width: 150px' }, Registration.profile_options_for_select()),
         ' ',
         input({ type: 'checkbox', name: 'use_badger_dns', value: 'ns1.badger.com,ns2.badger.com', checked: 'checked', id: 'use_badger_dns', style: "margin: 5px 5px 5px 20px" }),
         label({ 'for': 'use_badger_dns' }, ' Import existing DNS into Badger DNS')

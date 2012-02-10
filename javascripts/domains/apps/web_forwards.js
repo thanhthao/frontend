@@ -4,6 +4,7 @@ with (Hasher('WebForwards', 'DomainApps')) {
     id: 'badger_web_forward',
     name: 'URL Forwarding',
     menu_item: { text: 'URL FORWARDING', href: '#domains/:domain/web_forwards' },
+    icon: 'images/apps/web-forward.png',
     requires: {
       dns: [
         { type: 'a', content: "50.57.26.208" },

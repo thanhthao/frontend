@@ -3,8 +3,8 @@ with (Hasher()) {
     var arguments = flatten_to_array(arguments);
     var options = shift_options_from_args(arguments);
 
-    options.layout = typeof(options.layout) == 'undefined' ? (options.target ? false : this.default_layout) : options.layout;
-    options.target = options.target || document.body;
+    options.layout = typeof(options.layout) == 'undefined' ? ((options.target||options.into) ? false : this.default_layout) : options.layout;
+    options.target =  options.target || options.into || document.body;
     if (typeof(options.target) == 'string') options.target = document.getElementById(options.target);
     if (options.layout) {
       var layout_element = options.layout(arguments);

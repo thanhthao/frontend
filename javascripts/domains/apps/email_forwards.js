@@ -4,6 +4,7 @@ with (Hasher('EmailForwards', 'DomainApps')) {
     id: 'badger_email_forward',
     name: 'Email Forwarding',
     menu_item: { text: 'EMAIL FORWARDING', href: '#domains/:domain/email_forwards' },
+    icon: 'images/apps/email-forward.png',
     requires: {
       dns: [
         { type: 'mx', priority: 10, content: "smtp.badger.com" },
