@@ -327,20 +327,12 @@ var Badger = {
     Badger.api("/domains/remote_whois", "POST", { domain: domain }, callback);
   },
 
-	// linkAccounts: function(site, site_access_token, callback) {
-	// 		Badger.api("/account/link_accounts", "POST", { site: site, site_access_token: site_access_token }, callback);
-	// 	},
-	// 
-	// 	deleteLinkedAccount: function(site_access_token, callback) {
-	// 		Badger.api("/account/delete_linked_account", "DELETE", { site_access_token: site_access_token }, callback);
-	// 	},
-	
 	createLinkedAccount: function(data, callback) {
-		Badger.api("/linked_account", "POST", data, callback);
+		Badger.api("/linked_accounts", "POST", data, callback);
 	},
 	
 	updateLinkedAccount: function(id, data, callback) {
-		Badger.api("/linked_account/" + id, "PUT", data, callback);
+		Badger.api("/linked_accounts/" + id, "PUT", data, callback);
 	},
 	
 	getLinkedAccounts: function(callback) {

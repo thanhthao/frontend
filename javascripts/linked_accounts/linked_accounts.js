@@ -33,13 +33,13 @@ with (Hasher('LinkedAccounts','Application')) {
 	});
 	
 	define('linked_accounts_table', function(accounts) {
+	  console.log(accounts);//RWH
 		return table({ id: "accounts-table", 'class': "fancy-table" }, tbody(
 			// if the user has not linked any accounts yet, we want to show all of the accounts that they can link immediately.
 			(accounts == "show_all" ? [
 				show_all_account_link_rows()
 			] : [
 				(accounts || []).map(function(account) {
-					
 					if (account.site == "twitter") {
 						var row = linked_accounts_table_row(div({ style: "font-weight: bold; font-size: 20px; padding-left: 15px;" }, "Twitter"), "twitter", div({ id: ("twitter-" + account.id), style: "text-align: center" },
 							img({ src: "images/ajax-loader.gif" })
@@ -73,8 +73,39 @@ with (Hasher('LinkedAccounts','Application')) {
 						
 						return row;
 						
-					} else if (account.site == "godaddy") {
-						
+					} else if (account.site == "godaddy" || account.site == "networksolutions") {
+					  var name = 'Unknown';
+					  var status = 'Unknown';
+  					var error = false;
+  					switch (account.status) {
+  					  case 'synced':
+  					    status = 'Linked'
+  					    break;
+  					  case 'error_auth':
+  					    status = span({ 'class': 'error-red' }, 'Login Failure')
+  					    error = true;
+  					    break
+  					}
+  					switch (account.site) {
+  					  case 'goddady':
+  					    name = 'Go Daddy, Inc.';
+  					    break;
+  					  case 'networksolutions':
+    				    name = 'Network Solutions LLC';
+    				    break;
+  					}
+  					
+					  return linked_accounts_table_row(
+				  	  div({ style: "font-weight: bold; font-size: 20px;" }, name), account.site, 
+				  	    div({ id: (account.site + "-" + account.id), style: "width: 400px; text-align: center; float: right;" },
+				  	      div({ 'class': error ? "error-message" : "info-message", style: "text-align:right;" },
+                    h3("Status: ", status),
+                    div("Last Sync: " + (account.last_synced_at ? new Date(Date.parse(account.last_synced_at)).toString() : 'Never')),
+  									div("Login: " + account.access_token + " (" + account.domain_count + " Linked Domain(s))"),
+  									error ? a({ 'class': "myButton red", style: 'margin: 10px 0 0;', href: curry(Registrar.show_link, account.site, account.id, account.access_token)}, "edit") : a({ 'class': "myButton", style: 'margin: 10px 0 0;', href: curry(Registrar.show_link, account.site, account.id, account.access_token)}, "sync now")
+  								)
+								)
+						  );
 					} else {
 						console.log("Unknown account (" + account.site + ")", account);
 					}
@@ -86,13 +117,13 @@ with (Hasher('LinkedAccounts','Application')) {
 	
 	define('linked_accounts_table_row', function(site, row_id, link_button_or_account_info) {
 		return tr({ id: row_id },
-			td({ width: "30%" }, site),
-			td({ width: "70%" }, link_button_or_account_info)
+			td({ width: "40%" }, site),
+			td({ width: "60%" }, link_button_or_account_info)
 		);
 	});
 	
 	define('link_accounts_button', function(target) {
-		return a({ 'class': "myButton myButton", style: "float: right; margin: 5px auto 5px auto", href: target }, "Link Accounts");
+		return a({ 'class': "myButton", style: "float: right; margin: 5px auto 5px auto", href: target }, "Link Accounts");
 	});
 	
 	define('authorize_account', function() {
@@ -107,7 +138,11 @@ with (Hasher('LinkedAccounts','Application')) {
 		var result = [];
 		
 		if ($("#accounts-table tr#godaddy").length == 0) result.push(
-			linked_accounts_table_row("GoDaddy", "godaddy", link_accounts_button(curry(function() { window.open("http://api.badger.dev/auth/developer", "width=600, height=600") })))
+			linked_accounts_table_row("Go Daddy", "godaddy", link_accounts_button(curry(Registrar.show_link, 'godaddy')))
+		);
+		
+		if ($("#accounts-table tr#networksolutions").length == 0) result.push(
+			linked_accounts_table_row("Network Solutions", "networksolutions", link_accounts_button(curry(Registrar.show_link, 'networksolutions')))
 		);
 		
 		if ($("#accounts-table tr#twitter").length == 0) result.push(
