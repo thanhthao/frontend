@@ -24,7 +24,7 @@ with (Hasher('FlavorsMe', 'DomainApps')) {
   route('#domains/:domain/flavorsme', function(domain) {
     render(
       h1({ 'class': 'header-with-right-btn' }, div({ 'class': 'long-domain-name' }, 'FLAVORS ME FOR ' + domain)),
-      domain_app_settings_button('badger_shopify', domain),
+      domain_app_settings_button('badger_flavorsme', domain),
 
       div("Flavors Me DNS settings have been installed into Badger DNS.",
           'Also check out ',
