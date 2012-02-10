@@ -66,16 +66,14 @@ with (Hasher('DnsApp','DomainApps')) {
       var app = Hasher.domain_apps[key];
       if (app.requires && app.requires.dns && app_is_installed_on_domain(app, domain_obj)) {
         var app_result = { app_id: key, app_name: app.name, records: [] }
-        for (var dns_record in app.requires.dns) {
-          for (var i=0; app.requires.dns && (i<app.requires.dns.length); i++) {
-            var found_record = domain_has_record(domain_obj, app.requires.dns[i]);
-            if (found_record) {
-              app_result.records.push(found_record);
+        for (var i=0; app.requires.dns && (i<app.requires.dns.length); i++) {
+          var found_record = domain_has_record(domain_obj, app.requires.dns[i]);
+          if (found_record) {
+            app_result.records.push(found_record);
 
-              domain_obj.records = $.grep(domain_obj.records, function(value) {
-                return value != found_record;
-              });
-            }
+            domain_obj.records = $.grep(domain_obj.records, function(value) {
+              return value != found_record;
+            });
           }
         }
         app_dns.push(app_result);
@@ -124,7 +122,7 @@ with (Hasher('DnsApp','DomainApps')) {
                 option({ value: '604800' }, '1 week')
               )
             ),
-            td({ style: 'text-align: center' }, button({ style: "background-image: url(images/add.gif); background-color:Transparent; border: none; width: 16px; height: 16px; cursor: pointer", onclick: curry(dns_add, domain_obj) }))
+            td({ style: 'text-align: center' }, button({ style: "background-image: url(images/add.gif); background-color:Transparent; border: none; width: 16px; height: 16px; cursor: pointer", onclick: curry(dns_add, domain_obj.name) }))
           ),
 
           sort_dns_records(domain_obj.records).map(function(record) {

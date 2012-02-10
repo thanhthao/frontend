@@ -18,6 +18,16 @@ with (Hasher('GoogleMail', 'DomainApps')) {
         { type: 'mx', priority: 10, content: "aspmx4.googlemail.com" },
         { type: 'mx', priority: 10, content: "aspmx5.googlemail.com" }
       ]
+    },
+
+    install_screen: function(app, domain_obj) {
+      return div(
+        p("Install this app to integrate Google Mail to your domain."),
+        show_required_dns(app, domain_obj),
+        form({ style: 'text-align: center', action: curry(install_app_button_clicked, app, domain_obj) },
+          input({ 'class': 'myButton', type: 'submit', style: 'margin-top: 10px', value: 'Install Google Mail' })
+        )
+      );
     }
   });
 

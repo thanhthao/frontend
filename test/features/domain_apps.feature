@@ -62,14 +62,39 @@ Feature: Domain apps
     And I mock getDomain with domain "mydomain0.com"
     And I mock getRecords for domain "mydomain0.com" with records:
       |id |record_type|subdomain    |content                              |ttl |priority|
-      |80 |A          |             |75.101.163.44                        |1800|        |
-      |81 |A          |             |75.101.145.87                        |1800|        |
-      |82 |A          |             |174.129.212.2                        |1800|        |
-      |83 |CNAME      |www          |ea.heroku.com                        |1800|        |
     And I follow "mydomain0.com"
-    When I click on item with xpath "(//a[@class='app_store_container'])[11]"
+    When I click on item with xpath "(//a[@class='app_store_container'])[9]"
+    Then I should see "Shopify for mydomain0.com"
+    And I should see "DNS records to be installed"
+    When I follow "DNS records to be installed"
+    Then I should see "Subdomain" within "table:first"
+    And I should see "Type" within "table:first"
+    And I should see "Target" within "table:first"
+    And I should see "mydomain0.com" within "table:first tr:eq(2)"
+    And I should see "A" within "table:first tr:eq(2)"
+    And I should see "204.93.213.45" within "table:first tr:eq(2)"
+    And I should see "www.mydomain0.com" within "table:first tr:eq(3)"
+    And I should see "CNAME" within "table:first tr:eq(3)"
     And I fill in "shopify_app_url" with "ea.shopify.com"
     And I mock addRecord
     And I press "Install Shopify"
     Then I should see "SHOPIFY FOR mydomain0.com" within "#content h1"
     And I should see "Shopify is now installed! If you haven't already, you'll need to add [mydomain0.com] and [www.mydomain0.com] in your Shopify Preferences"
+
+  Scenario: Install new app unsuccessfully because of conflicts
+    And I mock getDomain with domain "mydomain0.com"
+    And I mock getRecords for domain "mydomain0.com" with records:
+      |id |record_type|subdomain    |content                              |ttl |priority|
+      |80 |A          |             |75.101.163.44                        |1800|        |
+      |81 |A          |             |75.101.145.87                        |1800|        |
+      |82 |A          |             |174.129.212.2                        |1800|        |
+      |83 |CNAME      |www          |ea.heroku.com                        |1800|        |
+    And I follow "mydomain0.com"
+    When I click on item with xpath "(//a[@class='app_store_container'])[9]"
+    And I fill in "shopify_app_url" with "ea.shopify.com"
+    And I mock addRecord
+    When I press "Install Shopify"
+    Then I should see "Install Shopify Failed"
+    And I should see "Installation failed due to conflict with the following app:"
+    And I should see "Heroku" within "table:first tr"
+    And I should see "Uninstall" within "table:first tr"

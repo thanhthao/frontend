@@ -1,4 +1,4 @@
-with (Hasher('GoogleCalendar', 'DomainApps')) { 
+with (Hasher('GoogleCalendar', 'DomainApps')) {
 
   register_domain_app({
     id: 'google_calendar',
@@ -10,6 +10,16 @@ with (Hasher('GoogleCalendar', 'DomainApps')) {
       dns: [
         { type: 'cname', subdomain: 'calendar', content: 'ghs.google.com' }
       ]
+    },
+
+    install_screen: function(app, domain_obj) {
+      return div(
+        p("With Google's free online calendar, it's easy to keep track of life's important events all in one place. Install this app to integrate Google Calendar to your domain."),
+        show_required_dns(app, domain_obj),
+        form({ style: 'text-align: center', action: curry(install_app_button_clicked, app, domain_obj) },
+          input({ 'class': 'myButton', type: 'submit', style: 'margin-top: 10px', value: 'Install Google Calendar' })
+        )
+      );
     }
   });
 
@@ -22,6 +32,6 @@ with (Hasher('GoogleCalendar', 'DomainApps')) {
       p("Once you've done that, you can head on over to ", a({ href: 'http://calendar.' + domain + '/', target: '_blank' }, 'calendar.' + domain), " and get started!")
     );
   });
-  
+
 
  }

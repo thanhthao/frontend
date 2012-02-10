@@ -16,7 +16,10 @@ with (Hasher('Blogger', 'DomainApps')) {
     },
 
     install_screen: function(app, domain_obj) {
-      return div('You are about to install Blogger',
+      return div(
+        p('Blogger is a free weblog publishing tool from Google, for sharing text, photos and video. Install this app to point your domain to your Blogger account.'),
+        p('Install this app to point your domain to your Blogger account.'),
+        show_required_dns(app, domain_obj),
         form({ style: 'text-align: center', action: curry(install_app_button_clicked, app, domain_obj) },
           input({ 'class': 'myButton', type: 'submit', value: 'Install Blogger' })
         )
@@ -27,7 +30,7 @@ with (Hasher('Blogger', 'DomainApps')) {
   route('#domains/:domain/blogger', function(domain) {
     render(
       h1({ 'class': 'header-with-right-btn' }, div({ 'class': 'long-domain-name' }, 'BLOGGER FOR ' + domain)),
-      domain_app_settings_button('badger_shopify', domain),
+      domain_app_settings_button('badger_blogger', domain),
 
       div("Blogger DNS settings have been installed into Badger DNS.",
           'Also check out ',
