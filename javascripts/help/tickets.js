@@ -55,10 +55,7 @@ with (Hasher('Ticket','Application')) {
           )),
           div({ 'class': 'ticket-content' }, p(
             p(strong('Subject: '), ticket.subject),
-            ticket.attachments.length == 0 ? ''
-            : p(strong('Attachments: '), ticket.attachments.map(function (attachment) {
-              return [a({ href: attachment.url }, attachment.filename), " "]
-            })),
+            display_attachments(ticket.attachments),
             p(display_multiple_line(ticket.content))
           )),
           p(),
@@ -66,10 +63,7 @@ with (Hasher('Ticket','Application')) {
             return div({ 'class': 'ticket-response' },
               span(strong(ticket_response.person.name + ': ')),
               span(display_multiple_line(ticket_response.response)),
-              ticket_response.attachments.length == 0 ? ''
-              : p(strong('Attachments: '), ticket_response.attachments.map(function (attachment) {
-                return [a({ href: attachment.url }, attachment.filename), " "]
-              }))
+              display_attachments(ticket_response.attachments)
             )
           }),
           ticket.status == 'closed' ? '' : response_form(id)
@@ -80,20 +74,31 @@ with (Hasher('Ticket','Application')) {
       }
 
       if (ticket.status != 'closed') {
-        document.domain = 'badger.dev';
-        var response_attachment_uploader = new qq.FileUploader({
-          // pass the dom node (ex. $(selector)[0] for jQuery users)
-          element: $('#response-file-uploader')[0],
-          // path to server-side upload script
-          action: Badger.api_host + 'attachments',
-          params: {
-            access_token: Badger.getAccessToken(),
-            upload_inside_iframe: document.domain
-          }
-        });
+        attachment_field('response-file-uploader');
       }
     })
   });
+
+  define('attachment_field', function(id) {
+    document.domain = 'badger.dev';
+    var response_attachment_uploader = new qq.FileUploader({
+      // pass the dom node (ex. $(selector)[0] for jQuery users)
+      element: $('#' + id)[0],
+      // path to server-side upload script
+      action: Badger.api_host + 'attachments',
+      params: {
+        access_token: Badger.getAccessToken(),
+        upload_inside_iframe: document.domain
+      }
+    });
+  })
+
+  define('display_attachments', function(attachments) {
+    return attachments.length == 0 ? ''
+    : p(strong('Attachments: '), attachments.map(function (attachment) {
+      return [a({ href: attachment.url }, attachment.filename), " "]
+    }))
+  })
 
   define('ticket_form', function() {
     show_modal(
@@ -134,17 +139,7 @@ with (Hasher('Ticket','Application')) {
         )
       )
     )
-    document.domain = 'badger.dev';
-    var uploader = new qq.FileUploader({
-      // pass the dom node (ex. $(selector)[0] for jQuery users)
-      element: $('#file-uploader')[0],
-      // path to server-side upload script
-      action: Badger.api_host + 'attachments',
-      params: {
-        access_token: Badger.getAccessToken(),
-        upload_inside_iframe: document.domain
-      }
-    });
+    attachment_field('file-uploader');
   });
 
   define('response_form', function(id) {
