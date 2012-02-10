@@ -313,7 +313,6 @@ with (Hasher('Application')) {
       li({ 'class': "email" }, a({ href: "#account/profiles" }, 'WHOIS PROFILES')),
       li({ 'class': "website" }, a({ href: "#account/billing" }, 'CREDITS & BILLING')),
 			li({ 'class': "website" }, a({ href: "#linked_accounts" }, 'LINKED ACCOUNTS')),
-      li({ 'class': "website"}, a({ href: "#account/settings" }, 'SETTINGS')),
       li({ 'class': "website hidden", id : 'invites_available'}, a({ href: "#invites" }, span('SEND INVITES'), span({ id: 'invite_available_count' })))
     );
 
