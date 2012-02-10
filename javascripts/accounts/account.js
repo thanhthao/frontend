@@ -8,6 +8,10 @@ with (Hasher('Account','Application')) {
         table({ style: 'width: 100%; border-collapse: collapse' }, tbody(
           tr(
             td({ style: 'width: 50%; vertical-align: top; padding-right: 10px'},
+              h2("SETTINGS"),
+              account_setings
+            ),
+            td({ style: 'width: 50%; vertical-align: top; padding-left: 10px'},
               h2("SHORTCUTS"),
               ul(
                 li(a({ href: "#tickets" }, 'Support Tickets')),
@@ -15,10 +19,6 @@ with (Hasher('Account','Application')) {
                 li(a({ href: "#account/billing" }, 'Credits & Billing')),
           			li(a({ href: "#linked_accounts" }, 'Linked Accounts'))
           		)
-            ),
-            td({ style: 'width: 50%; vertical-align: top; padding-left: 10px'},
-              h2("ACCOUNT SETTINGS"),
-              account_setings
             )
           )
         ))
