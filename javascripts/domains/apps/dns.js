@@ -124,7 +124,7 @@ with (Hasher('DnsApp','DomainApps')) {
                 option({ value: '604800' }, '1 week')
               )
             ),
-            td({ style: 'text-align: center' }, button({ style: "background-image: url(images/add.gif); background-color:Transparent; border: none; width: 16px; height: 16px; cursor: pointer", onclick: curry(dns_add, domain_obj) }))
+            td({ style: 'text-align: center' }, button({ style: "background-image: url(images/add.gif); background-color:Transparent; border: none; width: 16px; height: 16px; cursor: pointer", onclick: curry(dns_add, domain_obj.name) }))
           ),
 
           sort_dns_records(domain_obj.records).map(function(record) {
