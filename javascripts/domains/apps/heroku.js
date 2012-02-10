@@ -18,7 +18,9 @@ with (Hasher('Heroku', 'DomainApps')) {
       // Aspen & Bamboo Apps: Use YOURAPPNAME.heroku.com
       // Cedar Apps: Use YOURAPPNAME.herokuapp.com      ]
       return div(
-        div("First, run these console commands in your project directory:"),
+        p("Heroku is a cloud application platform - a new way of building and deploying web apps."),
+        show_required_dns(app, domain_obj),
+        p("To install this app, first, run these console commands in your project directory:"),
         
         div({ 'style': 'background: #3b4249; color: #f8f8f8; padding: 10px; font-family: Monaco, monospace; font-size: 11px; margin-top: 6px' }, 
           div({ style: 'color: #8DA6CE' }, "$ heroku addons:add custom_domains"),

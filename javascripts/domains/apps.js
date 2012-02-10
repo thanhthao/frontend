@@ -171,6 +171,40 @@ with (Hasher('DomainApps','Application')) {
     );
   });
 
+  define('show_required_dns', function(app, domain_obj) {
+    return [
+      a({
+          href: function() {
+            if ($('#require-dns-table').hasClass('hidden')) {
+              $('#require-dns-table').removeClass('hidden') ;
+              $('#hide-show-button').removeClass('expand-button').addClass('collapse-button');
+            } else {
+              $('#require-dns-table').addClass('hidden') ;
+              $('#hide-show-button').removeClass('collapse-button').addClass('expand-button');
+            }
+          }
+        },
+        div({ id: 'hide-show-button', 'class': 'expand-button' }, 'DNS records to be installed')
+      ),
+
+      table({ id: 'require-dns-table', 'class': 'hidden fancy-table' }, tbody(
+        tr({ 'class': 'table-header' },
+          th({ style: 'text-align: right; padding-right: 20px' }, 'Subdomain'),
+          th({ style: 'padding: 0 20px' }, 'Type'),
+          th({ style: 'width: 100%' }, 'Target')
+        ),
+        for_each(app.requires.dns, function(dns) {
+          return tr(
+            td({ style: 'text-align: right; padding-right: 20px' }, dns.subdomain, span({ style: 'color: #aaa' }, dns.subdomain ? '.' : '', Domains.truncate_domain_name(domain_obj.name))),
+            td({ style: 'padding: 0 20px' }, dns.type.toUpperCase()),
+            td(dns.priority, ' ', dns.content),
+            td(domain_has_record(domain_obj, dns) ? 'yes' : 'no')
+          );
+        })
+      ))
+    ];
+  })
+
   define('show_needs_badger_nameservers_modal', function(app, domain_obj) {  
     show_modal(
       h1('FIRST, INSTALL BADGER DNS?'),

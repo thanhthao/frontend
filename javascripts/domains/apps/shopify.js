@@ -14,6 +14,9 @@ with (Hasher('Shopify', 'DomainApps')) {
 
     install_screen: function(app, domain_obj) {
       return div(
+        p("Shopify offers a complete ecommerce solution that allows you to create and run your own online store. List your products, customize your store's design, accept credit card orders, and ship your goods - all with a few clicks of the mouse. Shopify is easy to use and there's no software to download or maintain."),
+        p('Install this app to point your domain to your shop on Shopify.'),
+        show_required_dns(app, domain_obj),
         form({ style: 'text-align: center', action: curry(install_app_button_clicked, app, domain_obj) },
           'http://',
           text({ name: 'shopify_app_url', placeholder: 'YOURSHOPNAME.myshopify.com', style: 'width: 250px' }),

@@ -12,7 +12,10 @@ with (Hasher('Posterous', 'DomainApps')) {
     },
 
     install_screen: function(app, domain_obj) {
-      return div('You are about to install Posterous',
+      return div(
+        p('Posterous Spaces is one of the most amazing tool to share safely online.'),
+        p('Install this app to point your domain to your Posterous Space.'),
+        show_required_dns(app, domain_obj),
         form({ style: 'text-align: center', action: curry(install_app_button_clicked, app, domain_obj) },
           input({ 'class': 'myButton', type: 'submit', value: 'Install Posterous' })
         )

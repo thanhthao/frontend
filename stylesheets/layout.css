@@ -286,3 +286,13 @@ label { cursor: pointer; }
   border-bottom: 1px solid #CCCCCC;
   padding: 10px 20px;
 }
+
+.expand-button {
+  background: url("../images/rt-arrow.png") top left no-repeat;
+  padding-left: 20px;
+}
+
+.collapse-button {
+  background: url("../images/down-arrow.png") top left no-repeat;
+  padding-left: 20px;
+}

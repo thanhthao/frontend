@@ -13,7 +13,10 @@ with (Hasher('Tumblr', 'DomainApps')) {
     },
 
     install_screen: function(app, domain_obj) {
-      return div('You are about to install Tumblr',
+      return div(
+        p("A feature rich and free blog hosting platform offering professional and fully customizable templates, bookmarklets, photos, mobile apps, and social network."),
+        p('Install this app to point your domain to your Tumblr site.'),
+        show_required_dns(app, domain_obj),
         form({ style: 'text-align: center', action: curry(install_app_button_clicked, app, domain_obj) },
           'http://',
           text({ name: 'tumblr_app_url', placeholder: 'YOURBLOGNAME.tumblr.com', style: 'width: 250px' }),

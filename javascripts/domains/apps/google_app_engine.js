@@ -12,7 +12,10 @@ with (Hasher('GoogleAppEngine', 'DomainApps')) {
     },
 
     install_screen: function(app, domain_obj) {
-      return div('You are about to install Google App Engine',
+      return div(
+        p('Google App Engine enables you to build and host web apps on the same systems that power Google applications. App Engine offers fast development and deployment; simple administration, with no need to worry about hardware, patches or backups; and effortless scalability.'),
+        p('Install this app to point your domain to your Google App.'),
+        show_required_dns(app, domain_obj),
         form({ style: 'text-align: center', action: curry(install_app_button_clicked, app, domain_obj) },
           input({ 'class': 'myButton', type: 'submit', value: 'Install Google App Engine' })
         )

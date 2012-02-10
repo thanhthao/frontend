@@ -64,6 +64,17 @@ Feature: Domain apps
       |id |record_type|subdomain    |content                              |ttl |priority|
     And I follow "mydomain0.com"
     When I click on item with xpath "(//a[@class='app_store_container'])[9]"
+    Then I should see "Shopify for mydomain0.com"
+    And I should see "DNS records to be installed"
+    When I follow "DNS records to be installed"
+    Then I should see "Subdomain" within "table:first"
+    And I should see "Type" within "table:first"
+    And I should see "Target" within "table:first"
+    And I should see "mydomain0.com" within "table:first tr:eq(2)"
+    And I should see "A" within "table:first tr:eq(2)"
+    And I should see "204.93.213.45" within "table:first tr:eq(2)"
+    And I should see "www.mydomain0.com" within "table:first tr:eq(3)"
+    And I should see "CNAME" within "table:first tr:eq(3)"
     And I fill in "shopify_app_url" with "ea.shopify.com"
     And I mock addRecord
     And I press "Install Shopify"

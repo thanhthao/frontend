@@ -16,7 +16,10 @@ with (Hasher('Blogger', 'DomainApps')) {
     },
 
     install_screen: function(app, domain_obj) {
-      return div('You are about to install Blogger',
+      return div(
+        p('Blogger is a free weblog publishing tool from Google, for sharing text, photos and video. Install this app to point your domain to your Blogger account.'),
+        p('Install this app to point your domain to your Blogger account.'),
+        show_required_dns(app, domain_obj),
         form({ style: 'text-align: center', action: curry(install_app_button_clicked, app, domain_obj) },
           input({ 'class': 'myButton', type: 'submit', value: 'Install Blogger' })
         )

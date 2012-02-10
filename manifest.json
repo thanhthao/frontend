@@ -65,7 +65,7 @@
     "/javascripts/help/site_tour.js",
     "/javascripts/help/rhinonames.js",
     "/javascripts/help/chat.js",
-    "/javascripts/help/tickets.js"
+    "/javascripts/help/tickets.js",
 
 		"/javascripts/linked_accounts/linked_accounts.js",
 		"/javascripts/linked_accounts/share.js",
@@ -101,6 +101,8 @@
     "/images/save.png",
     "/images/cancel.png",
     "/images/trash.gif",
+    "/images/down-arrow.png",
+    "/images/rt-arrow.png",
     
     "/images/apps/aboutme.png",
     "/images/apps/appengine.png",
