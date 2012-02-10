@@ -87,7 +87,7 @@ with (Hasher('LinkedAccounts','Application')) {
   					    break
   					}
   					switch (account.site) {
-  					  case 'goddady':
+  					  case 'godaddy':
   					    name = 'Go Daddy, Inc.';
   					    break;
   					  case 'networksolutions':
@@ -135,15 +135,10 @@ with (Hasher('LinkedAccounts','Application')) {
 	define('show_all_account_link_rows', function() {
 		// var existing_accounts = (existing_accounts || []).map(function(a) { return a.site });
 		
-		var result = [];
-		
-		if ($("#accounts-table tr#godaddy").length == 0) result.push(
-			linked_accounts_table_row("Go Daddy", "godaddy", link_accounts_button(curry(Registrar.show_link, 'godaddy')))
-		);
-		
-		if ($("#accounts-table tr#networksolutions").length == 0) result.push(
-			linked_accounts_table_row("Network Solutions", "networksolutions", link_accounts_button(curry(Registrar.show_link, 'networksolutions')))
-		);
+		var result = [
+		  linked_accounts_table_row("Go Daddy", "godaddy", link_accounts_button(curry(Registrar.show_link, 'godaddy'))),
+		  linked_accounts_table_row("Network Solutions", "networksolutions", link_accounts_button(curry(Registrar.show_link, 'networksolutions')))
+		];
 		
 		if ($("#accounts-table tr#twitter").length == 0) result.push(
 			linked_accounts_table_row("Twitter", "twitter", link_accounts_button(curry(TwitterAccount.show_link_accounts_modal)))
