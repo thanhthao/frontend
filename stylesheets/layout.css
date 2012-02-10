@@ -140,6 +140,7 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 .info-message .fancy-table tr.table-header:hover { background: none; }
 .error-message { border: 1px solid #dd3c10; background: #ffebe8; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
 .error-message ul { margin: 10px 0 0 0; }
+.error-red { color: #c00; }
 .success-message { border: 1px solid #619934; background: #E6F8D8; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
 .success-message ul { margin: 10px 0 0 0; }
 
