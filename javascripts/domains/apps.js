@@ -24,7 +24,7 @@ with (Hasher('DomainApps','Application')) {
     render(
       h1({ 'class': 'long-domain-name' }, domain),
 
-			div({ style: "float: right; margin-top: -44px" }, a({ 'class': "myButton myButton-small", href: curry(LinkedAccounts.share_after_register_modal, domain) }, "Share Domain With Friends (temporary button)")),
+			// div({ style: "float: right; margin-top: -44px" }, a({ 'class': "myButton myButton-small", href: curry(LinkedAccounts.share_after_register_modal, domain) }, "Share Domain With Friends (temporary button)")),
 			
       render_all_application_icons(domain)
     );

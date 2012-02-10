@@ -67,7 +67,10 @@
     "/javascripts/help/chat.js",
     "/javascripts/help/tickets.js"
 
-		"/javascripts/linked_accounts/share.js"
+		"/javascripts/linked_accounts/linked_accounts.js",
+		"/javascripts/linked_accounts/share.js",
+		"/javascripts/linked_accounts/twitter.js",
+		"/javascripts/linked_accounts/facebook.js"
   ],
 
   "images": [

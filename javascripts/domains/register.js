@@ -31,7 +31,7 @@ with (Hasher('Register','Application')) {
       
       if (current_credits >= needed_credits) {
         if (checked_extensions.length > 1) {
-          BulkRegister.proceed_bulk_register(checked_extensions, form_data.registrant_contact_id, form_data.years);
+          BulkRegister.proceed_bulk_register(checked_extensions, form_data);
         } else {
           register_domain(domain, available_extensions, form_data);
         }
@@ -86,8 +86,7 @@ with (Hasher('Register','Application')) {
             update_my_domains_count(); 
             
             set_route('#domains/' + domain);
-            // hide_modal();
-						LinkedAccounts.share_after_register_modal(domain); // share this domain registration
+            hide_modal();
           });
         });
       } else {
@@ -142,28 +141,89 @@ with (Hasher('Register','Application')) {
               )
             )
           ),
-          available_extensions.length > 0 ?
-            tr(
-              td({ style: "width: 50%" },
-                h3({ style: 'margin-bottom: 3px' }, 'Also Register:'),
-                available_extensions.map(function(ext) {
-                  return div(checkbox({ name: "extension_" + ext[0].split('.')[1], value: ext[0], id: ext[0].split('.')[1], 'class': 'extensions',
-                                        onchange: function(e) {
-                                          var years = parseInt($('#years').val());
-                                          var num_domains = 1 + $('.extensions:checked').length;
-                                          var credits = num_domains * years;
-                                          $('#register-button').val('Register ' + (num_domains > 1 ? (num_domains + ' domains') : domain) + ' for ' + credits + (credits == 1 ? ' credit' : ' credits'))
-                                        } }),
-                             label({ 'for': ext[0].split('.')[1] }, ' ' + ext[0]))
-                })
-              )
-            )
-            : ''
+					tr(
+						td({ style: "width: 25%" },
+							available_extensions.length > 0 ?
+		            tr(
+		              td({ style: "width: 50%" },
+		                h3({ style: 'margin-bottom: 3px' }, 'Also Register:'),
+		                available_extensions.map(function(ext) {
+		                  return div(checkbox({ name: "extension_" + ext[0].split('.')[1], value: ext[0], id: ext[0].split('.')[1], 'class': 'extensions',
+		                                        onchange: function(e) {
+		                                          var years = parseInt($('#years').val());
+		                                          var num_domains = 1 + $('.extensions:checked').length;
+		                                          var credits = num_domains * years;
+		                                          $('#register-button').val('Register ' + (num_domains > 1 ? (num_domains + ' domains') : domain) + ' for ' + credits + (credits == 1 ? ' credit' : ' credits'))
+																							$('#')
+		                                        } }),
+		                             label({ 'for': ext[0].split('.')[1] }, ' ' + ext[0]))
+		                })
+		              )
+		            )
+		        	: ''
+						),
+						td({ style: "width: 75%" },
+							div({ id: "linked-social-accounts" }, br(), img({ src: "images/ajax-loader.gif" }))
+						)
+					)
         )),
         
         div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + Domains.truncate_domain_name(domain) + ' for 1 credit' }))
       )
     );
+
+		var showSharePreview = function(message) {
+			$("#share-preview").empty().append(
+				div({ 'class': "info-message", style: "width: 200px; margin-top: 5px; padding: 10px" }, b("Preview:"), br(), p({ id: "share-preview-message", style: "margin: auto auto auto auto" }, message))
+			);
+		};
+		
+		var hideSharePreview = function() { $("#share-preview").empty() };
+
+		Badger.getLinkedAccounts(function(response) {
+			$("#linked-social-accounts").empty().append(
+				h3({ style: 'margin-bottom: 5px' }, 'Share:'),
+				
+				response.data.length == 0 ? [
+					div("No linked accounts found")
+				] : response.data.map(function(account) {
+					if (account.site == "twitter") {
+						// return div("twitter");
+						return div(input({ type: "checkbox", name: "twitter_account_id", value: account.id }), "Twitter");
+					} else if (account.site == "facebook") {
+						// return div("facebook");
+						return div(input({ type: "checkbox", name: "facebook_account_id", value: account.id }), "Facebook");
+					} 
+				}),
+				
+				div({ id: "share-preview" })
+			);
+			
+			// update the share preview if sharing checked, for a single domain
+			$("input[name$=account_id]").change(function(e) {
+				if (e.target.checked) {
+					showSharePreview("\"I just registered " + domain + " with Badger.com!\"");
+				} else if ($('input[name$=account_id]:checked').length == 0) {
+					hideSharePreview();
+				}
+			});
+			
+			// update share message preview if registering multiple domains
+			$("input[name^=extension]").change(function(e) {
+				if ($('input[name$=account_id]:checked').length > 0) {
+					if ($('.extensions:checked').length > 0) { // update the share message to reflect multiple domains
+						showSharePreview("\"I just registered " + domain + ", as well as " + $('.extensions:checked').length + " other " + ($('.extensions:checked').length > 1 ? "domains" : "domain") + ", with Badger.com!!!\"");
+					} else if ($('.extensions:checked').length == 0) { // update the share message to reflect just one domain being selected
+						if ($('input[name$=account_id]:checked').length == 0) {
+							hideSharePreview();
+						} else {
+							showSharePreview("\"I just registered " + domain + " with Badger.com!\"");
+						}
+					}
+				}
+			});
+		});
+		
   });
 
 	define('renew_domain_modal', function(domain) {

@@ -28,7 +28,7 @@ with (Hasher('BulkRegister','Application')) {
   });
 
   define('verify_bulk_register', function(domains_list, contacts_id) {
-//    show_modal(Register.processing_request());
+   // show_modal(Register.processing_request());
     BadgerCache.getAccountInfo(function(account_info) {
       // ensure they have at least one domain_credit
       if (account_info.data.domain_credits < domains_list.length) {
@@ -39,15 +39,35 @@ with (Hasher('BulkRegister','Application')) {
     });
   });
 
-  define('proceed_bulk_register', function(domains_list, contacts_id, years) {
+  define('proceed_bulk_register', function(domains_list, form_data) {
     bulk_register_result(domains_list);
     var count = 0;
+		var contacts_id = form_data.registrant_contact_id;
+		var years = form_data.years;
+
+		if (form_data.twitter_account_id || form_data.facebook_account_id) {
+			var share_bulk_register = true;
+			var share_message_added = false;
+		}
+
     $.each(domains_list, function() {
       var local_count = ++count;
       var domain = this;
-      var domain_info = { name: domain.toString(), auto_renew: 'true', privacy: 'true',
+
+			var domain_info = { name: domain.toString(), auto_renew: 'true', privacy: 'true',
                           name_servers: 'ns1.badger.com,ns2.badger.com',
                           registrant_contact_id: contacts_id, years: years != null ? years : 1 };
+
+			if (share_bulk_register && !share_message_added) {
+				domain_info.share_bulk_register = true;
+				domain_info.num_bulk_domains = domains_list.length;
+				
+				domain_info.twitter_account_id = form_data.twitter_account_id;
+				domain_info.facebook_account_id = form_data.facebook_account_id;
+				
+				share_message_added = true;
+			}
+			
       Badger.registerDomain(domain_info, function(response) {
         if (response.meta.status != 'created') {
           $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html('Failed');
@@ -55,7 +75,7 @@ with (Hasher('BulkRegister','Application')) {
           load_domain(response.data.name, function(domain_object) {
             DomainApps.install_app_on_domain(Hasher.domain_apps["badger_web_forward"], domain_object);
           })
-          $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html('Succeed');
+          $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html('Success');
         }
       });
     });
@@ -109,7 +129,7 @@ with (Hasher('BulkRegister','Application')) {
 
     show_modal(
       h1('BULK REGISTER RESULT'),
-      p('In processing, please wait...'),
+      p({ id: "registering-message" }, 'Registering domains, please wait...'),
       div({ 'class': 'y-scrollbar-div' },
         table({ 'class': 'fancy-table', id: 'bulk-register-result-table' },
           tbody(

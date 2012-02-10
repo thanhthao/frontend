@@ -6,6 +6,7 @@ with (Hasher('Account','Application')) {
         "There's not much to do here yet... maybe give these links a try:",
         ul(
           li(a({ href: '#account/profiles'}, 'Whois Profiles')),
+					li(a({ href: '#linked_accounts'}, 'Linked Accounts')),
           li(a({ href: '#account/billing'}, 'Credits & Billing'))
         ),
         a({ 'class': 'myButton myButton-small', href: curry(Registrar.show_link, 'godaddy') }, 'godaddy link RWH'),

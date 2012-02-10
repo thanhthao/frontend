@@ -343,8 +343,16 @@ var Badger = {
 		Badger.api("/linked_account/" + id, "PUT", data, callback);
 	},
 	
+	getLinkedAccounts: function(callback) {
+		Badger.api("/linked_accounts", callback);
+	},
+	
 	getLinkedAccount: function(id, callback) {
-		Badger.api("/linked_account/" + id, "GET", callback);
+		Badger.api("/linked_accounts/" + id, callback);
+	},
+	
+	getAuthorizedAccountInfo: function(linked_account_id, site, callback) {
+		Badger.api("/linked_accounts/" + linked_account_id + "/" + site, callback)
 	},
 	
   getBlogs: function(callback) {
