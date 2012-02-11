@@ -45,7 +45,7 @@ with (Hasher('LinkedAccounts','Application')) {
 							img({ src: "images/ajax-loader.gif" })
 						));
 						
-						Badger.getAuthorizedAccountInfo(account.id, account.site, function(response) {
+						Badger.getAuthorizedAccountInfo(account.id, function(response) {
 							$("#" + account.site + "-" + account.id).empty().append(
 								div({ 'class': "info-message", style: "margin: 5px auto 5px auto; height: 25px; width: 350px;" },
 									img({ style: "margin-top: -11px", src: response.data.profile_image_url }),
@@ -62,7 +62,7 @@ with (Hasher('LinkedAccounts','Application')) {
 							img({ src: "images/ajax-loader.gif" })
 						));
 						
-						Badger.getAuthorizedAccountInfo(account.id, account.site, function(response) {
+						Badger.getAuthorizedAccountInfo(account.id, function(response) {
 							$("#" + account.site + "-" + account.id).empty().append(
 								div({ 'class': "info-message", style: "margin: 5px auto 5px auto; height: 25px; width: 350px;" },
 									img({ style: "margin-top: -11px", src: response.data.profile_image_url }),

@@ -343,8 +343,12 @@ var Badger = {
 		Badger.api("/linked_accounts/" + id, callback);
 	},
 	
-	getAuthorizedAccountInfo: function(linked_account_id, site, callback) {
-		Badger.api("/linked_accounts/" + linked_account_id + "/" + site, callback)
+	getAuthorizedAccountInfo: function(linked_account_id, callback) {
+		Badger.api("/linked_accounts/" + linked_account_id + "/remote_info", callback)
+	},
+	
+	getLinkedAccountAuthorizationUrl: function(site, callback) {
+		Badger.api("/linked_accounts/" + site + "/auth_url", callback);
 	},
 	
   getBlogs: function(callback) {
