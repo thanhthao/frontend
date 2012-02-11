@@ -15,14 +15,16 @@ with (Hasher('FacebookAccount','Application')) {
 				a({ onclick: function() {
 						start_modal_spin('Wating for authorization...');
 						
-						var w = window.open("http://api.badger.dev/auth/facebook?display=popup&state=" + Badger.getAccessToken(),"facebook-authorization","width=600,height=600");
-						
-						var watchClose = setInterval(function() {
-					    if (w.closed) {
-					    	clearTimeout(watchClose);
-					    	close_window_and_reload_linked_accounts()
-					    }
-						 }, 200);
+						Badger.getLinkedAccountAuthorizationUrl("facebook", function(response) {
+							var w = window.open(response.data, "facebook-authorization", "width=600,height=600");
+
+							var watchClose = setInterval(function() {
+						    if (w.closed) {
+						    	clearTimeout(watchClose);
+						    	close_window_and_reload_linked_accounts()
+						    }
+							 }, 200);
+						});
 					}},
 					img({ src: "images/linked_accounts/facebook.png" })
 				)
