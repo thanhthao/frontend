@@ -103,6 +103,10 @@
     "/images/trash.gif",
     "/images/down-arrow.png",
     "/images/rt-arrow.png",
+
+		"/images/linked_accounts/facebook.png",
+		"/images/linked_accounts/twitter.png",
+		"/images/linked_accounts/linkedin.png",
     
     "/images/apps/aboutme.png",
     "/images/apps/appengine.png",
