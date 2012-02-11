@@ -101,8 +101,8 @@ with (Hasher('LinkedAccounts','Application')) {
 				  	      div({ 'class': error ? "error-message" : "info-message", style: "text-align:right;" },
                     h3("Status: ", status),
                     div("Last Sync: " + (account.last_synced_at ? new Date(Date.parse(account.last_synced_at)).toString() : 'Never')),
-  									div("Login: " + account.access_token + " (" + account.domain_count + " Linked Domain(s))"),
-  									error ? a({ 'class': "myButton red", style: 'margin: 10px 0 0;', href: curry(Registrar.show_link, account.site, account.id, account.access_token)}, "edit") : a({ 'class': "myButton", style: 'margin: 10px 0 0;', href: curry(Registrar.show_link, account.site, account.id, account.access_token)}, "sync now")
+  									div("Login: " + account.login + " (" + account.domain_count + " Linked Domain(s))"),
+  									error ? a({ 'class': "myButton red", style: 'margin: 10px 0 0;', href: curry(Registrar.show_link, account.site, account.id, account.login)}, "edit") : a({ 'class': "myButton", style: 'margin: 10px 0 0;', href: curry(Registrar.show_link, account.site, account.id, account.login)}, "sync now")
   								)
 								)
 						  );

@@ -1,6 +1,6 @@
 with (Hasher('Registrar','Application')) {
 
-  define('show_link', function(site, linked_account_id, accces_token) {
+  define('show_link', function(site, linked_account_id, login) {
 		var name, login_text;
 		if (!linked_account_id) {
 			linked_account_id = '';
@@ -27,8 +27,8 @@ with (Hasher('Registrar','Application')) {
 					input({ type: 'hidden', name: 'registrar_name', id: 'registrar-name', value: name}),
 					input({ type: 'hidden', name: 'site', id: 'site', value: site}),
 					input({ type: 'hidden', name: 'linked_account_id', id: 'linked-account-id', value: linked_account_id}),
-					div(input({ type: 'text', name: 'linked_account_access_token', placeholder: login_text, value: accces_token ? accces_token : '' })),
-          div(input({ type: 'password', name: 'linked_account_access_token_secret', placeholder: 'Password' })),
+					div(input({ type: 'text', name: 'login', placeholder: login_text, value: login ? login : '' })),
+          div(input({ type: 'password', name: 'password', placeholder: 'Password' })),
 					div(
 						input({ type: 'checkbox', name: 'agree_to_terms', id: 'agree_to_terms', value: true }),
 						label({ 'for': 'agree_to_terms' }, 'I allow Badger.com to act as my agent....')
