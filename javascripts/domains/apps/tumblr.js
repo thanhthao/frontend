@@ -8,7 +8,7 @@ with (Hasher('Tumblr', 'DomainApps')) {
     requires: {
       dns: [
         { type: 'a', content: "66.6.44.4" },
-        { type: 'cname', subdomain: 'www', content: /[a-zA-Z0-9_-]+\.tumblr\.com/, name: 'tumblr_app_url' }
+        { type: 'cname', subdomain: 'www', content: "domains.tumblr.com" }
       ]
     },
 
@@ -18,9 +18,6 @@ with (Hasher('Tumblr', 'DomainApps')) {
         p('Install this app to point your domain to your Tumblr site.'),
         show_required_dns(app, domain_obj),
         form({ style: 'text-align: center', action: curry(install_app_button_clicked, app, domain_obj) },
-          'http://',
-          text({ name: 'tumblr_app_url', placeholder: 'YOURBLOGNAME.tumblr.com', style: 'width: 250px' }),
-          '/ ',
           input({ 'class': 'myButton', type: 'submit', value: 'Install Tumblr' })
         )
       );
