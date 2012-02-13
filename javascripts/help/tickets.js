@@ -25,6 +25,14 @@ with (Hasher('Ticket','Application')) {
   });
 
   route('#tickets/:id', function(id) {
+    render_ticket_info(id);
+  });
+
+  route('#tickets/:id/response/:response_id', function(id, response_id) {
+    render_ticket_info(id, response_id);
+  });
+
+  define('render_ticket_info', function(id, response_id) {
     var ticket_info = div(p('Loading...'))
     render(
       h1('Ticket Information'),
@@ -55,21 +63,15 @@ with (Hasher('Ticket','Application')) {
           )),
           div({ 'class': 'ticket-content' }, p(
             p(strong('Subject: '), ticket.subject),
-            ticket.attachments.length == 0 ? ''
-            : p(strong('Attachments: '), ticket.attachments.map(function (attachment) {
-              return [a({ href: attachment.url }, attachment.filename), " "]
-            })),
+            display_attachments(ticket.attachments),
             p(display_multiple_line(ticket.content))
           )),
           p(),
           ticket.responses.map(function(ticket_response) {
-            return div({ 'class': 'ticket-response' },
+            return div({ 'class': 'ticket-response', id: 'response-' + ticket_response.id },
               span(strong(ticket_response.person.name + ': ')),
               span(display_multiple_line(ticket_response.response)),
-              ticket_response.attachments.length == 0 ? ''
-              : p(strong('Attachments: '), ticket_response.attachments.map(function (attachment) {
-                return [a({ href: attachment.url }, attachment.filename), " "]
-              }))
+              display_attachments(ticket_response.attachments)
             )
           }),
           ticket.status == 'closed' ? '' : response_form(id)
@@ -80,20 +82,35 @@ with (Hasher('Ticket','Application')) {
       }
 
       if (ticket.status != 'closed') {
-        document.domain = 'badger.dev';
-        var response_attachment_uploader = new qq.FileUploader({
-          // pass the dom node (ex. $(selector)[0] for jQuery users)
-          element: $('#response-file-uploader')[0],
-          // path to server-side upload script
-          action: Badger.api_host + 'attachments',
-          params: {
-            access_token: Badger.getAccessToken(),
-            upload_inside_iframe: document.domain
-          }
-        });
+        attachment_field('response-file-uploader');
       }
-    })
+
+      if (response_id != null) {
+        $('#response-' + response_id).effect("highlight", {}, 3000);
+      }
+    });
   });
+
+  define('attachment_field', function(id) {
+    document.domain = 'badger.dev';
+    var response_attachment_uploader = new qq.FileUploader({
+      // pass the dom node (ex. $(selector)[0] for jQuery users)
+      element: $('#' + id)[0],
+      // path to server-side upload script
+      action: Badger.api_host + 'attachments',
+      params: {
+        access_token: Badger.getAccessToken(),
+        upload_inside_iframe: document.domain
+      }
+    });
+  })
+
+  define('display_attachments', function(attachments) {
+    return attachments.length == 0 ? ''
+    : p(strong('Attachments: '), attachments.map(function (attachment) {
+      return [a({ href: attachment.url }, attachment.filename), " "]
+    }))
+  })
 
   define('ticket_form', function() {
     show_modal(
@@ -134,17 +151,7 @@ with (Hasher('Ticket','Application')) {
         )
       )
     )
-    document.domain = 'badger.dev';
-    var uploader = new qq.FileUploader({
-      // pass the dom node (ex. $(selector)[0] for jQuery users)
-      element: $('#file-uploader')[0],
-      // path to server-side upload script
-      action: Badger.api_host + 'attachments',
-      params: {
-        access_token: Badger.getAccessToken(),
-        upload_inside_iframe: document.domain
-      }
-    });
+    attachment_field('file-uploader');
   });
 
   define('response_form', function(id) {
@@ -182,8 +189,11 @@ with (Hasher('Ticket','Application')) {
   define('add_response', function(form_data) {
     if (form_data && form_data.response.trim() != '' ) {
       Badger.addResponseTicket(form_data.id, form_data, function(response) {
-        alert(response.data.message);
-        set_route('#tickets/' + form_data.id);
+        if (response.meta.status == 'ok') {
+          set_route('#tickets/' + form_data.id + '/response/' + response.data.response_id)
+        } else {
+          alert(response.data.message);
+        }
       });
     } else {
       alert('Response is empty')

@@ -128,19 +128,50 @@ with (Hasher('Signup','Application')) {
           input({ type: 'hidden', name: 'invite_code' }),
 
           div(
-            input({ name: 'first_name', placeholder: 'First Name' }),
-            input({ name: 'last_name', placeholder: 'Last Name' })
-          ),
-
-          div(
-            input({ name: 'email', size: 35, placeholder: 'Email Address' })
+            input({ name: 'email', style: 'width: 415px', placeholder: 'Email Address' })
           ),
 
   				div(
-  					input({ name: 'password', placeholder: 'Desired Password', type: 'password' }),
-  					input({ name: 'confirm_password', placeholder: 'Confirm Password', type: 'password' })
+  					input({ name: 'password', style: 'width: 200px', placeholder: 'Desired Password', type: 'password' }),
+  					input({ name: 'confirm_password', style: 'width: 200px', placeholder: 'Confirm Password', type: 'password' })
   				),
-        
+
+          br(),
+
+          table({ style: 'width: 100%' }, tbody(
+            tr(
+              td({ style: 'width: 50%; vertical-align: top' },
+                h3({ style: 'margin: 0' }, 'Contact Information'),
+                div(
+                  input({ style: 'width: 130px', name: 'first_name', placeholder: 'First Name' }),
+                  input({ style: 'width: 130px', name: 'last_name', placeholder: 'Last Name' })
+                ),
+                div(input({ style: 'width: 275px', name: 'organization', placeholder: 'Organization (optional)' })),
+                div(
+                  input({ style: 'width: 130px', name: 'phone', placeholder: 'Phone' }),
+                  input({ style: 'width: 130px', name: 'fax', placeholder: 'Fax (optional)' })
+                )
+              ),
+              td({ style: 'width: 50%; vertical-align: top' },
+                h3({ style: 'margin: 0' }, 'Mailing Address'),
+                div(
+                  input({ style: 'width: 260px', name: 'address', placeholder: 'Address Line 1' })
+                ),
+                div(
+                  input({ style: 'width: 260px', name: 'address2', placeholder: 'Address Line 2 (Optional)' })
+                ),
+                div(
+                  input({ style: 'width: 118px', name: 'city', placeholder: 'City' }),
+                  input({ style: 'width: 40px', name: 'state', placeholder: 'State' }),
+                  input({ style: 'width: 70px', name: 'zip', placeholder: 'Zip' })
+                ),
+                div(
+                  select({ style: 'width: 150px', name: 'country' }, option({ disabled: 'disabled' }, 'Country:'), country_options())
+                )
+              )
+            )
+          )),
+
           div({ style: 'margin: 10px 0' },
             input({ type: 'checkbox', name: 'agree_to_terms', id: 'agree_to_terms', value: true }),
             label({ 'for': 'agree_to_terms' }, ' I agree to the Badger.com '),
