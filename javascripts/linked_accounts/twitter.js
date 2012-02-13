@@ -15,14 +15,16 @@ with (Hasher('TwitterAccount','Application')) {
 				a({ onclick: function() {
 						start_modal_spin('Wating for authorization...');
 						
-						var w = window.open("http://api.badger.dev/auth/twitter?access_token=" + Badger.getAccessToken(),"twitter-authorization","width=600,height=600");
-						
-						var watchClose = setInterval(function() {
-					    if (w.closed) {
-					    	clearTimeout(watchClose);
-					    	close_window_and_reload_linked_accounts()
-					    }
-						 }, 200);
+						Badger.getLinkedAccountAuthorizationUrl("twitter", function(response) {
+							var w = window.open(response.data, "twitter-authorization", "width=600,height=600");
+
+							var watchClose = setInterval(function() {
+						    if (w.closed) {
+						    	clearTimeout(watchClose);
+						    	close_window_and_reload_linked_accounts()
+						    }
+							 }, 200);
+						});
 					}},
 					img({ src: "images/linked_accounts/twitter.png" })
 				)

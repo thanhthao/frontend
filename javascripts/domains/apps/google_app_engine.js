@@ -3,7 +3,7 @@ with (Hasher('GoogleAppEngine', 'DomainApps')) {
   register_domain_app({
     id: 'badger_google_app_engine',
     name: 'Google App Engine',
-    icon: 'images/apps/googleapps.png',
+    icon: 'images/apps/appengine.png',
     menu_item: { text: 'GOOGLE APP ENGINE', href: '#domains/:domain/google_app_engine' },
     requires: {
       dns: [

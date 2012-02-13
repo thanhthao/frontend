@@ -38,5 +38,18 @@
 	background:-moz-linear-gradient( center top, #8cb82b 5%, #8cb82b 100% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#8cb82b', endColorstr='#8cb82b');
 }
+.myButton.red {
+  -moz-box-shadow:inset 0px 1px 0px 0px #fd619c;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #fd619c;
+  box-shadow:inset 0px 1px 0px 0px #d17d9c;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #de2d2c), color-stop(1, #c81c2b) );
+  background:-moz-linear-gradient( center top, #de2d2c 5%, #c81c2b 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#de2d2c', endColorstr='#c81c2b');
+  background-color:#de2d2c;
+  border:1px solid #d4131a;
+  color:#ffffff;
+  text-shadow:1px 1px 0px #a30824;
+}
+
 
 .myButton-small { font-size: 15px; padding: 3px 10px; }

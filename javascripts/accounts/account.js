@@ -1,35 +1,43 @@
 with (Hasher('Account','Application')) {
   route('#account', function() {
+    var account_setings = div();
+
     render(
       div(
         h1('My Account'),
-        "There's not much to do here yet... maybe give these links a try:",
-        ul(
-          li(a({ href: '#account/profiles'}, 'Whois Profiles')),
-					li(a({ href: '#linked_accounts'}, 'Linked Accounts')),
-          li(a({ href: '#account/billing'}, 'Credits & Billing'))
-        ),
-        a({ 'class': 'myButton myButton-small', href: curry(Registrar.show_link, 'godaddy') }, 'godaddy link RWH'),
-        a({ 'class': 'myButton myButton-small', href: curry(Registrar.show_link, 'networksolutions') }, 'networksolutions link RWH')
+        table({ style: 'width: 100%; border-collapse: collapse' }, tbody(
+          tr(
+            td({ style: 'width: 50%; vertical-align: top; padding-right: 10px'},
+              h2("SETTINGS"),
+              account_setings
+            ),
+            td({ style: 'width: 50%; vertical-align: top; padding-left: 10px'},
+              h2("SHORTCUTS"),
+              ul(
+                li(a({ href: "#tickets" }, 'Support Tickets')),
+                li(a({ href: "#account/profiles" }, 'Whois Profiles')),
+                li(a({ href: "#account/billing" }, 'Credits & Billing')),
+          			li(a({ href: "#linked_accounts" }, 'Linked Accounts'))
+          		)
+            )
+          )
+        ))
       )
     );
+
+    BadgerCache.getAccountInfo(function(response) {
+      render({ into: account_setings },
+        ul(
+          li( a({ href: curry(show_modal, Account.change_password_modal()) }, "Change Password") ),
+          li( a({ href: curry(show_modal, Account.change_name_modal(response.data)) }, "Change First/Last Name") ),
+          li( a({ href: curry(show_modal, Account.change_email_modal(response.data)) }, "Change Email Address") )
+        )
+      )
+    });
+
+
   });
   
-  route('#account/settings', function() {
-    BadgerCache.getAccountInfo(function(response) {
-      render(
-        div(
-          h1("ACCOUNT SETTINGS"),
-          ul(
-            li( a({ href: curry(show_modal, Account.change_password_modal()) }, "Change Password") ),
-            li( a({ href: curry(show_modal, Account.change_name_modal(response.data)) }, "Change First/Last Name") ),
-            li( a({ href: curry(show_modal, Account.change_email_modal(response.data)) }, "Change Email Address") )
-          )
-        )
-      );
-    })
-  });
-
 	define('change_password', function(data) {
 		if(data.new_password != data.confirm_password)
 			return $('#change-password-messages').empty().append( error_message({ data: { message: "Passwords do not match" } }) );
