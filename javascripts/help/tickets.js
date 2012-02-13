@@ -25,6 +25,14 @@ with (Hasher('Ticket','Application')) {
   });
 
   route('#tickets/:id', function(id) {
+    render_ticket_info(id);
+  });
+
+  route('#tickets/:id/response/:response_id', function(id, response_id) {
+    render_ticket_info(id, response_id);
+  });
+
+  define('render_ticket_info', function(id, response_id) {
     var ticket_info = div(p('Loading...'))
     render(
       h1('Ticket Information'),
@@ -60,7 +68,7 @@ with (Hasher('Ticket','Application')) {
           )),
           p(),
           ticket.responses.map(function(ticket_response) {
-            return div({ 'class': 'ticket-response' },
+            return div({ 'class': 'ticket-response', id: 'response-' + ticket_response.id },
               span(strong(ticket_response.person.name + ': ')),
               span(display_multiple_line(ticket_response.response)),
               display_attachments(ticket_response.attachments)
@@ -76,7 +84,11 @@ with (Hasher('Ticket','Application')) {
       if (ticket.status != 'closed') {
         attachment_field('response-file-uploader');
       }
-    })
+
+      if (response_id != null) {
+        $('#response-' + response_id).effect("highlight", {}, 3000);
+      }
+    });
   });
 
   define('attachment_field', function(id) {
@@ -177,8 +189,11 @@ with (Hasher('Ticket','Application')) {
   define('add_response', function(form_data) {
     if (form_data && form_data.response.trim() != '' ) {
       Badger.addResponseTicket(form_data.id, form_data, function(response) {
-        alert(response.data.message);
-        set_route('#tickets/' + form_data.id);
+        if (response.meta.status == 'ok') {
+          set_route('#tickets/' + form_data.id + '/response/' + response.data.response_id)
+        } else {
+          alert(response.data.message);
+        }
       });
     } else {
       alert('Response is empty')
