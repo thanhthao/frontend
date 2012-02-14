@@ -24,6 +24,7 @@ with (Hasher('Registration','DomainApps')) {
     
     render(
       h1({ 'class': 'long-domain-name' }, domain, ' Registration'),
+      h1({ 'class': 'long-domain-name' }, Domains.truncate_domain_name(domain, 20), ' Registration'),
 			(function() {
 				// console.log(domain);
 				// if (domain_registrar == "RhinoNames") {
