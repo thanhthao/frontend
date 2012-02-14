@@ -347,6 +347,10 @@ var Badger = {
 		Badger.api("/linked_accounts/" + id, callback);
 	},
 	
+	deleteLinkedAccount: function(id, callback) {
+	  Badger.api("/linked_accounts/" + id, "DELETE", callback);
+	},
+	
 	getAuthorizedAccountInfo: function(linked_account_id, callback) {
 		Badger.api("/linked_accounts/" + linked_account_id + "/remote_info", callback);
 	},

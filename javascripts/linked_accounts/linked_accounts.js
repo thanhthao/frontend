@@ -34,6 +34,7 @@ with (Hasher('LinkedAccounts','Application')) {
 	
 	define('linked_accounts_table', function(accounts) {
 	  console.log(accounts); //RWH
+	  
 		return table({ id: "accounts-table", 'class': "fancy-table" }, tbody(
 			// if the user has not linked any accounts yet, we want to show all of the accounts that they can link immediately.
 			(accounts == "show_all" ? [
@@ -46,12 +47,18 @@ with (Hasher('LinkedAccounts','Application')) {
 						));
 						
 						Badger.getAuthorizedAccountInfo(account.id, function(response) {
-							$("#" + account.site + "-" + account.id).empty().append(
-								div({ 'class': "info-message", style: "margin: 5px auto 5px auto; height: 25px; width: 350px;" },
-									img({ style: "margin-top: -11px", src: response.data.profile_image_url }),
-									div({ style: "float: right; margin: 4px 25px auto auto;" }, response.data.name + " (@" + response.data.username + ")")
-								)
-							).css("text-align", "left");
+						  if (response.data.status == "linked") {
+  							$("#" + account.site + "-" + account.id).html(
+  								div({ 'class': "info-message", style: "margin: 5px auto 5px auto; height: 25px; width: 350px;" },
+  									img({ style: "margin-top: -11px", src: response.data.profile_image_url }),
+  									div({ style: "float: right; margin: 4px 25px auto auto;" }, response.data.name + " (@" + response.data.username + ")")
+  								)
+  							).css("text-align", "left");
+						  } else {
+  							$("#" + account.site + "-" + account.id).html(
+  							  div({ style: "margin: 15px 15px 15px auto; float: right" },span({ 'class': "error" }, "Account unlinked. ", a({ href: curry(TwitterAccount.show_link_accounts_modal, response.data.id) }, "Link again?")))
+  							).css("text-align", "left");
+						  }
 						});
 						
 						return row;
@@ -63,12 +70,18 @@ with (Hasher('LinkedAccounts','Application')) {
 						));
 						
 						Badger.getAuthorizedAccountInfo(account.id, function(response) {
-							$("#" + account.site + "-" + account.id).empty().append(
-								div({ 'class': "info-message", style: "margin: 5px auto 5px auto; height: 25px; width: 350px;" },
-									img({ style: "margin-top: -11px", src: response.data.profile_image_url }),
-									div({ style: "float: right; margin: 4px 25px auto auto;" }, response.data.name + " (" + response.data.username + ")")
-								)
-							).css("text-align", "left");
+						  if (response.data.status == "linked") {
+  							$("#" + account.site + "-" + account.id).html(
+  								div({ 'class': "info-message", style: "margin: 5px auto 5px auto; height: 25px; width: 350px;" },
+  									img({ style: "margin-top: -11px", src: response.data.profile_image_url }),
+  									div({ style: "float: right; margin: 4px 25px auto auto;" }, response.data.name + " (" + response.data.username + ")")
+  								)
+  							).css("text-align", "left");
+						  } else {
+  							$("#" + account.site + "-" + account.id).html(
+  							  div({ style: "margin: 15px 15px 15px auto; float: right" },span({ 'class': "error" }, "Account unlinked. ", a({ href: curry(FacebookAccount.show_link_accounts_modal, account.id) }, "Link again?")))
+  							).css("text-align", "left");
+						  }
 						});
 						
 						return row;
@@ -149,6 +162,19 @@ with (Hasher('LinkedAccounts','Application')) {
 		);
 			
 		return result;
+	});
+	
+	define('close_window_and_reload_linked_accounts', function(old_account_id) {
+	  // if fixing broken linked account, delete the old one
+	  if (old_account_id) {
+	    Badger.deleteLinkedAccount(old_account_id, function(response) {
+	      hide_modal();
+    		set_route("#linked_accounts");
+	    });
+	  } else {
+      hide_modal();
+  		set_route("#linked_accounts");
+	  }
 	});
 
 }

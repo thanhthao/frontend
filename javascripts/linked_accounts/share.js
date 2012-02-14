@@ -111,10 +111,12 @@ with (Hasher('LinkedAccounts','Application')) {
 													th("Linked Accounts"), th("")
 												),
 												(response.data || []).map(function(account) {
-													return tr(
-														td(account.site.capitalize_first()),
-														td(input({ type: "checkbox", name: (account.site + "-account-id"), value: account.id }))
-													)
+												  if (account.status == "linked") {
+  													return tr(
+  														td(account.site.capitalize_first()),
+  														td(input({ type: "checkbox", name: (account.site + "-account-id"), value: account.id }))
+  													)
+												  }
 												})
 											))
 										)
