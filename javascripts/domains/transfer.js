@@ -39,11 +39,6 @@ with (Hasher('Transfer','Application')) {
   });
 
   define('verify_transfer', function(use_badger_dns, contacts_id) {
-	
-		
-		console.log('verify_transfer', arguments);
-	
-	
     start_modal_spin('Processing...');
 
     BadgerCache.getAccountInfo(function(account_info) {
@@ -56,30 +51,24 @@ with (Hasher('Transfer','Application')) {
     });
   });
 
-  define('proceed_transfer', function(domain_list, use_badger_dns, contacts_id, linked_accounts_data) {
+  define('proceed_transfer', function(domain_list, use_badger_dns, contacts_id) {
     transfer_result(domain_list);
 
     var count = -1;
     domain_list.map(function(domain) {
       var domain_info = { name: domain.name.toString(), auth_code: domain.auth_code, auto_renew: 'true', privacy: 'true',
                           name_servers: (use_badger_dns == "" ? (domain.name_servers || []).join(',') : use_badger_dns) ,
-                          registrant_contact_id: contacts_id,
-													twitter_account_id: linked_accounts_data.twitter_account_id,
-													facebook_account_id: linked_accounts_data.facebook_account_id,
-													transfered_from_registrar: linked_accounts_data.transferred_from_registrar,
-													share_domain_transfer: true, num_domains_transfered: domain_list.length };
+                          registrant_contact_id: contacts_id };
       Badger.registerDomain(domain_info, function(response) {
-	
-				console.log("transfer data", domain_info);
-	
         if (response.meta.status != 'created') {
-          $('#' + domain.name.replace(/\./g,'-') + '-transfer-status').html('Failed');
+          $('#' + domain.name.replace(/\./g,'-') + '-transfer-status').html(div({ 'class': "transfer-failed" }, 'Failed'));
         } else {
-          $('#' + domain.name.replace(/\./g,'-') + '-transfer-status').html('Succeed');
+          $('#' + domain.name.replace(/\./g,'-') + '-transfer-status').html(div({ 'class': "transfer-success" }, 'Success!'));
         }
       });
     });
-
+    
+    $()
   });
 
   define('close_transfer_modal', function() {
@@ -105,7 +94,6 @@ with (Hasher('Transfer','Application')) {
       )
 		);
 	});
-
 
   define('transfer_domains_list', function() {
     var count = -1;
@@ -152,54 +140,9 @@ with (Hasher('Transfer','Application')) {
       ),
 			
       div({ style: "margin-top: 20px; text-align: right "},
-        a({ 'id': 'continue-transfer-btn', 'class': 'myButton', href: curry(confirm_transfer, {
-							transferred_from_registrar: transferred_from_registrar,
-							twitter_account_id: twitter_account_id,
-							facebook_account_id: facebook_account_id
-					}) }, "Transfer in Domains")
-      ),
-
-			div({ id: "linked-social-accounts" }, br(), img({ src: "images/ajax-loader.gif" }))
+        a({ 'id': 'continue-transfer-btn', 'class': 'myButton', href: curry(confirm_transfer) }, "Transfer in Domains")
+      )
     );
-
-		var transferred_from_registrar, twitter_account_id, facebook_account_id;
-		
-		// transferred_from_registrar = $(".registrar_domain").html();
-		// twitter_account_id = $("input[name=twitter_account_id]:checked").val();
-		// facebook_account_id = $("input[name=facebook_account_id]:checked").val();
-
-		Badger.getLinkedAccounts(function(response) {
-			$("#linked-social-accounts").empty().append(
-				h3({ style: 'margin-bottom: 5px' }, 'Share on:'),
-
-				response.data.length == 0 ? [
-					div("No linked accounts found")
-				] : response.data.map(function(account) {
-					if (account.site == "twitter") {
-						// return div("twitter");
-						return div(input({ type: "checkbox", name: "twitter_account_id", value: account.id }), "Twitter");
-					} else if (account.site == "facebook") {
-						// return div("facebook");
-						return div(input({ type: "checkbox", name: "facebook_account_id", value: account.id }), "Facebook");
-					} 
-				}),
-				
-				div({ id: "share-preview", style: "float: left; margin-top: -60px; margin-left: 100px" })
-			);
-			
-			transferred_from_registrar = $(".registrar_domain").html();
-			twitter_account_id = $("input[name=twitter_account_id]:checked").val();
-			facebook_account_id = $("input[name=facebook_account_id]:checked").val();
-
-			// update the share preview if sharing checked, for a single domain
-			$("input[name$=account_id]").change(function(e) {
-				if (e.target.checked) {
-					showSharePreview("\"I just transfered " + $("tr[id$=domain]").length + " " + ($("tr[id$=domain]").length > 1 ? "domains" : "domain") + "  " + ($(".registrar_domain").html() ? "from " + $(".registrar_domain").html() : "") + " to Badger.com!\"");
-				} else if ($('input[name$=account_id]:checked').length == 0) {
-					hideSharePreview();
-				}
-			});
-		});
 
     update_all_domains_info();
   });
@@ -358,26 +301,19 @@ with (Hasher('Transfer','Application')) {
     }
   });
 
-  define('confirm_transfer', function(linked_accounts_data) {
-	
-	
-	
-		console.log("confirm_transfer", linked_accounts_data);
-	
-	
-	
+  define('confirm_transfer', function() {
     if ($("#transfer-domains-table .success-row").length > 0 ) {
       var contact_id = $('#registrant_contact_id').val();
       var use_badger_dns = ($("#use_badger_dns").attr('checked') ? $("#use_badger_dns").val() : '');
       var domains_list = $.grep(Transfer.domains, function(domain) {
         return domain.auth_code_verified && domain.not_locked && domain.no_privacy;
       })
-
+      
       show_modal(
         div(
           h1('CONFIRM TRANSFER'),
           p('You are about to transfer ' + domains_list.length + (domains_list.length > 1 ? ' domains.' : ' domain.')),
-          a({ href: curry(proceed_transfer, domains_list, use_badger_dns, contact_id, linked_accounts_data), 'class': 'myButton'}, 'Complete Transfer')
+          a({ href: curry(proceed_transfer, domains_list, use_badger_dns, contact_id), 'class': 'myButton'}, 'Complete Transfer')
         )
       )
     } else {
@@ -391,11 +327,11 @@ with (Hasher('Transfer','Application')) {
       return tr(
         td(domain.name),
         td(domain.auth_code),
-        td({ id: domain.name.replace(/\./g,'-') + '-transfer-status' }, 'Processing')
+        td({ id: domain.name.replace(/\./g,'-') + '-transfer-status' }, div({ 'class': "transfer-processing" }, 'Processing'))
       )
     });
 
-    show_modal(
+    var modal = show_modal(
       h1('TRANSFER RESULT'),
       div({ 'class': 'y-scrollbar-div' },
         table({ 'class': 'fancy-table', id: 'transfer-result-table' },
@@ -409,16 +345,27 @@ with (Hasher('Transfer','Application')) {
           )
         )
       ),
-      div({ style: 'text-align: right; margin-top: 10px;' }, a({ href: close_transfer_modal, 'class': 'myButton', value: "submit" }, "Close"))
+      div({ style: 'text-align: right; margin-top: 10px;', id: "close-transfer-button" }, ajax_loader())
     );
+    
+    // If all processing elements are gone, show the button. If all succeeded, make button go to share dialog, otherwise hide modal.
+    var timer = setInterval(function() {
+      if ($("div.transfer-processing").length == 0) {
+        clearTimeout(timer);
+        
+        if ($("div.transfer-failed").length > 0) {
+          $("#close-transfer-button").html(
+            a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
+          );
+        } else {
+          $("#close-transfer-button").html(
+            a({ href: curry(LinkedAccounts.show_share_transfer_modal, domains_list.length), 'class': 'myButton', value: "submit" }, "Continue")
+          );
+        }
+      }
+    }, 200);
+    
+    return modal;
   });
-
-	var showSharePreview = function(message) {
-		$("#share-preview").empty().append(
-			div({ 'class': "info-message", style: "padding: 10px" }, b("Preview:"), br(), p({ id: "share-preview-message", style: "margin: auto auto auto auto" }, message))
-		);
-	};
-
-	var hideSharePreview = function() { $("#share-preview").empty() };
 
 }

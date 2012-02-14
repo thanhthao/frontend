@@ -42,8 +42,6 @@ with (Hasher('Register','Application')) {
   });
 
 	define('renew_domain', function(form_data) {
-		// console.log("renew domain!!!!", arguments);
-		
 		$('#errors').empty();
     start_modal_spin('Checking available credits...');
 
@@ -86,7 +84,8 @@ with (Hasher('Register','Application')) {
             update_my_domains_count(); 
             
             set_route('#domains/' + domain);
-            hide_modal();
+            // hide_modal();
+						LinkedAccounts.show_share_registration_modal(domain);
           });
         });
       } else {
@@ -104,7 +103,7 @@ with (Hasher('Register','Application')) {
     show_modal(
       h1({ 'class': 'long-domain-name'}, 'Register ', domain),
       div({ id: 'errors' }),
-      p({ style: "margin-bottom: 0" }, "You'll be able to configure ", strong(Domains.truncate_domain_name(domain, 50)), " on the next screen."),
+      p({ style: "margin-bottom: 15px" }, "You'll be able to configure ", strong(Domains.truncate_domain_name(domain, 50)), " on the next screen."),
       form({ action: curry(buy_domain, domain, available_extensions) },
         input({ type: 'hidden', name: 'name', value: domain }),
         input({ type: 'hidden', name: 'auto_renew', value: 'true'}),
@@ -161,9 +160,6 @@ with (Hasher('Register','Application')) {
 		              )
 		            )
 		        	: ''
-						),
-						td({ style: "width: 75%" },
-							div({ id: "linked-social-accounts" }, br(), img({ src: "images/ajax-loader.gif" }))
 						)
 					)
         )),
@@ -171,59 +167,6 @@ with (Hasher('Register','Application')) {
         div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + Domains.truncate_domain_name(domain) + ' for 1 credit' }))
       )
     );
-
-		var showSharePreview = function(message) {
-			$("#share-preview").empty().append(
-				div({ 'class': "info-message", style: "width: 200px; margin-top: 5px; padding: 10px" }, b("Preview:"), br(), p({ id: "share-preview-message", style: "margin: auto auto auto auto" }, message))
-			);
-		};
-		
-		var hideSharePreview = function() { $("#share-preview").empty() };
-
-		Badger.getLinkedAccounts(function(response) {
-			$("#linked-social-accounts").empty().append(
-				h3({ style: 'margin-bottom: 5px' }, 'Share:'),
-				
-				response.data.length == 0 ? [
-					div("No linked accounts found")
-				] : response.data.map(function(account) {
-					if (account.site == "twitter") {
-						// return div("twitter");
-						return div(input({ type: "checkbox", name: "twitter_account_id", value: account.id }), "Twitter");
-					} else if (account.site == "facebook") {
-						// return div("facebook");
-						return div(input({ type: "checkbox", name: "facebook_account_id", value: account.id }), "Facebook");
-					} 
-				}),
-				
-				div({ id: "share-preview" })
-			);
-			
-			// update the share preview if sharing checked, for a single domain
-			$("input[name$=account_id]").change(function(e) {
-				if (e.target.checked) {
-					showSharePreview("\"I just registered " + domain + " with Badger.com!\"");
-				} else if ($('input[name$=account_id]:checked').length == 0) {
-					hideSharePreview();
-				}
-			});
-			
-			// update share message preview if registering multiple domains
-			$("input[name^=extension]").change(function(e) {
-				if ($('input[name$=account_id]:checked').length > 0) {
-					if ($('.extensions:checked').length > 0) { // update the share message to reflect multiple domains
-						showSharePreview("\"I just registered " + domain + ", as well as " + $('.extensions:checked').length + " other " + ($('.extensions:checked').length > 1 ? "domains" : "domain") + ", with Badger.com!!!\"");
-					} else if ($('.extensions:checked').length == 0) { // update the share message to reflect just one domain being selected
-						if ($('input[name$=account_id]:checked').length == 0) {
-							hideSharePreview();
-						} else {
-							showSharePreview("\"I just registered " + domain + " with Badger.com!\"");
-						}
-					}
-				}
-			});
-		});
-		
   });
 
 	define('renew_domain_modal', function(domain) {

@@ -33,7 +33,7 @@ with (Hasher('LinkedAccounts','Application')) {
 	});
 	
 	define('linked_accounts_table', function(accounts) {
-	  console.log(accounts);//RWH
+	  console.log(accounts); //RWH
 		return table({ id: "accounts-table", 'class': "fancy-table" }, tbody(
 			// if the user has not linked any accounts yet, we want to show all of the accounts that they can link immediately.
 			(accounts == "show_all" ? [
