@@ -15,12 +15,14 @@ with (Hasher('Search','Application')) {
     );
   });
 
-  define('search_box_changed', function() {
+  define('set_search_route', function() {
     if (get_route() != '#search') {
       set_route('#search');
       this.last_search_value = null;
     }
-    
+  })
+
+  define('search_box_changed', function() {
     var current_value = $('#form-search-input').val().toLowerCase().replace(/[^a-zA-Z0-9\-\.]/g,'').split('.')[0];
 
 		var search_callback = function() {
