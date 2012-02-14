@@ -47,6 +47,7 @@
     "/javascripts/domains/apps/blogger.js",
     "/javascripts/domains/apps/flavorsme.js",
     "/javascripts/domains/apps/google_app_engine.js",
+    "/javascripts/domains/apps/google_apps_verification.js",
 
     "/javascripts/accounts/signup.js",
     "/javascripts/accounts/account.js",
