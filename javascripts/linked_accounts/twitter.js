@@ -1,11 +1,6 @@
 with (Hasher('TwitterAccount','Application')) {
 	
-	define('close_window_and_reload_linked_accounts', function() {
-		hide_modal();
-		set_route("#linked_accounts");
-	});
-	
-	define('show_link_accounts_modal', function() {
+	define('show_link_accounts_modal', function(old_account_id) {
 		show_modal(
 			h1("Link Your Twitter Account"),
 			div({ style: "margin: 15px 10px 15px 10px; text-align: center" },
@@ -21,7 +16,7 @@ with (Hasher('TwitterAccount','Application')) {
 							var watchClose = setInterval(function() {
 						    if (w.closed) {
 						    	clearTimeout(watchClose);
-						    	close_window_and_reload_linked_accounts()
+									LinkedAccounts.close_window_and_reload_linked_accounts(old_account_id);
 						    }
 							 }, 200);
 						});

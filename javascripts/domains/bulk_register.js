@@ -45,11 +45,6 @@ with (Hasher('BulkRegister','Application')) {
 		var contacts_id = form_data.registrant_contact_id;
 		var years = form_data.years;
 
-		if (form_data.twitter_account_id || form_data.facebook_account_id) {
-			var share_bulk_register = true;
-			var share_message_added = false;
-		}
-
     $.each(domains_list, function() {
       var local_count = ++count;
       var domain = this;
@@ -57,25 +52,14 @@ with (Hasher('BulkRegister','Application')) {
 			var domain_info = { name: domain.toString(), auto_renew: 'true', privacy: 'true',
                           name_servers: 'ns1.badger.com,ns2.badger.com',
                           registrant_contact_id: contacts_id, years: years != null ? years : 1 };
-
-			if (share_bulk_register && !share_message_added) {
-				domain_info.share_bulk_register = true;
-				domain_info.num_bulk_domains = domains_list.length;
-				
-				domain_info.twitter_account_id = form_data.twitter_account_id;
-				domain_info.facebook_account_id = form_data.facebook_account_id;
-				
-				share_message_added = true;
-			}
-			
       Badger.registerDomain(domain_info, function(response) {
         if (response.meta.status != 'created') {
-          $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html('Failed');
+          $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html(div({ 'class': "register-failed" }, 'Failed'));
         } else {
           load_domain(response.data.name, function(domain_object) {
             DomainApps.install_app_on_domain(Hasher.domain_apps["badger_web_forward"], domain_object);
           })
-          $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html('Success');
+          $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html(div({ 'class': "register-success" }, 'Success'));
         }
       });
     });
@@ -123,13 +107,13 @@ with (Hasher('BulkRegister','Application')) {
       count++;
       return tr(
         td(domain),
-        td({ id: domain.replace(/\./g,'-')  + '-' + count + '-register-status' }, 'Processing')
+        td({ id: domain.replace(/\./g,'-')  + '-' + count + '-register-status' }, div({ 'class': "register-processing" }, 'Processing'))
       )
     });
 
-    show_modal(
+    var modal = show_modal(
       h1('BULK REGISTER RESULT'),
-      p({ id: "registering-message" }, 'Registering domains, please wait...'),
+      // p({ id: "registering-message" }, 'Registering domains, please wait...'),
       div({ 'class': 'y-scrollbar-div' },
         table({ 'class': 'fancy-table', id: 'bulk-register-result-table' },
           tbody(
@@ -141,7 +125,33 @@ with (Hasher('BulkRegister','Application')) {
           )
         )
       ),
-      div({ style: 'text-align: right; margin-top: 10px;' }, a({ href: close_bulk_modal, 'class': 'myButton', value: "submit" }, "Close"))
+      
+      // div({ style: 'text-align: right; margin-top: 10px;' }, a({ href: close_bulk_modal, 'class': 'myButton', value: "submit" }, "Close"))
+      div({ style: 'text-align: right; margin-top: 10px;', id: "close-register-button" }, ajax_loader())
     );
+    
+    // If all processing elements are gone, show the button. If all succeeded, make button go to share dialog, otherwise hide modal.
+    var timer = setInterval(function() {
+      if ($("div.register-processing").length == 0) {
+        clearTimeout(timer);
+        
+        if ($("div.register-failed").length > 0) {
+          $("#close-register-button").html(
+            a({ href: close_bulk_modal, 'class': 'myButton' }, "Close")
+          );
+        } else {
+          $("#close-register-button").html(
+            a({ href: curry(LinkedAccounts.show_share_bulk_registration_modal, domains_list[0], domains_list.length, close_bulk_modal), 'class': 'myButton' }, "Continue")
+          );
+        }
+      }
+    }, 200);
+    
+    return modal;
   });
+  
+  define('ajax_loader', function() {
+    return img({ 'class': 'ajax_loader', src: 'images/ajax-loader.gif'});
+  });
+
 }

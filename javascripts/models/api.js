@@ -173,7 +173,15 @@ var Badger = {
   },
 
   registerDomain: function(data, callback) {
-    Badger.api("/domains", 'POST', data, callback);
+    var name = data.name;
+    delete data.name;
+    Badger.api("/domains/" + name + "/register", 'POST', data, callback);
+  },
+
+  transferDomain: function(data, callback) {
+    var name = data.name;
+    delete data.name;
+    Badger.api("/domains/" + name + "transfer", 'POST', data, callback);
   },
 
 	renewDomain: function(name, years, callback) {
@@ -255,6 +263,10 @@ var Badger = {
 	changeName: function(data, callback) {
 		Badger.api("/account/change_name", 'POST', data, callback);
 	},
+	
+	changeHideShareMessages: function(value, callback) {
+	  Badger.api("/account/change_hide_share_messages", 'POST', { hide_share_messages: value }, callback);
+	}, 
 	
 	getDomainInfo: function(data, callback) {
 		Badger.api("/domains/" + data.name + "/info", data, callback);
@@ -343,12 +355,32 @@ var Badger = {
 		Badger.api("/linked_accounts/" + id, callback);
 	},
 	
+	deleteLinkedAccount: function(id, callback) {
+	  Badger.api("/linked_accounts/" + id, "DELETE", callback);
+	},
+	
 	getAuthorizedAccountInfo: function(linked_account_id, callback) {
-		Badger.api("/linked_accounts/" + linked_account_id + "/remote_info", callback)
+		Badger.api("/linked_accounts/" + linked_account_id + "/remote_info", callback);
 	},
 	
 	getLinkedAccountAuthorizationUrl: function(site, callback) {
 		Badger.api("/linked_accounts/" + site + "/auth_url", callback);
+	},
+	
+	// shareMessageWithLinkedAccount: function(linked_account_id, message, callback) {
+	// 	Badger.api("linked_accounts/" + linked_account_id + "/share_message", "POST", { message: message }, callback);
+	// },
+	
+	shareDomainRegistration: function(linked_account_id, domain_name, hide_share_messages, callback) {
+		Badger.api("/linked_accounts/" + linked_account_id + "/share_registration", "POST", { domain_name: domain_name, hide_share_messages: hide_share_messages }, callback);
+	},
+	
+	shareDomainBulkRegistration: function(linked_account_id, domain_name, num_domains, hide_share_messages, callback) {
+		Badger.api("/linked_accounts/" + linked_account_id + "/share_bulk_registration", "POST", { domain_name: domain_name, num_domains: num_domains, hide_share_messages: hide_share_messages }, callback);
+	},
+	
+	shareDomainTransfer: function(linked_account_id, num_domains, hide_share_messages, callback) {
+		Badger.api("/linked_accounts/" + linked_account_id + "/share_transfer", "POST", { num_domains: num_domains, hide_share_messages: hide_share_messages }, callback);
 	},
 	
   getBlogs: function(callback) {
