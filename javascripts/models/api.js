@@ -173,7 +173,15 @@ var Badger = {
   },
 
   registerDomain: function(data, callback) {
-    Badger.api("/domains", 'POST', data, callback);
+    var name = data.name;
+    delete data.name;
+    Badger.api("/domains/" + name + "/register", 'POST', data, callback);
+  },
+
+  transferDomain: function(data, callback) {
+    var name = data.name;
+    delete data.name;
+    Badger.api("/domains/" + name + "transfer", 'POST', data, callback);
   },
 
 	renewDomain: function(name, years, callback) {

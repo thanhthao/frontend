@@ -4,12 +4,8 @@ with (Hasher('Application')) {
     var that = this;
     
     Badger.getDomain(domain, function(response) {
-      var domain_obj = response.data;
       if (response.meta.status == 'ok') {
-        Badger.getRecords(domain, function(records) {
-          domain_obj.records = records;
-          callback.call(that, domain_obj)
-        });
+        callback.call(that, response.data);
       } else {
         return null;
       }
@@ -20,70 +16,6 @@ with (Hasher('Application')) {
 
 with (Hasher('DomainApps','Application')) {
    
-  route('#domains/:domain', function(domain) {
-    render(
-      h1({ 'class': 'long-domain-name' }, domain),
-      render_all_application_icons(domain)
-    );
-  });
-
-  before_filter('load_domain_info_filter', function() {
-    //if ()
-    console.log("load domain object for: " + get_route());
-  });
-
-  define('domain_status_description', function(domain_obj) {
-    return p('This domain is ', domain_obj.status, ' and will auto-renew for 1 Credit on ', new Date(Date.parse(domain_obj.expires_on)).toDateString(), '.');
-  });
-
-  define('render_all_application_icons', function(domain) {
-    var installed_apps = div();
-    var available_apps = div();
-    var status_div = div();
-
-    load_domain(domain, function(domain_obj) {
-      //domain_obj.current_registrar = '1and1';
-      for (var key in Hasher.domain_apps) {
-        var app = Hasher.domain_apps[key];
-        if (app.menu_item) {
-          var href;
-          var target;
-          if (app_is_installed_on_domain(app, domain_obj)) {
-            href = app.menu_item.href.replace(/:domain/, domain);
-            target = installed_apps;
-          } else {
-            if ((app.id == 'badger_dns') || (app.id == 'remote_dns')) {
-              href = curry(BaseDnsApp.change_name_servers_modal, domain_obj);
-            } else {
-              href = curry(show_modal_install_app, app, domain_obj);
-            }
-            target = available_apps;
-          }
-          target.appendChild(
-            a({ 'class': 'app_store_container', href: href },
-              span({ 'class': 'app_store_icon', style: 'background-image: url(' + ((app.icon && app.icon.call ? app.icon.call(null, domain_obj) : app.icon) || 'images/apps/badger.png') + ')' } ),
-              span({ style: 'text-align: center; font-weight: bold' }, (app.name.call ? app.name.call(null, domain_obj) : app.name))
-            )
-          );
-          // add a clear every six icons
-          if (target.childNodes.length % 7 == 6) target.appendChild(div({ style: 'clear: left ' }));
-        }
-      }
-
-      status_div.appendChild(domain_status_description(domain_obj));
-    });
-    
-    return [
-      status_div,
-      h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Installed Applications'),
-      installed_apps,
-      div({ style: 'clear: both '}),
-      h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Available Applications'),
-      available_apps,
-      div({ style: 'clear: both '})
-    ];
-  });
-
   define('install_app_button_clicked', function(app, domain_obj, form_data) {
     var result = install_app_on_domain(app, domain_obj, form_data);
     hide_modal();
@@ -254,7 +186,7 @@ with (Hasher('DomainApps','Application')) {
   
   define('app_is_installed_on_domain', function(app, domain_obj) {
     // dns? require badger nameservers
-    if (app.requires && app.requires.dns) app.requires.name_servers = ['ns1.badger.com','ns2.badger.com'];
+    // if (app.requires && app.requires.dns) app.requires.name_servers = ['ns1.badger.com','ns2.badger.com'];
 
     for (var key in app.requires) {
       switch(key) {
@@ -281,8 +213,8 @@ with (Hasher('DomainApps','Application')) {
   
 
   define('domain_has_record', function(domain_obj, record) {
-    for (var i=0; i < domain_obj.records.length; i++) {
-      var tmp_record = domain_obj.records[i];
+    for (var i=0; i < domain_obj.dns.length; i++) {
+      var tmp_record = domain_obj.dns[i];
 
       var sanitize_domain = function(host) {
         var regex = new RegExp("\\.?" + domain_obj.name.replace('.','\\.') + '$');
@@ -374,7 +306,7 @@ with (Hasher('DomainApps','Application')) {
         for (var i=0; i < app.requires.dns.length; i++) {
           var found_record = domain_has_record(domain_obj, app.requires.dns[i]);
           if (found_record) {
-            domain_obj.records = $.grep(domain_obj.records, function(value) {
+            domain_obj.dns = $.grep(domain_obj.dns, function(value) {
               return value != found_record;
             });
           }
@@ -383,7 +315,7 @@ with (Hasher('DomainApps','Application')) {
       }
     }
 
-    app_dns = [{ id: 'user_dns', name: 'User Custom DNS', requires: { dns: domain_obj.records } }].concat(app_dns)
+    app_dns = [{ id: 'user_dns', name: 'User Custom DNS', requires: { dns: domain_obj.dns } }].concat(app_dns)
 
     var conflict_app_keys = [];
 

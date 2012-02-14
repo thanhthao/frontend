@@ -1,6 +1,7 @@
 with (Hasher('Register','Application')) {
 
   define('show', function(domain, available_extensions) {
+    if (!available_extensions) available_extensions = [];
     if (!Badger.getAccessToken()) {
       Signup.require_user_modal(curry(Register.show, domain, available_extensions));
       return;

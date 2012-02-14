@@ -325,19 +325,23 @@ with (Hasher('Application')) {
     var app_list = ul();
 
     load_domain(domain, function(domain_obj) {
-      for (var key in Hasher.domain_apps) {
-        if (DomainApps.app_is_installed_on_domain(Hasher.domain_apps[key], domain_obj) && Hasher.domain_apps[key].menu_item) {
-          app_list.appendChild(
-            li({ 'class': "website" },
-              a({
-                href: Hasher.domain_apps[key].menu_item.href.replace(/:domain/, domain)
-              }, Hasher.domain_apps[key].menu_item.text)
-            )
-          );
+      if (domain_obj.current_registrar == 'Unknown') {
+        console.log("TODO: domain_menu_item: check again in a second and see if this domain is still 'unknown'")
+      } else if (domain_obj.current_registrar) {
+        for (var key in Hasher.domain_apps) {
+          if (DomainApps.app_is_installed_on_domain(Hasher.domain_apps[key], domain_obj) && Hasher.domain_apps[key].menu_item) {
+            app_list.appendChild(
+              li({ 'class': "website" },
+                a({
+                  href: Hasher.domain_apps[key].menu_item.href.replace(/:domain/, domain)
+                }, Hasher.domain_apps[key].menu_item.text)
+              )
+            );
+          }
         }
-      }
 
-      update_sidebar_with_correct_actives(get_route());
+        update_sidebar_with_correct_actives(get_route());
+      }
     });
 
     return li({ id: 'domain-menu-item-' + domain.replace('.','-'), 'class': 'domain-menu-item' },

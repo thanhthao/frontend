@@ -56,9 +56,14 @@ with (Hasher('Transfer','Application')) {
 
     var count = -1;
     domain_list.map(function(domain) {
-      var domain_info = { name: domain.name.toString(), auth_code: domain.auth_code, auto_renew: 'true', privacy: 'true',
-                          name_servers: (use_badger_dns == "" ? (domain.name_servers || []).join(',') : use_badger_dns) ,
-                          registrant_contact_id: contacts_id };
+      var domain_info = { 
+        name: domain.name.toString(), 
+        auth_code: domain.auth_code, 
+        auto_renew: 'true', 
+        privacy: 'true',
+        name_servers: (use_badger_dns == "" ? (domain.name_servers || []).join(',') : use_badger_dns),
+        registrant_contact_id: contacts_id 
+      };
       Badger.registerDomain(domain_info, function(response) {
         if (response.meta.status != 'created') {
           $('#' + domain.name.replace(/\./g,'-') + '-transfer-status').html(div({ 'class': "transfer-failed" }, 'Failed'));

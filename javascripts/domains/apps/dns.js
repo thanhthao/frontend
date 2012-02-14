@@ -43,17 +43,11 @@ with (Hasher('DnsApp','DomainApps')) {
           );
         }
 
-        if (!domain_obj.uses_badger_dns) {
+        if (!domain_obj.badger_dns) {
           render({ into: message_div }, div({ 'class': 'error-message' }, "NOTE: These records are read-only because you're not currently using Badger nameservers." ));
         }
 
-
-        // get DNS records (could happen in parallel with getDomain above)
-        Badger.getRecords(domain, function(records) {
-          domain_obj.records = records;
-          render_records({ into: content_div, read_only: !domain_obj.uses_badger_dns }, domain_obj);
-        });
-
+        render_records({ into: content_div, read_only: !domain_obj.badger_dns }, domain_obj);
       } else {
         render({ into: content_div }, error_message(response));
       }
@@ -65,13 +59,13 @@ with (Hasher('DnsApp','DomainApps')) {
     for (var key in Hasher.domain_apps) {
       var app = Hasher.domain_apps[key];
       if (app.requires && app.requires.dns && app_is_installed_on_domain(app, domain_obj)) {
-        var app_result = { app_id: key, app_name: app.name, records: [] }
+        var app_result = { app_id: key, app_name: app.name, dns: [] }
         for (var i=0; app.requires.dns && (i<app.requires.dns.length); i++) {
           var found_record = domain_has_record(domain_obj, app.requires.dns[i]);
           if (found_record) {
-            app_result.records.push(found_record);
+            app_result.dns.push(found_record);
 
-            domain_obj.records = $.grep(domain_obj.records, function(value) {
+            domain_obj.dns = $.grep(domain_obj.dns, function(value) {
               return value != found_record;
             });
           }
@@ -125,12 +119,12 @@ with (Hasher('DnsApp','DomainApps')) {
             td({ style: 'text-align: center' }, button({ style: "background-image: url(images/add.gif); background-color:Transparent; border: none; width: 16px; height: 16px; cursor: pointer", onclick: curry(dns_add, domain_obj.name) }))
           ),
 
-          sort_dns_records(domain_obj.records).map(function(record) {
+          sort_dns_records(domain_obj.dns).map(function(record) {
             return record_row(record, domain_obj.name, !options.read_only)
           }),
 
           app_dns.map(function(app_item) {
-            return app_dns_rows(app_item.app_name, app_item.app_id, sort_dns_records(app_item.records), domain_obj.name);
+            return app_dns_rows(app_item.app_name, app_item.app_id, sort_dns_records(app_item.dns), domain_obj.name);
           })
         )
       )
@@ -170,7 +164,7 @@ with (Hasher('DnsApp','DomainApps')) {
     //   if (domain_info.name_servers.join(',') == 'ns1.badger.com,ns2.badger.com') {
     //     var app_dns = []
     //     load_domain(domain, function(domain_obj) {
-    //       render(manager_view(domain_info, domain_obj.records, app_dns));
+    //       render(manager_view(domain_info, domain_obj.dns, app_dns));
     //       show_correct_form_fields();
     //     });
     //   } else {
@@ -196,9 +190,9 @@ with (Hasher('DnsApp','DomainApps')) {
     //             for (var i=0; app.requires.dns && (i<app.requires.dns.length); i++) {
     //               var found_record = domain_has_record(domain_obj, app.requires.dns[i]);
     //               if (found_record) {
-    //                 app_result.records.push(found_record);
+    //                 app_result.dns.push(found_record);
     // 
-    //                 domain_obj.records = $.grep(domain_obj.records, function(value) {
+    //                 domain_obj.dns = $.grep(domain_obj.dns, function(value) {
     //                   return value != found_record;
     //                 });
     //               }
@@ -207,7 +201,7 @@ with (Hasher('DnsApp','DomainApps')) {
     //           app_dns.push(app_result);
     //         }
     //       }
-    //       render(manager_view(domain_info, domain_obj.records, app_dns));
+    //       render(manager_view(domain_info, domain_obj.dns, app_dns));
     //       show_correct_form_fields();
     //     });
     //   } else {

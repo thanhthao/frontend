@@ -23,23 +23,28 @@ with (Hasher('Registration','DomainApps')) {
     var button_div = div();
     
     render(
-      h1({ 'class': 'long-domain-name' }, domain, ' Registration'),
       h1({ 'class': 'long-domain-name' }, Domains.truncate_domain_name(domain, 20), ' Registration'),
-			(function() {
-				// console.log(domain);
-				// if (domain_registrar == "RhinoNames") {
-				// 	div({ style: "float: right; margin-top: -44px" }, a({ 'class': "myButton myButton-small", href: null }, "Transfer To Badger.com")),
-				// } else {
-				//	return div({ style: "float: right; margin-top: -44px" }, a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration (Renew)"))
-				// }
-			})(),
+      button_div,
       domain_data_block(domain),
       whois_div
     );
 
     Badger.getContacts(function() {
       Badger.getDomain(domain, function(response) {
-        render({ target: whois_div }, whois_view(response.data));
+        var domain_obj = response.data;
+        
+        render({ target: whois_div }, whois_view(domain_obj));
+
+        render({ target: button_div }, 
+          div({ style: "float: right; margin-top: -44px" }, 
+            domain_obj.badger_registration ? [
+              a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration (Renew)")
+            ] : [
+              a({ 'class': "myButton myButton-small", href: null }, "Transfer To Badger.com")
+            ]
+          )
+        );
+
       });
     });
   });
@@ -98,7 +103,7 @@ with (Hasher('Registration','DomainApps')) {
           // div(domain_obj.current_registrar),
           // div("Expires ", new Date(Date.parse(domain_obj.expires_on)).toDateString().split(' ').slice(1).join(' ')),
           // 
-          //          !domain_obj.uses_badger_dns && div({ style: 'text-align: right' }, a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend")),
+          //          !domain_obj.badger_dns && div({ style: 'text-align: right' }, a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend")),
           // 
           // div({ style: 'clear: left' })
           // 
@@ -163,7 +168,7 @@ with (Hasher('Registration','DomainApps')) {
         tr(
           td({ style: 'vertical-align: top; padding-right: 20px'},
             h2('Public Whois Listing'),
-            div({ 'class': 'long-domain-name', style: 'border: 1px solid #ccc; width: 409px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois)
+            div({ 'class': 'long-domain-name', style: 'border: 1px solid #ccc; width: 409px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois.raw)
           ),
           td({ style: 'vertical-align: top'},
             h2('Make Changes'),
