@@ -207,7 +207,7 @@ with (Hasher('Application')) {
   define('search_box', function(domain) {
     return form({ id: "form-search", action: Search.search_box_changed },
       input({ id: 'form-search-input', type: 'text', value: '', placeholder: 'Search for domains', events: {
-        focus: Search.search_box_changed,
+        change: Search.search_box_changed,
         keyup: Search.search_box_changed,
         keypress: function(e) {
           if (e.charCode)
