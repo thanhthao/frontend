@@ -71,7 +71,7 @@ with (Hasher('DomainApps','Application')) {
         div({ 'class': 'error-message', style: 'margin-top: 20px' }, 
           "Please install Badger DNS and try again.", 
           span({ style: 'padding-right: 20px'}, ' '), 
-          div({ style: 'float: right' }, a({ 'class': 'myButton myButton-small', href: curry(BaseDnsApp.change_name_servers_modal, domain_obj) }, 'Install Badger DNS'))
+          div({ style: 'float: right' }, a({ 'class': 'myButton myButton-small', href: curry(DnsApp.change_name_servers_modal, domain_obj) }, 'Install Badger DNS'))
         )
       : app.install_screen ? app.install_screen(app, domain_obj) : [
         table({ 'class': 'fancy-table' },
