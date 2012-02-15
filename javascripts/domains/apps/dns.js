@@ -564,7 +564,7 @@ define('get_dns_params', function(id) {
         option({ value: 'ns1.mydyndns.org,ns2.mydyndns.org' }, 'DynDNS'),
         option({ value: 'ns1.no-ip.com,ns2.no-ip.com,ns3.no-ip.com,ns4.no-ip.com,ns5.no-ip.com' }, 'NO-IP'),
         option({ value: 'dns-us1.powerdns.net,dns-us2.powerdns.net,dns-eu1.powerdns.net,dns-eu2.powerdns.net' }, 'PowerDNS'),
-        option({ value: 'ns1.rackspace.com,ns2.rackspace.com' }, 'Rackspace'),
+        option({ value: 'ns.rackspace.com,ns2.rackspace.com' }, 'Rackspace'),
         option({ value: 'ns1.slicehost.com,ns2.slicehost.com,ns3.slicehost.com' }, 'SliceHost'),
         option({ value: 'ns1.softlayer.com,ns2.softlayer.com' }, 'SoftLayer'),
         option({ value: 'a.ns.zerigo.net,b.ns.zerigo.net,c.ns.zerigo.net,d.ns.zerigo.net,e.ns.zerigo.net,f.ns.zerigo.net' }, 'Zerigo')
