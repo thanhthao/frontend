@@ -131,7 +131,29 @@ Given /^I mock getDomain( with domain "([^"]*)"|)$/ do |with_domain, domain|
                   created_at: '2011-10-30T04:21:43Z', updated_at: '2011-10-30T04:21:43Z', updated_on: '2011-10-30T04:21:43Z',
                   name_servers: ['ns1.badger.com', 'ns2.badger.com'], created_registrar: 'rhino',
                   whois: 'The data contained in this whois database is provided \"as is\" with no guarantee or warranties regarding its accuracy.',
-                  current_registrar: 'Badger.com',
+                  current_registrar: 'Badger.com',  badger_dns: true, dns: [],
+                  registrant_contact: { address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
+                        email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
+                        phone: '123456789', state: '1', zip: '084' } }});
+  };")
+end
+
+Given /^I mock getDomain with domain "([^"]*)" and dns:$/ do |domain, table|
+  records = []
+  table.hashes.each do |attributes|
+    records << "{ id: #{attributes['id']}, domain_id: 2, record_type: '#{attributes['record_type']}', content: '#{attributes['content']}',
+                  ttl: #{attributes['ttl']}, priority: '#{attributes['priority']}', subdomain: '#{attributes['subdomain'].empty? ? '' : "#{attributes['subdomain']}."}#{domain}', active: true }"
+  end
+
+  page.execute_script("Badger.getDomain = function(name, callback){
+    callback({ meta: { status: 'ok' },
+                data: {
+                  name: '#{ domain }', expires_on: '2011-11-30T04:21:43Z', status: 'active', registered_on: '2011-10-30T04:21:43Z',
+                  created_at: '2011-10-30T04:21:43Z', updated_at: '2011-10-30T04:21:43Z', updated_on: '2011-10-30T04:21:43Z',
+                  name_servers: ['ns1.badger.com', 'ns2.badger.com'], created_registrar: 'rhino',
+                  whois: 'The data contained in this whois database is provided \"as is\" with no guarantee or warranties regarding its accuracy.',
+                  current_registrar: 'Badger.com', badger_dns: true,
+                  dns: [#{records.join(',')}],
                   registrant_contact: { address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
                         email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
                         phone: '123456789', state: '1', zip: '084' } }});

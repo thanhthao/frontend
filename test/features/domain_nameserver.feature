@@ -10,8 +10,8 @@ Feature: Nameserver setting
     When I visit Badger DNS for domain "mydomain0.com"
 
   Scenario: When I choose to edit nameserver settings, I should be able to have many options of nameserver to choose from
-    Then I should see "BADGER DNS FOR mydomain0.com"
-    When I follow "Settings"
+    Then I should see "mydomain0.com DNS"
+    When I follow "Nameservers"
     Then I should see "mydomain0.com NAMESERVERS"
     And I should see "BADGER DNS"
     And I should see "EXTERNAL"

@@ -53,8 +53,7 @@ Feature: Tickets
     And I should see "Attachments: response_attachment.jpg"
     And I fill in "response" with "you're welcome"
     And I mock addResponseTicket
-    When I press "Reply"
-    Then I click "Ok" on the confirmation
+    And I press "Reply"
 
   Scenario: Create a new ticket
     When I follow "Create a New Ticket"
