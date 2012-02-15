@@ -5,8 +5,7 @@ Feature: Badger DNS
 
   Background:
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
-    And I mock getDomain with domain "mydomain0.com"
-    And I mock getRecords for domain "mydomain0.com" with records:
+    And I mock getDomain with domain "mydomain0.com" and dns:
       |id |record_type|subdomain    |content                              |ttl |priority|
       |78 |A          |subdomain    |244.245.123.19                       |1800|        |
       |79 |MX         |             |smtp.badger.com                      |1800|10      |
@@ -22,7 +21,7 @@ Feature: Badger DNS
     When I visit Badger DNS for domain "mydomain0.com"
 
   Scenario: When I visit Badger DNS page for my domain, I should see all DNS application I have installed (Email Forwarding ad Google Calendar) in sorted order
-    Then I should see "BADGER DNS FOR mydomain0.com"
+    Then I should see "mydomain0.com DNS"
     And I should see "A" within "#content table tr:eq(3)"
     And I should see "abc.mydomain0.com" within "#content table:first tr:eq(3)"
     And I should see "123.123.123.123" within "#content table tr:eq(3)"
@@ -78,7 +77,7 @@ Feature: Badger DNS
     And I fill in "dns-78-edit-content-ipv4" with "1.2.3.4"
     And I select "1 hour" from "dns-78-edit-ttl"
     And I mock updateRecord with status "ok"
-    And I mock getRecords for domain "mydomain0.com" with records:
+    And I mock getDomain with domain "mydomain0.com" and dns:
       |id |record_type|subdomain    |content                              |ttl |priority|
       |78 |A          |123agile     |1.2.3.4                              |3600|        |
       |79 |MX         |             |smtp.badger.com                      |1800|10      |

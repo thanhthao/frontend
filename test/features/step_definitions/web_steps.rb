@@ -148,3 +148,7 @@ end
 And /^I press key "(.*)" on "([^"]*)"$/ do |key, element|
   find("#{element}").native.send_keys(key.to_sym)
 end
+
+When /^(?:|I )click on "([^"]*)"$/ do |field|
+  find("##{field}").click
+end

@@ -5,7 +5,7 @@ Feature: Bulk Register
 
   Scenario: I should be able to bulk-register domains when I have at least one contact and enough credits
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
-    And I fill in "form-search-input" with ""
+    And I click on "form-search-input"
     Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
     And I follow "Bulk Register Tool"
     Then I should see "BULK REGISTER"
@@ -23,17 +23,16 @@ Feature: Bulk Register
     And I should see "You are about to register 2 domains."
     Then I follow "Register All Domains for 2 Credits"
     And I should see "BULK REGISTER RESULT"
-    And I should see "In processing, please wait..."
     And I should see "abc.com" within "#bulk-register-result-table"
     And I should see "abc123.com" within "#bulk-register-result-table"
-    And I should see "Succeed" within "#bulk-register-result-table"
-    And I follow "Close"
+    And I should see "Success" within "#bulk-register-result-table"
+    And I follow "Continue"
     Then I should see "MY DOMAINS"
     And I should see "Transfer in a Domain"
 
   Scenario: I should be able to bulk-register my domains when I have at least one contact but not enough credits
     Given I logged in with mock data for domains and user info with 1 domain credits and 5 invites available
-    And I fill in "form-search-input" with ""
+    And I click on "form-search-input"
     Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
     And I follow "Bulk Register Tool"
     Then I should see "BULK REGISTER"
@@ -56,18 +55,17 @@ Feature: Bulk Register
     And I should see "You are about to register 2 domains."
     Then I follow "Register All Domains for 2 Credits"
     And I should see "BULK REGISTER RESULT"
-    And I should see "In processing, please wait..."
     And I should see "abc.com" within "#bulk-register-result-table"
     And I should see "abc123.com" within "#bulk-register-result-table"
-    And I should see "Succeed" within "#bulk-register-result-table"
-    And I follow "Close"
+    And I should see "Success" within "#bulk-register-result-table"
+    And I follow "Continue"
     Then I should see "MY DOMAINS"
     And I should see "Transfer in a Domain"
 
   Scenario: I should be able to bulk-register my domains when I have no contact but enough credits
     Given I logged in with mock data for domains and user info with 10 domain credits and 5 invites available
     And I mock getContacts returns 0 contacts
-    And I fill in "form-search-input" with ""
+    And I click on "form-search-input"
     Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
     And I follow "Bulk Register Tool"
     Then I should see "Create Profile"
@@ -99,18 +97,17 @@ Feature: Bulk Register
     And I should see "You are about to register 2 domains."
     Then I follow "Register All Domains for 2 Credits"
     And I should see "BULK REGISTER RESULT"
-    And I should see "In processing, please wait..."
     And I should see "abc.com" within "#bulk-register-result-table"
     And I should see "abc123.com" within "#bulk-register-result-table"
-    And I should see "Succeed" within "#bulk-register-result-table"
-    And I follow "Close"
+    And I should see "Success" within "#bulk-register-result-table"
+    And I follow "Continue"
     Then I should see "MY DOMAINS"
     And I should see "Transfer in a Domain"
 
   Scenario: I should be able to bulk-register my domains when I have no contact and not enough credits
     Given I logged in with mock data for domains and user info with 1 domain credits and 5 invites available
     And I mock getContacts returns 0 contacts
-    And I fill in "form-search-input" with ""
+    And I click on "form-search-input"
     Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
     And I follow "Bulk Register Tool"
     Then I should see "Create Profile"
@@ -147,10 +144,9 @@ Feature: Bulk Register
     And I should see "You are about to register 2 domains."
     Then I follow "Register All Domains for 2 Credits"
     And I should see "BULK REGISTER RESULT"
-    And I should see "In processing, please wait..."
     And I should see "abc.com" within "#bulk-register-result-table"
     And I should see "abc123.com" within "#bulk-register-result-table"
-    And I should see "Succeed" within "#bulk-register-result-table"
-    And I follow "Close"
+    And I should see "Success" within "#bulk-register-result-table"
+    And I follow "Continue"
     Then I should see "MY DOMAINS"
     And I should see "Transfer in a Domain"

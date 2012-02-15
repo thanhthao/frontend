@@ -3,11 +3,11 @@ with (Hasher('Search','Application')) {
     render(
       div(
         h1('Search Results'),
-        div({ style: 'float: right; margin-top: -44px' }, 
+        div({ style: 'float: right; margin-top: -44px' },
           a({ 'class': 'myButton myButton-small', href: Transfer.show }, 'Transfer in a Domain')
         ),
         table({ id: 'search-results', 'class': 'fancy-table' }, tbody()),
-        div({ id: 'search-instructions' }, 
+        div({ id: 'search-instructions' },
           p('Start typing to search for available domains.'),
           p('If you would like to register many domains at once, try our ', a({ href: curry(Signup.require_user_modal, BulkRegister.show) }, 'Bulk Register Tool'), '.')
         )
@@ -23,6 +23,8 @@ with (Hasher('Search','Application')) {
   })
 
   define('search_box_changed', function() {
+    set_search_route();
+
     var current_value = $('#form-search-input').val().toLowerCase().replace(/[^a-zA-Z0-9\-\.]/g,'').split('.')[0];
 
 		var search_callback = function() {
@@ -47,7 +49,7 @@ with (Hasher('Search','Application')) {
 
     this.last_search_value = current_value;
   });
-  
+
   define('search_result_row', function(results) {
     var available_extensions = $.grep(results, function(ext) {
       return ext[1];
