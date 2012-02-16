@@ -204,7 +204,7 @@ with (Hasher('Registration','DomainApps')) {
                 )
               )),
               div(
-                (domain.privacy ? input({ name: 'privacy', type: 'checkbox', checked: 'checked' }) : input({ name: 'privacy', type: 'checkbox' })),
+                (domain.whois.privacy ? input({ name: 'privacy', type: 'checkbox', checked: 'checked' }) : input({ name: 'privacy', type: 'checkbox' })),
                 'Keep contact information private'
               ),
   
