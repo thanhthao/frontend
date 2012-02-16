@@ -20,21 +20,21 @@ with (Hasher('BulkRegister','Application')) {
         results.push(value);
     });
     if (results.length > 0)
-      BulkRegister.verify_bulk_register(results, form_data.contacts_id);
+      BulkRegister.verify_bulk_register(results, form_data);
     else {
       $('#bulk-register-form-error').html('Invalid Domains Input');
       $('#bulk-register-form-error').removeClass('hidden');
     }
   });
 
-  define('verify_bulk_register', function(domains_list, contacts_id) {
+  define('verify_bulk_register', function(domains_list, form_data) {
    // show_modal(Register.processing_request());
     BadgerCache.getAccountInfo(function(account_info) {
       // ensure they have at least one domain_credit
       if (account_info.data.domain_credits < domains_list.length) {
-        Billing.purchase_modal(curry(BulkRegister.verify_bulk_register, domains_list), domains_list.length);
+        Billing.purchase_modal(curry(BulkRegister.verify_bulk_register, domains_list, form_data), domains_list.length - account_info.data.domain_credits);
       } else {
-        confirm_register(domains_list, contacts_id);
+        confirm_register(domains_list, form_data);
       }
     });
   });
@@ -42,8 +42,8 @@ with (Hasher('BulkRegister','Application')) {
   define('proceed_bulk_register', function(domains_list, form_data) {
     bulk_register_result(domains_list);
     var count = 0;
-		var contacts_id = form_data.registrant_contact_id;
-		var years = form_data.years;
+		var contact_id = form_data.registrant_contact_id;
+		var years = (form_data.years ? form_data.years : 1);
 
     $.each(domains_list, function() {
       var local_count = ++count;
@@ -51,7 +51,7 @@ with (Hasher('BulkRegister','Application')) {
 
 			var domain_info = { name: domain.toString(), auto_renew: 'true', privacy: 'true',
                           name_servers: 'ns1.badger.com,ns2.badger.com',
-                          registrant_contact_id: contacts_id, years: years != null ? years : 1 };
+                          registrant_contact_id: contact_id, years: years };
       Badger.registerDomain(domain_info, function(response) {
         if (response.meta.status != 'created') {
           $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html(div({ 'class': "register-failed" }, 'Failed'));
@@ -60,6 +60,9 @@ with (Hasher('BulkRegister','Application')) {
             DomainApps.install_app_on_domain(Hasher.domain_apps["badger_web_forward"], domain_object);
           })
           $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html(div({ 'class': "register-success" }, 'Success'));
+          BadgerCache.flush('domains');
+          BadgerCache.getDomains(function() { update_my_domains_count(); });
+          update_credits(true);
         }
       });
     });
@@ -82,7 +85,7 @@ with (Hasher('BulkRegister','Application')) {
           p('Type in domains you want to register, one per line:'),
           textarea({ name: 'register_domains_list', style: 'width: 80%; height: 180px;' }),
           div(span('Registrant:'),
-            span(select({ name: 'contacts_id', style: 'width: 150px; margin: 10px 10px; text-align: center' },
+            span(select({ name: 'registrant_contact_id', style: 'width: 150px; margin: 10px 10px; text-align: center' },
               Registration.profile_options_for_select()
           ))),
           div({ style: 'text-align: right' }, input({ 'class': 'myButton', id: 'next', type: 'submit', value: 'Next' }))
@@ -91,12 +94,12 @@ with (Hasher('BulkRegister','Application')) {
 		);
 	});
 
-  define('confirm_register', function(domains_list, contacts_id) {
+  define('confirm_register', function(domains_list, form_data) {
     show_modal(
       div(
         h1('CONFIRM REGISTER'),
         p('You are about to register ' + domains_list.length + (domains_list.length > 1 ? ' domains.' : ' domain.')),
-        a({ href: curry(BulkRegister.proceed_bulk_register, domains_list, contacts_id), 'class': 'myButton'}, 'Register All Domains for ' + domains_list.length + (domains_list.length > 1 ? ' Credits' : ' Credit'))
+        a({ href: curry(BulkRegister.proceed_bulk_register, domains_list, form_data), 'class': 'myButton'}, 'Register All Domains for ' + domains_list.length + (domains_list.length > 1 ? ' Credits' : ' Credit'))
       )
     )
   });
