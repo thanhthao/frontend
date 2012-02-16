@@ -32,7 +32,7 @@ with (Hasher('BulkRegister','Application')) {
     BadgerCache.getAccountInfo(function(account_info) {
       // ensure they have at least one domain_credit
       if (account_info.data.domain_credits < domains_list.length) {
-        Billing.purchase_modal(curry(BulkRegister.verify_bulk_register, domains_list, form_data), domains_list.length);
+        Billing.purchase_modal(curry(BulkRegister.verify_bulk_register, domains_list, form_data), domains_list.length - account_info.data.domain_credits);
       } else {
         confirm_register(domains_list, form_data);
       }
