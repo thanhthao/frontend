@@ -60,6 +60,9 @@ with (Hasher('BulkRegister','Application')) {
             DomainApps.install_app_on_domain(Hasher.domain_apps["badger_web_forward"], domain_object);
           })
           $('#bulk-register-result-table td#' + domain.replace(/\./g,'-') + '-' + local_count + '-register-status').html(div({ 'class': "register-success" }, 'Success'));
+          BadgerCache.flush('domains');
+          BadgerCache.getDomains(function() { update_my_domains_count(); });
+          update_credits(true);
         }
       });
     });
