@@ -170,9 +170,7 @@ with (Hasher('Domains','Application')) {
                 // ', ',
                 a({ href: '#domains/' + domain.name + '/registration' }, 'registration'),
                 ', ',
-                a({ href: '#domains/' + domain.name + '/dns' }, 'dns'),
-                ', ',
-                a({ href: '#domains/' + domain.name + '/whois' }, 'whois')
+                a({ href: '#domains/' + domain.name + '/dns' }, 'dns')
               )
             );
           })
