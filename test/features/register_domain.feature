@@ -46,11 +46,10 @@ Feature: Register Domain
     And I check "extension_org"
     And I press "register-button"
     Then I should see "BULK REGISTER RESULT"
-    And I should see "In processing, please wait..."
     And I should see "mydomain.com" within "table#bulk-register-result-table tr:eq(2)"
-    And I should see "Succeed" within "table#bulk-register-result-table tr:eq(2)"
+    And I should see "Success" within "table#bulk-register-result-table tr:eq(2)"
     And I should see "mydomain.org" within "table#bulk-register-result-table tr:eq(3)"
-    And I should see "Succeed" within "table#bulk-register-result-table tr:eq(3)"
+    And I should see "Success" within "table#bulk-register-result-table tr:eq(3)"
 
   Scenario: I successfully register domains when I am not yet a user, with no contact, and no credits
     Given I am on the home page
@@ -101,6 +100,6 @@ Feature: Register Domain
     When I press "purchase-button"
     Then I should see "BULK REGISTER RESULT"
     And I should see "mydomain.com" within "table#bulk-register-result-table tr:eq(2)"
-    And I should see "Succeed" within "table#bulk-register-result-table tr:eq(2)"
+    And I should see "Success" within "table#bulk-register-result-table tr:eq(2)"
     And I should see "mydomain.org" within "table#bulk-register-result-table tr:eq(3)"
-    And I should see "Succeed" within "table#bulk-register-result-table tr:eq(3)"
+    And I should see "Success" within "table#bulk-register-result-table tr:eq(3)"

@@ -7,8 +7,7 @@ Feature: Domain apps
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
 
   Scenario: View apps installed on domain
-    And I mock getDomain with domain "mydomain0.com"
-    And I mock getRecords for domain "mydomain0.com" with records:
+    And I mock getDomain with domain "mydomain0.com" and dns:
       |id |record_type|subdomain    |content                              |ttl |priority|
       |78 |A          |             |204.93.213.45                        |1800|        |
       |79 |CNAME      |www          |ea.myshopify.com                     |1800|        |
@@ -18,7 +17,7 @@ Feature: Domain apps
       |83 |CNAME      |www          |ea.heroku.com                        |1800|        |
       |84 |A          |             |184.106.20.102                       |1800|        |
       |85 |A          |             |66.6.44.4                            |1800|        |
-      |86 |CNAME      |www          |ea.tumblr.com                        |1800|        |
+      |86 |CNAME      |www          |domains.tumblr.com                   |1800|        |
       |87 |A          |             |216.239.32.21                        |1800|        |
       |88 |A          |             |216.239.34.21                        |1800|        |
       |89 |A          |             |216.239.36.21                        |1800|        |
@@ -60,8 +59,6 @@ Feature: Domain apps
 
   Scenario: Install new app
     And I mock getDomain with domain "mydomain0.com"
-    And I mock getRecords for domain "mydomain0.com" with records:
-      |id |record_type|subdomain    |content                              |ttl |priority|
     And I follow "mydomain0.com"
     When I click on item with xpath "(//a[@class='app_store_container'])[9]"
     Then I should see "Shopify for mydomain0.com"
@@ -82,8 +79,7 @@ Feature: Domain apps
     And I should see "Shopify is now installed! If you haven't already, you'll need to add [mydomain0.com] and [www.mydomain0.com] in your Shopify Preferences"
 
   Scenario: Install new app unsuccessfully because of conflicts
-    And I mock getDomain with domain "mydomain0.com"
-    And I mock getRecords for domain "mydomain0.com" with records:
+    And I mock getDomain with domain "mydomain0.com" and dns:
       |id |record_type|subdomain    |content                              |ttl |priority|
       |80 |A          |             |75.101.163.44                        |1800|        |
       |81 |A          |             |75.101.145.87                        |1800|        |

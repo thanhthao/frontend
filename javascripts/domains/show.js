@@ -52,7 +52,7 @@ with (Hasher('DomainShow','DomainApps')) {
           target = installed_apps;
         } else {
           if ((app.id == 'badger_dns') || (app.id == 'remote_dns')) {
-            href = curry(BaseDnsApp.change_name_servers_modal, domain_obj);
+            href = curry(DnsApp.change_name_servers_modal, domain_obj);
           } else {
             href = curry(show_modal_install_app, app, domain_obj);
           }

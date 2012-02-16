@@ -66,7 +66,7 @@ Feature: Transfer
     When I follow "Complete Transfer"
     And I should see "TRANSFER RESULT"
     And I should see "xyzdomain.com" within "#transfer-result-table"
-    And I should see "Succeed" within "#transfer-result-table"
+    And I should see "Success" within "#transfer-result-table"
 
   Scenario: Transfer in domains: automatically update auth code status after user input
     And I mock getDomainInfo api for domains:
