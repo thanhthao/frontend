@@ -32,9 +32,8 @@ with (Hasher('DnsApp','DomainApps')) {
     Badger.getDomain(domain, function(response) {
       var domain_obj = response.data;
       if (response.meta.status == 'ok') {
-        
         // if it's a domain registered at badger
-        if (domain_obj.current_registrar.match(/badger/i)) {
+        if (domain_obj.badger_registration || domain_obj.linkable_registrar) {
           render({ into: button_div }, change_name_servers_button(domain_obj));
         } else {
           render({ into: button_div }, 
