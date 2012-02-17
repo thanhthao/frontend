@@ -1,6 +1,6 @@
 Given /^I am on the home page$/ do
   visit('/index.html')
-  Given 'I am not logged in'
+  step 'I am not logged in'
   #page.execute_script("Badger.api_host = 'http://www.badger.dev/'; alert(Badger.api_host)")
 end
 
