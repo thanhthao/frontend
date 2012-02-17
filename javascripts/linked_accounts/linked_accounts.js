@@ -142,16 +142,16 @@ with (Hasher('LinkedAccounts','Application')) {
 		// var existing_accounts = (existing_accounts || []).map(function(a) { return a.site });
 		
 		var result = [
-		  linked_accounts_table_row("Go Daddy", "godaddy", link_accounts_button(curry(Registrar.show_link, {site: 'godaddy'}))),
-		  linked_accounts_table_row("Network Solutions", "networksolutions", link_accounts_button(curry(Registrar.show_link, {site: 'networksolutions'})))
+		  linked_accounts_table_row("Go Daddy", link_accounts_button(curry(Registrar.show_link, {site: 'godaddy'}))),
+		  linked_accounts_table_row("Network Solutions", link_accounts_button(curry(Registrar.show_link, {site: 'networksolutions'})))
 		];
 		
 		if ($("#accounts-table tr#twitter").length == 0) result.push(
-			linked_accounts_table_row("Twitter", "twitter", link_accounts_button(curry(TwitterAccount.show_link_accounts_modal)))
+			linked_accounts_table_row("Twitter", link_accounts_button(curry(TwitterAccount.show_link_accounts_modal)))
 		);
 		
 		if ($("#accounts-table tr#facebook").length == 0) result.push(
-			linked_accounts_table_row("Facebook", "facebook", link_accounts_button(curry(FacebookAccount.show_link_accounts_modal)))
+			linked_accounts_table_row("Facebook", link_accounts_button(curry(FacebookAccount.show_link_accounts_modal)))
 		);
 			
 		return result;
