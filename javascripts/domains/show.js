@@ -11,6 +11,8 @@ with (Hasher('DomainShow','DomainApps')) {
   });
 
   define('handle_get_domain_response', function(content_div, domain, response) {
+    if (typeof(timeout) != "undefined") clearTimeout(timeout);
+    
     var domain_obj = response.data;
     if (response.meta.status == 'ok') {
       if (!domain_obj.current_registrar) {
@@ -20,7 +22,7 @@ with (Hasher('DomainShow','DomainApps')) {
         );
       } else if (domain_obj.current_registrar == 'Unknown') {
         // if it's "unknown", it was probably just added and we're still loading info for it... try again in 1 second
-        setTimeout(curry(Badger.getDomain, domain_obj.name, curry(handle_get_domain_response, content_div, domain)), 1000);
+        var timeout = setTimeout(curry(Badger.getDomain, domain_obj.name, curry(handle_get_domain_response, content_div, domain)), 1000);
       } else {
         render({ into: content_div }, 
           domain_status_description(domain_obj),
@@ -39,8 +41,10 @@ with (Hasher('DomainShow','DomainApps')) {
   });
 
   define('render_all_application_icons', function(domain_obj) {
+    var modify_dns = $.inArray("modify_dns", domain_obj.permissions_for_person || []) >= 0;
+    
     var installed_apps = div();
-    var available_apps = div();
+    var available_apps = div({ id: "available-apps" }, h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Available Applications'));
 
     for (var key in Hasher.domain_apps) {
       var app = Hasher.domain_apps[key];
@@ -73,8 +77,8 @@ with (Hasher('DomainShow','DomainApps')) {
       h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Installed Applications'),
       installed_apps,
       div({ style: 'clear: both '}),
-      h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Available Applications'),
-      available_apps,
+      // h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Available Applications'),
+      !modify_dns ? [] : available_apps,
       div({ style: 'clear: both '})
     ];
   });

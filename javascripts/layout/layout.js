@@ -47,11 +47,7 @@ with (Hasher('Application')) {
 
   define('update_my_domains_count', function() {
     BadgerCache.getDomains(function(results) {
-      var count = 0
-      $.each(results, function() {
-        if (this.status == 'active')
-          count +=1;
-      })
+      var count = results.length;
       if (count > 0) {
         $('#my-domains-count').html(" (" + count + ")");
         if ($('#all-my-domains-h1'))
@@ -326,7 +322,12 @@ with (Hasher('Application')) {
 
     load_domain(domain, function(domain_obj) {
       if (domain_obj.current_registrar == 'Unknown') {
-        console.log("TODO: domain_menu_item: check again in a second and see if this domain is still 'unknown'")
+        var timeout = setTimeout(function() {
+          Badger.getDomain(domain_obj.name, function(response) {
+            clearTimeout(timeout);
+            domain_menu_item(domain);
+          });
+        }, 1000);
       } else if (domain_obj.current_registrar) {
         for (var key in Hasher.domain_apps) {
           if (DomainApps.app_is_installed_on_domain(Hasher.domain_apps[key], domain_obj) && Hasher.domain_apps[key].menu_item) {
