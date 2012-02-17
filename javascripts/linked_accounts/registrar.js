@@ -23,7 +23,7 @@ with (Hasher('Registrar','Application')) {
 				h1('Link your ' + data.registrar_name + ' Account'),
 				div({ 'class': 'hidden', id: 'link-form-error' }),
 				p("Lorem ipsum dolor sit amet ", strong('consectetur adipisicing elit'), " tempor incididunt ut labore et dolore magna."),
-				form({ id: 'registrar-link-form', action: curry(Registrar.start_link, data, 'Linking...'), style: "width:320px; margin: 10px auto;" },
+				form({ id: 'registrar-link-form', action: curry(Registrar.start_link, data, 'Starting Linking...'), style: "width:320px; margin: 10px auto;" },
 				  input({ type: 'hidden', name: 'linked_account_id', id: 'linked-account-id', value: data.id}),
 					div(input({ type: 'text', name: 'login', placeholder: login_text, value: data.login ? data.login : '' })),
           div(input({ type: 'password', name: 'password', placeholder: 'Password' })),
@@ -43,7 +43,7 @@ with (Hasher('Registrar','Application')) {
     // draw form for error handling but skip past it
     data = Registrar.show_link(data);
     data.sync = true;
-    Registrar.start_link(data, 'Syncing...', {});
+    Registrar.start_link(data, 'Starting Sync...', {});
   });
 
   define('start_link', function(data, message, form_data) {
@@ -58,8 +58,8 @@ with (Hasher('Registrar','Application')) {
 				$('#linked-account-id').val(data.id);
 			}
 			if (response.meta.status == 'ok') {
-      	start_modal_spin('Logging in to ' + data.registrar_name + '...');
-				setTimeout(curry(Registrar.poll_link, 70000, data), 2000);
+        // start_modal_spin('Logging in to ' + data.registrar_name + '...');
+				setTimeout(curry(Registrar.poll_link, 70000, data), 1500);
       } else {
         $('#link-form-error').html(error_message(response)).show();
 				$('#modal-dialog a.close-button').show();
@@ -90,6 +90,7 @@ with (Hasher('Registrar','Application')) {
 						BadgerCache.reload('domains')
 						set_route('#filter_domains/all/list');
 						break;
+					
 					case 'error_auth':
 						// login failed
 						$('#link-form-error').html(error_message('Failed to Login to ' + data.registrar_name +
@@ -98,6 +99,20 @@ with (Hasher('Registrar','Application')) {
 						stop_modal_spin();	
 						break;
 					default:
+					  switch (response.data.status) {
+					    case 'start_sync':
+					      start_modal_spin('Logging into your account at ' + data.registrar_name + '...');
+					      break;
+              case 'syncing':
+                start_modal_spin('Reading your domain list at ' + data.registrar_name + '...');
+                break;
+              default:
+                // update title after 20 secs left
+    						if (ttl >= 25000 && ttl <= 30000) {
+    						  start_modal_spin('We\'re experiencing a delay linking at ' + data.registrar_name + '...');
+                }
+            }
+            
 						// check if time out
 						if (ttl <= 0) {
 							$('#link-form-error').html(error_message('Failed to link to ' + data.registrar_name +
@@ -107,20 +122,8 @@ with (Hasher('Registrar','Application')) {
 							break;
 						}
 						
-						// update title after 20 secs left
-						if (ttl <= 15000) {
-						  start_modal_spin('Attempting linking at ' + data.registrar_name + '...');
-            }
-						else if (ttl <= 35000) {
-						  start_modal_spin('Completing account Linking at ' + data.registrar_name + '...');
-            }
-            else if (ttl <= 65000) {
-						  // update title after 65 secs left
-						  start_modal_spin('Reading your domain list at ' + data.registrar_name + '...');
-            }
-            
 						// delay and poll again again
-						var time = 2000;
+						var time = 1500;
 						setTimeout(curry(Registrar.poll_link, ttl - time, data), time);
 						break;
 				}
