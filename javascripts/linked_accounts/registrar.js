@@ -1,5 +1,30 @@
 with (Hasher('Registrar','Application')) {
 
+  define('remove_link', function(data) {
+    show_modal(
+      div(
+        h1('Confirm Account Unlinking?'),
+        div({ 'class': 'hidden', id: 'link-form-error' }),
+        p('* This cannot be undone, linked domains will be removed from your account.'),
+        div({ style: 'text-align: right' }, a({ 'class': 'myButton red', href: curry(Registrar.do_remove_link, data) }, 'Unlink Account')),
+        div({ style: 'clear: both' })
+      )
+    )
+  });
+  
+  define('do_remove_link', function(data) {
+    start_modal_spin('Removing Linked Account...');
+    Badger.deleteLinkedAccount(data.id, function (response) {
+			if (response.meta.status == 'ok') {
+			  hide_modal();
+				set_route('#linked_accounts');
+      } else {
+        $('#link-form-error').html(error_message(response)).show();
+        stop_modal_spin();
+      }
+		});
+  });
+    
   define('show_link', function(data) {
 		var login_text;
 		if (!data.id) {
