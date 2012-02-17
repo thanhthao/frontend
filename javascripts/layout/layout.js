@@ -125,7 +125,8 @@ with (Hasher('Application')) {
           ul(
             li(a({ href: "#contact_us" }, 'Contact Us')),
             li(a({ href: "#faqs" }, 'Frequently Asked Questions')),
-            li(a({ href: "#knowledge_center" }, 'Knowledge Center'))
+            li(a({ href: "#knowledge_center" }, 'Knowledge Center')),
+            li(a({ href: 'https://github.com/badger/frontend', target: '_blank' }, 'API Docs for Developers'))
           )
         ),
         div({ 'class': "col" },

@@ -36,11 +36,7 @@ with (Hasher('Welcome','Application')) {
 
                 h3({ style: "margin: 0" }, "Already have a domain?"),
                 //p({ style: "margin-top: 5px; margin-bottom: 18px" }, "Read about out ", a({ href: '#faqs/how-were-different' }, "how we're different"), ".  Or, you can jump right in and ", a({ href: Transfer.show }, "transfer a domain"), ".")
-                p({ style: "margin-top: 5px; margin-bottom: 18px" }, "You can jump right in and ", a({ href: Transfer.show }, "transfer a domain"), "."),
-              
-                h3({ style: "margin: 0" }, "Are you a developer?"),
-                p({ style: "margin-top: 5px; margin-bottom: 18px" }, "Check out our ", a({ href: 'https://github.com/badger/frontend', target: '_blank' }, 'badger.com source code'), '.  We also have a ', a({ href: 'http://badger.github.com', target: '_blank' }, 'JSON API'), '.')
-              
+                p({ style: "margin-top: 5px; margin-bottom: 18px" }, "You can jump right in and ", a({ href: Transfer.show }, "transfer a domain"), ".")              
               )
             ),
             td({ style: 'vertical-align: top' }, img({ src: 'images/badger-6.png', style: 'padding: 20px 30px' }))

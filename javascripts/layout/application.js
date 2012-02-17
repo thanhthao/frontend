@@ -16,7 +16,7 @@ with (Hasher('Application')) {
     Badger.onLogout(function() {
       BadgerCache.flush();
       reset_layout('default_layout');
-      set_route('#');
+      set_route('#welcome');
     });
   });
 }
