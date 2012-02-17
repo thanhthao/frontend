@@ -15,7 +15,7 @@ with (Hasher('Domains','Application')) {
         case 'expiringsoon':
           for (i = 0; i < domains.length; i ++) {
             var current_date = new Date();
-            var expire_date = new Date(Date.parse(domains[i].expires_at));
+            var expire_date = new Date(Date.parse(domains[i].expires));
             var days = parseInt(expire_date - current_date)/(24*3600*1000);
             if (days <= 90)
               results.push(domains[i]);
@@ -106,7 +106,7 @@ with (Hasher('Domains','Application')) {
 				)
 			),
       div({ style: 'float: right; margin-top: -44px' },
-        a({ 'class': 'myButton myButton-small', href: Transfer.show }, 'Transfer in a Domain')
+        a({ 'class': 'myButton small', href: Transfer.show }, 'Transfer in a Domain')
       ),
 
       (typeof domains == 'undefined') ? [
@@ -143,7 +143,7 @@ with (Hasher('Domains','Application')) {
     
     return div({ 'class': 'info-message', style: 'text-align: right; padding: 10px;' }, $.map(registrars, function(data, name) {
       return div({ style: 'height: 30px;' }, 'You have ', b(data.count), ' domain' + (data.count == 1 ? '' : 's') + ' at ' + name,
-        a({ 'class': 'myButton myButton-small', style: 'margin-left: 10px;', href: curry(Transfer.show, data.default_domains, true) }, 'Transfer To Badger')
+        a({ 'class': 'myButton small', style: 'margin-left: 10px;', href: curry(Transfer.show, data.default_domains, true) }, 'Transfer To Badger')
       );
     }));
   });
@@ -154,6 +154,7 @@ with (Hasher('Domains','Application')) {
         tbody(
           tr({ 'class': 'table-header' },
             th('Name'),
+            th('Status'),
             th('Registrar'),
             th('Expires'),
             th('Applications')
@@ -162,8 +163,9 @@ with (Hasher('Domains','Application')) {
           (domains || []).map(function(domain) {
             return tr(
               td(a({ href: '#domains/' + domain.name }, Domains.truncate_domain_name(domain.name))),
+              td(domain.status),
               td(domain.current_registrar),
-              td(new Date(Date.parse(domain.expires_at)).toDateString()),
+              td(new Date(Date.parse(domain.expires)).toDateString()),
               td(
                 // img({ src: 'images/apps/facebook-icon.png'}),
                 // ', ',

@@ -20,7 +20,7 @@ with (Hasher('Invite','Application')) {
 
         if (invites_available) {
           render({ target: target_button_area }, 
-            a({ 'class': 'myButton myButton-small', href: curry(Invite.send_invite_modal, domain_credits) }, 'Send Invite')
+            a({ 'class': 'myButton small', href: curry(Invite.send_invite_modal, domain_credits) }, 'Send Invite')
           );
         }
 

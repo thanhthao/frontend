@@ -37,7 +37,7 @@ with (Hasher('DnsApp','DomainApps')) {
           render({ into: button_div }, change_name_servers_button(domain_obj));
         } else {
           render({ into: button_div }, 
-            a({ 'class': 'myButton myButton-small', href: curry(show_you_need_to_update_your_nameservers_manually_modal, domain_obj) }, 'Nameservers')
+            a({ 'class': 'myButton small', href: curry(show_you_need_to_update_your_nameservers_manually_modal, domain_obj) }, 'Nameservers')
           );
         }
 
@@ -257,7 +257,7 @@ with (Hasher('DnsApp','DomainApps')) {
       tr({ 'class': 'table-header' },
         td({ colSpan: 5, 'class': 'app_dns_header' }, h2({ style: "border-bottom: 1px solid #888; padding-bottom: 5px; margin-bottom: 0" }, app_name),
         div({ style: 'float: right; margin-top: -30px' },
-          a({ 'class': 'myButton myButton-small', href: curry(show_settings_modal_for_app, app_id, domain) }, 'Settings')
+          a({ 'class': 'myButton small', href: curry(show_settings_modal_for_app, app_id, domain) }, 'Settings')
         ))
       ),
       records.map(function(record) {
@@ -640,7 +640,7 @@ define('get_dns_params', function(id) {
   });
 
   define('change_name_servers_button', function(domain_info) {
-    return a({ 'class': 'myButton myButton-small', href: curry(change_name_servers_modal, domain_info) }, 'Nameservers');
+    return a({ 'class': 'myButton small', href: curry(change_name_servers_modal, domain_info) }, 'Nameservers');
   })
 
 

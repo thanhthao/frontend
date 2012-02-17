@@ -46,7 +46,7 @@ with (Hasher('DomainApps','Application')) {
                     );
                 })))
                ]
-               : a({ 'class': 'myButton myButton-small',
+               : a({ 'class': 'myButton small',
                       href: function() {
                         load_domain(domain, function(domain_obj) {
                           remove_app_from_domain(conflict_app, domain_obj);
@@ -71,7 +71,7 @@ with (Hasher('DomainApps','Application')) {
         div({ 'class': 'error-message', style: 'margin-top: 20px' }, 
           "Please install Badger DNS and try again.", 
           span({ style: 'padding-right: 20px'}, ' '), 
-          div({ style: 'float: right' }, a({ 'class': 'myButton myButton-small', href: curry(DnsApp.change_name_servers_modal, domain_obj) }, 'Install Badger DNS'))
+          div({ style: 'float: right' }, a({ 'class': 'myButton small', href: curry(DnsApp.change_name_servers_modal, domain_obj) }, 'Install Badger DNS'))
         )
       : app.install_screen ? app.install_screen(app, domain_obj) : [
         table({ 'class': 'fancy-table' },
@@ -166,7 +166,7 @@ with (Hasher('DomainApps','Application')) {
         
   define('domain_app_settings_button', function(app_id, domain) {
     return div({ style: 'float: right; margin-top: -44px' }, 
-      a({ 'class': 'myButton myButton-small', href: curry(show_settings_modal_for_app, app_id, domain) }, 'Settings')
+      a({ 'class': 'myButton small', href: curry(show_settings_modal_for_app, app_id, domain) }, 'Settings')
     );
   });
   
@@ -315,17 +315,9 @@ with (Hasher('DomainApps','Application')) {
       }
     }
 
-    var conflict_app_keys = [];
+    app_dns = [{ id: 'user_dns', name: 'User Custom DNS', requires: { dns: domain_obj.dns } }].concat(app_dns)
 
-    var user_custom_conflict_dns = []
-    for (var index in domain_obj.dns) {
-      if (existing_conflict_record(install_app.requires.dns, domain_obj.dns[index], domain_obj.name)) {
-        user_custom_conflict_dns.push(domain_obj.dns[index]);
-        break;
-      }
-    }
-    if (user_custom_conflict_dns.length > 0)
-      conflict_app_keys.push({ id: 'user_dns', name: 'User Custom DNS', requires: { dns: user_custom_conflict_dns } });
+    var conflict_app_keys = [];
 
     for_each(app_dns, function(app) {
       for (var index in install_app.requires.dns) {

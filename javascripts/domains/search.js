@@ -4,7 +4,7 @@ with (Hasher('Search','Application')) {
       div(
         h1('Search Results'),
         div({ style: 'float: right; margin-top: -44px' },
-          a({ 'class': 'myButton myButton-small', href: Transfer.show }, 'Transfer in a Domain')
+          a({ 'class': 'myButton small', href: Transfer.show }, 'Transfer in a Domain')
         ),
         table({ id: 'search-results', 'class': 'fancy-table' }, tbody()),
         div({ id: 'search-instructions' },

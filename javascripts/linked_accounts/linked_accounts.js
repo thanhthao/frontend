@@ -17,7 +17,7 @@ with (Hasher('LinkedAccounts','Application')) {
 					linked_accounts_table("show_all")
 				] : [
 					div({ style: "float: right; margin-top: -44px" },
-						a({ 'class': "myButton myButton-small", href: curry(add_linked_accounts_modal, response.data) }, "Add Linked Accounts")
+						a({ 'class': "myButton small", href: curry(add_linked_accounts_modal, response.data) }, "Add Linked Accounts")
 					),
 					linked_accounts_table(response.data)
 				]
@@ -87,11 +87,12 @@ with (Hasher('LinkedAccounts','Application')) {
   					
 					  return linked_accounts_table_row(name, 
 			  	    div({ id: (account.site + "-" + account.id) },
-			  	      div({ 'class': error ? "error-message" : "info-message", style: "position: relative; text-align: right; margin: 5px auto 5px auto; height: 95px; width: 350px;" },
-			  	        a({ href: curry(Registrar.remove_link, account), 'class': 'close-button' }, 'X'),
+			  	      div({ 'class': error ? "error-message" : "status-message", style: "position: relative; text-align: right; margin: 5px auto 5px auto; height: 95px; width: 350px;" },
                   h3("Status: ", status),
                   div("Last Sync: " + (account.last_synced_at ? new Date(Date.parse(account.last_synced_at)).toString() : 'Never')),
 									div("Login: " + account.login + " (" + account.domain_count + " Linked Domain(s))"),
+									a({ 'class': "myButton grey", style: 'margin: 10px 0 0;', href: curry(Registrar.remove_link, account) }, "Unlink"),
+									span(' '),
 									error ? a({ 'class': "myButton red", style: 'margin: 10px 0 0;', href: curry(Registrar.show_link, account)}, "edit")
 									  : a({ 'class': "myButton", style: 'margin: 10px 0 0;', href: curry(Registrar.sync_now, account)}, "Sync Now")
 								)

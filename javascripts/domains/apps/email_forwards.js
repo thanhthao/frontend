@@ -44,7 +44,7 @@ with (Hasher('EmailForwards', 'DomainApps')) {
                 td(input({ id: 'input-username', name: 'username', placeholder: 'username' }), div({ 'class': 'long-domain-name domain-name-label' }, '@', domain)),
                 td({ style: 'text-align: center' }, img({ src: 'images/icon-arrow-right.png' })),
                 td(input({ id: 'input-destination', name: 'destination', placeholder: 'test@example.com' })),
-                td({ style: 'text-align: center' }, input({ 'class': 'myButton myButton-small', type: 'submit', value: 'Add' }))
+                td({ style: 'text-align: center' }, input({ 'class': 'myButton small', type: 'submit', value: 'Add' }))
               )
             )
           )

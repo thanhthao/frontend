@@ -181,7 +181,7 @@ with (Hasher('Signup','Application')) {
 						input({ name: "code", type: 'hidden', value: code  }),
 						input({ name: "new_password", type: 'password', placeholder: "New Password" }),
 						input({ name: "confirm_password", type: 'password', placeholder: "Confirm New Password" }),
-						input({ 'class': 'myButton myButton-small', type: 'submit', value: 'Update' })
+						input({ 'class': 'myButton small', type: 'submit', value: 'Update' })
 					)
 				)
 			)

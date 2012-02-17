@@ -51,6 +51,16 @@
   color:#ffffff;
   text-shadow:1px 1px 0px #a30824;
 }
-
-
-.myButton-small { font-size: 15px; padding: 3px 10px; }
+.myButton.grey {
+  -moz-box-shadow:inset 0px 1px 0px 0px #9c9c9c;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #9c9c9c;
+  box-shadow:inset 0px 1px 0px 0px #8a8a8a;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8c8c8c), color-stop(1, #666666) );
+  background:-moz-linear-gradient( center top, #7a7a7a 5%, #c81c2b 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dedede', endColorstr='#c6c6c6');
+  background-color:#8c8c8c;
+  border:1px solid #9c9c9c;
+  color:#ffffff;
+  text-shadow:1px 1px 0px #6a6a6a;
+}
+.myButton.small { font-size: 15px; padding: 3px 10px; }

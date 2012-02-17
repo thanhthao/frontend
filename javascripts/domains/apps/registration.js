@@ -38,9 +38,9 @@ with (Hasher('Registration','DomainApps')) {
         render({ target: button_div }, 
           div({ style: "float: right; margin-top: -44px" }, 
             domain_obj.badger_registration ? [
-              a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration (Renew)")
+              a({ 'class': "myButton small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration (Renew)")
             ] : [
-              a({ 'class': "myButton myButton-small", href: null }, "Transfer To Badger.com")
+              a({ 'class': "myButton small", href: null }, "Transfer To Badger.com")
             ]
           )
         );
@@ -71,9 +71,9 @@ with (Hasher('Registration','DomainApps')) {
         			  div({ style: "float: left; padding-right: 10px" }, img({ src: logo_for_registrar(domain_obj.current_registrar) })),
 
         			  h3({ style: 'margin: 0 0 12px' }, 'Current Registration'),
-        			  div(domain_obj.current_registrar, " until ", new Date(Date.parse(domain_obj.expires_at)).toDateString().split(' ').slice(1).join(' ')),
+        			  div(domain_obj.current_registrar, " until ", new Date(Date.parse(domain_obj.expires_on)).toDateString().split(' ').slice(1).join(' ')),
 
-      			    domain_obj.current_registrar.match(/badger/i) && div({ style: 'text-align: left; margin-top: 12px' }, a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration")),
+      			    domain_obj.current_registrar.match(/badger/i) && div({ style: 'text-align: left; margin-top: 12px' }, a({ 'class': "myButton small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration")),
 
         			  div({ style: 'clear: left' })
         			)
@@ -103,7 +103,7 @@ with (Hasher('Registration','DomainApps')) {
           // div(domain_obj.current_registrar),
           // div("Expires ", new Date(Date.parse(domain_obj.expires_on)).toDateString().split(' ').slice(1).join(' ')),
           // 
-          //          !domain_obj.badger_dns && div({ style: 'text-align: right' }, a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend")),
+          //          !domain_obj.badger_dns && div({ style: 'text-align: right' }, a({ 'class': "myButton small", href: curry(Register.renew_domain_modal, domain) }, "Extend")),
           // 
           // div({ style: 'clear: left' })
           // 
@@ -171,50 +171,47 @@ with (Hasher('Registration','DomainApps')) {
             div({ 'class': 'long-domain-name', style: 'border: 1px solid #ccc; width: 409px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois.raw)
           ),
           td({ style: 'vertical-align: top'},
-            
-            domain.permissions_for_person.indexOf('modify_contacts') == -1 ? [] : [
-              h2('Make Changes'),
+            h2('Make Changes'),
   
-              form({ action: curry(update_whois, domain) },
-                table(tbody(
-                  tr(
-                    td('Registrant:'),
-                    td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
-                      profile_options_for_select(domain.registrant_contact.id)
-                    ))
-                  ),
-                  tr(
-                    td('Administrator:'),
-                    td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
-                      option({ value: '' }, 'Same as Registrant'),
-                      profile_options_for_select(domain.administrator_contact && domain.administrator_contact.id)
-                    ))
-                  ),
-                  tr(
-                    td('Billing:'),
-                    td(select({ name: 'billing_contact_id', style: 'width: 150px' },
-                      option({ value: '' }, 'Same as Registrant'),
-                      profile_options_for_select(domain.billing_contact && domain.billing_contact.id)
-                    ))
-                  ),
-                  tr(
-                    td('Technical:'),
-                    td(select({ name: 'technical_contact_id', style: 'width: 150px' },
-                      option({ value: '' }, 'Same as Registrant'),
-                      profile_options_for_select(domain.technical_contact && domain.technical_contact.id)
-                    ))
-                  )
-                )),
-                div(
-                  (domain.whois.privacy ? input({ name: 'privacy', type: 'checkbox', checked: 'checked' }) : input({ name: 'privacy', type: 'checkbox' })),
-                  'Keep contact information private'
+            form({ action: curry(update_whois, domain) },
+              table(tbody(
+                tr(
+                  td('Registrant:'),
+                  td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
+                    profile_options_for_select(domain.registrant_contact.id)
+                  ))
                 ),
-  
-                div({ style: "text-align: right" },
-                  input({ type: 'submit', 'class': 'myButton myButton-small', value: 'Save' })
+                tr(
+                  td('Administrator:'),
+                  td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
+                    option({ value: '' }, 'Same as Registrant'),
+                    profile_options_for_select(domain.administrator_contact && domain.administrator_contact.id)
+                  ))
+                ),
+                tr(
+                  td('Billing:'),
+                  td(select({ name: 'billing_contact_id', style: 'width: 150px' },
+                    option({ value: '' }, 'Same as Registrant'),
+                    profile_options_for_select(domain.billing_contact && domain.billing_contact.id)
+                  ))
+                ),
+                tr(
+                  td('Technical:'),
+                  td(select({ name: 'technical_contact_id', style: 'width: 150px' },
+                    option({ value: '' }, 'Same as Registrant'),
+                    profile_options_for_select(domain.technical_contact && domain.technical_contact.id)
+                  ))
                 )
+              )),
+              div(
+                (domain.whois.privacy ? input({ name: 'privacy', type: 'checkbox', checked: 'checked' }) : input({ name: 'privacy', type: 'checkbox' })),
+                'Keep contact information private'
+              ),
+  
+              div({ style: "text-align: right" },
+                input({ type: 'submit', 'class': 'myButton small', value: 'Save' })
               )
-            ]
+            )
   
           )
         )

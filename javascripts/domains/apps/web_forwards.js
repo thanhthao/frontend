@@ -52,7 +52,7 @@ with (Hasher('WebForwards', 'DomainApps')) {
                   input({ id: 'input-destination', name: 'destination', placeholder: 'example.com' })
                 ),
                 td({ style: 'text-align: center' }, 
-                  input({ 'class': 'myButton myButton-small', type: 'submit', value: 'Add' })
+                  input({ 'class': 'myButton small', type: 'submit', value: 'Add' })
                 )
               )
             )

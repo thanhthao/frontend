@@ -106,7 +106,7 @@ with (Hasher('Transfer','Application')) {
     show_modal({ style: 'width: 800px' },
       h1('TRANSFER IN DOMAINS'),
       div({ style: 'float: right; margin-top: -44px' },
-        a({ 'class': 'myButton myButton-small', href: curry(update_all_domains_info) }, 'Retry All')
+        a({ 'class': 'myButton small', href: curry(update_all_domains_info) }, 'Retry All')
       ),
       div({ 'class': 'y-scrollbar-div' },
         table({ 'class': 'fancy-table', id: 'transfer-domains-table' },
