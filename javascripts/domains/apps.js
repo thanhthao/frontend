@@ -315,9 +315,17 @@ with (Hasher('DomainApps','Application')) {
       }
     }
 
-    app_dns = [{ id: 'user_dns', name: 'User Custom DNS', requires: { dns: domain_obj.dns } }].concat(app_dns)
-
     var conflict_app_keys = [];
+
+    var user_custom_conflict_dns = []
+    for (var index in domain_obj.dns) {
+      if (existing_conflict_record(install_app.requires.dns, domain_obj.dns[index], domain_obj.name)) {
+        user_custom_conflict_dns.push(domain_obj.dns[index]);
+        break;
+      }
+    }
+    if (user_custom_conflict_dns.length > 0)
+      conflict_app_keys.push({ id: 'user_dns', name: 'User Custom DNS', requires: { dns: user_custom_conflict_dns } });
 
     for_each(app_dns, function(app) {
       for (var index in install_app.requires.dns) {
