@@ -25,18 +25,20 @@ with (Hasher('LinkedAccounts','Application')) {
 		});
 	});
 	
-	define('add_linked_accounts_modal', function() {
+	define('add_linked_accounts_modal', function(accounts) {
 		show_modal(
 			h1('Add Linked Accounts'),
-			linked_accounts_table("show_all")
+			table({ 'class': "fancy-table" }, tbody(
+			  show_account_link_rows(accounts)
+			))
 		);
 	});
 	
 	define('linked_accounts_table', function(accounts) {
 		return table({ id: "accounts-table", 'class': "fancy-table" }, tbody(
 			// if the user has not linked any accounts yet, we want to show all of the accounts that they can link immediately.
-			(accounts == "show_all" ? [
-				show_all_account_link_rows()
+			(accounts.length == 0 ? [
+				show_account_link_rows(accounts)
 			] : [
 				(accounts || []).map(function(account) {
 					if (account.site == "twitter") {
@@ -138,19 +140,19 @@ with (Hasher('LinkedAccounts','Application')) {
 		});
 	});
 	
-	define('show_all_account_link_rows', function() {
-		// var existing_accounts = (existing_accounts || []).map(function(a) { return a.site });
+	define('show_account_link_rows', function(accounts) {
+		var sites = accounts.map(function(a) { return a.site });
+
+    var result = [
+      linked_accounts_table_row("Go Daddy", link_accounts_button(curry(Registrar.show_link, {site: 'godaddy'}))),
+      linked_accounts_table_row("Network Solutions", link_accounts_button(curry(Registrar.show_link, {site: 'networksolutions'})))
+    ];
 		
-		var result = [
-		  linked_accounts_table_row("Go Daddy", link_accounts_button(curry(Registrar.show_link, {site: 'godaddy'}))),
-		  linked_accounts_table_row("Network Solutions", link_accounts_button(curry(Registrar.show_link, {site: 'networksolutions'})))
-		];
-		
-		if ($("#accounts-table tr#twitter").length == 0) result.push(
+		if ($.inArray("twitter", sites) < 0) result.push(
 			linked_accounts_table_row("Twitter", link_accounts_button(curry(TwitterAccount.show_link_accounts_modal)))
 		);
 		
-		if ($("#accounts-table tr#facebook").length == 0) result.push(
+		if ($.inArray("facebook", sites) < 0) result.push(
 			linked_accounts_table_row("Facebook", link_accounts_button(curry(FacebookAccount.show_link_accounts_modal)))
 		);
 			
