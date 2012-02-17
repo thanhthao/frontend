@@ -171,47 +171,50 @@ with (Hasher('Registration','DomainApps')) {
             div({ 'class': 'long-domain-name', style: 'border: 1px solid #ccc; width: 409px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois.raw)
           ),
           td({ style: 'vertical-align: top'},
-            h2('Make Changes'),
+            
+            domain.permissions_for_person.indexOf('modify_contacts') == -1 ? [] : [
+              h2('Make Changes'),
   
-            form({ action: curry(update_whois, domain) },
-              table(tbody(
-                tr(
-                  td('Registrant:'),
-                  td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
-                    profile_options_for_select(domain.registrant_contact.id)
-                  ))
+              form({ action: curry(update_whois, domain) },
+                table(tbody(
+                  tr(
+                    td('Registrant:'),
+                    td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
+                      profile_options_for_select(domain.registrant_contact.id)
+                    ))
+                  ),
+                  tr(
+                    td('Administrator:'),
+                    td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
+                      option({ value: '' }, 'Same as Registrant'),
+                      profile_options_for_select(domain.administrator_contact && domain.administrator_contact.id)
+                    ))
+                  ),
+                  tr(
+                    td('Billing:'),
+                    td(select({ name: 'billing_contact_id', style: 'width: 150px' },
+                      option({ value: '' }, 'Same as Registrant'),
+                      profile_options_for_select(domain.billing_contact && domain.billing_contact.id)
+                    ))
+                  ),
+                  tr(
+                    td('Technical:'),
+                    td(select({ name: 'technical_contact_id', style: 'width: 150px' },
+                      option({ value: '' }, 'Same as Registrant'),
+                      profile_options_for_select(domain.technical_contact && domain.technical_contact.id)
+                    ))
+                  )
+                )),
+                div(
+                  (domain.whois.privacy ? input({ name: 'privacy', type: 'checkbox', checked: 'checked' }) : input({ name: 'privacy', type: 'checkbox' })),
+                  'Keep contact information private'
                 ),
-                tr(
-                  td('Administrator:'),
-                  td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
-                    option({ value: '' }, 'Same as Registrant'),
-                    profile_options_for_select(domain.administrator_contact && domain.administrator_contact.id)
-                  ))
-                ),
-                tr(
-                  td('Billing:'),
-                  td(select({ name: 'billing_contact_id', style: 'width: 150px' },
-                    option({ value: '' }, 'Same as Registrant'),
-                    profile_options_for_select(domain.billing_contact && domain.billing_contact.id)
-                  ))
-                ),
-                tr(
-                  td('Technical:'),
-                  td(select({ name: 'technical_contact_id', style: 'width: 150px' },
-                    option({ value: '' }, 'Same as Registrant'),
-                    profile_options_for_select(domain.technical_contact && domain.technical_contact.id)
-                  ))
+  
+                div({ style: "text-align: right" },
+                  input({ type: 'submit', 'class': 'myButton myButton-small', value: 'Save' })
                 )
-              )),
-              div(
-                (domain.whois.privacy ? input({ name: 'privacy', type: 'checkbox', checked: 'checked' }) : input({ name: 'privacy', type: 'checkbox' })),
-                'Keep contact information private'
-              ),
-  
-              div({ style: "text-align: right" },
-                input({ type: 'submit', 'class': 'myButton myButton-small', value: 'Save' })
               )
-            )
+            ]
   
           )
         )
