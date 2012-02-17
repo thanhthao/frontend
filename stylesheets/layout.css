@@ -3,7 +3,6 @@ a { text-decoration: none; }
 a:hover { text-decoration: underline; }
 input, textarea, select { vertical-align: middle; }
 form,fieldset { margin:0; padding:0; border-style:none; }
-/*h1,h2,h3,h4,h5,h6 { margin: 0; padding: 0; }*/
 
 html { height: 100%; background: #0085aa url(../images/bg-page.jpg) repeat top center; }
 body { min-height: 100%; background: transparent url(../images/bg-page-fade.jpg) repeat-x top center; margin: 0; font-size: 100.01%; }
@@ -189,6 +188,7 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 	overflow: hidden;
 }
 
+#accounts-table h1, #accounts-table h2, #accounts-table h3 { margin: 0; padding: 0; }
 .y-scrollbar-div {
   max-height: 250px;
   width: 100%;
