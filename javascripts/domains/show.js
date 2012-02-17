@@ -44,7 +44,7 @@ with (Hasher('DomainShow','DomainApps')) {
     var modify_dns = $.inArray("modify_dns", domain_obj.permissions_for_person || []) >= 0;
     
     var installed_apps = div();
-    var available_apps = div({ id: "available-apps" }, h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Available Applications'));
+    var available_apps = div({ id: "available-apps" });
 
     for (var key in Hasher.domain_apps) {
       var app = Hasher.domain_apps[key];
@@ -77,8 +77,10 @@ with (Hasher('DomainShow','DomainApps')) {
       h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Installed Applications'),
       installed_apps,
       div({ style: 'clear: both '}),
-      // h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Available Applications'),
-      !modify_dns ? [] : available_apps,
+      modify_dns ? [
+        h2({ style: 'border-bottom: 1px solid #888; padding-bottom: 6px' }, 'Available Applications'),
+        available_apps
+      ] : [],
       div({ style: 'clear: both '})
     ];
   });
