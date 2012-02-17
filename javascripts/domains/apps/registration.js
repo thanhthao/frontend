@@ -71,7 +71,7 @@ with (Hasher('Registration','DomainApps')) {
         			  div({ style: "float: left; padding-right: 10px" }, img({ src: logo_for_registrar(domain_obj.current_registrar) })),
 
         			  h3({ style: 'margin: 0 0 12px' }, 'Current Registration'),
-        			  div(domain_obj.current_registrar, " until ", new Date(Date.parse(domain_obj.expires_on)).toDateString().split(' ').slice(1).join(' ')),
+        			  div(domain_obj.current_registrar, " until ", new Date(Date.parse(domain_obj.expires_at)).toDateString().split(' ').slice(1).join(' ')),
 
       			    domain_obj.current_registrar.match(/badger/i) && div({ style: 'text-align: left; margin-top: 12px' }, a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration")),
 
