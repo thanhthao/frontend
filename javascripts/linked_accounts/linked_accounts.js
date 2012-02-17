@@ -12,8 +12,8 @@ with (Hasher('LinkedAccounts','Application')) {
 				
 		Badger.getLinkedAccounts(function(response) {
 			render({ target: target_div },
-				((response.data||[]).length == 0) ? [
-					div({ style: "margin-bottom: 15px" }, "You have not linked any accounts yet, why not add one now?"),
+				(response.data || []).length == 0 ? [
+					div({ style: "margin-bottom: 15px" }, "You have not linked any social accounts yet, why not add one now?"),
 					linked_accounts_table("show_all")
 				] : [
 					div({ style: "float: right; margin-top: -44px" },
@@ -40,47 +40,24 @@ with (Hasher('LinkedAccounts','Application')) {
 			] : [
 				(accounts || []).map(function(account) {
 					if (account.site == "twitter") {
-						var row = linked_accounts_table_row(div({ style: "font-weight: bold; font-size: 20px; padding-left: 15px;" }, "Twitter"), "twitter", div({ id: ("twitter-" + account.id), style: "text-align: center" },
-							img({ src: "images/ajax-loader.gif" })
-						));
+						var row = linked_accounts_table_row("Twitter",
+						  div({ id: ("twitter-" + account.id), style: "text-align: center" },
+							  img({ src: "images/ajax-loader.gif" })
+						  )
+						);
 						
-						Badger.getAuthorizedAccountInfo(account.id, function(response) {
-						  if (response.data.status == "linked") {
-  							$("#" + account.site + "-" + account.id).html(
-  								div({ 'class': "info-message", style: "margin: 5px auto 5px auto; height: 25px; width: 350px;" },
-  									img({ style: "margin-top: -11px", src: response.data.profile_image_url }),
-  									div({ style: "float: right; margin: 4px 25px auto auto;" }, response.data.name + " (@" + response.data.username + ")")
-  								)
-  							).css("text-align", "left");
-						  } else {
-  							$("#" + account.site + "-" + account.id).html(
-  							  div({ style: "margin: 15px 15px 15px auto; float: right" },span({ 'class': "error" }, "Account unlinked. ", a({ href: curry(TwitterAccount.show_link_accounts_modal, response.data.id) }, "Link again?")))
-  							).css("text-align", "left");
-						  }
-						});
+						update_linked_account_row_handler(account);
 						
 						return row;
-						
 					} else if (account.site == "facebook") {
 						
-						var row = linked_accounts_table_row(div({ style: "font-weight: bold; font-size: 20px; padding-left: 15px;" }, "Facebook"), "facebook", div({ id: ("facebook-" + account.id), style: "text-align: center" },
-							img({ src: "images/ajax-loader.gif" })
-						));
+						var row = linked_accounts_table_row("Facebook",
+						  div({ id: ("facebook-" + account.id), style: "text-align: center" },
+							  img({ src: "images/ajax-loader.gif" })
+						  )
+						);
 						
-						Badger.getAuthorizedAccountInfo(account.id, function(response) {
-						  if (response.data.status == "linked") {
-  							$("#" + account.site + "-" + account.id).html(
-  								div({ 'class': "info-message", style: "margin: 5px auto 5px auto; height: 25px; width: 350px;" },
-  									img({ style: "margin-top: -11px", src: response.data.profile_image_url }),
-  									div({ style: "float: right; margin: 4px 25px auto auto;" }, response.data.name + " (" + response.data.username + ")")
-  								)
-  							).css("text-align", "left");
-						  } else {
-  							$("#" + account.site + "-" + account.id).html(
-  							  div({ style: "margin: 15px 15px 15px auto; float: right" },span({ 'class': "error" }, "Account unlinked. ", a({ href: curry(FacebookAccount.show_link_accounts_modal, account.id) }, "Link again?")))
-  							).css("text-align", "left");
-						  }
-						});
+						update_linked_account_row_handler(account);
 						
 						return row;
 						
@@ -106,18 +83,17 @@ with (Hasher('LinkedAccounts','Application')) {
     				    break;
   					}
   					
-					  return linked_accounts_table_row(
-				  	  div({ style: "font-weight: bold; font-size: 20px;" }, name), account.site, 
-				  	    div({ id: (account.site + "-" + account.id), style: "width: 400px; text-align: center; float: right;" },
-				  	      div({ 'class': error ? "error-message" : "info-message", style: "text-align:right;" },
-                    h3("Status: ", status),
-                    div("Last Sync: " + (account.last_synced_at ? new Date(Date.parse(account.last_synced_at)).toString() : 'Never')),
-  									div("Login: " + account.login + " (" + account.domain_count + " Linked Domain(s))"),
-  									error ? a({ 'class': "myButton red", style: 'margin: 10px 0 0;', href: curry(Registrar.show_link, account)}, "edit")
-  									  : a({ 'class': "myButton", style: 'margin: 10px 0 0;', href: curry(Registrar.sync_now, account)}, "sync now")
-  								)
+					  return linked_accounts_table_row(name, 
+			  	    div({ id: (account.site + "-" + account.id) },
+			  	      div({ 'class': error ? "error-message" : "info-message", style: "text-align: right; margin: 5px auto 5px auto; height: 95px; width: 350px;" },
+                  h3("Status: ", status),
+                  div("Last Sync: " + (account.last_synced_at ? new Date(Date.parse(account.last_synced_at)).toString() : 'Never')),
+									div("Login: " + account.login + " (" + account.domain_count + " Linked Domain(s))"),
+									error ? a({ 'class': "myButton red", style: 'margin: 10px 0 0;', href: curry(Registrar.show_link, account)}, "edit")
+									  : a({ 'class': "myButton", style: 'margin: 10px 0 0;', href: curry(Registrar.sync_now, account)}, "Sync Now")
 								)
-						  );
+							)
+					  );
 					} else {
 						console.log("Unknown account (" + account.site + ")", account);
 					}
@@ -127,11 +103,28 @@ with (Hasher('LinkedAccounts','Application')) {
 		));
 	});
 	
-	define('linked_accounts_table_row', function(site, row_id, link_button_or_account_info) {
-		return tr({ id: row_id },
-			td({ width: "40%" }, site),
-			td({ width: "60%" }, link_button_or_account_info)
+	define('linked_accounts_table_row', function(site, account_info) {
+		return tr(
+			td({ width: "40%" }, div({ style: "font-weight: bold; font-size: 20px; padding-left: 15px;" }, site)),
+			td({ width: "60%" }, account_info)
 		);
+	});
+	
+	define('update_linked_account_row_handler', function(account) {
+	  Badger.getAuthorizedAccountInfo(account.id, function(response) {
+		  if (response.data.status == "linked") {
+				$("#" + account.site + "-" + account.id).html(
+					div({ 'class': "info-message", style: "margin: 5px auto 5px auto; height: 25px; width: 350px;" },
+						img({ style: "margin-top: -11px", src: response.data.profile_image_url }),
+						div({ style: "float: right; margin: 4px 25px auto auto;" }, response.data.name + " (@" + response.data.username + ")")
+					)
+				).css("text-align", "left");
+		  } else {
+				$("#" + account.site + "-" + account.id).html(
+				  div({ style: "margin: 15px 15px 15px auto; float: right" },span({ 'class': "error" }, "Account unlinked. ", a({ href: curry(TwitterAccount.show_link_accounts_modal, response.data.id) }, "Link again?")))
+				).css("text-align", "left");
+		  }
+		});
 	});
 	
 	define('link_accounts_button', function(target) {

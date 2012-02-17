@@ -87,13 +87,17 @@ with (Hasher('LinkedAccounts','Application')) {
 
 				// load linked accounts, then sub them in
 				Badger.getLinkedAccounts(function(response) {
+				  // get just the social accounts
+				  var accounts = [];
+				  response.data.forEach(function(a) { if (a.site == "twitter" || a.site == "facebook") accounts.push(a) });
+      		
 					stop_modal_spin();
 			
 					$("#share-modal-content").attr('style','').empty().append(
 						h1(header),
 						content,
 				
-						(response.data || []).length == 0 ? [
+						accounts.length == 0 ? [
 							div({ style: "margin-top: 20px" },
 								b("You haven't linked any accounts yet! "),
 								ul(
@@ -110,7 +114,7 @@ with (Hasher('LinkedAccounts','Application')) {
 												tr({ 'class': "table-header" },
 													th("Linked Accounts"), th("")
 												),
-												(response.data || []).map(function(account) {
+												accounts.map(function(account) {
 												  if (account.status == "linked") {
   													return tr(
   														td(account.site.capitalize_first()),
