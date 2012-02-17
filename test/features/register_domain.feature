@@ -5,7 +5,7 @@ Feature: Register Domain
 
   Scenario: I successfully register a domain
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
-    And I should see "MY DOMAINS (2)" within "#sidebar"
+    And I should see "MY DOMAINS (3)" within "#sidebar"
     And I mock domain search result for keys:
       | key              | com   | net   | org   |
       | mydomain         | true  | false | true  |
@@ -22,13 +22,11 @@ Feature: Register Domain
     And I mock getDomain
     And I press "register-button"
     And I mock getDomain
-    Then I should see "MY DOMAINS (3)" within "#sidebar"
-    And I should see "Installed Applications"
-    And I should see "Available Applications"
+    Then I should see "MY DOMAINS (4)" within "#sidebar"
 
   Scenario: I successfully register other extensions of the domain
     Given I logged in with mock data for domains and user info with 35 domain credits and 5 invites available
-    And I should see "MY DOMAINS (2)" within "#sidebar"
+    And I should see "MY DOMAINS (3)" within "#sidebar"
     And I mock domain search result for keys:
       | key              | com   | net   | org   |
       | mydomain         | true  | false | true  |

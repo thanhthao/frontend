@@ -35,7 +35,7 @@ Given /^I mock getDomainInfo api for domains:$/ do |table|
       if(data.auth_code != null)
         callback({data : {code: #{attributes['auth_code_response']} }, meta: { status: '#{attributes['auth_code_status']}' } });
       else
-        callback({data : {code: 1000, locked: #{attributes['locked']}, pending_transfer: false, expires_on: '#{attributes['expires']}', registrar: {name: '#{attributes['registrar_name']}' }}, meta : {status: 'ok'}});
+        callback({data : {code: 1000, locked: #{attributes['locked']}, pending_transfer: false, expires_at: '#{attributes['expires']}', registrar: {name: '#{attributes['registrar_name']}' }}, meta : {status: 'ok'}});
       break;"
   end
 
@@ -67,13 +67,13 @@ end
 Given /^I mock getDomains with ([^"]*) normal domains, ([^"]*) in transfer domain and ([^"]*) expiring soon domains$/ do |normal, transfer, expire|
   domains = []
   normal.to_i.times do |i|
-    domains << "{ name: 'mydomain#{i}.com', status: 'active', expires: '2012-11-16T14:21:43Z' }"
+    domains << "{ name: 'mydomain#{i}.com', expires_at: '2012-11-16T14:21:43Z' }"
   end
   transfer.to_i.times do |i|
-    domains << "{ name: 'transfer#{i}.com', status: 'pending_transfer_in', expires: '2012-11-16T14:21:43Z' }"
+    domains << "{ name: 'transfer#{i}.com', expires_at: '2012-11-16T14:21:43Z' }"
   end
   expire.to_i.times do |i|
-    domains << "{ name: 'expiresoon#{i}.com', status: 'active', expires: '2011-11-30T14:21:43Z' }"
+    domains << "{ name: 'expiresoon#{i}.com', expires_at: '2011-11-30T14:21:43Z' }"
   end
   page.execute_script("Badger.getDomains = function(callback) {
     callback([#{domains.join(',')}]);
@@ -131,7 +131,7 @@ Given /^I mock getDomain( with domain "([^"]*)"|)$/ do |with_domain, domain|
                   created_at: '2011-10-30T04:21:43Z', updated_at: '2011-10-30T04:21:43Z', updated_on: '2011-10-30T04:21:43Z',
                   name_servers: ['ns1.badger.com', 'ns2.badger.com'], created_registrar: 'rhino',
                   whois: 'The data contained in this whois database is provided \"as is\" with no guarantee or warranties regarding its accuracy.',
-                  current_registrar: 'Badger.com',  badger_dns: true, dns: [],
+                  current_registrar: 'Badger.com',  badger_dns: true, permissions_for_person: ['modify_dns'], dns: [],
                   registrant_contact: { address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
                         email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
                         phone: '123456789', state: '1', zip: '084' } }});
@@ -152,7 +152,7 @@ Given /^I mock getDomain with domain "([^"]*)" and dns:$/ do |domain, table|
                   created_at: '2011-10-30T04:21:43Z', updated_at: '2011-10-30T04:21:43Z', updated_on: '2011-10-30T04:21:43Z',
                   name_servers: ['ns1.badger.com', 'ns2.badger.com'], created_registrar: 'rhino',
                   whois: 'The data contained in this whois database is provided \"as is\" with no guarantee or warranties regarding its accuracy.',
-                  current_registrar: 'Badger.com', badger_dns: true,
+                  current_registrar: 'Badger.com', badger_dns: true, permissions_for_person: ['modify_dns'],
                   dns: [#{records.join(',')}],
                   registrant_contact: { address: 'My address', address2: '', city: 'HCM', country: 'VN', created_at: '2011-11-12T14:29:26Z',
                         email: 'tester@eastagile.com', fax: '', first_name: 'East', id: 4, last_name: 'Agile Company', organization: '',
