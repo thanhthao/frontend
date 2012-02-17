@@ -122,7 +122,6 @@ with (Hasher('Domains','Application')) {
 
   define('remote_domains_transfer', function(domains) {
     var registrars = {};
-    console.log(domains);
     $.each(domains, function(key, domain) {
       switch (domain.current_registrar) {
         case 'Network Solutions, LLC':
@@ -142,9 +141,9 @@ with (Hasher('Domains','Application')) {
       return;
     }
     
-    return div({ 'class': 'info-message' }, $.map(registrars, function(data, name) {
-      return div('You have ' + data.count + ' domains at ' + name,
-        a({ 'class': 'myButton myButton-small', href: curry(Transfer.show, data.default_domains, true) }, 'Transfer To Badger')
+    return div({ 'class': 'info-message', style: 'text-align: right; padding: 10px;' }, $.map(registrars, function(data, name) {
+      return div({ style: 'height: 30px;' }, 'You have ', b(data.count), ' domain' + (data.count == 1 ? '' : 's') + ' at ' + name,
+        a({ 'class': 'myButton myButton-small', style: 'margin-left: 10px;', href: curry(Transfer.show, data.default_domains, true) }, 'Transfer To Badger')
       );
     }));
   });
@@ -156,6 +155,7 @@ with (Hasher('Domains','Application')) {
           tr({ 'class': 'table-header' },
             th('Name'),
             th('Status'),
+            th('Registrar'),
             th('Expires'),
             th('Applications')
           ),
@@ -164,6 +164,7 @@ with (Hasher('Domains','Application')) {
             return tr(
               td(a({ href: '#domains/' + domain.name }, Domains.truncate_domain_name(domain.name))),
               td(domain.status),
+              td(domain.current_registrar),
               td(new Date(Date.parse(domain.expires)).toDateString()),
               td(
                 // img({ src: 'images/apps/facebook-icon.png'}),
