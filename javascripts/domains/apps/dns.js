@@ -29,7 +29,6 @@ with (Hasher('DnsApp','DomainApps')) {
       content_div
     );
 
-
     Badger.getDomain(domain, function(response) {
       var domain_obj = response.data;
       if (response.meta.status == 'ok') {
@@ -43,11 +42,17 @@ with (Hasher('DnsApp','DomainApps')) {
           );
         }
 
-        if (!domain_obj.badger_dns) {
-          render({ into: message_div }, div({ 'class': 'error-message' }, "NOTE: These records are read-only because you're not currently using Badger nameservers." ));
+        var badger_dns = domain_obj.badger_dns;
+        var modify_dns = $.inArray("modify_dns", domain_obj.permissions_for_person || []) >= 0;
+        var read_only = (!badger_dns || !modify_dns);
+
+        if (!modify_dns) {
+          render({ into: message_div }, div({ 'class': 'error-message' }, "NOTE: These records are read-only because you are not authorized to modify DNS for this domain" ));
+        } else if (!badger_dns && modify_dns) {
+          render({ into: message_div }, div({ 'class': 'error-message' }, "NOTE: These records are read-only because the domain is not using Badger nameservers." ));
         }
 
-        render_records({ into: content_div, read_only: !domain_obj.badger_dns }, domain_obj);
+        render_records({ into: content_div, read_only: read_only }, domain_obj);
       } else {
         render({ into: content_div }, error_message(response));
       }
@@ -74,6 +79,11 @@ with (Hasher('DnsApp','DomainApps')) {
       }
     }
     
+    //move NS and SOA records into their own
+    var auto_dns = [], dns = [];
+    domain_obj.dns.forEach(function(r) {
+      ((r.record_type == "soa" || r.record_type == "ns") ? auto_dns : dns).push(r)
+    });
     
     render({ into: options.into }, 
       div({ id: 'errors' }),
@@ -119,9 +129,11 @@ with (Hasher('DnsApp','DomainApps')) {
             td({ style: 'text-align: center' }, button({ style: "background-image: url(images/add.gif); background-color:Transparent; border: none; width: 16px; height: 16px; cursor: pointer", onclick: curry(dns_add, domain_obj.name) }))
           ),
 
-          sort_dns_records(domain_obj.dns).map(function(record) {
+          sort_dns_records(dns).map(function(record) {
             return record_row(record, domain_obj.name, !options.read_only)
           }),
+          
+          auto_dns.length == 0 ? [] : auto_dns_record_rows(sort_auto_dns_records(auto_dns), domain_obj.name),
 
           app_dns.map(function(app_item) {
             return app_dns_rows(app_item.app_name, app_item.app_id, sort_dns_records(app_item.dns), domain_obj.name);
@@ -232,7 +244,6 @@ with (Hasher('DnsApp','DomainApps')) {
     render('Loading...');
   });
 
-
   // define('manager_view', function(domain_info, records, app_dns) {
   //   var domain = domain_info.name;
   //   return div(
@@ -256,7 +267,21 @@ with (Hasher('DnsApp','DomainApps')) {
     ];
   });
 
+  define('auto_dns_record_rows', function(records, domain) {
+    return [
+      tr({ 'class': 'table-header' },
+        td({ colSpan: 5, 'class': 'app_dns_header' }, h2({ style: "border-bottom: 1px solid #888; padding-bottom: 5px; margin-bottom: 0px" }, "Automatic Records"))
+      ),
+      records.map(function(record) {
+        return record_row(record, domain, false)
+      })
+    ];
+  });
+
   define('record_row', function(record, domain, editable) {
+    // manually overide the ability to edit NS and SOA records
+    if (record.record_type == "ns" || record.record_type == "soa") editable = false;
+    
     return tr({ id: 'dns-row-' + record.id },
       td(record.record_type.toUpperCase()),
       td(div({ 'class': 'long-domain-name', style: 'width: 300px;' }, record.subdomain.replace(domain,''), span({ style: 'color: #888' }, domain))),
@@ -335,6 +360,8 @@ define('get_dns_params', function(id) {
 
   define('dns_update', function(domain, record) {
     $('#errors').empty();
+    
+    console.log(record);
 
     Badger.updateRecord(domain, record.id, get_dns_params(record.id), function(results) {
       if (results.meta.status == 'ok') {
@@ -436,13 +463,17 @@ define('get_dns_params', function(id) {
     return results;
   });
 
-
-
-
-
-
-
-
+  define('sort_auto_dns_records', function(records) {
+    return records.sort(function(a,b){
+      if (a.record_type == "soa")
+        return -1;
+      else if (b.record_type == "soa")
+        return 1;
+      else
+        return (a.content > b.content) ? 1 : -1;
+      return 0;
+    });
+  });
 
 
 
