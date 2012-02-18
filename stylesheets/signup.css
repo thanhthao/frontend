@@ -64,3 +64,4 @@
   text-shadow:1px 1px 0px #6a6a6a;
 }
 .myButton.small { font-size: 15px; padding: 3px 10px; }
+.myButton.large { font-size: 24px; padding: 10px 32px; }
