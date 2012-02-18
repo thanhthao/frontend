@@ -3,10 +3,11 @@ with (Hasher('Registration','DomainApps')) {
   register_domain_app({
     id: 'badger_registration',
     icon: function(domain_obj) {
-      return logo_for_registrar(domain_obj.current_registrar);
+      return logo_url_for_registrar(domain_obj.current_registrar);
     },
     name: function(domain_obj) {
-      return "Registration (" + domain_obj.current_registrar + ")"
+      // return "Registration (" + domain_obj.current_registrar + ")"
+      return "Registration"
       // var s = domain_obj.current_registrar;
       // if (s.match(/badger/i)) return "Registration (Badger.com)";
       // else if (s.match(/godaddy/i)) return "Registration (GoDaddy)";
@@ -49,11 +50,20 @@ with (Hasher('Registration','DomainApps')) {
     });
   });
   
+  define('logo_url_for_registrar', function(name) {
+    var src;
+    
+    if (name.match(/badger/i)) src = "images/apps/badger.png";
+    else if (name.match(/godaddy/i)) src = "images/apps/godaddy.png";
+    else if (name.match(/enom/i)) src = "images/apps/enom.png";
+    else if (name.match(/1and1/)) src = "images/apps/1and1.png";
+    else src = "images/apps/badger.png"
+    
+    return src;
+  });
+  
   define('logo_for_registrar', function(name) {
-    if (name.match(/badger/i)) return "images/apps/badger.png";
-    else if (name.match(/godaddy/i)) return "images/apps/godaddy.png";
-    else if (name.match(/enom/i)) return "images/apps/enom.png";
-    else if (name.match(/1and1/)) return "images/apps/1and1.png";
+    return img({ 'class': "app_store_icon", style: "margin-bottom: 0px", src: logo_url_for_registrar(name) })
   });
 
   define('domain_data_block', function(domain) {
@@ -68,10 +78,10 @@ with (Hasher('Registration','DomainApps')) {
             td({ style: 'width: 50%; vertical-align: top; padding-right: 5px' },
 
               div({ 'class': 'info-message' },
-        			  div({ style: "float: left; padding-right: 10px" }, img({ src: logo_for_registrar(domain_obj.current_registrar) })),
+        			  div({ style: "float: left; padding-right: 10px" }, logo_for_registrar(domain_obj.current_registrar) ),
 
         			  h3({ style: 'margin: 0 0 12px' }, 'Current Registration'),
-        			  div(domain_obj.current_registrar, " until ", new Date(Date.parse(domain_obj.expires_on)).toDateString().split(' ').slice(1).join(' ')),
+        			  div(domain_obj.current_registrar, " until ", new Date(Date.parse(domain_obj.expires_at)).toDateString().split(' ').slice(1).join(' ')),
 
       			    domain_obj.current_registrar.match(/badger/i) && div({ style: 'text-align: left; margin-top: 12px' }, a({ 'class': "myButton small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration")),
 
@@ -82,9 +92,9 @@ with (Hasher('Registration','DomainApps')) {
             td({ style: 'width: 50%; vertical-align: top; padding-left: 5px' },
               div({ 'class': 'info-message', style: 'border-color: #aaa; background: #eee' },
                 dl({ 'class': 'fancy-dl', style: 'margin: 0' },
-                  dt({ style: 'width: 80px' }, 'Created:'), dd(new Date(Date.parse(domain_obj.registered_on)).toDateString()), br(),
+                  dt({ style: 'width: 80px' }, 'Created:'), dd(new Date(Date.parse(domain_obj.registered_at)).toDateString()), br(),
                   dt({ style: 'width: 80px' }, 'Through:'), dd((domain_obj.created_registrar ? domain_obj.created_registrar : '')), br(),
-                  dt({ style: 'width: 80px' }, 'Status: '), dd(domain_obj.status), br(),
+                  // dt({ style: 'width: 80px' }, 'Status: '), dd(domain_obj.locked), br(),
                   dt({ style: 'width: 80px' }, 'Previously: '), dd(domain_obj.losing_registrar), br()
                   // dt('Expires:'), dd(), br(),
                   // dt('Created: '), dd(new Date(Date.parse(domain_obj.created_at)).toDateString()), br(),
@@ -170,50 +180,51 @@ with (Hasher('Registration','DomainApps')) {
             h2('Public Whois Listing'),
             div({ 'class': 'long-domain-name', style: 'border: 1px solid #ccc; width: 409px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois.raw)
           ),
-          td({ style: 'vertical-align: top'},
-            h2('Make Changes'),
-  
-            form({ action: curry(update_whois, domain) },
-              table(tbody(
-                tr(
-                  td('Registrant:'),
-                  td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
-                    profile_options_for_select(domain.registrant_contact.id)
-                  ))
+          (!domain.badger_registration || !domain.registrant_contact || !domain.registrant_contact.id) ? [] : [
+            td({ style: 'vertical-align: top'},
+              h2('Make Changes'),
+
+              form({ action: curry(update_whois, domain) },
+                table(tbody(
+                  tr(
+                    td('Registrant:'),
+                    td(select({ name: 'registrant_contact_id', style: 'width: 150px' },
+                      profile_options_for_select(domain.registrant_contact.id)
+                    ))
+                  ),
+                  tr(
+                    td('Administrator:'),
+                    td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
+                      option({ value: '' }, 'Same as Registrant'),
+                      profile_options_for_select(domain.administrator_contact && domain.administrator_contact.id)
+                    ))
+                  ),
+                  tr(
+                    td('Billing:'),
+                    td(select({ name: 'billing_contact_id', style: 'width: 150px' },
+                      option({ value: '' }, 'Same as Registrant'),
+                      profile_options_for_select(domain.billing_contact && domain.billing_contact.id)
+                    ))
+                  ),
+                  tr(
+                    td('Technical:'),
+                    td(select({ name: 'technical_contact_id', style: 'width: 150px' },
+                      option({ value: '' }, 'Same as Registrant'),
+                      profile_options_for_select(domain.technical_contact && domain.technical_contact.id)
+                    ))
+                  )
+                )),
+                div(
+                  (domain.whois.privacy ? input({ name: 'privacy', type: 'checkbox', checked: 'checked' }) : input({ name: 'privacy', type: 'checkbox' })),
+                  'Keep contact information private'
                 ),
-                tr(
-                  td('Administrator:'),
-                  td(select({ name: 'administrator_contact_id', style: 'width: 150px' },
-                    option({ value: '' }, 'Same as Registrant'),
-                    profile_options_for_select(domain.administrator_contact && domain.administrator_contact.id)
-                  ))
-                ),
-                tr(
-                  td('Billing:'),
-                  td(select({ name: 'billing_contact_id', style: 'width: 150px' },
-                    option({ value: '' }, 'Same as Registrant'),
-                    profile_options_for_select(domain.billing_contact && domain.billing_contact.id)
-                  ))
-                ),
-                tr(
-                  td('Technical:'),
-                  td(select({ name: 'technical_contact_id', style: 'width: 150px' },
-                    option({ value: '' }, 'Same as Registrant'),
-                    profile_options_for_select(domain.technical_contact && domain.technical_contact.id)
-                  ))
+
+                div({ style: "text-align: right" },
+                  input({ type: 'submit', 'class': 'myButton small', value: 'Save' })
                 )
-              )),
-              div(
-                (domain.whois.privacy ? input({ name: 'privacy', type: 'checkbox', checked: 'checked' }) : input({ name: 'privacy', type: 'checkbox' })),
-                'Keep contact information private'
-              ),
-  
-              div({ style: "text-align: right" },
-                input({ type: 'submit', 'class': 'myButton small', value: 'Save' })
               )
             )
-  
-          )
+          ]
         )
       ))
     );
