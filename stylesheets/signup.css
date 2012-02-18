@@ -40,21 +40,21 @@
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#8cb82b', endColorstr='#8cb82b');
 }
 .myButton.red {
-  -moz-box-shadow:inset 0px 1px 0px 0px #fd619c;
-  -webkit-box-shadow:inset 0px 1px 0px 0px #fd619c;
-  box-shadow:inset 0px 1px 0px 0px #d17d9c;
+  -moz-box-shadow:inset 0px 1px 0px 0px #fdc1cc;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #fdc1cc;
+  box-shadow:inset 0px 1px 0px 0px #fdc1cc;
   background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #de2d2c), color-stop(1, #c81c2b) );
   background:-moz-linear-gradient( center top, #de2d2c 5%, #c81c2b 100% );
   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#de2d2c', endColorstr='#c81c2b');
-  background-color:#de2d2c;
-  border:1px solid #d4131a;
+  background-color:#df2d2c;
+  border:1px solid #ff131a;
   color:#ffffff;
   text-shadow:1px 1px 0px #a30824;
 }
 .myButton.grey {
-  -moz-box-shadow:inset 0px 1px 0px 0px #9c9c9c;
-  -webkit-box-shadow:inset 0px 1px 0px 0px #9c9c9c;
-  box-shadow:inset 0px 1px 0px 0px #8a8a8a;
+  -moz-box-shadow:inset 0px 1px 0px 0px #c9c9c9;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #c9c9c9;
+  box-shadow:inset 0px 1px 0px 0px #c9c9c9;
   background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8c8c8c), color-stop(1, #666666) );
   background:-moz-linear-gradient( center top, #7a7a7a 5%, #c81c2b 100% );
   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dedede', endColorstr='#c6c6c6');

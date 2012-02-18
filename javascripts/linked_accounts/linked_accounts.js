@@ -87,7 +87,7 @@ with (Hasher('LinkedAccounts','Application')) {
   					
 					  return linked_accounts_table_row(name, 
 			  	    div({ id: (account.site + "-" + account.id) },
-			  	      div({ 'class': error ? "error-message" : "status-message", style: "position: relative; text-align: right; margin: 5px auto 5px auto; height: 95px; width: 350px;" },
+			  	      div({ 'class': error ? "error-message" : "status-message", style: "position: relative; text-align: right; margin: 5px auto 5px auto; height: 95px; width: 350px; padding: 10px;" },
                   h3("Status: ", status),
                   div("Last Sync: " + (account.last_synced_at ? new Date(Date.parse(account.last_synced_at)).toString() : 'Never')),
 									div("Login: " + account.login + " (" + account.domain_count + " Linked Domain(s))"),
