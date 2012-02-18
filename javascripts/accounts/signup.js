@@ -81,17 +81,6 @@ with (Hasher('Signup','Application')) {
         form({ action: curry(create_person, callback) },
           input({ type: 'hidden', name: 'invite_code' }),
 
-          div(
-            input({ name: 'email', style: 'width: 415px', placeholder: 'Email Address' })
-          ),
-
-  				div(
-  					input({ name: 'password', style: 'width: 200px', placeholder: 'Desired Password', type: 'password' }),
-  					input({ name: 'confirm_password', style: 'width: 200px', placeholder: 'Confirm Password', type: 'password' })
-  				),
-
-          br(),
-
           table({ style: 'width: 100%' }, tbody(
             tr(
               td({ style: 'width: 50%; vertical-align: top' },
@@ -101,6 +90,7 @@ with (Hasher('Signup','Application')) {
                   input({ style: 'width: 130px', name: 'last_name', placeholder: 'Last Name' })
                 ),
                 div(input({ style: 'width: 275px', name: 'organization', placeholder: 'Organization (optional)' })),
+                div(input({ name: 'email', style: 'width: 275px', placeholder: 'Email Address' })),
                 div(
                   input({ style: 'width: 130px', name: 'phone', placeholder: 'Phone' }),
                   input({ style: 'width: 130px', name: 'fax', placeholder: 'Fax (optional)' })
@@ -125,6 +115,13 @@ with (Hasher('Signup','Application')) {
               )
             )
           )),
+
+          h3({ style: 'margin: 15px 0 0 0' }, 'Password for Badger.com'),
+  				div(
+  					input({ name: 'password', style: 'width: 200px', placeholder: 'Desired Password', type: 'password' }),
+  					input({ name: 'confirm_password', style: 'width: 200px', placeholder: 'Confirm Password', type: 'password' })
+  				),
+
 
           div({ style: 'margin: 10px 0' },
             input({ type: 'checkbox', name: 'agree_to_terms', id: 'agree_to_terms', value: true }),
