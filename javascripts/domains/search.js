@@ -9,7 +9,7 @@ with (Hasher('Search','Application')) {
         table({ id: 'search-results', 'class': 'fancy-table' }, tbody()),
         div({ id: 'search-instructions' },
           p('Start typing to search for available domains.'),
-          p('If you would like to register many domains at once, try our ', a({ href: curry(Signup.require_user_modal, BulkRegister.show) }, 'Bulk Register Tool'), '.')
+          p('If you would like to register many domains at once, try our ', a({ href: curry(Signup.require_user_modal, curry(Transfer.transfer_domains_form, 'register')) }, 'Bulk Register Tool'), '.')
         )
       )
     );

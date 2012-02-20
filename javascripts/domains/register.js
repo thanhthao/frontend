@@ -32,7 +32,8 @@ with (Hasher('Register','Application')) {
       
       if (current_credits >= needed_credits) {
         if (checked_extensions.length > 1) {
-          BulkRegister.proceed_bulk_register(checked_extensions, form_data);
+          form_data.new_domains = checked_extensions;
+          Transfer.register_or_transfer_all_domains(form_data);
         } else {
           register_domain(domain, available_extensions, form_data);
         }
