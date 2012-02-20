@@ -114,16 +114,15 @@ with (Hasher('Register','Application')) {
 
         table({ style: 'width: 100%' }, tbody(
           tr(
-            td({ style: "width: 50%" },
-              h3({ style: 'margin-bottom: 0' }, 'Registrant:'),
+            td({ style: "width: 50%; vertical-align: top" },
+              h3({ style: 'margin-top: 0; margin-bottom: 3px' }, 'Registrant:'),
               div(
                 select({ name: 'registrant_contact_id', style: 'width: 150px' },
                   Registration.profile_options_for_select()
                 )
-              )
-            ),
-            td({ style: "width: 50%" },
-              h3({ style: 'margin-bottom: 0' }, 'Length:'),
+              ),
+              
+              h3({ style: 'margin-top: 5px; margin-bottom: 3px' }, 'Length:'),
               div(
                 select({ name: 'years', id: 'years', onchange: function(e) {
                                           var years = parseInt($(e.target).val());
@@ -140,30 +139,28 @@ with (Hasher('Register','Application')) {
                 ),
                 ' @ 1 credit per year'
               )
+            ),
+            td({ style: "width: 50%; vertical-align: top" },
+  						available_extensions.length > 0 ?
+  	            tr(
+  	              td({ style: "width: 50%" },
+  	                h3({ style: 'margin-top: 0; margin-bottom: 3px' }, 'Also Register:'),
+  	                available_extensions.map(function(ext) {
+  	                  return div(checkbox({ name: "extension_" + ext[0].split('.')[1], value: ext[0], id: ext[0].split('.')[1], 'class': 'extensions',
+  	                                        onchange: function(e) {
+  	                                          var years = parseInt($('#years').val());
+  	                                          var num_domains = 1 + $('.extensions:checked').length;
+  	                                          var credits = num_domains * years;
+  	                                          $('#register-button').val('Register ' + (num_domains > 1 ? (num_domains + ' domains') : domain) + ' for ' + credits + (credits == 1 ? ' credit' : ' credits'))
+  																						$('#')
+  	                                        } }),
+  	                             label({ 'for': ext[0].split('.')[1] }, ' ' + ext[0]))
+  	                })
+  	              )
+  	            )
+  	        	: ''
             )
-          ),
-					tr(
-						td({ style: "width: 25%" },
-							available_extensions.length > 0 ?
-		            tr(
-		              td({ style: "width: 50%" },
-		                h3({ style: 'margin-bottom: 3px' }, 'Also Register:'),
-		                available_extensions.map(function(ext) {
-		                  return div(checkbox({ name: "extension_" + ext[0].split('.')[1], value: ext[0], id: ext[0].split('.')[1], 'class': 'extensions',
-		                                        onchange: function(e) {
-		                                          var years = parseInt($('#years').val());
-		                                          var num_domains = 1 + $('.extensions:checked').length;
-		                                          var credits = num_domains * years;
-		                                          $('#register-button').val('Register ' + (num_domains > 1 ? (num_domains + ' domains') : domain) + ' for ' + credits + (credits == 1 ? ' credit' : ' credits'))
-																							$('#')
-		                                        } }),
-		                             label({ 'for': ext[0].split('.')[1] }, ' ' + ext[0]))
-		                })
-		              )
-		            )
-		        	: ''
-						)
-					)
+          )
         )),
         
         div({ style: "text-align: center; margin-top: 30px" }, input({ 'class': 'myButton', id: 'register-button', type: 'submit', value: 'Register ' + Domains.truncate_domain_name(domain) + ' for 1 credit' }))
