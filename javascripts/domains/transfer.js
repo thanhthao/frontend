@@ -229,8 +229,8 @@ with (Hasher('Transfer','Application')) {
     var domain_count = domains.length;
   
     BadgerCache.getAccountInfo(function(account_info) {
-      if (account_info.data.domain_credits < domain_count.length) {
-        Billing.purchase_modal(curry(register_or_transfer_all_domains, form_data));
+      if (account_info.data.domain_credits < domain_count) {
+        Billing.purchase_modal(curry(register_or_transfer_all_domains, form_data), domain_count - account_info.data.domain_credits);
       } else {
         show_modal(
           h1('REGISTRATION STATUS'),
