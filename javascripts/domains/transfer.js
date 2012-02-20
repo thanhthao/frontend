@@ -171,6 +171,10 @@ with (Hasher('Transfer','Application')) {
     var transfer_domains = form_data.transfer_domains||[];
     var new_domains = form_data.new_domains||[];
     var domain_count = transfer_domains.length + new_domains.length;
+    
+    // close if they clicked "Cancel" button before domains finished loading
+    if (domain_count == 0) return close_transfer_modal();
+    
     show_modal(
       h1('CONFIRMATION: ' + domain_count + ' DOMAINS'),
       
