@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 gem 'rake'
-gem 'cucumber', '1.0.6'
+gem 'cucumber', '1.1.4'
 gem 'rspec', '2.6.0'
 gem 'jasmine', '1.0.2.1'
 gem 'capybara', '1.1.1'
