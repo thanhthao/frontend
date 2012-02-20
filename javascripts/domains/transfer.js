@@ -1,25 +1,25 @@
 with (Hasher('Transfer','Application')) {
   Transfer.current_action = 'transfer';
 
-  define('show', function(domains) {
+  define('show', function(registry_transfer_action, domains) {
+    Transfer.current_action = (registry_transfer_action ? registry_transfer_action : 'transfer');
     if (!Badger.getAccessToken()) {
-      Signup.require_user_modal(Transfer.show);
+      Signup.require_user_modal(curry(Transfer.show, Transfer.current_action));
       return;
     }
 
     BadgerCache.getContacts(function(contacts) {
       if (contacts.data.length == 0) {
-        Whois.edit_whois_modal(null, Transfer.show, "You must have at least one contact profile to transfer domain.");
+        Whois.edit_whois_modal(null, curry(Transfer.show, Transfer.current_action), "You must have at least one contact profile to " + Transfer.current_action + " domain.");
       } else if (domains) {
         show_domain_status_table({ domains: domains });
       } else {
-        transfer_domains_form('transfer');
+        transfer_domains_form();
       }
     });
   });
 
-	define('transfer_domains_form', function(registry_transfer_action) {
-    Transfer.current_action = registry_transfer_action;
+	define('transfer_domains_form', function() {
     show_modal(
       div(
         Transfer.current_action == 'transfer' ? h1('TRANSFER DOMAINS INTO BADGER.COM')
