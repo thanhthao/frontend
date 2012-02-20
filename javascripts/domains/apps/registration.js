@@ -3,7 +3,7 @@ with (Hasher('Registration','DomainApps')) {
   register_domain_app({
     id: 'badger_registration',
     icon: function(domain_obj) {
-      return logo_for_registrar(domain_obj.current_registrar);
+      return logo_url_for_registrar(domain_obj.current_registrar);
     },
     name: function(domain_obj) {
       return "Registration: " + domain_obj.current_registrar;
@@ -38,9 +38,9 @@ with (Hasher('Registration','DomainApps')) {
         render({ target: button_div }, 
           div({ style: "float: right; margin-top: -44px" }, 
             domain_obj.badger_registration ? [
-              a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration (Renew)")
+              a({ 'class': "myButton small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration (Renew)")
             ] : [
-              a({ 'class': "myButton myButton-small", href: null }, "Transfer To Badger.com")
+              a({ 'class': "myButton small", href: null }, "Transfer To Badger.com")
             ]
           )
         );
@@ -49,11 +49,20 @@ with (Hasher('Registration','DomainApps')) {
     });
   });
   
+  define('logo_url_for_registrar', function(name) {
+    var src;
+    
+    if (name.match(/badger/i)) src = "images/apps/badger.png";
+    else if (name.match(/godaddy/i)) src = "images/apps/godaddy.png";
+    else if (name.match(/enom/i)) src = "images/apps/enom.png";
+    else if (name.match(/1and1/)) src = "images/apps/1and1.png";
+    else src = "images/apps/badger.png"
+    
+    return src;
+  });
+  
   define('logo_for_registrar', function(name) {
-    if (name.match(/badger/i)) return "images/apps/badger.png";
-    else if (name.match(/godaddy/i)) return "images/apps/godaddy.png";
-    else if (name.match(/enom/i)) return "images/apps/enom.png";
-    else if (name.match(/1and1/)) return "images/apps/1and1.png";
+    return img({ 'class': "app_store_icon", style: "margin-bottom: 0px", src: logo_url_for_registrar(name) })
   });
 
   define('domain_data_block', function(domain) {
@@ -68,12 +77,12 @@ with (Hasher('Registration','DomainApps')) {
             td({ style: 'width: 50%; vertical-align: top; padding-right: 5px' },
 
               div({ 'class': 'info-message' },
-        			  div({ style: "float: left; padding-right: 10px" }, img({ src: logo_for_registrar(domain_obj.current_registrar) })),
+        			  div({ style: "float: left; padding-right: 10px" }, logo_for_registrar(domain_obj.current_registrar) ),
 
         			  h3({ style: 'margin: 0 0 12px' }, 'Current Registration'),
         			  div(domain_obj.current_registrar, " until ", new Date(Date.parse(domain_obj.expires_at)).toDateString().split(' ').slice(1).join(' ')),
 
-      			    domain_obj.current_registrar.match(/badger/i) && div({ style: 'text-align: left; margin-top: 12px' }, a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration")),
+      			    domain_obj.current_registrar.match(/badger/i) && div({ style: 'text-align: left; margin-top: 12px' }, a({ 'class': "myButton small", href: curry(Register.renew_domain_modal, domain) }, "Extend Registration")),
 
         			  div({ style: 'clear: left' })
         			)
@@ -82,9 +91,9 @@ with (Hasher('Registration','DomainApps')) {
             td({ style: 'width: 50%; vertical-align: top; padding-left: 5px' },
               div({ 'class': 'info-message', style: 'border-color: #aaa; background: #eee' },
                 dl({ 'class': 'fancy-dl', style: 'margin: 0' },
-                  dt({ style: 'width: 80px' }, 'Created:'), dd(new Date(Date.parse(domain_obj.registered_on)).toDateString()), br(),
+                  dt({ style: 'width: 80px' }, 'Created:'), dd(new Date(Date.parse(domain_obj.registered_at)).toDateString()), br(),
                   dt({ style: 'width: 80px' }, 'Through:'), dd((domain_obj.created_registrar ? domain_obj.created_registrar : '')), br(),
-                  dt({ style: 'width: 80px' }, 'Status: '), dd(domain_obj.status), br(),
+                  // dt({ style: 'width: 80px' }, 'Status: '), dd(domain_obj.locked), br(),
                   dt({ style: 'width: 80px' }, 'Previously: '), dd(domain_obj.losing_registrar), br()
                   // dt('Expires:'), dd(), br(),
                   // dt('Created: '), dd(new Date(Date.parse(domain_obj.created_at)).toDateString()), br(),
@@ -103,7 +112,7 @@ with (Hasher('Registration','DomainApps')) {
           // div(domain_obj.current_registrar),
           // div("Expires ", new Date(Date.parse(domain_obj.expires_on)).toDateString().split(' ').slice(1).join(' ')),
           // 
-          //          !domain_obj.badger_dns && div({ style: 'text-align: right' }, a({ 'class': "myButton myButton-small", href: curry(Register.renew_domain_modal, domain) }, "Extend")),
+          //          !domain_obj.badger_dns && div({ style: 'text-align: right' }, a({ 'class': "myButton small", href: curry(Register.renew_domain_modal, domain) }, "Extend")),
           // 
           // div({ style: 'clear: left' })
           // 
@@ -170,11 +179,10 @@ with (Hasher('Registration','DomainApps')) {
             h2('Public Whois Listing'),
             div({ 'class': 'long-domain-name', style: 'border: 1px solid #ccc; width: 409px; overflow: hidden; overflow: auto; white-space: pre; padding: 5px; background: #f0f0f0' }, domain.whois.raw)
           ),
-          td({ style: 'vertical-align: top'},
-            
-            domain.permissions_for_person.indexOf('modify_contacts') == -1 ? [] : [
+          (!domain.badger_registration || !domain.registrant_contact || !domain.registrant_contact.id) ? [] : [
+            td({ style: 'vertical-align: top'},
               h2('Make Changes'),
-  
+
               form({ action: curry(update_whois, domain) },
                 table(tbody(
                   tr(
@@ -209,14 +217,13 @@ with (Hasher('Registration','DomainApps')) {
                   (domain.whois.privacy ? input({ name: 'privacy', type: 'checkbox', checked: 'checked' }) : input({ name: 'privacy', type: 'checkbox' })),
                   'Keep contact information private'
                 ),
-  
+
                 div({ style: "text-align: right" },
-                  input({ type: 'submit', 'class': 'myButton myButton-small', value: 'Save' })
+                  input({ type: 'submit', 'class': 'myButton small', value: 'Save' })
                 )
               )
-            ]
-  
-          )
+            )
+          ]
         )
       ))
     );

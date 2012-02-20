@@ -13,13 +13,15 @@ with (Hasher('LinkedAccounts','Application')) {
 		Badger.getLinkedAccounts(function(response) {
 			render({ target: target_div },
 				(response.data || []).length == 0 ? [
-					div({ style: "margin-bottom: 15px" }, "You have not linked any social accounts yet, why not add one now?"),
-					linked_accounts_table("show_all")
+					div({ 'class': 'info-message', style: "margin: 25px 0" },
+					  h2({ style: 'margin: 0 0 15px'}, "You have not linked any accounts yet, why not add one now?"), 
+					  a({ 'class': "myButton large", href: curry(add_linked_accounts_modal, response.data) }, "Add A Linked Account")
+          ),
 				] : [
-					div({ style: "float: right; margin-top: -44px" },
-						a({ 'class': "myButton myButton-small", href: curry(add_linked_accounts_modal, response.data) }, "Add Linked Accounts")
-					),
-					linked_accounts_table(response.data)
+          div({ style: "float: right; margin-top: -44px" },
+            a({ 'class': "myButton small", href: curry(add_linked_accounts_modal, response.data) }, "Add Linked Account")
+          ),
+				  linked_accounts_table(response.data)
 				]
 			);
 		});
@@ -27,7 +29,7 @@ with (Hasher('LinkedAccounts','Application')) {
 	
 	define('add_linked_accounts_modal', function(accounts) {
 		show_modal(
-			h1('Add Linked Accounts'),
+			h1('Add Linked Account'),
 			table({ 'class': "fancy-table" }, tbody(
 			  show_account_link_rows(accounts)
 			))
@@ -35,6 +37,7 @@ with (Hasher('LinkedAccounts','Application')) {
 	});
 	
 	define('linked_accounts_table', function(accounts) {
+	  console.log(accounts);
 		return table({ id: "accounts-table", 'class': "fancy-table" }, tbody(
 			// if the user has not linked any accounts yet, we want to show all of the accounts that they can link immediately.
 			(accounts.length == 0 ? [
@@ -87,11 +90,12 @@ with (Hasher('LinkedAccounts','Application')) {
   					
 					  return linked_accounts_table_row(name, 
 			  	    div({ id: (account.site + "-" + account.id) },
-			  	      div({ 'class': error ? "error-message" : "info-message", style: "position: relative; text-align: right; margin: 5px auto 5px auto; height: 95px; width: 350px;" },
-			  	        a({ href: curry(Registrar.remove_link, account), 'class': 'close-button' }, 'X'),
+			  	      div({ 'class': error ? "error-message" : "status-message", style: "position: relative; text-align: right; margin: 5px auto 5px auto; height: 95px; width: 350px; padding: 10px;" },
                   h3("Status: ", status),
                   div("Last Sync: " + (account.last_synced_at ? new Date(Date.parse(account.last_synced_at)).toString() : 'Never')),
 									div("Login: " + account.login + " (" + account.domain_count + " Linked Domain(s))"),
+									a({ 'class': "myButton grey", style: 'margin: 10px 0 0;', href: curry(Registrar.remove_link, account) }, "Unlink"),
+									span(' '),
 									error ? a({ 'class': "myButton red", style: 'margin: 10px 0 0;', href: curry(Registrar.show_link, account)}, "edit")
 									  : a({ 'class': "myButton", style: 'margin: 10px 0 0;', href: curry(Registrar.sync_now, account)}, "Sync Now")
 								)
@@ -106,10 +110,10 @@ with (Hasher('LinkedAccounts','Application')) {
 		));
 	});
 	
-	define('linked_accounts_table_row', function(site, account_info) {
+	define('linked_accounts_table_row', function(site, button) {
 		return tr(
-			td({ width: "40%" }, div({ style: "font-weight: bold; font-size: 20px; padding-left: 15px;" }, site)),
-			td({ width: "60%" }, account_info)
+			td({ width: "70%" }, div({ style: "font-weight: bold; font-size: 20px; padding-left: 15px;" }, site)),
+			td({ width: "30%" }, button)
 		);
 	});
 	
@@ -131,7 +135,7 @@ with (Hasher('LinkedAccounts','Application')) {
 	});
 	
 	define('link_accounts_button', function(target) {
-		return a({ 'class': "myButton", style: "float: right; margin: 5px auto 5px auto", href: target }, "Link Accounts");
+		return a({ 'class': "myButton", style: "float: right; margin: 5px auto 5px auto", href: target }, "Link");
 	});
 	
 	define('authorize_account', function() {
@@ -143,15 +147,16 @@ with (Hasher('LinkedAccounts','Application')) {
 	define('show_account_link_rows', function(accounts) {
 		var sites = accounts.map(function(a) { return a.site });
 
+    // always there
     var result = [
       linked_accounts_table_row("Go Daddy", link_accounts_button(curry(Registrar.show_link, {site: 'godaddy'}))),
       linked_accounts_table_row("Network Solutions", link_accounts_button(curry(Registrar.show_link, {site: 'networksolutions'})))
     ];
-		
+
+    // only linked once		
 		if ($.inArray("twitter", sites) < 0) result.push(
 			linked_accounts_table_row("Twitter", link_accounts_button(curry(TwitterAccount.show_link_accounts_modal)))
 		);
-		
 		if ($.inArray("facebook", sites) < 0) result.push(
 			linked_accounts_table_row("Facebook", link_accounts_button(curry(FacebookAccount.show_link_accounts_modal)))
 		);

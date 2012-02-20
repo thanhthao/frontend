@@ -18,7 +18,7 @@ with (Hasher('DomainShow','DomainApps')) {
       if (!domain_obj.current_registrar) {
         render({ into: content_div },
           "This domain is not currently registered!",br(),br(),
-          a({ 'class': 'myButton myButton-small', href: curry(Register.show, domain_obj.name) }, 'Register ', domain_obj.name)
+          a({ 'class': 'myButton small', href: curry(Register.show, domain_obj.name) }, 'Register ', domain_obj.name)
         );
       } else if (domain_obj.current_registrar == 'Unknown') {
         // if it's "unknown", it was probably just added and we're still loading info for it... try again in 1 second

@@ -135,14 +135,13 @@ input.fancy[type=text], input.fancy[type=password] { margin-top: 4px; padding: 5
 .h1-action { float: right; margin-top: -40px; font-size: 50px; color: green; font-weight: bold; }
 
 .info-message { border: 1px solid #e2c822; background: #fff9d7; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
-.info-message ul { margin: 10px 0 0 0; }
 .info-message .fancy-table tr:hover { background: #FFFEF8; }
 .info-message .fancy-table tr.table-header:hover { background: none; }
 .error-message { border: 1px solid #dd3c10; background: #ffebe8; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
-.error-message ul { margin: 10px 0 0 0; }
 .error-red { color: #c00; }
 .success-message { border: 1px solid #619934; background: #E6F8D8; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
-.success-message ul { margin: 10px 0 0 0; }
+.status-message { border: 1px solid #e2c8c2; background: #fff9f7; padding: 20px; border-radius: 10px; margin-bottom: 10px; }
+.info-message ul, .success-message ul, .status-message ul, .error-message ul { margin: 10px 0 0 0; }
 
 .invite-extra-info { margin: 5px 10px; width: 450px; }
 

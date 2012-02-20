@@ -6,7 +6,7 @@ with (Hasher('Whois','Application')) {
     render(
       h1('Profiles'),
       div({ style: 'float: right; margin-top: -44px' }, 
-        a({ 'class': 'myButton myButton-small', href: curry(Whois.edit_whois_modal, null, curry(set_route, '#account/profiles')) }, 'Create New Profile')
+        a({ 'class': 'myButton small', href: curry(Whois.edit_whois_modal, null, curry(set_route, '#account/profiles')) }, 'Create New Profile')
       ),
       target_div
     );
@@ -33,7 +33,7 @@ with (Hasher('Whois','Application')) {
                   div(contact.country)
                 ),
                 td({ style: "text-align: right" },
-                  a({ 'class': 'myButton myButton-small', href: curry(Whois.edit_whois_modal, contact, curry(set_route, '#account/profiles')) }, 'Edit')
+                  a({ 'class': 'myButton small', href: curry(Whois.edit_whois_modal, contact, curry(set_route, '#account/profiles')) }, 'Edit')
                 )
               );
             })

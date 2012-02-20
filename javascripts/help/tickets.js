@@ -5,7 +5,7 @@ with (Hasher('Ticket','Application')) {
 			h1('Support Tickets'),
 
       div({ style: 'float: right; margin-top: -44px' },
-        a({ 'class': 'myButton myButton-small', href: ticket_form }, 'Create a New Ticket')
+        a({ 'class': 'myButton small', href: ticket_form }, 'Create a New Ticket')
       ),
 
       div({ id: 'tickets' }, p('Loading...'))
