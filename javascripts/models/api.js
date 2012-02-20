@@ -152,8 +152,12 @@ var Badger = {
     Badger.api("/domains", function(response) { callback(response.data); });
   },
 
-  getDomain: function(name, callback) {
-    Badger.api("/domains/" + name, callback);
+  getDomain: function(name, params, callback) {
+    if (typeof(params) == 'function') {
+      callback = params;
+      params = {};
+    }
+    Badger.api("/domains/" + name, params, callback);
   },
   
   getRecords: function(name, callback) {
@@ -181,7 +185,7 @@ var Badger = {
   transferDomain: function(data, callback) {
     var name = data.name;
     delete data.name;
-    Badger.api("/domains/" + name + "transfer", 'POST', data, callback);
+    Badger.api("/domains/" + name + "/transfer", 'POST', data, callback);
   },
 
 	renewDomain: function(name, years, callback) {
@@ -268,10 +272,6 @@ var Badger = {
 	  Badger.api("/account/change_hide_share_messages", 'POST', { hide_share_messages: value }, callback);
 	}, 
 	
-	getDomainInfo: function(data, callback) {
-		Badger.api("/domains/" + data.name + "/info", data, callback);
-	},
-  
   sendEmail: function(data, callback) {
 		Badger.api("account/contact_us", "POST", data, callback);
   },

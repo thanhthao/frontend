@@ -6,7 +6,7 @@ with (Hasher('Registration','DomainApps')) {
       return logo_for_registrar(domain_obj.current_registrar);
     },
     name: function(domain_obj) {
-      return "Registration (" + domain_obj.current_registrar + ")"
+      return "Registration: " + domain_obj.current_registrar;
       // var s = domain_obj.current_registrar;
       // if (s.match(/badger/i)) return "Registration (Badger.com)";
       // else if (s.match(/godaddy/i)) return "Registration (GoDaddy)";

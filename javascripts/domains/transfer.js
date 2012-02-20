@@ -1,6 +1,6 @@
 with (Hasher('Transfer','Application')) {
 
-  define('show', function(default_domains, skip) {
+  define('show', function(domains) {
     if (!Badger.getAccessToken()) {
       Signup.require_user_modal(Transfer.show);
       return;
@@ -8,91 +8,24 @@ with (Hasher('Transfer','Application')) {
     
     BadgerCache.getContacts(function(contacts) {
       if (contacts.data.length == 0) {
-        var custom_message = "You must have at least one contact profile to transfer domain.";
-        Whois.edit_whois_modal(null, Transfer.show, custom_message);
-      } else if (skip) {
-        get_transfer_domain_lists({transfer_domains_list: default_domains});
-      }
-      else {
-        transfer_domains_form(default_domains);
-      }
-    });
-  });
-
-  define('get_transfer_domain_lists', function(form_data) {
-    var domains_list = form_data.transfer_domains_list.split('\n').map(function(item) { return item.trim(); });
-    domains_list = $.grep(domains_list, function(i) {return i!= ""})
-    var domains = domains_list.map(function(domain_info) {
-      info = domain_info.split(/[ ,]+/);
-      info = $.grep(info, function(i) {return i!= ""});
-      return { name: info[0], auth_code: info[1] };
-    })
-
-    if (domains.length > 0) {
-      Transfer.domains = domains;
-      Transfer.transfer_domains_list();
-    }
-    else {
-      $('#transfer-form-error').html('Invalid Domains Input');
-      $('#transfer-form-error').removeClass('hidden');
-    }
-  });
-
-  define('verify_transfer', function(use_badger_dns, contacts_id) {
-    start_modal_spin('Processing...');
-
-    BadgerCache.getAccountInfo(function(account_info) {
-      // ensure they have at least one domain_credit
-      if (account_info.data.domain_credits < Transfer.domains.length) {
-        Billing.purchase_modal(curry(Transfer.verify_transfer, Transfer.domains, use_badger_dns));
+        Whois.edit_whois_modal(null, Transfer.show, "You must have at least one contact profile to transfer domain.");
+      } else if (domains) {
+        show_domain_status_table({ domains: domains });
       } else {
-        confirm_transfer(Transfer.domains, use_badger_dns, contacts_id);
+        transfer_domains_form();
       }
     });
   });
-
-  define('proceed_transfer', function(domain_list, use_badger_dns, contacts_id) {
-    transfer_result(domain_list);
-
-    var count = -1;
-    domain_list.map(function(domain) {
-      var domain_info = { 
-        name: domain.name.toString(), 
-        auth_code: domain.auth_code, 
-        auto_renew: 'true', 
-        privacy: 'true',
-        name_servers: (use_badger_dns == "" ? (domain.name_servers || []).join(',') : use_badger_dns),
-        registrant_contact_id: contacts_id 
-      };
-      Badger.registerDomain(domain_info, function(response) {
-        if (response.meta.status != 'created') {
-          $('#' + domain.name.replace(/\./g,'-') + '-transfer-status').html(div({ 'class': "transfer-failed" }, 'Failed'));
-        } else {
-          $('#' + domain.name.replace(/\./g,'-') + '-transfer-status').html(div({ 'class': "transfer-success" }, 'Success!'));
-        }
-      });
-    });
-    
-    $()
-  });
-
-  define('close_transfer_modal', function() {
-    BadgerCache.flush('domains');
-    BadgerCache.getDomains(function() { update_my_domains_count(); });
-    update_credits(true);
-    hide_modal();
-    set_route('#');
-  });
-
-	define('transfer_domains_form', function(default_domains) {
+  
+	define('transfer_domains_form', function() {
     show_modal(
       div(
         h1('TRANSFER DOMAINS INTO BADGER.COM'),
         div({ 'class': 'error-message hidden', id: 'transfer-form-error' }),
-        form({ action: Transfer.get_transfer_domain_lists },
-          p('Enter the domain(s) you\'d like to transfer in below, one per line. If you already have auth codes, include them next to each domain (e.g. "badger.com abc123def")'),
+        form({ action: show_domain_status_table },
+          p("Enter the domain(s) that you'd like to transfer, one per line:"),
           
-          textarea({ name: 'transfer_domains_list', placeholder: 'badger.com', style: 'width: 80%; height: 75px; float: left' }, default_domains),
+          textarea({ name: 'domains', placeholder: 'badger.com', style: 'width: 80%; height: 75px; float: left' }),
           div({ style: 'margin-top: 60px; text-align: right' }, input({ 'class': 'myButton', id: 'next', type: 'submit', value: 'Next' })),
           div({ style: 'clear: both' })
         )
@@ -100,159 +33,66 @@ with (Hasher('Transfer','Application')) {
 		);
 	});
 
-  define('transfer_domains_list', function() {
-    var count = -1;
-		
-    show_modal({ style: 'width: 800px' },
-      h1('TRANSFER IN DOMAINS'),
-      div({ style: 'float: right; margin-top: -44px' },
-        a({ 'class': 'myButton myButton-small', href: curry(update_all_domains_info) }, 'Retry All')
-      ),
-      div({ 'class': 'y-scrollbar-div' },
-        table({ 'class': 'fancy-table', id: 'transfer-domains-table' },
-          tbody(
-            tr({ 'class': 'table-header' },
-              th('Name'),
-              th('Registrar'),
-              th('Expires'),
-              th('Auth Code'),
-              th({ style: 'text-align: center' }, 'Locked'),
-              th({ style: 'text-align: center' }, 'Privacy'),
-              th({ style: 'text-align: center' }, 'Status')
-            ),
-            Transfer.domains.map(function(domain) {
-              return tr({ id: row_id_for_domain(domain) },
-                td(domain.name),
-                td({ 'class': 'registrar_domain' }),
-                td({ 'class': 'expires_domain' }),
-                td({ 'class': 'auth_code_domain' }),
-                td({ style: 'text-align: center', 'class': 'locked_domain' }),
-                td({ style: 'text-align: center', 'class': 'privacy_domain' }),
-                td({ style: 'text-align: center' }, 
-                  a({ 'class': 'retry-link', href: curry(update_domain_info, domain) }, 'Retry'),
-                  ajax_loader())
+  define('row_id_for_domain', function(domain) {
+    return domain.replace(/\./g,'-') + '-domain';
+  });
+
+  define('show_domain_status_table', function(form_data) {
+    var domains = [];
+    (typeof(form_data.domains) == "string" ? form_data.domains.split('\n') : form_data.domains).map(function(domain) {
+      if (domain.trim() != '') domains.push(domain.trim().toLowerCase());
+    });
+    $.unique(domains).sort();
+
+    if (domains.length == 0) {
+      $('#transfer-form-error').html('Invalid Domains Input');
+      $('#transfer-form-error').removeClass('hidden');
+      return;
+    }
+
+    show_modal(
+      form({ action: confirm_transfers },
+        h1('TRANSFER IN DOMAINS'),
+        div({ 'class': 'y-scrollbar-div' },
+          table({ 'class': 'fancy-table', id: 'transfer-domains-table' },
+            tbody(
+              tr({ 'class': 'table-header' },
+                th('Name'),
+                th('Registrar'),
+                th('Expires'),
+                th()
+              ),
+              domains.map(generate_row_for_domain),
+              tr({ id: 'add-domain-to-table-row' },
+                td(
+                  form({ action: add_domain_to_table },
+                    text({ name: 'name', placeholder: 'Add another domain...', style: 'width: 150px; border: 1px solid #bbb; padding: 3px; margin: 3px 5px 3px 0' }),
+                    submit({ style: 'background: url(images/add.gif); width: 16px; height:16px; border: 0; border: 0; margin: 0; padding: 0; text-indent: -1000px' })
+                  )
+                ),
+                td({ colSpan: '3' })
               )
-            })
+            )
           )
-        )
-      ),
-      div({ style: 'float: left; margin-top: 24px'},
-        'Registrant: ',
-        select({ id: 'registrant_contact_id', name: 'registrant_contact_id', style: 'width: 150px' }, Registration.profile_options_for_select()),
-        ' ',
-        input({ type: 'checkbox', name: 'use_badger_dns', value: 'ns1.badger.com,ns2.badger.com', checked: 'checked', id: 'use_badger_dns', style: "margin: 5px 5px 5px 20px" }),
-        label({ 'for': 'use_badger_dns' }, ' Import existing DNS into Badger DNS')
-      ),
+        ),
 			
-      div({ style: "margin-top: 20px; text-align: right "},
-        a({ 'id': 'continue-transfer-btn', 'class': 'myButton', href: curry(confirm_transfer) }, "Transfer in Domains")
+        div({ style: "margin-top: 20px; text-align: right "},
+          submit({ 'id': 'continue-transfer-btn', 'class': 'myButton', value: "Cancel" })
+        )
       )
     );
-
-    update_all_domains_info();
   });
 
-  define('row_id_for_domain', function(domain) {
-    return domain.name.replace(/\./g,'-') + '-domain';
+  define('generate_row_for_domain', function(domain) {
+    update_domain_info(domain);
+    return tr({ id: row_id_for_domain(domain), 'class': 'domain-row' },
+      td(domain),
+      td({ 'class': 'registrar_domain' }, img({ 'class': 'ajax_loader', style: "padding-left: 20px", src: 'images/ajax-loader.gif'})),
+      td({ 'class': 'expires_domain' }),
+      td({ style: 'width: 16px' }, img({ 'class': 'domain_row_trash_icon', src: 'images/trash.gif', onClick: curry(remove_domain_from_table,domain) }))
+    );    
   });
 
-  define('update_all_domains_info', function(domain) {
-    Transfer.domains.map(update_domain_info);
-  });
-  
-  define('update_domain_info', function(domain) {
-
-    set_background_color_if_valid(domain, null);
-    show_ajax_spinner(domain);
-
-    domain.auth_code_verified = null;
-    domain.not_locked = null;
-    domain.no_privacy = null;
-
-    Badger.getDomainInfo({ name: domain.name }, function(response) {
-      domain.not_locked = false;
-      var item_id = '#' + row_id_for_domain(domain);
-      set_background_color_if_valid(domain, false);
-      if (response.data.code == 2303 || response.meta.status == "not_found") {
-        // domain not found
-        $(item_id).html([td(domain.name), td({ colSpan: '6' }, span({ 'class': 'error'}, 'Error: Domain not found'))]);
-        domain.auth_code_verified = false;
-        domain.no_privacy = false;
-      }
-			else if (response.data.code == 5000) {
-				$(item_id).html([td(domain.name), td({ colSpan: '6' }, span({ 'class': 'error'}, 'Error: Unsupported top level domain (' + domain.name.split(".").reverse()[0] + ')'))]);
-        domain.auth_code_verified = false;
-        domain.no_privacy = false;
-			}
-      else if(response.data.code != 1000) {
-        // interal server error
-        $(item_id).html([td(domain.name), td({ colSpan: '6' }, span({ 'class': 'error'}, response.data.message || 'Error: Internal server error'))]);
-        domain.auth_code_verified = false;
-        domain.no_privacy = false;
-      }
-      else if(response.data.pending_transfer) {
-        // pending transfer
-        $(item_id).html([td(domain.name), td({ colSpan: '6' }, span({ 'class': 'error'}, 'Error: Pending transfer'))]);
-        domain.auth_code_verified = false;
-        domain.no_privacy = false;
-      }
-      else {
-        verify_auth_code(domain);
-
-        domain_info = response.data;
-        domain.name_servers = domain_info.name_servers;
-        $(item_id + ' .registrar_domain').html(domain_info.registrar.name)
-        $(item_id + ' .expires_domain').html(domain_info.expires_on.slice(0, 10))
-        $(item_id + ' .locked_domain').html(domain_info.locked ? span({ 'class': 'error'}, 'Yes') : "No");
-
-        if (!domain_info.locked) {
-          domain.not_locked = true;
-          checked_valid_row(domain);
-        }
-        if (response.data.registrar.name.toLowerCase().indexOf('godaddy') != -1) {
-          Badger.remoteWhois(domain.name, function(whois_response) {
-            domain.no_privacy = false;
-            $(item_id + ' .privacy_domain').html(whois_response.data.privacy ? span({ 'class': 'error'}, 'Yes') : "No");
-            if (!whois_response.data.privacy) {
-              domain.no_privacy = true;
-              checked_valid_row(domain);
-            }
-            hide_ajax_spinner(domain);
-          });
-        }
-        else {
-          domain.no_privacy = true;
-          checked_valid_row(domain);
-          $(item_id + ' .privacy_domain').html("No");
-        }
-      }
-      hide_ajax_spinner(domain);
-
-			if ($("input[name$=account_id]:checked").length > 0) {
-				showSharePreview("\"I just transfered " + $("tr[id$=domain]").length + " " + ($("tr[id$=domain]").length > 1 ? "domains" : "domain") + "  " + ($(".registrar_domain").html() ? "from " + $(".registrar_domain").html() : "") + " to Badger.com!\"");
-			}
-    });
-  });
-  
-
-  define('help_question_mark', function() {
-    return a({ href: '#knowledge_center', target: '_blank' }, '?');
-  });
-
-  define('ajax_loader', function() {
-    return img({ 'class': 'ajax_loader', src: 'images/ajax-loader.gif'});
-  });
-
-  define('show_ajax_spinner', function(domain) {
-    $('#' + row_id_for_domain(domain) + ' .ajax_loader').removeClass("hidden");
-  });
-
-  define('hide_ajax_spinner', function(domain) {
-    if(domain.auth_code_verified != null && domain.not_locked != null && domain.no_privacy != null) {
-      $('#' + row_id_for_domain(domain) + ' .ajax_loader').addClass("hidden");
-    }
-  });
-  
   // valid: true - green, false - red, null - white
   define('set_background_color_if_valid', function(domain, valid) {
     var item_id = '#' + row_id_for_domain(domain);
@@ -261,116 +101,403 @@ with (Hasher('Transfer','Application')) {
     if (valid == false) $(item_id).addClass("error-row");
   });
 
-  define('auth_code_input', function(domain) {
-    return text({ 'class': 'auth-code-input', events: {
-      keyup: function(event){
-        if(event.keyCode == 13){
-          domain.auth_code = $(this).val();
-          verify_auth_code(domain)
-        }
-      }
-    }})
+  define('show_error_for_domain', function(domain, message) {
+    set_background_color_if_valid(domain, false);
+    $('#' + row_id_for_domain(domain) + ' .expires_domain').remove();
+    $('#' + row_id_for_domain(domain) + ' .registrar_domain').attr('colSpan', '2').html(span({ 'class': 'error' }, message));
   });
+  
 
-  define('checked_valid_row', function(domain) {
-    if(domain.auth_code_verified && domain.not_locked && domain.no_privacy) {
-      set_background_color_if_valid(domain, true);
-      $('#continue-transfer-btn').html('Continue with ' + $("#transfer-domains-table .success-row").length +  ' Domain' + ($("#transfer-domains-table .success-row").length > 1 ? 's' : ''));
+  define('add_domain_to_table', function(form_data) {
+    if ($('#' +row_id_for_domain(form_data.name)).length == 0) {
+      $('#add-domain-to-table-row').before(generate_row_for_domain(form_data.name));
+      update_contiue_button_count();
     }
   });
+  
+  define('remove_domain_from_table', function(domain) {
+    $('#' + row_id_for_domain(domain)).remove();
+    remove_hidden_field_for_domain(domain);
+    update_contiue_button_count();
+  });
 
-  define('verify_auth_code', function(domain) {
+  define('update_contiue_button_count', function() {
+    var num = $('#transfer-domains-table .success-row').length;
+    $('#continue-transfer-btn').val(num == 0 ? 'Cancel' : ('Continue with ' + num + ' domain' + (num == 1 ? '' : 's')));
+  });
+  
+  define('update_domain_info', function(domain) {
     var item_id = '#' + row_id_for_domain(domain);
-    
-    if ($(item_id + ' .auth-code-input').val()) domain.auth_code = $(item_id + ' .auth-code-input').val();
-    
-    show_ajax_spinner(domain);
-    if (domain.auth_code != null && domain.auth_code != "") {
-      Badger.getDomainInfo({ name: domain.name, auth_code: domain.auth_code }, function(response) {
-        if (response.data.code == 2202 || response.meta.status != 'ok') {
-          // failed
-          domain.auth_code_verified = false;
-          $(item_id + ' .auth_code_domain').html(auth_code_input(domain));
-        } else {
-          // ok
-          domain.auth_code_verified = true;
-          checked_valid_row(domain);
-          $(item_id + ' .auth_code_domain').html("Ok")
-        }
-        hide_ajax_spinner(domain);
-      });
-    } else {
-      hide_ajax_spinner(domain);
-      domain.auth_code_verified = false;
-      $(item_id + ' .auth_code_domain').html(auth_code_input(domain));
-    }
-  });
 
-  define('confirm_transfer', function() {
-    if ($("#transfer-domains-table .success-row").length > 0 ) {
-      var contact_id = $('#registrant_contact_id').val();
-      var use_badger_dns = ($("#use_badger_dns").attr('checked') ? $("#use_badger_dns").val() : '');
-      var domains_list = $.grep(Transfer.domains, function(domain) {
-        return domain.auth_code_verified && domain.not_locked && domain.no_privacy;
-      })
-      
-      show_modal(
-        div(
-          h1('CONFIRM TRANSFER'),
-          p('You are about to transfer ' + domains_list.length + (domains_list.length > 1 ? ' domains.' : ' domain.')),
-          a({ href: curry(proceed_transfer, domains_list, use_badger_dns, contact_id), 'class': 'myButton'}, 'Complete Transfer')
-        )
-      )
-    } else {
-      alert("No domains available for transfering")
-    }
-  });
+    Badger.getDomain(domain, function(response) {
+      var domain_info = response.data;
 
-  define('transfer_result', function(domains_list) {
-    var count = -1;
-    var list = domains_list.map(function(domain) {
-      return tr(
-        td(domain.name),
-        td(domain.auth_code),
-        td({ id: domain.name.replace(/\./g,'-') + '-transfer-status' }, div({ 'class': "transfer-processing" }, 'Processing'))
-      )
-    });
-
-    var modal = show_modal(
-      h1('TRANSFER RESULT'),
-      div({ 'class': 'y-scrollbar-div' },
-        table({ 'class': 'fancy-table', id: 'transfer-result-table' },
-          tbody(
-            tr(
-              th('Domain Name'),
-              th('Authentication Code'),
-              th('Transfer Status')
-            ),
-            list
-          )
-        )
-      ),
-      div({ style: 'text-align: right; margin-top: 10px;', id: "close-transfer-button" }, ajax_loader())
-    );
-    
-    // If all processing elements are gone, show the button. If all succeeded, make button go to share dialog, otherwise hide modal.
-    var timer = setInterval(function() {
-      if ($("div.transfer-processing").length == 0) {
-        clearTimeout(timer);
-        
-        if ($("div.transfer-failed").length > 0) {
-          $("#close-transfer-button").html(
-            a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
-          );
-        } else {
-          $("#close-transfer-button").html(
-            a({ href: curry(LinkedAccounts.show_share_transfer_modal, domains_list.length), 'class': 'myButton', value: "submit" }, "Continue")
-          );
-        }
+      if (response.meta.status == 'not_found') {
+       show_error_for_domain(domain, 'Invalid domain format');
+      } else if (response.meta.status != 'ok') {
+       show_error_for_domain(domain, response.data.message || 'Error: Internal server error');
+      } else if (domain_info.available) {
+        //show_error_for_domain(domain, 'Domain not currently registered.');
+        set_background_color_if_valid(domain, true);
+        add_hidden_field_for_domain(domain, false);
+        $(item_id + ' .registrar_domain').html('<i>Register at Badger.com</i>');
+        $(item_id + ' .expires_domain').html('<i>Available!</i>');
+      } else if (!domain_info.supported_tld) {
+        show_error_for_domain(domain, "Extension ." + domain.split('.').pop() + " is not currently supported.");
+      } else if (domain_info.current_registrar == 'Unknown') {
+        // not done loading, try again in a few seconds if the dialog is still open
+        if ($('#transfer-domains-table')) setTimeout(curry(update_domain_info, domain), 2000);
+      } else {
+        set_background_color_if_valid(domain, true);
+        add_hidden_field_for_domain(domain, true);
+        $(item_id + ' .registrar_domain').html(domain_info.current_registrar);
+        $(item_id + ' .expires_domain').html(domain_info.expires_at.slice(0,10));
       }
-    }, 200);
-    
-    return modal;
+      update_contiue_button_count();
+    });
   });
+    
+  define('add_hidden_field_for_domain', function(domain, is_a_transfer) {
+    $('#continue-transfer-btn').after(input({ type: "hidden", name: is_a_transfer ? "transfer_domains[]" : "new_domains[]", value: domain, id: row_id_for_domain(domain + '-hidden') }));
+  });
+
+  define('remove_hidden_field_for_domain', function(domain) {
+    $('#' + row_id_for_domain(domain + '-hidden')).remove();
+  });
+  
+  define('confirm_transfers', function(form_data) {
+    var transfer_domains = form_data.transfer_domains||[];
+    var new_domains = form_data.new_domains||[];
+    var domain_count = transfer_domains.length + new_domains.length;
+    show_modal(
+      h1('CONFIRMATION: ' + domain_count + ' DOMAINS'),
+      
+      form({ action: register_or_transfer_all_domains }, 
+        transfer_domains.map(function(domain) { return input({ type: "hidden", name: "transfer_domains[]", value: domain }); }),
+        new_domains.map(function(domain) { return input({ type: "hidden", name: "new_domains[]", value: domain }); }),
+        
+        table({ style: 'width: 100%' },
+          tr(
+            td({ style: 'width: 50%; vertical-align: top'},
+              h3('Free Options'),
+              div(
+                div(
+                  checkbox({ name: 'privacy', value: 'yes', checked: 'checked' }), 'Enable whois privacy'
+                ),
+
+                div(
+                  checkbox({ name: 'import_dns', value: 'yes', checked: 'checked' }), 'Automatically import DNS'
+                ),
+
+                div(
+                  checkbox({ name: 'auto_renew', value: 'yes', checked: 'checked' }), 'Auto-renew on expiration date'
+                )
+              )
+            ),
+            td({ style: 'width: 50%; vertical-align: top'},
+              h3('Registrant'),
+              div(
+                select({ id: 'registrant_contact_id', name: 'registrant_contact_id', style: 'width: 150px' }, Registration.profile_options_for_select())
+              )
+            )
+          )
+        ),
+        
+        div({ style: "margin-top: 20px; text-align: right "},
+          submit({ id: 'continue-transfer-btn', type: 'submit', 'class': 'myButton', value: 'Register for ' + domain_count + ' Credits' })
+        )
+      )
+    );
+  });
+  
+  define('possibly_show_close_button_on_register_screen', function(domain_count) {
+    if ($('#transfer-domains-table .success-row, #transfer-domains-table .error-row').length == domain_count) {
+      $('#transfer-domains-table').after(
+        div({ style: 'margin-top: 10px; text-align: right' },
+          a({ href: close_transfer_modal, 'class': 'myButton' }, 'Close')
+        )
+      );
+    }
+  });
+  
+  define('register_or_transfer_all_domains', function(form_data) {
+    start_modal_spin('Processing...');
+
+    var transfer_domains = form_data.transfer_domains||[];
+    var new_domains = form_data.new_domains||[];
+    var domains = transfer_domains.concat(new_domains).sort();
+    var domain_count = domains.length;
+  
+    BadgerCache.getAccountInfo(function(account_info) {
+      if (account_info.data.domain_credits < domain_count.length) {
+        Billing.purchase_modal(curry(register_or_transfer_all_domains, form_data));
+      } else {
+        show_modal(
+          h1('REGISTRATION STATUS'),
+          div({ 'class': 'y-scrollbar-div' },
+            table({ 'class': 'fancy-table', id: 'transfer-domains-table' },
+              tbody(
+                tr({ 'class': 'table-header' },
+                  th('Name'),
+                  th('Status')
+                ),
+                domains.map(function(domain) {
+                  return tr({ id: row_id_for_domain(domain), 'class': 'domain-row' },
+                    td(domain),
+                    td({ 'class': 'status-cell' }, img({ 'class': 'ajax_loader', style: "padding-left: 20px", src: 'images/ajax-loader.gif'}))
+                  );
+                })
+              )
+            )
+          )
+        );
+        
+        transfer_domains.map(function(domain) {
+          var domain_info = { 
+            name: domain, 
+            registrant_contact_id: form_data.registrant_contact_id,
+            auto_renew: form_data.auto_renew, 
+            privacy: form_data.privacy,
+            import_dns: form_data.import_dns,
+          };
+          Badger.transferDomain(domain_info, function(response) {
+            if (response.meta.status != 'created') {
+              set_background_color_if_valid(domain, false);
+              $('#' + row_id_for_domain(domain) + ' .status-cell').html(response.data.message);
+            } else {
+              set_background_color_if_valid(domain, true);
+              $('#' + row_id_for_domain(domain) + ' .status-cell').html('Success!');
+            }
+            possibly_show_close_button_on_register_screen(domain_count);
+          });
+        });
+
+        new_domains.map(function(domain) {
+          var domain_info = { 
+            name: domain, 
+            registrant_contact_id: form_data.registrant_contact_id,
+            auto_renew: form_data.auto_renew, 
+            privacy: form_data.privacy
+          };
+          Badger.registerDomain(domain_info, function(response) {
+            if (response.meta.status != 'created') {
+              set_background_color_if_valid(domain, false);
+              $('#' + row_id_for_domain(domain) + ' .status-cell').html(response.data.message);
+            } else {
+              set_background_color_if_valid(domain, true);
+              $('#' + row_id_for_domain(domain) + ' .status-cell').html('Success!');
+            }
+            
+            possibly_show_close_button_on_register_screen(domain_count);
+          });
+        });
+      }
+    });
+  });
+  
+  define('close_transfer_modal', function() {
+    BadgerCache.flush('domains');
+    BadgerCache.getDomains(function() { update_my_domains_count(); });
+    update_credits(true);
+    hide_modal();
+    set_route('#');
+  });
+  
+  
+  // define('confirm_transfer', function() {
+  //   if ($("#transfer-domains-table .success-row").length > 0 ) {
+  //     var contact_id = $('#registrant_contact_id').val();
+  //     var use_badger_dns = ($("#use_badger_dns").attr('checked') ? $("#use_badger_dns").val() : '');
+  //     var domains_list = $.grep(Transfer.domains, function(domain) {
+  //       return domain.auth_code_verified && domain.not_locked && domain.no_privacy;
+  //     })
+  //     
+  //     show_modal(
+  //       div(
+  //         h1('CONFIRM TRANSFER'),
+  //         p('You are about to transfer ' + domains_list.length + (domains_list.length > 1 ? ' domains.' : ' domain.')),
+  //         a({ href: curry(proceed_transfer, domains_list, use_badger_dns, contact_id), 'class': 'myButton'}, 'Complete Transfer')
+  //       )
+  //     )
+  //   } else {
+  //     alert("No domains available for transfering")
+  //   }
+  // });
+  
+  
+  
+  
+  // if ($("input[name$=account_id]:checked").length > 0) {
+  //  showSharePreview("\"I just transfered " + $("tr[id$=domain]").length + " " + ($("tr[id$=domain]").length > 1 ? "domains" : "domain") + "  " + ($(".registrar_domain").html() ? "from " + $(".registrar_domain").html() : "") + " to Badger.com!\"");
+  // }
+  
+  // 
+  // 
+  // 
+  // 
+  // 
+  // 
+  // 
+  // 
+  // 
+  // define('verify_transfer', function(use_badger_dns, contacts_id) {
+  //   start_modal_spin('Processing...');
+  // 
+  //   BadgerCache.getAccountInfo(function(account_info) {
+  //     // ensure they have at least one domain_credit
+  //     if (account_info.data.domain_credits < Transfer.domains.length) {
+  //       Billing.purchase_modal(curry(Transfer.verify_transfer, Transfer.domains, use_badger_dns));
+  //     } else {
+  //       confirm_transfer(Transfer.domains, use_badger_dns, contacts_id);
+  //     }
+  //   });
+  // });
+  // 
+  // define('proceed_transfer', function(domain_list, use_badger_dns, contacts_id) {
+  //   transfer_result(domain_list);
+  // 
+  //   var count = -1;
+  //   domain_list.map(function(domain) {
+  //     var domain_info = { 
+  //       name: domain.name.toString(), 
+  //       auth_code: domain.auth_code, 
+  //       auto_renew: 'true', 
+  //       privacy: 'true',
+  //       name_servers: (use_badger_dns == "" ? (domain.name_servers || []).join(',') : use_badger_dns),
+  //       registrant_contact_id: contacts_id 
+  //     };
+  //     Badger.registerDomain(domain_info, function(response) {
+  //       if (response.meta.status != 'created') {
+  //         $('#' + domain.name.replace(/\./g,'-') + '-transfer-status').html(div({ 'class': "transfer-failed" }, 'Failed'));
+  //       } else {
+  //         $('#' + domain.name.replace(/\./g,'-') + '-transfer-status').html(div({ 'class': "transfer-success" }, 'Success!'));
+  //       }
+  //     });
+  //   });
+  // });
+  // 
+  // define('transfer_domains_list', function() {
+  //   var count = -1;
+  //    
+  // });
+  // 
+  // 
+  // define('update_all_domains_info', function(domain) {
+  //   Transfer.domains.map(update_domain_info);
+  // });
+  // 
+  // 
+  // 
+  // 
+  // define('help_question_mark', function() {
+  //   return a({ href: '#knowledge_center', target: '_blank' }, '?');
+  // });
+  // 
+  // define('ajax_loader', function() {
+  //   return ;
+  // });
+  // 
+  // define('show_ajax_spinner', function(domain) {
+  //   $('#' + row_id_for_domain(domain) + ' .ajax_loader').removeClass("hidden");
+  // });
+  // 
+  // define('hide_ajax_spinner', function(domain) {
+  //   if(domain.auth_code_verified != null && domain.not_locked != null && domain.no_privacy != null) {
+  //     $('#' + row_id_for_domain(domain) + ' .ajax_loader').addClass("hidden");
+  //   }
+  // });
+  // 
+  // 
+  // define('auth_code_input', function(domain) {
+  //   return text({ 'class': 'auth-code-input', events: {
+  //     keyup: function(event){
+  //       if(event.keyCode == 13){
+  //         domain.auth_code = $(this).val();
+  //         verify_auth_code(domain)
+  //       }
+  //     }
+  //   }})
+  // });
+  // 
+  // define('checked_valid_row', function(domain) {
+  //   if(domain.auth_code_verified && domain.not_locked && domain.no_privacy) {
+  //     set_background_color_if_valid(domain, true);
+  //     $('#continue-transfer-btn').html('Continue with ' + $("#transfer-domains-table .success-row").length +  ' Domain' + ($("#transfer-domains-table .success-row").length > 1 ? 's' : ''));
+  //   }
+  // });
+  // 
+  // define('verify_auth_code', function(domain) {
+  //   var item_id = '#' + row_id_for_domain(domain);
+  //   
+  //   if ($(item_id + ' .auth-code-input').val()) domain.auth_code = $(item_id + ' .auth-code-input').val();
+  //   
+  //   show_ajax_spinner(domain);
+  //   if (domain.auth_code != null && domain.auth_code != "") {
+  //     Badger.getDomain(domain.name, { auth_code: domain.auth_code }, function(response) {
+  //       if (response.data.code == 2202 || response.meta.status != 'ok') {
+  //         // failed
+  //         domain.auth_code_verified = false;
+  //         $(item_id + ' .auth_code_domain').html(auth_code_input(domain));
+  //       } else {
+  //         // ok
+  //         domain.auth_code_verified = true;
+  //         checked_valid_row(domain);
+  //         $(item_id + ' .auth_code_domain').html("Ok")
+  //       }
+  //       hide_ajax_spinner(domain);
+  //     });
+  //   } else {
+  //     hide_ajax_spinner(domain);
+  //     domain.auth_code_verified = false;
+  //     $(item_id + ' .auth_code_domain').html(auth_code_input(domain));
+  //   }
+  // });
+  // 
+  // define('transfer_result', function(domains_list) {
+  //   var count = -1;
+  //   var list = domains_list.map(function(domain) {
+  //     return tr(
+  //       td(domain.name),
+  //       td(domain.auth_code),
+  //       td({ id: domain.name.replace(/\./g,'-') + '-transfer-status' }, div({ 'class': "transfer-processing" }, 'Processing'))
+  //     )
+  //   });
+  // 
+  //   var modal = show_modal(
+  //     h1('TRANSFER RESULT'),
+  //     div({ 'class': 'y-scrollbar-div' },
+  //       table({ 'class': 'fancy-table', id: 'transfer-result-table' },
+  //         tbody(
+  //           tr(
+  //             th('Domain Name'),
+  //             th('Authentication Code'),
+  //             th('Transfer Status')
+  //           ),
+  //           list
+  //         )
+  //       )
+  //     ),
+  //     div({ style: 'text-align: right; margin-top: 10px;', id: "close-transfer-button" }, ajax_loader())
+  //   );
+  //   
+  //   // If all processing elements are gone, show the button. If all succeeded, make button go to share dialog, otherwise hide modal.
+  //   var timer = setInterval(function() {
+  //     if ($("div.transfer-processing").length == 0) {
+  //       clearTimeout(timer);
+  //       
+  //       if ($("div.transfer-failed").length > 0) {
+  //         $("#close-transfer-button").html(
+  //           a({ href: hide_modal, 'class': 'myButton', value: "submit" }, "Close")
+  //         );
+  //       } else {
+  //         $("#close-transfer-button").html(
+  //           a({ href: curry(LinkedAccounts.show_share_transfer_modal, domains_list.length), 'class': 'myButton', value: "submit" }, "Continue")
+  //         );
+  //       }
+  //     }
+  //   }, 200);
+  //   
+  //   return modal;
+  // });
 
 }

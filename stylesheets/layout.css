@@ -298,3 +298,10 @@ label { cursor: pointer; }
   background: url("../images/down-arrow.png") top left no-repeat;
   padding-left: 20px;
 }
+
+
+
+
+
+.domain-row .domain_row_trash_icon { display: none; }
+.domain-row:hover .domain_row_trash_icon { display: block; cursor: pointer; }

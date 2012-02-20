@@ -3,7 +3,7 @@ with (Hasher('GoogleAppsVerification', 'DomainApps')) {
   register_domain_app({
     id: 'badger_google_apps_verification',
     name: 'Google Apps Verification',
-    icon: 'images/apps/appengine.png',
+    icon: 'images/apps/googleapps.png',
     menu_item: { text: 'GOOGLE APPS VERIFICATION', href: '#domains/:domain/google_verification' },
     requires: {
       dns: [
