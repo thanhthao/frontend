@@ -66,7 +66,7 @@ with (Hasher('Transfer','Application')) {
               tr({ id: 'add-domain-to-table-row' },
                 td(
                   form({ action: add_domain_to_table },
-                    text({ name: 'name', placeholder: 'Add another domain...', style: 'width: 150px; border: 1px solid #bbb; padding: 3px; margin: 3px 5px 3px 0' }),
+                    text({ name: 'name', id: 'add_domain_to_table_text', placeholder: 'Add another domain...', style: 'width: 150px; border: 1px solid #bbb; padding: 3px; margin: 3px 5px 3px 0' }),
                     submit({ style: 'background: url(images/add.gif); width: 16px; height:16px; border: 0; border: 0; margin: 0; padding: 0; text-indent: -1000px' })
                   )
                 ),
@@ -77,6 +77,7 @@ with (Hasher('Transfer','Application')) {
         ),
 			
         div({ style: "margin-top: 20px; text-align: right "},
+          input({ type: 'hidden', name: 'hidden_tag_anchor', id: 'hidden_tag_anchor', value: '' }),
           submit({ 'id': 'continue-transfer-btn', 'class': 'myButton', value: "Cancel" })
         )
       )
@@ -111,17 +112,18 @@ with (Hasher('Transfer','Application')) {
   define('add_domain_to_table', function(form_data) {
     if ($('#' +row_id_for_domain(form_data.name)).length == 0) {
       $('#add-domain-to-table-row').before(generate_row_for_domain(form_data.name));
-      update_contiue_button_count();
+      $('#add_domain_to_table_text').val('');
+      update_continue_button_count();
     }
   });
   
   define('remove_domain_from_table', function(domain) {
     $('#' + row_id_for_domain(domain)).remove();
     remove_hidden_field_for_domain(domain);
-    update_contiue_button_count();
+    update_continue_button_count();
   });
 
-  define('update_contiue_button_count', function() {
+  define('update_continue_button_count', function() {
     var num = $('#transfer-domains-table .success-row').length;
     $('#continue-transfer-btn').val(num == 0 ? 'Cancel' : ('Continue with ' + num + ' domain' + (num == 1 ? '' : 's')));
   });
@@ -153,12 +155,12 @@ with (Hasher('Transfer','Application')) {
         $(item_id + ' .registrar_domain').html(domain_info.current_registrar);
         $(item_id + ' .expires_domain').html(domain_info.expires_at.slice(0,10));
       }
-      update_contiue_button_count();
+      update_continue_button_count();
     });
   });
     
   define('add_hidden_field_for_domain', function(domain, is_a_transfer) {
-    $('#continue-transfer-btn').after(input({ type: "hidden", name: is_a_transfer ? "transfer_domains[]" : "new_domains[]", value: domain, id: row_id_for_domain(domain + '-hidden') }));
+    $('#hidden_tag_anchor').after(input({ type: "hidden", name: is_a_transfer ? "transfer_domains[]" : "new_domains[]", value: domain, id: row_id_for_domain(domain + '-hidden') }));
   });
 
   define('remove_hidden_field_for_domain', function(domain) {
@@ -179,7 +181,7 @@ with (Hasher('Transfer','Application')) {
         table({ style: 'width: 100%' },
           tr(
             td({ style: 'width: 50%; vertical-align: top'},
-              h3('Free Options'),
+              h3({ style: 'margin-bottom: 3px' }, 'Free Options:'),
               div(
                 div(
                   checkbox({ name: 'privacy', value: 'yes', checked: 'checked' }), 'Enable whois privacy'
@@ -195,7 +197,7 @@ with (Hasher('Transfer','Application')) {
               )
             ),
             td({ style: 'width: 50%; vertical-align: top'},
-              h3('Registrant'),
+              h3({ style: 'margin-bottom: 3px' }, 'Registrant:'),
               div(
                 select({ id: 'registrant_contact_id', name: 'registrant_contact_id', style: 'width: 150px' }, Registration.profile_options_for_select())
               )
@@ -204,7 +206,8 @@ with (Hasher('Transfer','Application')) {
         ),
         
         div({ style: "margin-top: 20px; text-align: right "},
-          submit({ id: 'continue-transfer-btn', type: 'submit', 'class': 'myButton', value: 'Register for ' + domain_count + ' Credits' })
+          input({ type: 'hidden', name: 'hidden_tag_anchor', id: 'hidden_tag_anchor', value: '' }),
+          submit({ type: 'submit', 'class': 'myButton', value: 'Register for ' + domain_count + ' Credits' })
         )
       )
     );
@@ -229,8 +232,8 @@ with (Hasher('Transfer','Application')) {
     var domain_count = domains.length;
   
     BadgerCache.getAccountInfo(function(account_info) {
-      if (account_info.data.domain_credits < domain_count.length) {
-        Billing.purchase_modal(curry(register_or_transfer_all_domains, form_data));
+      if (account_info.data.domain_credits < domain_count) {
+        Billing.purchase_modal(curry(register_or_transfer_all_domains, form_data), domain_count - account_info.data.domain_credits);
       } else {
         show_modal(
           h1('REGISTRATION STATUS'),
