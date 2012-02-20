@@ -43,11 +43,11 @@ Feature: Register Domain
     And I mock getDomain
     And I check "extension_org"
     And I press "register-button"
-    Then I should see "BULK REGISTER RESULT"
-    And I should see "mydomain.com" within "table#bulk-register-result-table tr:eq(2)"
-    And I should see "Success" within "table#bulk-register-result-table tr:eq(2)"
-    And I should see "mydomain.org" within "table#bulk-register-result-table tr:eq(3)"
-    And I should see "Success" within "table#bulk-register-result-table tr:eq(3)"
+    Then I should see "REGISTRATION STATUS"
+    And I should see "mydomain.com" within "table#transfer-domains-table tr:eq(2)"
+    And I should see "Success" within "table#transfer-domains-table tr:eq(2)"
+    And I should see "mydomain.org" within "table#transfer-domains-table tr:eq(3)"
+    And I should see "Success" within "table#transfer-domains-table tr:eq(3)"
 
   Scenario: I successfully register domains when I am not yet a user, with no contact, and no credits
     Given I am on the home page
@@ -96,8 +96,8 @@ Feature: Register Domain
     And I mock accountInfo with name "East Agile Company" and 11 domain credits and 5 invites available
     And I mock purchaseCredits
     When I press "purchase-button"
-    Then I should see "BULK REGISTER RESULT"
-    And I should see "mydomain.com" within "table#bulk-register-result-table tr:eq(2)"
-    And I should see "Success" within "table#bulk-register-result-table tr:eq(2)"
-    And I should see "mydomain.org" within "table#bulk-register-result-table tr:eq(3)"
-    And I should see "Success" within "table#bulk-register-result-table tr:eq(3)"
+    Then I should see "REGISTRATION STATUS"
+    And I should see "mydomain.com" within "table#transfer-domains-table tr:eq(2)"
+    And I should see "Success" within "table#transfer-domains-table tr:eq(2)"
+    And I should see "mydomain.org" within "table#transfer-domains-table tr:eq(3)"
+    And I should see "Success" within "table#transfer-domains-table tr:eq(3)"

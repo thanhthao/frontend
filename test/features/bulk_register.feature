@@ -8,59 +8,59 @@ Feature: Bulk Register
     And I click on "form-search-input"
     Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
     And I follow "Bulk Register Tool"
-    Then I should see "BULK REGISTER"
-    And I should see "Type in domains you want to register, one per line:"
-    And I should see "Registrant:"
-    And I fill multiple lines in "register_domains_list" with:
+    Then I should see "REGISTER DOMAINS WITH BADGER.COM"
+    And I should see "Enter the domain(s) that you'd like to register, one per line:"
+    And I fill multiple lines in "domains" with:
       """
       abc.com
       abc123.com
       """
-    And I mock getDomainInfo api for domain with registrar name "Registrar Name"
+    And I mock getDomain
     And I mock registerDomain api
     And I press "Next"
-    Then I should see "CONFIRM REGISTER"
-    And I should see "You are about to register 2 domains."
-    Then I follow "Register All Domains for 2 Credits"
-    And I should see "BULK REGISTER RESULT"
-    And I should see "abc.com" within "#bulk-register-result-table"
-    And I should see "abc123.com" within "#bulk-register-result-table"
-    And I should see "Success" within "#bulk-register-result-table"
-    And I follow "Continue"
-    Then I should see "MY DOMAINS"
-    And I should see "Transfer in a Domain"
+    Then I should see "REGISTER DOMAINS"
+    Then I press "Continue with 2 domains"
+    Then I should see "CONFIRMATION: 2 DOMAINS"
+    And I should see "Free Options"
+    And I should see "Registrant:"
+    Then I press "Register for 2 Credits"
+    And I should see "REGISTRATION STATUS"
+    And I should see "abc.com" within "#transfer-domains-table"
+    And I should see "abc123.com" within "#transfer-domains-table"
+    And I should see "Success" within "#transfer-domains-table"
+    And I follow "Close"
 
   Scenario: I should be able to bulk-register my domains when I have at least one contact but not enough credits
     Given I logged in with mock data for domains and user info with 1 domain credits and 5 invites available
     And I click on "form-search-input"
     Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
     And I follow "Bulk Register Tool"
-    Then I should see "BULK REGISTER"
-    And I should see "Type in domains you want to register, one per line"
-    And I should see "Registrant:"
-    And I fill multiple lines in "register_domains_list" with:
+    Then I should see "REGISTER DOMAINS WITH BADGER.COM"
+    And I should see "Enter the domain(s) that you'd like to register, one per line:"
+    And I fill multiple lines in "domains" with:
       """
       abc.com
       abc123.com
       """
-    And I mock getDomainInfo api for domain with registrar name "Registrar Name"
+    And I mock getDomain
     And I mock registerDomain api
     And I mock getPaymentMethods
     And I press "Next"
+    Then I should see "REGISTER DOMAINS"
+    Then I press "Continue with 2 domains"
+    Then I should see "CONFIRMATION: 2 DOMAINS"
+    And I should see "Free Options"
+    And I should see "Registrant:"
+    Then I press "Register for 2 Credits"
     Then I should see "Purchase Credits"
     And I mock accountInfo with name "East Agile Company" and 11 domain credits and 5 invites available
     And I mock purchaseCredits
     And I press "purchase-button"
-    Then I should see "CONFIRM REGISTER"
-    And I should see "You are about to register 2 domains."
-    Then I follow "Register All Domains for 2 Credits"
-    And I should see "BULK REGISTER RESULT"
-    And I should see "abc.com" within "#bulk-register-result-table"
-    And I should see "abc123.com" within "#bulk-register-result-table"
-    And I should see "Success" within "#bulk-register-result-table"
-    And I follow "Continue"
-    Then I should see "MY DOMAINS"
-    And I should see "Transfer in a Domain"
+    And I should see "REGISTRATION STATUS"
+    And I should see "abc.com" within "#transfer-domains-table"
+    And I should see "abc123.com" within "#transfer-domains-table"
+    And I should see "Success" within "#transfer-domains-table"
+    And I follow "Close"
 
   Scenario: I should be able to bulk-register my domains when I have no contact but enough credits
     Given I logged in with mock data for domains and user info with 10 domain credits and 5 invites available
@@ -69,7 +69,7 @@ Feature: Bulk Register
     Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
     And I follow "Bulk Register Tool"
     Then I should see "Create Profile"
-    And I should see "You must have at least one contact profile to bulk-register domain."
+    And I should see "You must have at least one contact profile to register domain."
     And I fill in "first_name" with "East Agile"
     And I fill in "last_name" with "Company"
     And I fill in "email" with "eastagile@example.com"
@@ -82,27 +82,25 @@ Feature: Bulk Register
     And I mock getContacts returns 1 contacts
     And I mock createContact
     And I press "Create Profile"
-    Then I should see "BULK REGISTER"
-    And I should see "Type in domains you want to register, one per line"
-    And I should see "Registrant:"
-    And I fill multiple lines in "register_domains_list" with:
+    Then I should see "REGISTER DOMAINS WITH BADGER.COM"
+    And I should see "Enter the domain(s) that you'd like to register, one per line:"
+    And I fill multiple lines in "domains" with:
       """
       abc.com
       abc123.com
       """
-    And I mock getDomainInfo api for domain with registrar name "Registrar Name"
+    And I mock getDomain
     And I mock registerDomain api
     And I press "Next"
-    Then I should see "CONFIRM REGISTER"
-    And I should see "You are about to register 2 domains."
-    Then I follow "Register All Domains for 2 Credits"
-    And I should see "BULK REGISTER RESULT"
-    And I should see "abc.com" within "#bulk-register-result-table"
-    And I should see "abc123.com" within "#bulk-register-result-table"
-    And I should see "Success" within "#bulk-register-result-table"
-    And I follow "Continue"
-    Then I should see "MY DOMAINS"
-    And I should see "Transfer in a Domain"
+    Then I should see "REGISTER DOMAINS"
+    Then I press "Continue with 2 domains"
+    Then I should see "CONFIRMATION: 2 DOMAINS"
+    Then I press "Register for 2 Credits"
+    And I should see "REGISTRATION STATUS"
+    And I should see "abc.com" within "#transfer-domains-table"
+    And I should see "abc123.com" within "#transfer-domains-table"
+    And I should see "Success" within "#transfer-domains-table"
+    And I follow "Close"
 
   Scenario: I should be able to bulk-register my domains when I have no contact and not enough credits
     Given I logged in with mock data for domains and user info with 1 domain credits and 5 invites available
@@ -111,7 +109,7 @@ Feature: Bulk Register
     Then I should see "If you would like to register many domains at once, try our Bulk Register Tool."
     And I follow "Bulk Register Tool"
     Then I should see "Create Profile"
-    And I should see "You must have at least one contact profile to bulk-register domain."
+    And I should see "You must have at least one contact profile to register domain."
     And I fill in "first_name" with "East Agile"
     And I fill in "last_name" with "Company"
     And I fill in "email" with "eastagile@example.com"
@@ -124,29 +122,29 @@ Feature: Bulk Register
     And I mock getContacts returns 1 contacts
     And I mock createContact
     And I press "Create Profile"
-    Then I should see "BULK REGISTER"
-    And I should see "Type in domains you want to register, one per line"
-    And I should see "Registrant:"
-    And I fill multiple lines in "register_domains_list" with:
+    Then I should see "REGISTER DOMAINS WITH BADGER.COM"
+    And I should see "Enter the domain(s) that you'd like to register, one per line:"
+    And I fill multiple lines in "domains" with:
       """
       abc.com
       abc123.com
       """
-    And I mock getDomainInfo api for domain with registrar name "Registrar Name"
+    And I mock getDomain
     And I mock registerDomain api
     And I mock getPaymentMethods
     And I press "Next"
+    Then I should see "REGISTER DOMAINS"
+    Then I press "Continue with 2 domains"
+    Then I should see "CONFIRMATION: 2 DOMAINS"
+    And I should see "Free Options"
+    And I should see "Registrant:"
+    Then I press "Register for 2 Credits"
     Then I should see "Purchase Credits"
     And I mock accountInfo with name "East Agile Company" and 11 domain credits and 5 invites available
     And I mock purchaseCredits
     And I press "purchase-button"
-    Then I should see "CONFIRM REGISTER"
-    And I should see "You are about to register 2 domains."
-    Then I follow "Register All Domains for 2 Credits"
-    And I should see "BULK REGISTER RESULT"
-    And I should see "abc.com" within "#bulk-register-result-table"
-    And I should see "abc123.com" within "#bulk-register-result-table"
-    And I should see "Success" within "#bulk-register-result-table"
-    And I follow "Continue"
-    Then I should see "MY DOMAINS"
-    And I should see "Transfer in a Domain"
+    And I should see "REGISTRATION STATUS"
+    And I should see "abc.com" within "#transfer-domains-table"
+    And I should see "abc123.com" within "#transfer-domains-table"
+    And I should see "Success" within "#transfer-domains-table"
+    And I follow "Close"
